@@ -14,6 +14,7 @@
                 <a href="{{ url_for('home') }}" class="text-emerald-600 font-semibold">Home</a>
                 <a href="{{ url_for('classifier') }}" class="hover:text-emerald-600 transition">Classifier</a>
                 <a href="{{ url_for('classifications') }}" class="hover:text-emerald-600 transition">Classifications</a>
+                <a href="{{ url_for('rules') }}" class="hover:text-emerald-600 transition">Rules & Map</a>
                 {% if user %}
                 <a href="{{ url_for('dashboard') }}" class="hover:text-emerald-600 transition">Dashboard</a>
                 {% endif %}
@@ -47,24 +48,30 @@
 
     <section class="max-w-7xl mx-auto px-6 py-12">
         <h2 class="text-2xl font-bold text-center mb-10 text-slate-900">Explore the Platform</h2>
-        <div class="grid md:grid-cols-3 gap-8">
-            <div class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
+        <div class="grid md:grid-cols-4 gap-6">
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
                 <div class="text-3xl mb-4">📸</div>
-                <h3 class="text-xl font-bold text-slate-900 mb-2">AI Classifier</h3>
-                <p class="text-slate-600 mb-4">Upload or snap a photo of any packaging to detect material layers and get disposal guidance instantly.</p>
-                <a href="{{ url_for('classifier') }}" class="text-emerald-600 font-medium hover:underline">Try tool &rarr;</a>
+                <h3 class="text-lg font-bold text-slate-900 mb-2">AI Classifier</h3>
+                <p class="text-slate-600 text-sm mb-4">Upload or snap a photo of packaging to detect layers and override rules instantly.</p>
+                <a href="{{ url_for('classifier') }}" class="text-emerald-600 text-sm font-medium hover:underline">Try tool &rarr;</a>
             </div>
-            <div class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
                 <div class="text-3xl mb-4">📚</div>
-                <h3 class="text-xl font-bold text-slate-900 mb-2">Material Classifications</h3>
-                <p class="text-slate-600 mb-4">Browse master directories of pure plastics, laminates, and packaging with clear criteria.</p>
-                <a href="{{ url_for('classifications') }}" class="text-emerald-600 font-medium hover:underline">View taxonomy &rarr;</a>
+                <h3 class="text-lg font-bold text-slate-900 mb-2">Classifications</h3>
+                <p class="text-slate-600 text-sm mb-4">Browse master directories of pure plastics, laminates, and packaging standards.</p>
+                <a href="{{ url_for('classifications') }}" class="text-emerald-600 text-sm font-medium hover:underline">View taxonomy &rarr;</a>
             </div>
-            <div class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
+                <div class="text-3xl mb-4">🗺️</div>
+                <h3 class="text-lg font-bold text-slate-900 mb-2">Rules & Map</h3>
+                <p class="text-slate-600 text-sm mb-4">Sync your location to find local drop-off centers and municipal sorting rules.</p>
+                <a href="{{ url_for('rules') }}" class="text-emerald-600 text-sm font-medium hover:underline">Check rules &rarr;</a>
+            </div>
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
                 <div class="text-3xl mb-4">🌱</div>
-                <h3 class="text-xl font-bold text-slate-900 mb-2">Impact Dashboard</h3>
-                <p class="text-slate-600 mb-4">Track your carbon footprint reductions, earned eco-points, and unlocked badges over time.</p>
-                <a href="{{ url_for('dashboard') }}" class="text-emerald-600 font-medium hover:underline">View stats &rarr;</a>
+                <h3 class="text-lg font-bold text-slate-900 mb-2">Impact Analytics</h3>
+                <p class="text-slate-600 text-sm mb-4">Track lifetime carbon savings, earned eco-points, and unlocked badges.</p>
+                <a href="{{ url_for('dashboard') }}" class="text-emerald-600 text-sm font-medium hover:underline">View dashboard &rarr;</a>
             </div>
         </div>
     </section>
