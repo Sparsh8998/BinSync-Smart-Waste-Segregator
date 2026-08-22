@@ -7,6 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans antialiased">
+    <!-- Header -->
     <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
             <a href="{{ url_for('home') }}" class="text-xl font-bold text-emerald-600 flex items-center gap-2">♻️ Envirotech</a>
@@ -32,7 +33,8 @@
         </div>
     </header>
 
-    <section class="max-w-5xl mx-auto px-6 py-20 text-center">
+    <!-- Hero Section -->
+    <section class="max-w-5xl mx-auto px-6 pt-20 pb-10 text-center">
         <div class="inline-block bg-emerald-100 text-emerald-800 text-xs font-semibold px-3 py-1 rounded-full mb-6">AI-Powered Municipal Waste Routing</div>
         <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-slate-900 mb-6">
             Stop Wishcycling. Master Multi-Material Sorting.
@@ -46,6 +48,43 @@
         </div>
     </section>
 
+    <!-- Real-time Municipal Counter Section (Subtle Emerald Tint) -->
+    <section class="max-w-6xl mx-auto px-6 py-6">
+        <div class="bg-emerald-50/70 border border-emerald-200/80 rounded-3xl p-8 md:p-10 shadow-sm">
+            <div class="text-center max-w-xl mx-auto mb-8">
+                <span class="text-emerald-700 bg-emerald-100/80 px-3 py-1 rounded-full text-xs uppercase font-bold tracking-widest">Collective Live Impact</span>
+                <h2 class="text-2xl font-extrabold text-slate-900 mt-3">Municipal Diversion in Real Time</h2>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center divide-y md:divide-y-0 md:divide-x divide-emerald-200/70">
+                <div class="pt-4 md:pt-0 md:px-4">
+                    <div class="text-3xl md:text-5xl font-black text-emerald-600 mb-1 tracking-tight">
+                        {{ stats.wrappers_diverted }}+
+                    </div>
+                    <p class="text-slate-800 font-bold text-sm md:text-base">Wrappers Diverted</p>
+                    <span class="text-xs text-slate-500 mt-1 block">Soft plastics routed away from general waste</span>
+                </div>
+
+                <div class="pt-6 md:pt-0 md:px-4">
+                    <div class="text-3xl md:text-5xl font-black text-teal-600 mb-1 tracking-tight">
+                        {{ stats.contamination_prevented }}
+                    </div>
+                    <p class="text-slate-800 font-bold text-sm md:text-base">Contamination Prevented</p>
+                    <span class="text-xs text-slate-500 mt-1 block">Through multi-layer AI edge detection</span>
+                </div>
+
+                <div class="pt-6 md:pt-0 md:px-4">
+                    <div class="text-3xl md:text-5xl font-black text-emerald-700 mb-1 tracking-tight">
+                        {{ stats.landfill_avoided_tons }}
+                    </div>
+                    <p class="text-slate-800 font-bold text-sm md:text-base">Tons Landfill Waste Avoided</p>
+                    <span class="text-xs text-slate-500 mt-1 block">Calculated via equivalent municipal CO2 offsets</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Platform Exploration Grid -->
     <section class="max-w-7xl mx-auto px-6 py-12">
         <h2 class="text-2xl font-bold text-center mb-10 text-slate-900">Explore the Platform</h2>
         <div class="grid md:grid-cols-4 gap-6">
@@ -76,6 +115,7 @@
         </div>
     </section>
 
+    <!-- Footer -->
     <footer class="bg-white border-t border-slate-200 mt-20 py-8 text-center text-sm text-slate-500">
         <p>&copy; 2026 Envirotech. Built by Team Hakka Noodles.</p>
     </footer>
