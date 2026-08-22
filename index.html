@@ -1,0 +1,293 @@
+
+========================================
+1. HOMEPAGE (index.html)
+========================================
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Envirotech — Smart Waste Sorting & AI Classifier</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased">
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <a href="index.html" class="text-xl font-bold text-emerald-600 flex items-center gap-2">♻️ Envirotech</a>
+            <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-600">
+                <a href="index.html" class="text-emerald-600 font-semibold">Home</a>
+                <a href="classifier.html" class="hover:text-emerald-600 transition">Classifier</a>
+                <a href="classifications.html" class="hover:text-emerald-600 transition">Classifications</a>
+                <a href="rules.html" class="hover:text-emerald-600 transition">Rules & Map</a>
+                <a href="resources.html" class="hover:text-emerald-600 transition">Resources</a>
+            </nav>
+            <div class="flex items-center gap-3">
+                <a href="login.html" class="text-sm font-medium text-slate-600 hover:text-emerald-600 px-3 py-2">Log In</a>
+                <a href="classifier.html" class="bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium px-4 py-2 rounded-lg shadow-sm transition">Launch App</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="max-w-5xl mx-auto px-6 py-20 text-center">
+        <div class="inline-block bg-emerald-100 text-emerald-800 text-xs font-semibold px-3 py-1 rounded-full mb-6">AI-Powered Municipal Waste Routing</div>
+        <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-slate-900 mb-6">
+            Stop Wishcycling. Master Multi-Material Sorting.
+        </h1>
+        <p class="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto mb-10">
+            Bridge the gap between casual recycling lookups and long-term eco-habits with real-time computer vision and hyper-local municipal guidance.
+        </p>
+        <div class="flex flex-col sm:flex-row justify-center gap-4">
+            <a href="classifier.html" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-8 py-3.5 rounded-xl shadow-md transition text-lg">Start AI Classifier</a>
+            <a href="classifications.html" class="bg-white hover:bg-slate-100 text-slate-700 font-medium px-8 py-3.5 rounded-xl border border-slate-300 transition text-lg">Explore Taxonomy</a>
+        </div>
+    </section>
+
+    <section class="max-w-7xl mx-auto px-6 py-12">
+        <h2 class="text-2xl font-bold text-center mb-10 text-slate-900">Explore the Platform</h2>
+        <div class="grid md:grid-cols-3 gap-8">
+            <div class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
+                <div class="text-3xl mb-4">📸</div>
+                <h3 class="text-xl font-bold text-slate-900 mb-2">AI Classifier</h3>
+                <p class="text-slate-600 mb-4">Upload or snap a photo of any composite packaging to detect layers and override rules instantly.</p>
+                <a href="classifier.html" class="text-emerald-600 font-medium hover:underline">Try tool &rarr;</a>
+            </div>
+            <div class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
+                <div class="text-3xl mb-4">📚</div>
+                <h3 class="text-xl font-bold text-slate-900 mb-2">Material Classifications</h3>
+                <p class="text-slate-600 mb-4">Browse master directories of pure plastics, laminates, and hazardous items with clear criteria.</p>
+                <a href="classifications.html" class="text-emerald-600 font-medium hover:underline">View taxonomy &rarr;</a>
+            </div>
+            <div class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
+                <div class="text-3xl mb-4">🗺️</div>
+                <h3 class="text-xl font-bold text-slate-900 mb-2">Rules & Drop-off Map</h3>
+                <p class="text-slate-600 mb-4">Sync your zip code to discover local recycling drop-off centers and municipal sorting guidelines.</p>
+                <a href="rules.html" class="text-emerald-600 font-medium hover:underline">Check rules &rarr;</a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-white border-t border-slate-200 mt-20 py-8 text-center text-sm text-slate-500">
+        <p>&copy; 2026 Envirotech. Built for sustainable municipal compliance.</p>
+    </footer>
+</body>
+</html>
+
+========================================
+2. CLASSIFIER PAGE (classifier.html)
+========================================
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Classifier — Envirotech</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased">
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <a href="index.html" class="text-xl font-bold text-emerald-600 flex items-center gap-2">♻️ Envirotech</a>
+            <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-600">
+                <a href="index.html" class="hover:text-emerald-600 transition">Home</a>
+                <a href="classifier.html" class="text-emerald-600 font-semibold">Classifier</a>
+                <a href="classifications.html" class="hover:text-emerald-600 transition">Classifications</a>
+                <a href="rules.html" class="hover:text-emerald-600 transition">Rules & Map</a>
+                <a href="resources.html" class="hover:text-emerald-600 transition">Resources</a>
+            </nav>
+            <a href="login.html" class="bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition">Sign In</a>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-6 py-12">
+        <div class="text-center mb-10">
+            <h1 class="text-3xl font-extrabold text-slate-900 mb-2">AI Waste Photo Classifier</h1>
+            <p class="text-slate-600">Upload or drop any item to detect layers, avoid wishcycling, and get immediate disposal steps.</p>
+        </div>
+
+        <div class="bg-white border-2 border-dashed border-slate-300 rounded-2xl p-10 text-center shadow-sm hover:border-emerald-500 transition cursor-pointer">
+            <div class="text-4xl mb-3">📁</div>
+            <h3 class="font-bold text-slate-800 text-lg mb-1">Drag and drop your waste photo here</h3>
+            <p class="text-sm text-slate-500 mb-6">Supports PNG, JPG, or WebP up to 10MB</p>
+            <button class="bg-emerald-600 text-white px-6 py-2.5 rounded-xl font-medium shadow-sm hover:bg-emerald-700 transition">Browse Files</button>
+        </div>
+
+        <div class="mt-8 text-center">
+            <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Or test sample items instantly</p>
+            <div class="flex flex-wrap justify-center gap-3">
+                <button class="bg-white border border-slate-200 px-4 py-2 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-100">🍫 Laminated Snack Wrapper</button>
+                <button class="bg-white border border-slate-200 px-4 py-2 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-100">🥤 PET Soda Bottle</button>
+                <button class="bg-white border border-slate-200 px-4 py-2 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-100">☕ Foil-Lined Coffee Bag</button>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
+
+========================================
+3. CLASSIFICATIONS PAGE (classifications.html)
+========================================
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Material Classifications — Envirotech</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased">
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <a href="index.html" class="text-xl font-bold text-emerald-600 flex items-center gap-2">♻️ Envirotech</a>
+            <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-600">
+                <a href="index.html" class="hover:text-emerald-600 transition">Home</a>
+                <a href="classifier.html" class="hover:text-emerald-600 transition">Classifier</a>
+                <a href="classifications.html" class="text-emerald-600 font-semibold">Classifications</a>
+                <a href="rules.html" class="hover:text-emerald-600 transition">Rules & Map</a>
+                <a href="resources.html" class="hover:text-emerald-600 transition">Resources</a>
+            </nav>
+            <a href="login.html" class="bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition">Sign In</a>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-6 py-12">
+        <div class="mb-8">
+            <h1 class="text-3xl font-extrabold text-slate-900 mb-2">Material Classifications & AI Taxonomy</h1>
+            <p class="text-slate-600">Explore standard directories, composite rules, and multi-layer breakdown standards.</p>
+        </div>
+
+        <div class="mb-8">
+            <input type="text" placeholder="Search materials (e.g., PET, aluminum, coffee bag)..." class="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6">
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                <span class="bg-amber-100 text-amber-800 text-xs font-bold px-2.5 py-1 rounded-md">Composite</span>
+                <h3 class="text-lg font-bold text-slate-900 mt-3 mb-1">Laminated Snack Wrapper</h3>
+                <p class="text-sm text-slate-600 mb-4">Metallized polypropylene bonded to an inner foil layer. Triggers dominant-material hierarchy override.</p>
+                <div class="text-xs bg-slate-50 p-3 rounded-lg border border-slate-100 text-slate-700 font-medium">Destination: Soft-Plastic Drop-off Bin</div>
+            </div>
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-2.5 py-1 rounded-md">Pure Recyclable</span>
+                <h3 class="text-lg font-bold text-slate-900 mt-3 mb-1">PET Plastic Soda Bottle</h3>
+                <p class="text-sm text-slate-600 mb-4">Polyethylene terephthalate body with removable cap and paper label. Standard multi-part recyclability.</p>
+                <div class="text-xs bg-slate-50 p-3 rounded-lg border border-slate-100 text-slate-700 font-medium">Destination: Curbside Recycling Bin</div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
+
+========================================
+4. DASHBOARD PAGE (dashboard.html)
+========================================
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diversion Dashboard — Envirotech</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased">
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <a href="index.html" class="text-xl font-bold text-emerald-600 flex items-center gap-2">♻️ Envirotech</a>
+            <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-600">
+                <a href="dashboard.html" class="text-emerald-600 font-semibold">Dashboard</a>
+                <a href="classifier.html" class="hover:text-emerald-600 transition">Classifier</a>
+                <a href="classifications.html" class="hover:text-emerald-600 transition">Classifications</a>
+                <a href="rules.html" class="hover:text-emerald-600 transition">Rules & Map</a>
+            </nav>
+            <a href="index.html" class="text-sm font-medium text-rose-600 hover:underline">Log Out</a>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-6 py-10">
+        <div class="flex justify-between items-center mb-8">
+            <div>
+                <h1 class="text-2xl font-bold text-slate-900">Your Diversion Analytics</h1>
+                <p class="text-sm text-slate-500">Track your long-term sorting history and landfill aversion rates.</p>
+            </div>
+            <a href="classifier.html" class="bg-emerald-600 text-white px-4 py-2 rounded-xl text-sm font-medium shadow-sm hover:bg-emerald-700">+ Scan New Item</a>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6 mb-10">
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Landfill Aversion Rate</p>
+                <div class="flex items-baseline gap-3">
+                    <span class="text-3xl font-extrabold text-slate-900">78.4%</span>
+                    <span class="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">+4.2% this month</span>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Awareness Score</p>
+                <div class="flex items-baseline gap-3">
+                    <span class="text-3xl font-extrabold text-slate-900">94 / 100</span>
+                    <span class="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded">Consistent streak</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-100 font-bold text-slate-800">Personal History Logs</div>
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-slate-50 text-xs font-semibold text-slate-500 uppercase tracking-wider border-b border-slate-100">
+                        <th class="px-6 py-3">Item Name</th>
+                        <th class="px-6 py-3">AI Result & Timestamp</th>
+                        <th class="px-6 py-3">Status / Action</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 text-sm">
+                    <tr>
+                        <td class="px-6 py-4 font-medium text-slate-900">Laminated Snack Wrapper</td>
+                        <td class="px-6 py-4 text-slate-600">🟡 Composite / Non-Curbside<br><span class="text-xs text-slate-400">Aug 21, 2026 • 2:45 PM</span></td>
+                        <td class="px-6 py-4 text-emerald-700 font-medium">✅ Soft-Plastic Drop-Off</td>
+                    </tr>
+                    <tr>
+                        <td class="px-6 py-4 font-medium text-slate-900">PET Soda Bottle</td>
+                        <td class="px-6 py-4 text-slate-600">🟢 Recyclable Pure<br><span class="text-xs text-slate-400">Aug 20, 2026 • 11:15 AM</span></td>
+                        <td class="px-6 py-4 text-emerald-700 font-medium">✅ Curbside Bin</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</body>
+</html>
+
+========================================
+5. LOGIN & SIGNUP PAGE (login.html)
+========================================
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In — Envirotech</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased flex items-center justify-center min-h-screen">
+    <div class="w-full max-w-md px-6">
+        <div class="text-center mb-8">
+            <a href="index.html" class="text-2xl font-bold text-emerald-600">♻️ Envirotech</a>
+            <h2 class="text-xl font-bold text-slate-900 mt-2">Welcome Back</h2>
+            <p class="text-sm text-slate-500">Sign in to sync your personal scan history logs.</p>
+        </div>
+
+        <div class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm">
+            <form action="dashboard.html" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Email Address</label>
+                    <input type="email" required class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="name@example.com">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Password</label>
+                    <input type="password" required class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="••••••••">
+                </div>
+                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2.5 rounded-xl transition shadow-sm">Log In to Dashboard</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
