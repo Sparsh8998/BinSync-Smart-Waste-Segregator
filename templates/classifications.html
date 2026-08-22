@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Material Classifications — Envirotech</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased">
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <a href="{{ url_for('home') }}" class="text-xl font-bold text-emerald-600 flex items-center gap-2">♻️ Envirotech</a>
+            <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-600">
+                <a href="{{ url_for('home') }}" class="hover:text-emerald-600 transition">Home</a>
+                <a href="{{ url_for('classifier') }}" class="hover:text-emerald-600 transition">Classifier</a>
+                <a href="{{ url_for('classifications') }}" class="text-emerald-600 font-semibold">Classifications</a>
+                {% if user %}
+                <a href="{{ url_for('dashboard') }}" class="hover:text-emerald-600 transition">Dashboard</a>
+                {% endif %}
+            </nav>
+            <div class="flex items-center gap-3">
+                {% if user %}
+                <a href="{{ url_for('dashboard') }}" class="bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition">Dashboard</a>
+                {% else %}
+                <a href="{{ url_for('login') }}" class="bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition">Sign In</a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-6 py-12">
+        <div class="mb-8">
+            <h1 class="text-3xl font-extrabold text-slate-900 mb-2">Material Classifications & AI Taxonomy</h1>
+            <p class="text-slate-600">Explore standard directories, composite rules, and multi-layer breakdown standards.</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6">
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                <span class="bg-amber-100 text-amber-800 text-xs font-bold px-2.5 py-1 rounded-md">Composite</span>
+                <h3 class="text-lg font-bold text-slate-900 mt-3 mb-1">Laminated Snack Wrapper</h3>
+                <p class="text-sm text-slate-600 mb-4">Metallized polypropylene bonded to an inner foil layer. Requires dedicated flexible film drop-off.</p>
+                <div class="text-xs bg-slate-50 p-3 rounded-lg border border-slate-100 text-slate-700 font-medium">Destination: Soft-Plastic Drop-off Bin</div>
+            </div>
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-2.5 py-1 rounded-md">Pure Recyclable</span>
+                <h3 class="text-lg font-bold text-slate-900 mt-3 mb-1">PET Plastic Soda Bottle</h3>
+                <p class="text-sm text-slate-600 mb-4">Polyethylene terephthalate body. Rinse clean before disposal; bottle caps can usually remain attached.</p>
+                <div class="text-xs bg-slate-50 p-3 rounded-lg border border-slate-100 text-slate-700 font-medium">Destination: Curbside Recycling Bin</div>
+            </div>
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                <span class="bg-lime-100 text-lime-800 text-xs font-bold px-2.5 py-1 rounded-md">Compostable</span>
+                <h3 class="text-lg font-bold text-slate-900 mt-3 mb-1">Organic Food Scraps</h3>
+                <p class="text-sm text-slate-600 mb-4">Fruit rinds, vegetable peels, and non-greasy organic remnants suitable for industrial composting.</p>
+                <div class="text-xs bg-slate-50 p-3 rounded-lg border border-slate-100 text-slate-700 font-medium">Destination: Organics / Green Bin</div>
+            </div>
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                <span class="bg-slate-200 text-slate-800 text-xs font-bold px-2.5 py-1 rounded-md">Landfill</span>
+                <h3 class="text-lg font-bold text-slate-900 mt-3 mb-1">Greasy Pizza Box Liner</h3>
+                <p class="text-sm text-slate-600 mb-4">Cardboard heavily saturated with food grease that contaminates paper recycling pulp batches.</p>
+                <div class="text-xs bg-slate-50 p-3 rounded-lg border border-slate-100 text-slate-700 font-medium">Destination: General Waste Bin</div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
