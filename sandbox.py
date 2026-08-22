@@ -91,6 +91,13 @@ def dashboard():
     recent_scans = ScanLog.query.filter_by(user_id=user.id).order_by(ScanLog.timestamp.desc()).all()
     return render_template('dashboard.html', user=user, recent_scans=recent_scans)
 
+@app.route('/rules')
+def rules():
+    user = None
+    if 'user_id' in session:
+        user = User.query.get(session['user_id'])
+    return render_template('rules.html', user=user)
+
 @app.route('/classifier', methods=['GET', 'POST'])
 def classifier():
     if 'user_id' not in session:

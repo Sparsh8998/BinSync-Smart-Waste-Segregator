@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rules & Drop-off Map — Envirotech</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased">
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <a href="{{ url_for('home') }}" class="text-xl font-bold text-emerald-600 flex items-center gap-2">♻️ Envirotech</a>
+            <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-600">
+                <a href="{{ url_for('home') }}" class="hover:text-emerald-600 transition">Home</a>
+                <a href="{{ url_for('classifier') }}" class="hover:text-emerald-600 transition">Classifier</a>
+                <a href="{{ url_for('classifications') }}" class="hover:text-emerald-600 transition">Classifications</a>
+                <a href="{{ url_for('rules') }}" class="text-emerald-600 font-semibold">Rules & Map</a>
+                {% if user %}
+                <a href="{{ url_for('dashboard') }}" class="hover:text-emerald-600 transition">Dashboard</a>
+                {% endif %}
+            </nav>
+            <div class="flex items-center gap-3">
+                {% if user %}
+                <span class="text-sm text-slate-600 font-medium">{{ user.username }}</span>
+                <a href="{{ url_for('logout') }}" class="text-sm font-medium text-rose-600 hover:underline px-2">Log Out</a>
+                {% else %}
+                <a href="{{ url_for('login') }}" class="bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition">Sign In</a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-6 py-12">
+        <div class="mb-8">
+            <h1 class="text-3xl font-extrabold text-slate-900 mb-2">Hyper-Local Rules & Drop-Off Map</h1>
+            <p class="text-slate-600">Enter your zip code to sync municipal sorting guidelines and find nearby specialized recycling centers.</p>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm mb-8 flex flex-col sm:flex-row gap-4">
+            <input type="text" placeholder="Enter Zip Code or City (e.g., 90210)..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+            <button class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-6 py-3 rounded-xl transition shadow-sm">Sync Location Rules</button>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6">
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                <h3 class="text-lg font-bold text-slate-900 mb-2">📍 Central Green Drop-Off Depot</h3>
+                <p class="text-sm text-slate-600 mb-4">Accepts soft plastics, film packaging, and foil-lined coffee bags.</p>
+                <div class="text-xs bg-slate-50 p-3 rounded-lg border border-slate-100 text-slate-700 font-medium">Distance: 1.2 miles away • Open Today until 6 PM</div>
+            </div>
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                <h3 class="text-lg font-bold text-slate-900 mb-2">📍 Municipal Material Recovery Facility</h3>
+                <p class="text-sm text-slate-600 mb-4">Standard curbside guidelines apply for PET bottles, glass, and corrugated cardboard.</p>
+                <div class="text-xs bg-slate-50 p-3 rounded-lg border border-slate-100 text-slate-700 font-medium">Distance: 3.4 miles away • Curbside Pickup on Thursdays</div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
