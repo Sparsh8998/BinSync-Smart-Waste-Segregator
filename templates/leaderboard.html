@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Global Leaderboard | BinSync</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap');
+    </style>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "on-surface-variant": "#3d4a42",
+                "on-secondary": "#ffffff",
+                "surface-variant": "#e0e3e5",
+                "tertiary-fixed": "#d3e4fe",
+                "inverse-primary": "#68dba9",
+                "on-secondary-fixed": "#131b2e",
+                "on-secondary-fixed-variant": "#3f465c",
+                "tertiary-container": "#66768d",
+                "inverse-surface": "#2d3133",
+                "secondary-fixed-dim": "#bec6e0",
+                "on-primary": "#ffffff",
+                "secondary-fixed": "#dae2fd",
+                "on-error-container": "#93000a",
+                "surface-dim": "#d8dadc",
+                "on-tertiary-fixed-variant": "#38485d",
+                "outline": "#6d7a72",
+                "surface-warm": "#fcfcfc",
+                "error": "#ba1a1a",
+                "secondary-container": "#dae2fd",
+                "border-subtle": "#e2e8f0",
+                "text-secondary": "#475569",
+                "on-primary-fixed": "#002114",
+                "on-tertiary-fixed": "#0b1c30",
+                "on-surface": "#191c1e",
+                "outline-variant": "#bccac0",
+                "on-tertiary-container": "#fdfcff",
+                "tertiary": "#4d5d73",
+                "surface": "#f7f9fb",
+                "primary-container": "#00855d",
+                "on-secondary-container": "#5c647a",
+                "surface-container-highest": "#e0e3e5",
+                "secondary": "#565e74",
+                "background": "#f7f9fb",
+                "tertiary-fixed-dim": "#b7c8e1",
+                "on-error": "#ffffff",
+                "surface-container-lowest": "#ffffff",
+                "surface-container": "#eceef0",
+                "primary-fixed": "#85f8c4",
+                "surface-container-low": "#f2f4f6",
+                "inverse-on-surface": "#eff1f3",
+                "surface-container-high": "#e6e8ea",
+                "on-background": "#191c1e",
+                "primary-fixed-dim": "#68dba9",
+                "surface-tint": "#006c4a",
+                "surface-bright": "#f7f9fb",
+                "error-container": "#ffdad6",
+                "text-primary": "#0f172a",
+                "on-primary-fixed-variant": "#005137",
+                "primary": "#006948",
+                "on-primary-container": "#f5fff7",
+                "on-tertiary": "#ffffff"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.125rem",
+                "lg": "0.25rem",
+                "xl": "0.5rem",
+                "full": "0.75rem"
+            },
+            "spacing": {
+                "container-max": "1440px",
+                "md": "16px",
+                "xs": "4px",
+                "unit": "4px",
+                "base": "4px",
+                "lg": "32px",
+                "margin-desktop": "80px",
+                "sm": "8px",
+                "margin-mobile": "20px",
+                "gutter": "24px",
+                "xl": "64px"
+            },
+            "fontFamily": {
+                "body-md": ["Geist"],
+                "display-lg": ["Geist"],
+                "code-sm": ["Geist"],
+                "headline-md": ["Geist"],
+                "headline-lg-mobile": ["Geist"],
+                "body-lg": ["Geist"],
+                "label-md": ["Geist"],
+                "headline-lg": ["Geist"],
+                "label-sm": ["Geist"]
+            },
+            "fontSize": {
+                "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "600" }],
+                "code-sm": ["13px", { "lineHeight": "1.4", "fontWeight": "400" }],
+                "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "500" }],
+                "headline-lg-mobile": ["24px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                "label-md": ["14px", { "lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                "label-sm": ["12px", { "lineHeight": "1.2", "letterSpacing": "0.1em", "fontWeight": "600" }]
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05); 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.2); 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 105, 72, 0.5); 
+        }
+        
+        .gold-rank {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.15) 0%, rgba(218, 165, 32, 0.25) 100%);
+            border: 1px solid rgba(255, 215, 0, 0.6);
+            color: #b8860b;
+        }
+        .silver-rank {
+            background: linear-gradient(135deg, rgba(192, 192, 192, 0.2) 0%, rgba(169, 169, 169, 0.3) 100%);
+            border: 1px solid rgba(169, 169, 169, 0.6);
+            color: #708090;
+        }
+        .bronze-rank {
+            background: linear-gradient(135deg, rgba(205, 127, 50, 0.15) 0%, rgba(160, 82, 45, 0.25) 100%);
+            border: 1px solid rgba(205, 127, 50, 0.6);
+            color: #8b4513;
+        }
+        
+        .glow-hover:hover {
+            box-shadow: 0 0 15px rgba(0, 105, 72, 0.15);
+            border-color: rgba(0, 105, 72, 0.5);
+        }
+        
+        .table-row-hover:hover {
+            background-color: rgba(0, 0, 0, 0.03);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen flex flex-col antialiased selection:bg-primary selection:text-on-primary">
+<!-- TopNavBar -->
+<!-- TopNavBar -->
+<nav class="bg-surface-container/60 backdrop-blur-xl font-body-md text-body-md text-primary fixed top-0 w-full border-b border-black/5 shadow-none duration-200 ease-out z-50">
+    <div class="flex justify-between items-center h-16 px-gutter max-w-container-max mx-auto">
+        <a href="{{ url_for('home') }}" class="flex items-center gap-sm no-underline">
+            <span class="font-display-lg text-[24px] font-bold text-primary tracking-tighter leading-none">BinSync</span>
+        </a>
+        <div class="hidden md:flex items-center gap-lg">
+            <a class="text-on-surface-variant hover:text-on-surface transition-colors hover:bg-black/5 px-3 py-2 rounded-md" href="{{ url_for('home') }}">Home</a>
+            {% if user %}
+            <a class="text-on-surface-variant hover:text-on-surface transition-colors hover:bg-black/5 px-3 py-2 rounded-md" href="{{ url_for('dashboard') }}">Dashboard</a>
+            {% endif %}
+            <a class="text-on-surface-variant hover:text-on-surface transition-colors hover:bg-black/5 px-3 py-2 rounded-md" href="{{ url_for('classifier') }}">AI Inspector</a>
+            <a class="text-on-surface-variant hover:text-on-surface transition-colors hover:bg-black/5 px-3 py-2 rounded-md" href="{{ url_for('rules') }}">Rules</a>
+            <a class="text-primary font-bold border-b-2 border-primary pb-1 px-3 py-2" href="{{ url_for('leaderboard') }}">Leaderboard</a>
+        </div>
+        <div class="flex items-center gap-md">
+            {% if user %}
+            <span class="text-sm font-medium text-slate-700">{{ user.username }}</span>
+            <a href="{{ url_for('logout') }}" class="bg-rose-50 text-rose-600 border border-rose-200 px-4 py-2 rounded-lg text-sm font-medium transition-colors hover:bg-rose-100">Log Out</a>
+            {% else %}
+            <a href="{{ url_for('login') }}" class="hidden md:flex items-center justify-center bg-primary-container text-on-primary-container px-4 py-2 rounded-lg font-label-md hover:scale-[1.02] transition-transform shadow-[0_0_15px_rgba(0,105,72,0.15)] no-underline">
+                Connect
+            </a>
+            {% endif %}
+        </div>
+    </div>
+</nav>
+
+<!-- Main Content -->
+<main class="flex-grow pt-24 pb-xl px-gutter max-w-container-max mx-auto w-full">
+    <div class="mb-lg">
+        <h1 class="font-display-lg text-display-lg text-on-surface mb-xs">Global Leaderboard</h1>
+        <p class="font-body-lg text-body-lg text-on-surface-variant">Top performers in advanced waste intelligence network.</p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-lg">
+        <!-- Main Leaderboard Table -->
+        <div class="lg:col-span-8 bg-surface-container-lowest border border-outline-variant/30 rounded-xl overflow-hidden backdrop-blur-md">
+            <div class="flex items-center justify-between p-md border-b border-outline-variant/30 bg-surface-container/20">
+                <div class="flex gap-md">
+                    <button class="text-primary font-label-md text-label-md border-b border-primary pb-1">Global</button>
+                    <button class="text-on-surface-variant hover:text-on-surface font-label-md text-label-md transition-colors">Regional</button>
+                </div>
+                <div class="relative">
+                    <span class="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm" style="font-variation-settings: 'FILL' 0;">search</span>
+                    <input class="bg-surface border border-outline-variant/30 text-on-surface font-code-sm text-code-sm rounded-lg pl-8 pr-3 py-1.5 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-on-surface-variant/70 w-48" placeholder="Search user..." type="text"/>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-outline-variant/30 text-on-surface-variant font-label-md text-label-md uppercase tracking-wider bg-surface-container/20">
+                            <th class="px-md py-sm font-medium w-16 text-center">Rank</th>
+                            <th class="px-md py-sm font-medium">Operator</th>
+                            <th class="px-md py-sm font-medium text-right">Streak</th>
+                            <th class="px-md py-sm font-medium text-right">Eco Points</th>
+                            <th class="px-md py-sm font-medium text-center">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody class="font-code-sm text-code-sm">
+                        {% if top_users %}
+                            {% for u in top_users %}
+                            <tr class="border-b border-outline-variant/20 table-row-hover transition-colors group {% if user and u.id == user.id %} bg-primary/5 relative{% endif %}">
+                                {% if user and u.id == user.id %}
+                                <td class="absolute left-0 top-0 bottom-0 w-1 bg-primary shadow-[0_0_10px_rgba(0,105,72,0.5)]"></td>
+                                {% endif %}
+                                <td class="px-md py-sm text-center">
+                                    <div class="inline-flex items-center justify-center w-8 h-8 rounded-full font-bold 
+                                        {% if loop.index == 1 %} gold-rank
+                                        {% elif loop.index == 2 %} silver-rank
+                                        {% elif loop.index == 3 %} bronze-rank
+                                        {% else %} bg-surface-container text-on-surface-variant {% endif %}">
+                                        {{ loop.index }}
+                                    </div>
+                                </td>
+                                <td class="px-md py-sm">
+                                    <div class="flex items-center gap-sm">
+                                        <div class="w-8 h-8 rounded-full bg-surface-container border border-primary/30 flex items-center justify-center font-bold text-xs text-primary">
+                                            {{ u.username[0]|upper }}
+                                        </div>
+                                        <div>
+                                            <div class="font-medium text-on-surface flex items-center gap-xs">
+                                                {{ u.username }}
+                                                {% if user and u.id == user.id %}
+                                                <span class="bg-primary/20 text-primary text-[10px] px-1.5 py-0.5 rounded uppercase tracking-wider font-bold">You</span>
+                                                {% endif %}
+                                            </div>
+                                            <div class="text-on-surface-variant text-[11px]">Level: {{ u.level_info.title }}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-md py-sm text-right text-primary">
+                                    <div class="flex items-center justify-end gap-xs font-semibold">
+                                        {{ u.current_streak }}d streak
+                                    </div>
+                                </td>
+                                <td class="px-md py-sm text-right font-bold text-on-surface text-base">{{ u.points }} pts</td>
+                                <td class="px-md py-sm text-center">
+                                    <span class="inline-block w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_rgba(0,105,72,0.6)]"></span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="5" class="px-md py-xl text-center text-on-surface-variant">
+                                    No active recyclers found on the leaderboard yet.
+                                </td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Side Panel -->
+        <div class="lg:col-span-4 flex flex-col gap-lg">
+            {% if user %}
+            <!-- User Stats Card -->
+            <div class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-md backdrop-blur-md glow-hover transition-all duration-200">
+                <h3 class="font-headline-md text-headline-md text-on-surface mb-md">Your Standing</h3>
+                <div class="grid grid-cols-2 gap-sm mb-md">
+                    <div class="bg-surface-container/30 p-sm rounded-lg border border-black/5">
+                        <div class="text-on-surface-variant text-[11px] uppercase tracking-widest mb-1">Total Points</div>
+                        <div class="font-display-lg text-[32px] font-bold text-on-surface">{{ user.points }}</div>
+                        <div class="text-primary text-[11px] flex items-center gap-xs mt-1">
+                            Eco Champion Tier
+                        </div>
+                    </div>
+                    <div class="bg-surface-container/30 p-sm rounded-lg border border-black/5">
+                        <div class="text-on-surface-variant text-[11px] uppercase tracking-widest mb-1">Items Diverted</div>
+                        <div class="font-display-lg text-[32px] font-bold text-on-surface">{{ user.total_recycled }}</div>
+                        <div class="text-on-surface-variant text-[11px] mt-1">
+                            {{ user.current_streak }} day streak
+                        </div>
+                    </div>
+                </div>
+                <!-- Progress Bar to next tier -->
+                <div class="mb-2">
+                    <div class="flex justify-between text-[11px] mb-1">
+                        <span class="text-on-surface-variant">Progress to Next Tier</span>
+                        <span class="text-primary">{{ "%.1f"|format(user.level_info.progress_pct) }}%</span>
+                    </div>
+                    <div class="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
+                        <div class="h-full bg-primary rounded-full shadow-[0_0_10px_rgba(0,105,72,0.5)]" style="width: {{ user.level_info.progress_pct }}%;"></div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Network Info Feed -->
+            <div class="bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-md backdrop-blur-md flex-grow">
+                <h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest mb-md border-b border-outline-variant/30 pb-2">Network Mission</h3>
+                <p class="text-sm text-on-surface-variant leading-relaxed">
+                    BinSync global operators work collectively to eradicate wishcycling, analyze complex material layers, and enforce accurate municipal diversion standards. Climb the ranks by maintaining active daily scanning streaks.
+                </p>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Footer -->
+<footer class="bg-surface-container-lowest font-body-md text-body-md text-primary w-full py-xl border-t border-outline-variant ease-out duration-200 mt-auto">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-lg px-gutter max-w-container-max mx-auto">
+        <div class="flex flex-col gap-sm">
+            <span class="font-headline-md text-headline-md font-semibold text-primary">BinSync</span>
+            <span class="text-on-surface-variant text-sm">Advanced Waste Intelligence.</span>
+        </div>
+        <div class="md:col-span-2 flex flex-wrap gap-md md:justify-end items-center">
+            <a class="text-on-surface-variant hover:text-secondary transition-colors" href="{{ url_for('home') }}">Home</a>
+            <a class="text-on-surface-variant hover:text-secondary transition-colors" href="{{ url_for('classifier') }}">AI Inspector</a>
+            <a class="text-on-surface-variant hover:text-secondary transition-colors" href="{{ url_for('rules') }}">Rules & Map</a>
+            <a class="text-on-surface-variant hover:text-secondary transition-colors" href="{{ url_for('leaderboard') }}">Leaderboard</a>
+        </div>
+    </div>
+</footer>
+</body>
+</html>

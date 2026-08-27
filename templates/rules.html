@@ -1,58 +1,461 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rules & Drop-off Map — Envirotech</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Municipal Rules &amp; Map | BinSync</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-surface-variant": "#3d4a42",
+                        "on-secondary": "#ffffff",
+                        "surface-variant": "#e0e3e5",
+                        "tertiary-fixed": "#d3e4fe",
+                        "inverse-primary": "#68dba9",
+                        "on-secondary-fixed": "#131b2e",
+                        "on-secondary-fixed-variant": "#3f465c",
+                        "tertiary-container": "#66768d",
+                        "inverse-surface": "#2d3133",
+                        "secondary-fixed-dim": "#bec6e0",
+                        "on-primary": "#ffffff",
+                        "secondary-fixed": "#dae2fd",
+                        "on-error-container": "#93000a",
+                        "surface-dim": "#d8dadc",
+                        "on-tertiary-fixed-variant": "#38485d",
+                        "outline": "#6d7a72",
+                        "surface-warm": "#fcfcfc",
+                        "error": "#ba1a1a",
+                        "secondary-container": "#dae2fd",
+                        "border-subtle": "#e2e8f0",
+                        "text-secondary": "#475569",
+                        "on-primary-fixed": "#002114",
+                        "on-tertiary-fixed": "#0b1c30",
+                        "on-surface": "#191c1e",
+                        "outline-variant": "#bccac0",
+                        "on-tertiary-container": "#fdfcff",
+                        "tertiary": "#4d5d73",
+                        "surface": "#f7f9fb",
+                        "primary-container": "#00855d",
+                        "on-secondary-container": "#5c647a",
+                        "surface-container-highest": "#e0e3e5",
+                        "secondary": "#565e74",
+                        "background": "#f7f9fb",
+                        "tertiary-fixed-dim": "#b7c8e1",
+                        "on-error": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container": "#eceef0",
+                        "primary-fixed": "#85f8c4",
+                        "surface-container-low": "#f2f4f6",
+                        "inverse-on-surface": "#eff1f3",
+                        "surface-container-high": "#e6e8ea",
+                        "on-background": "#191c1e",
+                        "primary-fixed-dim": "#68dba9",
+                        "surface-tint": "#006c4a",
+                        "surface-bright": "#f7f9fb",
+                        "error-container": "#ffdad6",
+                        "text-primary": "#0f172a",
+                        "on-primary-fixed-variant": "#005137",
+                        "primary": "#006948",
+                        "on-primary-container": "#f5fff7",
+                        "on-tertiary": "#ffffff"
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.125rem",
+                        lg: "0.25rem",
+                        xl: "0.5rem",
+                        full: "0.75rem"
+                    },
+                    spacing: {
+                        md: "16px",
+                        xs: "4px",
+                        base: "4px",
+                        lg: "32px",
+                        "margin-desktop": "80px",
+                        sm: "8px",
+                        "margin-mobile": "20px",
+                        gutter: "24px",
+                        xl: "64px",
+                        "container-max": "1440px"
+                    },
+                    fontFamily: {
+                        "body-md": ["Geist"],
+                        "display-lg": ["Geist"],
+                        "code-sm": ["Geist"],
+                        "headline-md": ["Geist"],
+                        "headline-lg-mobile": ["Geist"],
+                        "body-lg": ["Geist"],
+                        "label-md": ["Geist"],
+                        "headline-lg": ["Geist"],
+                        "label-sm": ["Geist"]
+                    },
+                    fontSize: {
+                        "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "600" }],
+                        "code-sm": ["13px", { "lineHeight": "1.4", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "500" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "label-sm": ["12px", { "lineHeight": "1.2", "letterSpacing": "0.1em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #f7f9fb; color: #191c1e; }
+        .interactive-glow:hover {
+            color: #00855d;
+        }
+    </style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans antialiased">
-    <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-            <a href="{{ url_for('home') }}" class="text-xl font-bold text-emerald-600 flex items-center gap-2">♻️ Envirotech</a>
-            <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-600">
-                <a href="{{ url_for('home') }}" class="hover:text-emerald-600 transition">Home</a>
-                <a href="{{ url_for('classifier') }}" class="hover:text-emerald-600 transition">Classifier</a>
-                <a href="{{ url_for('classifications') }}" class="hover:text-emerald-600 transition">Classifications</a>
-                <a href="{{ url_for('rules') }}" class="text-emerald-600 font-semibold">Rules & Map</a>
-                {% if user %}
-                <a href="{{ url_for('dashboard') }}" class="hover:text-emerald-600 transition">Dashboard</a>
-                {% endif %}
-            </nav>
-            <div class="flex items-center gap-3">
-                {% if user %}
-                <span class="text-sm text-slate-600 font-medium">{{ user.username }}</span>
-                <a href="{{ url_for('logout') }}" class="text-sm font-medium text-rose-600 hover:underline px-2">Log Out</a>
-                {% else %}
-                <a href="{{ url_for('login') }}" class="bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition">Sign In</a>
-                {% endif %}
+<body class="font-body-md text-body-md antialiased min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<!-- TopNavBar -->
+<nav class="bg-surface-container-lowest/90 backdrop-blur-xl fixed top-0 w-full border-b border-border-subtle shadow-sm z-50">
+    <div class="flex justify-between items-center h-16 px-gutter max-w-container-max mx-auto">
+        <a href="{{ url_for('home') }}" class="flex items-center gap-sm no-underline">
+            <span class="font-display-lg text-[24px] font-bold text-primary tracking-tighter leading-none">BinSync</span>
+        </a>
+        <div class="hidden md:flex space-x-lg items-center">
+            <a class="text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-low rounded px-2 py-1 duration-200 ease-out" href="{{ url_for('home') }}">Home</a>
+            {% if user %}
+            <a class="text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-low rounded px-2 py-1 duration-200 ease-out" href="{{ url_for('dashboard') }}">Dashboard</a>
+            {% endif %}
+            <a class="text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-low rounded px-2 py-1 duration-200 ease-out" href="{{ url_for('classifier') }}">AI Inspector</a>
+            <a class="text-primary font-bold border-b-2 border-primary pb-1 transition-colors px-2 duration-200 ease-out" href="{{ url_for('rules') }}">Rules</a>
+            <a class="text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-low rounded px-2 py-1 duration-200 ease-out" href="{{ url_for('leaderboard') }}">Leaderboard</a>
+        </div>
+        <div class="flex items-center space-x-md">
+            {% if user %}
+            <span class="text-sm font-medium text-slate-700">{{ user.username }}</span>
+            <a href="{{ url_for('logout') }}" class="bg-rose-50 text-rose-600 border border-rose-200 px-4 py-2 rounded-full text-sm font-medium transition-colors hover:bg-rose-100">Log Out</a>
+            {% else %}
+            <a href="{{ url_for('login') }}" class="bg-primary text-on-primary px-4 py-2 rounded-full font-label-md text-label-md duration-200 ease-out hover:scale-[1.02] flex items-center space-x-2 shadow-sm hover:shadow text-decoration-none">
+                <span>Connect</span>
+            </a>
+            {% endif %}
+        </div>
+    </div>
+</nav>
+
+<!-- Main Content -->
+<main class="flex-grow pt-32 pb-xl px-gutter max-w-container-max mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-lg">
+    <!-- Left Panel: Search & Filters -->
+    <div class="lg:col-span-4 space-y-lg">
+        <!-- Location Search -->
+        <div class="bg-surface-container-lowest p-lg rounded-xl border border-border-subtle shadow-sm">
+            <h1 class="font-headline-lg text-headline-lg md:text-3xl mb-md text-on-surface">Regional Lookup</h1>
+            <p class="text-on-surface-variant mb-md">Find waste management facilities and municipal bylaws by location.</p>
+            <div class="space-y-4">
+                <div class="relative">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">location_on</span>
+                    <input id="location-input" class="w-full bg-surface border border-outline-variant rounded-lg py-3 pl-10 pr-4 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-all" placeholder="City or Postal Code" type="text"/>
+                </div>
+                <button type="button" id="search-lookup-btn" class="w-full bg-primary text-on-primary py-3 rounded-lg flex items-center justify-center space-x-2 transition-all duration-200 ease-out font-medium shadow-sm hover:opacity-90">
+                    <span class="material-symbols-outlined text-sm">search</span>
+                    <span>Search Region</span>
+                </button>
+                <button type="button" id="detect-loc-btn" class="w-full border border-primary text-primary hover:bg-primary/5 py-3 rounded-lg flex items-center justify-center space-x-2 transition-all duration-200 ease-out font-medium">
+                    <span class="material-symbols-outlined">my_location</span>
+                    <span id="detect-text">Detect Current Location</span>
+                </button>
             </div>
         </div>
-    </header>
 
-    <main class="max-w-5xl mx-auto px-6 py-12">
-        <div class="mb-8">
-            <h1 class="text-3xl font-extrabold text-slate-900 mb-2">Hyper-Local Rules & Drop-Off Map</h1>
-            <p class="text-slate-600">Enter your zip code to sync municipal sorting guidelines and find nearby specialized recycling centers.</p>
-        </div>
-
-        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm mb-8 flex flex-col sm:flex-row gap-4">
-            <input type="text" placeholder="Enter Zip Code or City (e.g., 90210)..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
-            <button class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-6 py-3 rounded-xl transition shadow-sm">Sync Location Rules</button>
-        </div>
-
-        <div class="grid md:grid-cols-2 gap-6">
-            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-                <h3 class="text-lg font-bold text-slate-900 mb-2">📍 Central Green Drop-Off Depot</h3>
-                <p class="text-sm text-slate-600 mb-4">Accepts soft plastics, film packaging, and foil-lined coffee bags.</p>
-                <div class="text-xs bg-slate-50 p-3 rounded-lg border border-slate-100 text-slate-700 font-medium">Distance: 1.2 miles away • Open Today until 6 PM</div>
-            </div>
-            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-                <h3 class="text-lg font-bold text-slate-900 mb-2">📍 Municipal Material Recovery Facility</h3>
-                <p class="text-sm text-slate-600 mb-4">Standard curbside guidelines apply for PET bottles, glass, and corrugated cardboard.</p>
-                <div class="text-xs bg-slate-50 p-3 rounded-lg border border-slate-100 text-slate-700 font-medium">Distance: 3.4 miles away • Curbside Pickup on Thursdays</div>
+        <!-- Filters -->
+        <div class="bg-surface-container-lowest p-lg rounded-xl border border-border-subtle shadow-sm">
+            <h2 class="font-headline-md text-headline-md mb-md text-xl text-on-surface">Facility Types</h2>
+            <div id="filter-buttons" class="flex flex-wrap gap-sm">
+                <button type="button" data-filter="all" class="filter-btn px-4 py-2 bg-primary-container text-on-primary-container rounded-full font-label-md text-label-md transition-colors">All Depots</button>
+                <button type="button" data-filter="Soft Plastics" class="filter-btn px-4 py-2 bg-surface border border-outline-variant text-on-surface-variant rounded-full font-label-md text-label-md transition-colors hover:border-primary hover:text-primary">Soft Plastics</button>
+                <button type="button" data-filter="E-Waste" class="filter-btn px-4 py-2 bg-surface border border-outline-variant text-on-surface-variant rounded-full font-label-md text-label-md transition-colors hover:border-primary hover:text-primary">E-Waste</button>
+                <button type="button" data-filter="Compost" class="filter-btn px-4 py-2 bg-surface border border-outline-variant text-on-surface-variant rounded-full font-label-md text-label-md transition-colors hover:border-primary hover:text-primary">Compost</button>
             </div>
         </div>
-    </main>
+
+        <!-- Wishcycling FAQ -->
+        <div class="bg-surface-container-lowest p-lg rounded-xl border border-border-subtle shadow-sm">
+            <h2 class="font-headline-md text-headline-md mb-md text-xl text-on-surface">Wishcycling FAQ</h2>
+            <div class="space-y-4">
+                <details class="group border-b border-border-subtle pb-4">
+                    <summary class="flex justify-between items-center font-medium cursor-pointer list-none text-on-surface hover:text-primary transition-colors">
+                        <span>Are coffee cups recyclable?</span>
+                        <span class="transition group-open:rotate-180 material-symbols-outlined">expand_more</span>
+                    </summary>
+                    <p class="text-on-surface-variant mt-3 text-sm leading-relaxed">
+                        Most paper coffee cups are lined with plastic or wax to prevent leaking. They belong in the garbage, not recycling or compost, unless explicitly marked as compostable by your municipality.
+                    </p>
+                </details>
+                <details class="group border-b border-border-subtle pb-4">
+                    <summary class="flex justify-between items-center font-medium cursor-pointer list-none text-on-surface hover:text-primary transition-colors">
+                        <span>Do I need to wash containers?</span>
+                        <span class="transition group-open:rotate-180 material-symbols-outlined">expand_more</span>
+                    </summary>
+                    <p class="text-on-surface-variant mt-3 text-sm leading-relaxed">
+                        Containers should be empty and lightly rinsed. Food residue can contaminate entire batches of recyclables, diverting them to landfills.
+                    </p>
+                </details>
+                <details class="group">
+                    <summary class="flex justify-between items-center font-medium cursor-pointer list-none text-on-surface hover:text-primary transition-colors">
+                        <span>Can I bag my recyclables?</span>
+                        <span class="transition group-open:rotate-180 material-symbols-outlined">expand_more</span>
+                    </summary>
+                    <p class="text-on-surface-variant mt-3 text-sm leading-relaxed">
+                        No. Keep recyclables loose in your bin. Plastic bags jam sorting machinery at recycling facilities.
+                    </p>
+                </details>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Panel: Map & Results -->
+    <div class="lg:col-span-8 flex flex-col space-y-lg h-full">
+        <!-- Live Map Area -->
+        <div class="relative w-full h-96 rounded-xl overflow-hidden border border-border-subtle shadow-sm bg-surface-variant">
+            <!-- Dynamic OpenStreetMap Iframe -->
+            <iframe id="dynamic-map" width="100%" height="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://www.openstreetmap.org/export/embed.html?bbox=-122.5%2C47.4%2C-122.1%2C47.8&layer=mapnik" class="absolute inset-0"></iframe>
+            
+            <div class="absolute bottom-4 left-4 right-4 flex justify-between items-end pointer-events-none">
+                <div class="bg-surface-container-lowest/90 backdrop-blur px-4 py-2 rounded-lg pointer-events-auto border border-border-subtle shadow">
+                    <span id="map-location-label" class="text-sm font-label-md text-primary flex items-center">
+                        <span class="material-symbols-outlined mr-2 text-sm">my_location</span> Global Area
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Facility Cards -->
+        <h2 class="font-headline-md text-headline-md text-xl mt-4 text-on-surface">Nearby Facilities</h2>
+        <div id="facility-grid" class="grid grid-cols-1 md:grid-cols-2 gap-md flex-grow">
+            <!-- Facility Card 1 -->
+            <div class="facility-card bg-surface-container-lowest rounded-xl p-md flex flex-col justify-between border border-border-subtle shadow-sm transition-transform duration-200 hover:-translate-y-1 hover:shadow-md" data-type="E-Waste">
+                <div>
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 id="facility-1-title" class="font-headline-md text-on-surface text-lg font-semibold">Central E-Waste Depot</h3>
+                        <span class="bg-surface-container-low text-on-surface-variant text-xs px-2 py-1 rounded-full font-code-sm border border-outline-variant">E-Waste</span>
+                    </div>
+                    <p class="text-text-secondary text-sm mb-4">Accepts batteries, computers, and small appliances.</p>
+                    <div class="flex items-center text-text-secondary text-sm mb-2">
+                        <span class="material-symbols-outlined mr-2 text-sm text-outline">schedule</span> 8:00 AM - 6:00 PM
+                    </div>
+                    <div class="flex items-center text-text-secondary text-sm">
+                        <span class="material-symbols-outlined mr-2 text-sm text-outline">distance</span> <span class="random-distance">2.4</span> miles
+                    </div>
+                </div>
+                <a id="facility-1-link" class="mt-4 text-primary font-medium hover:text-primary-container transition-colors flex items-center text-sm uppercase tracking-wider no-underline" href="https://www.google.com/maps/search/?api=1&query=Central+E-Waste+Depot" target="_blank">
+                    Get Directions <span class="material-symbols-outlined ml-1 text-sm">arrow_forward</span>
+                </a>
+            </div>
+
+            <!-- Facility Card 2 -->
+            <div class="facility-card bg-surface-container-lowest rounded-xl p-md flex flex-col justify-between border border-border-subtle shadow-sm transition-transform duration-200 hover:-translate-y-1 hover:shadow-md" data-type="Compost">
+                <div>
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 id="facility-2-title" class="font-headline-md text-on-surface text-lg font-semibold">Northside Compost Hub</h3>
+                        <span class="bg-surface-container-low text-on-surface-variant text-xs px-2 py-1 rounded-full font-code-sm border border-outline-variant">Compost</span>
+                    </div>
+                    <p class="text-text-secondary text-sm mb-4">Yard trimmings, food scraps, and soiled paper.</p>
+                    <div class="flex items-center text-text-secondary text-sm mb-2">
+                        <span class="material-symbols-outlined mr-2 text-sm text-outline">schedule</span> 7:00 AM - 5:00 PM
+                    </div>
+                    <div class="flex items-center text-text-secondary text-sm">
+                        <span class="material-symbols-outlined mr-2 text-sm text-outline">distance</span> <span class="random-distance">3.8</span> miles
+                    </div>
+                </div>
+                <a id="facility-2-link" class="mt-4 text-primary font-medium hover:text-primary-container transition-colors flex items-center text-sm uppercase tracking-wider no-underline" href="https://www.google.com/maps/search/?api=1&query=Northside+Compost+Hub" target="_blank">
+                    Get Directions <span class="material-symbols-outlined ml-1 text-sm">arrow_forward</span>
+                </a>
+            </div>
+
+            <!-- Facility Card 3 -->
+            <div class="facility-card bg-surface-container-lowest rounded-xl p-md flex flex-col justify-between border border-border-subtle shadow-sm transition-transform duration-200 hover:-translate-y-1 hover:shadow-md" data-type="All Depots">
+                <div>
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 id="facility-3-title" class="font-headline-md text-on-surface text-lg font-semibold">Metro Transfer Station</h3>
+                        <span class="bg-surface-container-low text-on-surface-variant text-xs px-2 py-1 rounded-full font-code-sm border border-outline-variant">All Depots</span>
+                    </div>
+                    <p class="text-text-secondary text-sm mb-4">General waste, recycling, and large items.</p>
+                    <div class="flex items-center text-text-secondary text-sm mb-2">
+                        <span class="material-symbols-outlined mr-2 text-sm text-outline">schedule</span> 24 Hours
+                    </div>
+                    <div class="flex items-center text-text-secondary text-sm">
+                        <span class="material-symbols-outlined mr-2 text-sm text-outline">distance</span> <span class="random-distance">5.1</span> miles
+                    </div>
+                </div>
+                <a id="facility-3-link" class="mt-4 text-primary font-medium hover:text-primary-container transition-colors flex items-center text-sm uppercase tracking-wider no-underline" href="https://www.google.com/maps/search/?api=1&query=Metro+Transfer+Station" target="_blank">
+                    Get Directions <span class="material-symbols-outlined ml-1 text-sm">arrow_forward</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Footer -->
+<footer class="bg-surface-container w-full py-xl border-t border-border-subtle mt-auto">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-lg px-gutter max-w-container-max mx-auto">
+        <div>
+            <div class="font-headline-md text-headline-md font-semibold text-primary mb-4">BinSync</div>
+            <p class="text-on-surface-variant font-body-md text-body-md">Advanced Waste Intelligence.</p>
+        </div>
+        <div class="flex flex-col space-y-2">
+            <a class="text-on-surface-variant hover:text-primary transition-colors ease-out duration-200 font-body-md text-body-md" href="{{ url_for('home') }}">Home</a>
+            <a class="text-on-surface-variant hover:text-primary transition-colors ease-out duration-200 font-body-md text-body-md" href="{{ url_for('classifier') }}">AI Inspector</a>
+            <a class="text-on-surface-variant hover:text-primary transition-colors ease-out duration-200 font-body-md text-body-md" href="{{ url_for('rules') }}">Rules & Map</a>
+        </div>
+        <div class="flex flex-col space-y-2">
+            <a class="text-on-surface-variant hover:text-primary transition-colors ease-out duration-200 font-body-md text-body-md" href="{{ url_for('leaderboard') }}">Leaderboard</a>
+            <a class="text-on-surface-variant hover:text-primary transition-colors ease-out duration-200 font-body-md text-body-md" href="{{ url_for('dashboard') }}">Dashboard</a>
+        </div>
+    </div>
+</footer>
+
+<!-- Interactive Frontend Script -->
+<script>
+    const detectBtn = document.getElementById('detect-loc-btn');
+    const detectText = document.getElementById('detect-text');
+    const locationInput = document.getElementById('location-input');
+    const searchLookupBtn = document.getElementById('search-lookup-btn');
+    const mapLabel = document.getElementById('map-location-label');
+    const mapIframe = document.getElementById('dynamic-map');
+
+    // Helper to update Map & Facilities
+    function updateLocationUI(lat, lon, cityName) {
+        // 1. Update the OpenStreetMap iframe dynamically
+        const offset = 0.05; // Defines the map zoom box area
+        const bbox = `${lon - offset},${lat - offset},${lon + offset},${lat + offset}`;
+        mapIframe.src = `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${lat},${lon}`;
+        
+        // 2. Update Map Label
+        mapLabel.innerHTML = `<span class="material-symbols-outlined mr-2 text-sm">my_location</span> ${cityName} Area`;
+
+        // 3. Dynamically rename the facility cards to match the searched city
+        const shortName = cityName.split(',')[0];
+        document.getElementById('facility-1-title').innerText = `${shortName} E-Waste Depot`;
+        document.getElementById('facility-2-title').innerText = `${shortName} Compost Hub`;
+        document.getElementById('facility-3-title').innerText = `${shortName} Transfer Station`;
+
+        // 4. Update Google Maps Direction Links
+        document.getElementById('facility-1-link').href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(shortName + ' E-Waste Recycling')}`;
+        document.getElementById('facility-2-link').href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(shortName + ' Compost')}`;
+        document.getElementById('facility-3-link').href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(shortName + ' Transfer Station')}`;
+
+        // 5. Randomize distances slightly to make it feel fresh
+        document.querySelectorAll('.random-distance').forEach(span => {
+            span.innerText = (Math.random() * 8 + 1).toFixed(1);
+        });
+
+        // 6. Scroll down to show results
+        document.getElementById('facility-grid').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // Trigger search on Enter key
+    locationInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            searchLookupBtn.click();
+        }
+    });
+
+    // Geolocation Handling (GPS)
+    detectBtn.addEventListener('click', () => {
+        if (!navigator.geolocation) {
+            alert('Geolocation is not supported by your browser.');
+            return;
+        }
+
+        detectText.innerText = 'Detecting...';
+        detectBtn.disabled = true;
+
+        navigator.geolocation.getCurrentPosition(async (position) => {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+
+            try {
+                const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
+                const data = await response.json();
+                const city = data.address.city || data.address.town || data.address.village || data.address.state_district || "Detected Location";
+                
+                locationInput.value = city;
+                updateLocationUI(lat, lon, city);
+                detectText.innerText = 'Location Synced';
+            } catch (err) {
+                locationInput.value = `${lat.toFixed(2)}, ${lon.toFixed(2)}`;
+                updateLocationUI(lat, lon, "Your Location");
+                detectText.innerText = 'Coordinates Synced';
+            } finally {
+                detectBtn.disabled = false;
+            }
+        }, () => {
+            alert('Unable to retrieve your location. Please check browser permissions.');
+            detectText.innerText = 'Detect Current Location';
+            detectBtn.disabled = false;
+        }, { timeout: 10000 });
+    });
+
+    // Search Lookup Action
+    searchLookupBtn.addEventListener('click', async () => {
+        const query = locationInput.value.trim();
+        if (!query) {
+            alert('Please enter a city or postal code.');
+            return;
+        }
+
+        searchLookupBtn.innerHTML = '<span class="material-symbols-outlined text-sm">hourglass_empty</span><span>Searching...</span>';
+        searchLookupBtn.disabled = true;
+
+        try {
+            // Forward geocode the typed location to get exact coordinates
+            const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}`);
+            const results = await response.json();
+
+            if (results && results.length > 0) {
+                const lat = parseFloat(results[0].lat);
+                const lon = parseFloat(results[0].lon);
+                const displayName = results[0].display_name.split(',')[0]; 
+                
+                updateLocationUI(lat, lon, displayName);
+            } else {
+                alert("Location not found on map. Please try a different city name.");
+            }
+        } catch (err) {
+            alert("Error connecting to mapping service.");
+        } finally {
+            searchLookupBtn.innerHTML = '<span class="material-symbols-outlined text-sm">search</span><span>Search Region</span>';
+            searchLookupBtn.disabled = false;
+        }
+    });
+
+    // Facility Type Filtering Logic
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const facilityCards = document.querySelectorAll('.facility-card');
+
+    filterButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            filterButtons.forEach(b => {
+                b.className = "filter-btn px-4 py-2 bg-surface border border-outline-variant text-on-surface-variant rounded-full font-label-md text-label-md transition-colors hover:border-primary hover:text-primary";
+            });
+            btn.className = "filter-btn px-4 py-2 bg-primary-container text-on-primary-container rounded-full font-label-md text-label-md transition-colors";
+
+            const selectedFilter = btn.getAttribute('data-filter');
+
+            facilityCards.forEach(card => {
+                const cardType = card.getAttribute('data-type');
+                if (selectedFilter === 'all' || cardType === selectedFilter || cardType === 'All Depots') {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    });
+</script>
 </body>
 </html>

@@ -1,74 +1,423 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Classifier — Envirotech</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>BinSync - AI Waste Inspector</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-variant": "#3d4a42",
+                        "on-secondary": "#ffffff",
+                        "surface-variant": "#e0e3e5",
+                        "tertiary-fixed": "#d3e4fe",
+                        "inverse-primary": "#68dba9",
+                        "on-secondary-fixed": "#131b2e",
+                        "on-secondary-fixed-variant": "#3f465c",
+                        "tertiary-container": "#66768d",
+                        "inverse-surface": "#2d3133",
+                        "secondary-fixed-dim": "#bec6e0",
+                        "on-primary": "#ffffff",
+                        "secondary-fixed": "#dae2fd",
+                        "on-error-container": "#93000a",
+                        "surface-dim": "#d8dadc",
+                        "on-tertiary-fixed-variant": "#38485d",
+                        "outline": "#6d7a72",
+                        "surface-warm": "#fcfcfc",
+                        "error": "#ba1a1a",
+                        "secondary-container": "#dae2fd",
+                        "border-subtle": "#e2e8f0",
+                        "text-secondary": "#475569",
+                        "on-primary-fixed": "#002114",
+                        "on-tertiary-fixed": "#0b1c30",
+                        "on-surface": "#191c1e",
+                        "outline-variant": "#bccac0",
+                        "on-tertiary-container": "#fdfcff",
+                        "tertiary": "#4d5d73",
+                        "surface": "#f7f9fb",
+                        "primary-container": "#00855d",
+                        "on-secondary-container": "#5c647a",
+                        "surface-container-highest": "#e0e3e5",
+                        "secondary": "#565e74",
+                        "background": "#f7f9fb",
+                        "tertiary-fixed-dim": "#b7c8e1",
+                        "on-error": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container": "#eceef0",
+                        "primary-fixed": "#85f8c4",
+                        "surface-container-low": "#f2f4f6",
+                        "inverse-on-surface": "#eff1f3",
+                        "surface-container-high": "#e6e8ea",
+                        "on-background": "#191c1e",
+                        "primary-fixed-dim": "#68dba9",
+                        "surface-tint": "#006c4a",
+                        "surface-bright": "#f7f9fb",
+                        "error-container": "#ffdad6",
+                        "text-primary": "#0f172a",
+                        "on-primary-fixed-variant": "#005137",
+                        "primary": "#006948",
+                        "on-primary-container": "#f5fff7",
+                        "on-tertiary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "container-max": "1440px",
+                        "md": "16px",
+                        "xs": "4px",
+                        "base": "4px",
+                        "lg": "32px",
+                        "margin-desktop": "80px",
+                        "sm": "8px",
+                        "margin-mobile": "20px",
+                        "gutter": "24px",
+                        "xl": "64px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Geist"],
+                        "display-lg": ["Geist"],
+                        "code-sm": ["Geist"],
+                        "headline-md": ["Geist"],
+                        "headline-lg-mobile": ["Geist"],
+                        "body-lg": ["Geist"],
+                        "label-md": ["Geist"],
+                        "headline-lg": ["Geist"],
+                        "label-sm": ["Geist"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "600" }],
+                        "code-sm": ["13px", { "lineHeight": "1.4", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "500" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "label-sm": ["12px", { "lineHeight": "1.2", "letterSpacing": "0.1em", "fontWeight": "600" }]
+                    }
+                },
+            },
+        }
+    </script>
+    <style>
+        .glass-panel {
+            background-color: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        .glow-active {
+            box-shadow: 0 0 15px rgba(0, 105, 72, 0.15);
+        }
+        .glow-hover:hover {
+            box-shadow: 0 0 15px rgba(0, 105, 72, 0.15);
+        }
+    </style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans antialiased">
-    <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-            <a href="{{ url_for('home') }}" class="text-xl font-bold text-emerald-600 flex items-center gap-2">♻️ Envirotech</a>
-            <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-600">
-                <a href="{{ url_for('home') }}" class="hover:text-emerald-600 transition">Home</a>
-                <a href="{{ url_for('classifier') }}" class="text-emerald-600 font-semibold">Classifier</a>
-                <a href="{{ url_for('classifications') }}" class="hover:text-emerald-600 transition">Classifications</a>
-                <a href="{{ url_for('dashboard') }}" class="hover:text-emerald-600 transition">Dashboard</a>
-            </nav>
-            <div class="flex items-center gap-3">
-                <span class="text-sm text-slate-600 font-medium">User: {{ user.username }}</span>
-                <a href="{{ url_for('logout') }}" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-medium px-4 py-2 rounded-lg transition">Log Out</a>
-            </div>
+<body class="bg-background text-on-surface min-h-screen flex flex-col font-body-md selection:bg-primary-container selection:text-on-primary-container pt-16">
+<!-- TopNavBar -->
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full bg-surface-container-lowest/80 backdrop-blur-xl border-b border-outline-variant/30 shadow-none z-50">
+    <div class="flex justify-between items-center h-16 px-gutter max-w-container-max mx-auto">
+        <a href="{{ url_for('home') }}" class="flex items-center gap-sm no-underline">
+            <span class="font-display-lg text-[24px] font-bold text-primary tracking-tighter leading-none">BinSync</span>
+        </a>
+        <div class="hidden md:flex items-center gap-lg">
+            <a class="text-on-surface-variant hover:text-on-surface transition-colors font-body-md text-body-md hover:bg-surface-container-high duration-200 ease-out px-sm py-xs rounded" href="{{ url_for('home') }}">Home</a>
+            {% if user %}
+            <a class="text-on-surface-variant hover:text-on-surface transition-colors font-body-md text-body-md hover:bg-surface-container-high duration-200 ease-out px-sm py-xs rounded" href="{{ url_for('dashboard') }}">Dashboard</a>
+            {% endif %}
+            <a class="text-primary font-bold border-b-2 border-primary pb-1 font-body-md text-body-md hover:bg-surface-container-high duration-200 ease-out px-sm py-xs rounded" href="{{ url_for('classifier') }}">AI Inspector</a>
+            <a class="text-on-surface-variant hover:text-on-surface transition-colors font-body-md text-body-md hover:bg-surface-container-high duration-200 ease-out px-sm py-xs rounded" href="{{ url_for('rules') }}">Rules</a>
+            <a class="text-on-surface-variant hover:text-on-surface transition-colors font-body-md text-body-md hover:bg-surface-container-high duration-200 ease-out px-sm py-xs rounded" href="{{ url_for('leaderboard') }}">Leaderboard</a>
         </div>
-    </header>
-
-    <main class="max-w-4xl mx-auto px-6 py-12">
-        <div class="text-center mb-10">
-            <h1 class="text-3xl font-extrabold text-slate-900 mb-2">AI Waste Photo Classifier</h1>
-            <p class="text-slate-600">Upload or snap a photo of any item to detect layers, avoid wishcycling, and earn eco-points.</p>
-        </div>
-
-        <form method="POST" enctype="multipart/form-data" class="bg-white border-2 border-dashed border-slate-300 rounded-2xl p-10 text-center shadow-sm hover:border-emerald-500 transition">
-            <div class="text-4xl mb-3">📸</div>
-            <h3 class="font-bold text-slate-800 text-lg mb-1">Select or capture waste photo</h3>
-            <p class="text-sm text-slate-500 mb-6">Supports PNG, JPG, or WebP</p>
-            <input type="file" name="file" accept="image/*" capture="environment" required class="block w-full text-sm text-slate-500 file:mr-4 file:py-2.5 file:px-6 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 cursor-pointer mb-4 max-w-sm mx-auto">
-            <button type="submit" class="bg-emerald-600 text-white px-8 py-3 rounded-xl font-medium shadow-md hover:bg-emerald-700 transition">Analyze & Log Item</button>
-        </form>
-
-        {% if data %}
-        <div class="mt-8 bg-white border border-slate-200 rounded-2xl p-8 shadow-sm">
-            {% if data.error %}
-                <div class="inline-block bg-rose-100 text-rose-800 text-xs font-bold px-3 py-1 rounded-md mb-3">Notice</div>
-                <p class="text-rose-600 font-semibold">{{ data.error }}</p>
+        <div class="flex items-center gap-md">
+            {% if user %}
+            <span class="text-sm font-medium text-slate-700">{{ user.username }}</span>
+            <a href="{{ url_for('logout') }}" class="bg-rose-50 text-rose-600 border border-rose-200 px-4 py-2 rounded-lg text-sm font-medium transition-colors hover:bg-rose-100">Log Out</a>
             {% else %}
-                <div class="flex items-center justify-between mb-4 border-b border-slate-100 pb-4">
-                    <div>
-                        <span class="text-xs uppercase font-bold tracking-wider px-3 py-1 rounded-full 
-                            {% if data.category == 'Recyclable' %} bg-emerald-100 text-emerald-800
-                            {% elif data.category == 'Compostable' %} bg-lime-100 text-lime-800
-                            {% else %} bg-slate-200 text-slate-800 {% endif %}">
-                            {{ data.category }}
-                        </span>
-                        <h2 class="text-2xl font-bold text-slate-900 mt-2">{{ data.item_name }}</h2>
-                    </div>
-                    <div class="text-right">
-                        <span class="text-xs text-slate-400 block uppercase font-bold">Carbon Offset</span>
-                        <span class="text-xl font-bold text-emerald-600">+{{ data.co2_saved_grams }}g CO2</span>
-                    </div>
-                </div>
-                <div class="space-y-3 text-sm text-slate-700">
-                    <p><strong class="text-slate-900">Material Composition:</strong> {{ data.material }}</p>
-                    <p><strong class="text-slate-900">Disposal Recommendation:</strong> {{ data.advice }}</p>
-                </div>
-                <div class="mt-6 pt-4 border-t border-slate-100 flex justify-between items-center text-xs text-slate-500">
-                    <span>Points Awarded: <strong class="text-emerald-600 font-bold">{% if data.category in ['Recyclable', 'Compostable'] %}+15 pts{% else %}+5 pts{% endif %}</strong></span>
-                    <a href="{{ url_for('dashboard') }}" class="text-emerald-600 font-medium hover:underline">View in Dashboard &rarr;</a>
-                </div>
+            <a href="{{ url_for('login') }}" class="bg-primary text-on-primary font-label-md text-label-md px-lg py-sm rounded hover:scale-[1.02] transition-transform duration-200 glow-hover no-underline">Connect</a>
             {% endif %}
         </div>
-        {% endif %}
-    </main>
+    </div>
+</nav>
+
+<!-- Main Content -->
+<main class="flex-grow w-full max-w-container-max mx-auto px-gutter py-xl">
+    <header class="mb-xl">
+        <h1 class="font-headline-lg text-headline-lg md:font-display-lg md:text-display-lg text-on-surface mb-sm">AI Waste Inspector</h1>
+        <p class="font-body-lg text-body-lg text-on-surface-variant">Upload or capture an item for multi-layer material analysis and disposal routing.</p>
+    </header>
+
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-xl">
+        <!-- Input Section (Left - 7 columns) -->
+        <section class="md:col-span-7 flex flex-col gap-lg">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-lg h-[400px]">
+                <!-- Drag and Drop / File Input -->
+                <div id="drop-zone" class="glass-panel rounded-xl flex flex-col items-center justify-center p-lg border-dashed border-2 border-outline-variant hover:border-primary transition-colors cursor-pointer group relative overflow-hidden bg-surface-container-lowest shadow-sm">
+                    <input type="file" id="file-input" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer z-20">
+                    <div id="upload-prompt" class="flex flex-col items-center">
+                        <span class="material-symbols-outlined text-[48px] text-primary mb-md group-hover:scale-110 transition-transform">cloud_upload</span>
+                        <h3 class="font-headline-md text-headline-md text-on-surface mb-xs">Drag & Drop Image</h3>
+                        <p class="font-body-md text-body-md text-on-surface-variant text-center">Supports PNG, JPG, WEBP<br/>Max 10MB</p>
+                    </div>
+                    <img id="image-preview" class="hidden absolute inset-0 w-full h-full object-contain p-2 rounded-xl bg-slate-900/5">
+                </div>
+
+                <!-- Camera Viewfinder -->
+                <div id="camera-section" class="glass-panel rounded-xl relative overflow-hidden group border border-outline-variant bg-surface-container-lowest shadow-sm flex flex-col items-center justify-center">
+                    <video id="camera-video" autoplay playsinline class="absolute inset-0 w-full h-full object-cover hidden"></video>
+                    <div id="camera-placeholder" class="absolute inset-0 bg-cover bg-center opacity-70" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC9lB74O5u8JmZD8ZrR6x177ZjdwdqlDRozU5s4jVqhlvqMkJcJfguSwt9ALsxqEUujQDfoydv-h5dnViwxrDgN1h12JV0PO_fKWjgPLNrzDUCySLrlz68bLFb7ND3q92LrkKEmL7TKYbvWUxsJd7cJj1lPbI0w1ClB9BJyeOLYSsraf42g8It2h-6TBlVMfyRiShQlWOhI8YDWZzmfEcMWeEvjKEbkXFV2__8Z_cFAQLvFpkIdgaylVg')"></div>
+                    
+                    <div class="absolute bottom-lg left-1/2 -translate-x-1/2 w-full px-lg flex justify-center z-10">
+                        <button type="button" id="start-camera-btn" class="bg-primary text-on-primary font-label-md text-label-md px-xl py-md rounded-full shadow-lg hover:scale-[1.02] transition-transform duration-200 glow-hover flex items-center gap-sm">
+                            <span class="material-symbols-outlined">photo_camera</span>
+                            Open Live Camera
+                        </button>
+                        <button type="button" id="capture-btn" class="hidden bg-rose-600 text-white font-label-md text-label-md px-xl py-md rounded-full shadow-lg hover:scale-[1.02] transition-transform duration-200 flex items-center gap-sm">
+                            <span class="material-symbols-outlined">camera</span>
+                            Capture Frame
+                        </button>
+                    </div>
+                    <canvas id="camera-canvas" class="hidden"></canvas>
+                </div>
+            </div>
+
+            <!-- Analyze / Reset Action Bar -->
+            <div class="flex gap-md pt-lg border-t border-outline-variant/50">
+                <button type="button" id="submit-btn" class="hidden flex-1 bg-primary text-on-primary py-3 rounded-lg font-medium shadow-md hover:bg-primary/90 transition-all">Analyze Material Layers</button>
+                <button type="button" id="reset-btn" class="hidden flex-1 bg-slate-200 text-slate-800 py-3 rounded-lg font-medium hover:bg-slate-300 transition-all">Scan Another Item</button>
+            </div>
+        </section>
+
+        <!-- Result View (Right - 5 columns) -->
+        <section class="md:col-span-5 flex flex-col">
+            <div class="glass-panel rounded-xl p-lg h-full flex flex-col relative overflow-hidden bg-surface-container-lowest shadow-sm border border-outline-variant/50">
+                <h2 class="font-headline-md text-headline-md text-primary mb-lg flex items-center gap-sm border-b border-outline-variant pb-md">
+                    <span class="material-symbols-outlined">analytics</span>
+                    Analysis Results
+                </h2>
+
+                <!-- Loading State Spinner -->
+                <div id="loading-spinner" class="hidden flex-grow flex flex-col items-center justify-center py-12 text-center">
+                    <div class="inline-block animate-spin rounded-full h-10 w-10 border-4 border-primary border-t-transparent mb-4"></div>
+                    <p class="text-sm text-on-surface-variant font-medium">Extracting multi-layer components...</p>
+                </div>
+
+                <!-- Error Container -->
+                <div id="error-container" class="hidden bg-rose-50 border border-rose-200 text-rose-700 p-6 rounded-xl text-center my-auto">
+                    <p id="error-message" class="font-semibold text-sm mb-4"></p>
+                    <button type="button" onclick="resetScanner()" class="bg-rose-600 text-white px-4 py-2 rounded-lg text-xs font-medium hover:bg-rose-700 transition">Try Re-uploading</button>
+                </div>
+
+                <!-- Results Content List -->
+                <div id="results-wrapper" class="flex-grow flex flex-col">
+                    <div id="result-meta" class="hidden mb-4 p-3 bg-surface-container rounded-lg border border-outline-variant/30 flex justify-between items-center">
+                        <div>
+                            <span id="result-category" class="text-xs uppercase font-bold px-2.5 py-0.5 rounded-full"></span>
+                            <h3 id="result-item-name" class="font-bold text-on-surface text-base mt-1"></h3>
+                        </div>
+                        <div class="text-right">
+                            <span id="result-points" class="text-xs font-bold text-primary block"></span>
+                            <span id="result-co2" class="text-[11px] text-on-surface-variant"></span>
+                        </div>
+                    </div>
+
+                    <div id="result-steps" class="flex-grow flex flex-col gap-md overflow-y-auto pr-sm">
+                        <div class="text-center text-on-surface-variant/60 py-16 text-sm">
+                            Upload or capture an item on the left to view breakdown layers and disposal rules.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+
+<!-- Footer -->
+<footer class="w-full py-xl bg-surface-container-lowest border-t border-outline-variant mt-auto">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-lg px-gutter max-w-container-max mx-auto">
+        <div class="font-headline-md text-headline-md font-semibold text-primary">BinSync</div>
+        <div class="flex gap-md md:justify-center">
+            <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors ease-out duration-200" href="{{ url_for('home') }}">Mission</a>
+            <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors ease-out duration-200" href="{{ url_for('rules') }}">Rules & Map</a>
+            <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors ease-out duration-200" href="{{ url_for('leaderboard') }}">Leaderboard</a>
+        </div>
+        <div class="font-body-md text-body-md text-on-surface-variant md:text-right">2024 BinSync. Advanced Waste Intelligence.</div>
+    </div>
+</footer>
+
+<!-- Client-Side Async Script -->
+<script>
+    let selectedFile = null;
+    const fileInput = document.getElementById('file-input');
+    const uploadPrompt = document.getElementById('upload-prompt');
+    const imagePreview = document.getElementById('image-preview');
+    const submitBtn = document.getElementById('submit-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const loadingSpinner = document.getElementById('loading-spinner');
+    const resultsWrapper = document.getElementById('results-wrapper');
+    const errorContainer = document.getElementById('error-container');
+    const resultMeta = document.getElementById('result-meta');
+    const stepsContainer = document.getElementById('result-steps');
+
+    fileInput.addEventListener('change', (e) => {
+        if (e.target.files && e.target.files[0]) {
+            selectedFile = e.target.files[0];
+            showPreview(selectedFile);
+        }
+    });
+
+    function showPreview(file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            imagePreview.src = e.target.result;
+            imagePreview.classList.remove('hidden');
+            uploadPrompt.classList.add('hidden');
+            submitBtn.classList.remove('hidden');
+            resetBtn.classList.add('hidden');
+            errorContainer.classList.add('hidden');
+        }
+        reader.readAsDataURL(file);
+    }
+
+    function resetScanner() {
+        selectedFile = null;
+        fileInput.value = "";
+        imagePreview.src = "";
+        imagePreview.classList.add('hidden');
+        uploadPrompt.classList.remove('hidden');
+        submitBtn.classList.add('hidden');
+        resetBtn.classList.add('hidden');
+        loadingSpinner.classList.add('hidden');
+        errorContainer.classList.add('hidden');
+        resultMeta.classList.add('hidden');
+        stepsContainer.innerHTML = '<div class="text-center text-on-surface-variant/60 py-16 text-sm">Upload or capture an item on the left to view breakdown layers and disposal rules.</div>';
+    }
+
+    resetBtn.addEventListener('click', resetScanner);
+
+    submitBtn.addEventListener('click', async () => {
+        if (!selectedFile) return;
+
+        loadingSpinner.classList.remove('hidden');
+        resultMeta.classList.add('hidden');
+        stepsContainer.innerHTML = '';
+        errorContainer.classList.add('hidden');
+        submitBtn.disabled = true;
+
+        const formData = new FormData();
+        formData.append('file', selectedFile);
+
+        try {
+            const response = await fetch('/api/classify', {
+                method: 'POST',
+                body: formData
+            });
+            const data = await response.json();
+
+            loadingSpinner.classList.add('hidden');
+            submitBtn.disabled = false;
+
+            if (data.error) {
+                document.getElementById('error-message').innerText = data.error;
+                errorContainer.classList.remove('hidden');
+            } else {
+                document.getElementById('result-item-name').innerText = data.item_name;
+                document.getElementById('result-points').innerText = `+${data.points_earned} Eco Points`;
+                document.getElementById('result-co2').innerText = `+${data.co2_saved_grams}g CO2 Offset`;
+
+                const catBadge = document.getElementById('result-category');
+                catBadge.innerText = data.category;
+                catBadge.className = "text-[10px] uppercase font-bold px-2.5 py-0.5 rounded-full " + 
+                    (data.category === 'Recyclable' ? 'bg-emerald-100 text-emerald-800' :
+                     data.category === 'Compostable' ? 'bg-lime-100 text-lime-800' : 'bg-slate-200 text-slate-800');
+                
+                resultMeta.classList.remove('hidden');
+
+                if (data.components && data.components.length > 0) {
+                    data.components.forEach((comp, index) => {
+                        stepsContainer.innerHTML += `
+                            <div class="bg-surface-container rounded-lg p-md border border-outline-variant/30 hover:border-primary/50 transition-colors group shadow-sm">
+                                <div class="flex items-start gap-md">
+                                    <div class="bg-primary/10 text-primary font-code-sm text-code-sm w-6 h-6 flex items-center justify-center rounded-full shrink-0 border border-primary/20">${index + 1}</div>
+                                    <div class="w-full">
+                                        <div class="flex justify-between items-start mb-xs">
+                                            <h4 class="font-label-md text-label-md text-on-surface text-base font-bold">${comp.part}</h4>
+                                            <span class="bg-secondary/10 text-secondary font-code-sm text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-full border border-secondary/20 font-semibold">${comp.material}</span>
+                                        </div>
+                                        <p class="font-body-md text-[14px] text-on-surface-variant font-medium mt-1">Action: ${comp.action}</p>
+                                        <p class="text-xs font-bold text-primary mt-2">Bin Destination: ${comp.destination}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                } else {
+                    stepsContainer.innerHTML = '<p class="text-sm text-on-surface-variant text-center py-8">No layer decomposition data available.</p>';
+                }
+
+                submitBtn.classList.add('hidden');
+                resetBtn.classList.remove('hidden');
+            }
+        } catch (err) {
+            loadingSpinner.classList.add('hidden');
+            submitBtn.disabled = false;
+            document.getElementById('error-message').innerText = "Network transmission error. Please try again.";
+            errorContainer.classList.remove('hidden');
+        }
+    });
+
+    // Live Camera Stream Handling
+    const startCameraBtn = document.getElementById('start-camera-btn');
+    const captureBtn = document.getElementById('capture-btn');
+    const cameraVideo = document.getElementById('camera-video');
+    const cameraPlaceholder = document.getElementById('camera-placeholder');
+    let mediaStream = null;
+
+    startCameraBtn.addEventListener('click', async () => {
+        try {
+            mediaStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+            cameraVideo.srcObject = mediaStream;
+            cameraVideo.classList.remove('hidden');
+            cameraPlaceholder.classList.add('hidden');
+            startCameraBtn.classList.add('hidden');
+            captureBtn.classList.remove('hidden');
+        } catch (e) {
+            alert("Camera access unavailable or permission denied.");
+        }
+    });
+
+    captureBtn.addEventListener('click', () => {
+        const canvas = document.getElementById('camera-canvas');
+        canvas.width = cameraVideo.videoWidth || 640;
+        canvas.height = cameraVideo.videoHeight || 480;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(cameraVideo, 0, 0, canvas.width, canvas.height);
+
+        canvas.toBlob((blob) => {
+            selectedFile = new File([blob], "camera_capture.jpg", { type: "image/jpeg" });
+            showPreview(selectedFile);
+
+            if (mediaStream) {
+                mediaStream.getTracks().forEach(track => track.stop());
+            }
+            cameraVideo.classList.add('hidden');
+            cameraPlaceholder.classList.remove('hidden');
+            captureBtn.classList.add('hidden');
+            startCameraBtn.classList.remove('hidden');
+        }, 'image/jpeg', 0.85);
+    });
+</script>
 </body>
 </html>

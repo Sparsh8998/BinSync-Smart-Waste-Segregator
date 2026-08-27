@@ -1,101 +1,317 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diversion Dashboard — Envirotech</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>BinSync - Dashboard</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-surface-variant": "#3d4a42",
+                        "on-secondary": "#ffffff",
+                        "surface-variant": "#e0e3e5",
+                        "tertiary-fixed": "#d3e4fe",
+                        "inverse-primary": "#68dba9",
+                        "on-secondary-fixed": "#131b2e",
+                        "on-secondary-fixed-variant": "#3f465c",
+                        "tertiary-container": "#66768d",
+                        "inverse-surface": "#2d3133",
+                        "secondary-fixed-dim": "#bec6e0",
+                        "on-primary": "#ffffff",
+                        "secondary-fixed": "#dae2fd",
+                        "on-error-container": "#93000a",
+                        "surface-dim": "#d8dadc",
+                        "on-tertiary-fixed-variant": "#38485d",
+                        "outline": "#6d7a72",
+                        "surface-warm": "#fcfcfc",
+                        "error": "#ba1a1a",
+                        "secondary-container": "#dae2fd",
+                        "border-subtle": "#e2e8f0",
+                        "text-secondary": "#475569",
+                        "on-primary-fixed": "#002114",
+                        "on-tertiary-fixed": "#0b1c30",
+                        "on-surface": "#191c1e",
+                        "outline-variant": "#bccac0",
+                        "on-tertiary-container": "#fdfcff",
+                        "tertiary": "#4d5d73",
+                        "surface": "#f7f9fb",
+                        "primary-container": "#00855d",
+                        "on-secondary-container": "#5c647a",
+                        "surface-container-highest": "#e0e3e5",
+                        "secondary": "#565e74",
+                        "background": "#f7f9fb",
+                        "tertiary-fixed-dim": "#b7c8e1",
+                        "on-error": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container": "#eceef0",
+                        "primary-fixed": "#85f8c4",
+                        "surface-container-low": "#f2f4f6",
+                        "inverse-on-surface": "#eff1f3",
+                        "surface-container-high": "#e6e8ea",
+                        "on-background": "#191c1e",
+                        "primary-fixed-dim": "#68dba9",
+                        "surface-tint": "#006c4a",
+                        "surface-bright": "#f7f9fb",
+                        "error-container": "#ffdad6",
+                        "text-primary": "#0f172a",
+                        "on-primary-fixed-variant": "#005137",
+                        "primary": "#006948",
+                        "on-primary-container": "#f5fff7",
+                        "on-tertiary": "#ffffff"
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.125rem",
+                        lg: "0.25rem",
+                        xl: "0.5rem",
+                        full: "0.75rem"
+                    },
+                    spacing: {
+                        md: "16px",
+                        xs: "4px",
+                        base: "4px",
+                        lg: "32px",
+                        "margin-desktop": "80px",
+                        sm: "8px",
+                        "margin-mobile": "20px",
+                        gutter: "24px",
+                        xl: "64px",
+                        "container-max": "1440px"
+                    },
+                    fontFamily: {
+                        body_md: ["Geist"],
+                        display_lg: ["Geist"],
+                        code_sm: ["Geist"],
+                        headline_md: ["Geist"],
+                        "headline-lg-mobile": ["Geist"],
+                        body_lg: ["Geist"],
+                        "label-md": ["Geist"],
+                        "headline-lg": ["Geist"],
+                        "label-sm": ["Geist"]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-card {
+            background-color: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        }
+        .data-card {
+            background-color: #ffffff;
+            color: #191c1e;
+            border: 1px solid #e0e3e5;
+        }
+        .glow-effect:hover {
+            box-shadow: 0 0 15px rgba(0, 105, 72, 0.15);
+        }
+        .progress-bar-fill {
+            background-color: #00855d;
+            box-shadow: 0 0 10px rgba(0, 133, 93, 0.3);
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.02); 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.15); 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 0, 0, 0.25); 
+        }
+    </style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans antialiased">
-    <header class="bg-white border-b border-slate-200 sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-            <a href="{{ url_for('home') }}" class="text-xl font-bold text-emerald-600 flex items-center gap-2">♻️ Envirotech</a>
-            <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-600">
-                <a href="{{ url_for('dashboard') }}" class="text-emerald-600 font-semibold">Dashboard</a>
-                <a href="{{ url_for('classifier') }}" class="hover:text-emerald-600 transition">Classifier</a>
-                <a href="{{ url_for('classifications') }}" class="hover:text-emerald-600 transition">Classifications</a>
-            </nav>
-            <div class="flex items-center gap-3">
-                <span class="text-sm text-slate-600 font-medium">{{ user.username }}</span>
-                <a href="{{ url_for('logout') }}" class="text-sm font-medium text-rose-600 hover:underline">Log Out</a>
-            </div>
+<body class="bg-background text-on-surface font-body-md min-h-screen flex flex-col antialiased">
+<!-- TopNavBar -->
+<!-- TopNavBar -->
+<nav class="bg-surface-container-lowest/80 backdrop-blur-xl font-body-md text-body-md fixed top-0 w-full shadow-sm border-b border-outline-variant/30 z-50">
+    <div class="flex justify-between items-center h-16 px-gutter max-w-container-max mx-auto">
+        <a href="{{ url_for('home') }}" class="flex items-center gap-sm no-underline">
+            <span class="font-display-lg text-[24px] font-bold text-primary tracking-tighter leading-none">BinSync</span>
+        </a>
+        <!-- Desktop Nav -->
+        <div class="hidden md:flex space-x-lg items-center">
+            <a class="text-on-surface-variant hover:text-on-surface transition-colors duration-200 ease-out" href="{{ url_for('home') }}">Home</a>
+            <a class="text-primary font-bold border-b-2 border-primary pb-1 duration-200 ease-out" href="{{ url_for('dashboard') }}">Dashboard</a>
+            <a class="text-on-surface-variant hover:text-on-surface transition-colors duration-200 ease-out" href="{{ url_for('classifier') }}">AI Inspector</a>
+            <a class="text-on-surface-variant hover:text-on-surface transition-colors duration-200 ease-out" href="{{ url_for('rules') }}">Rules</a>
+            <a class="text-on-surface-variant hover:text-on-surface transition-colors duration-200 ease-out" href="{{ url_for('leaderboard') }}">Leaderboard</a>
         </div>
-    </header>
-
-    <main class="max-w-7xl mx-auto px-6 py-10">
-        <div class="flex justify-between items-center mb-8">
-            <div>
-                <h1 class="text-2xl font-bold text-slate-900">Your Diversion Analytics</h1>
-                <p class="text-sm text-slate-500">Track your item scans, eco-points, and carbon offsets.</p>
-            </div>
-            <a href="{{ url_for('classifier') }}" class="bg-emerald-600 text-white px-5 py-2.5 rounded-xl text-sm font-medium shadow-sm hover:bg-emerald-700 transition">+ Scan New Item</a>
+        <div class="flex items-center space-x-md">
+            {% if user %}
+            <span class="text-sm font-medium text-slate-700">{{ user.username }}</span>
+            <a href="{{ url_for('logout') }}" class="bg-rose-50 text-rose-600 border border-rose-200 px-md py-sm rounded-DEFAULT text-sm font-medium transition-colors hover:bg-rose-100">Log Out</a>
+            {% else %}
+            <a href="{{ url_for('login') }}" class="bg-primary text-on-primary px-md py-sm rounded-DEFAULT font-label-md hover:scale-[1.02] duration-200 ease-out glow-effect transition-all">Connect</a>
+            {% endif %}
         </div>
+    </div>
+</nav>
 
-        <div class="grid md:grid-cols-3 gap-6 mb-6">
-            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-                <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Eco Points Earned</p>
-                <div class="flex items-baseline gap-3">
-                    <span class="text-3xl font-extrabold text-emerald-600">{{ user.points }}</span>
-                    <span class="text-xs font-semibold text-slate-500">pts</span>
+<!-- Main Content Canvas -->
+<main class="flex-grow pt-[104px] pb-xl px-gutter max-w-container-max mx-auto w-full">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-lg">
+        <!-- Left Column: Profile & Metrics -->
+        <div class="md:col-span-7 space-y-lg">
+            <!-- Profile Hub (Glassmorphism) -->
+            <section class="glass-card rounded-xl p-lg flex flex-col md:flex-row gap-lg items-start">
+                <div class="w-24 h-24 rounded-full border-2 border-primary overflow-hidden flex-shrink-0 relative bg-emerald-50 flex items-center justify-center text-primary font-bold text-2xl">
+                    {{ user.username[0]|upper }}
                 </div>
-            </div>
-            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-                <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Items Diverted</p>
-                <div class="flex items-baseline gap-3">
-                    <span class="text-3xl font-extrabold text-slate-900">{{ user.total_recycled }}</span>
-                    <span class="text-xs font-semibold text-slate-500">scans logged</span>
+                <div class="flex-grow w-full">
+                    <div class="flex justify-between items-end mb-sm">
+                        <div>
+                            <h1 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-xs">{{ user.username }}</h1>
+                            <p class="text-secondary font-code-sm text-code-sm tracking-widest uppercase">ID: SYNC-{{ user.id }}</p>
+                        </div>
+                        <div class="text-right">
+                            <span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider block">Level Tier</span>
+                            <span class="font-headline-md text-headline-md text-primary">{{ user.level_info.title }}</span>
+                        </div>
+                    </div>
+                    <!-- RPG Progression -->
+                    <div class="mt-md space-y-md">
+                        <div class="flex justify-between text-code-sm font-code-sm text-on-surface-variant mb-xs">
+                            <span>Total Points: {{ user.points }} pts</span>
+                            <span>Next Tier at {{ user.level_info.next_tier }} pts</span>
+                        </div>
+                        <div class="h-2 w-full bg-surface-container rounded-full overflow-hidden relative">
+                            <div class="absolute top-0 left-0 h-full progress-bar-fill rounded-full" style="width: {{ user.level_info.progress_pct }}%;"></div>
+                        </div>
+                        <div class="flex justify-between items-center text-[10px] text-on-surface-variant/70 uppercase tracking-widest mt-sm">
+                            <span class="text-primary font-bold">Active Streak: {{ user.current_streak }} days</span>
+                            <span>Total Scans: {{ user.total_recycled }}</span>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-                <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Total CO2 Saved</p>
-                <div class="flex items-baseline gap-3">
-                    <span class="text-3xl font-extrabold text-emerald-700">{{ "%.1f" | format(user.total_co2_saved) }}</span>
-                    <span class="text-xs font-semibold text-slate-500">grams</span>
+            </section>
+
+            <!-- Carbon Equivalency Metrics (Bento Grid) -->
+            <section>
+                <h2 class="font-headline-md text-headline-md text-on-surface mb-md flex items-center gap-sm">
+                    <span class="material-symbols-outlined text-secondary">eco</span>
+                    Impact Equivalency
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+                    <!-- Metric 1 -->
+                    <div class="data-card rounded-xl p-md flex flex-col justify-between hover:border-primary transition-colors duration-200 relative overflow-hidden group">
+                        <div class="flex items-center gap-sm mb-md relative z-10">
+                            <span class="material-symbols-outlined text-text-secondary">smartphone</span>
+                            <span class="font-label-md text-label-md text-text-secondary uppercase tracking-widest">Smartphone Charges</span>
+                        </div>
+                        <div class="relative z-10">
+                            <div class="font-display-lg text-display-lg text-text-primary leading-none">{{ smartphone_charges }}</div>
+                            <div class="text-text-secondary font-code-sm text-code-sm mt-xs">Equivalent power saved from CO2 offsets</div>
+                        </div>
+                    </div>
+                    <!-- Metric 2 -->
+                    <div class="data-card rounded-xl p-md flex flex-col justify-between hover:border-primary transition-colors duration-200 relative overflow-hidden group">
+                        <div class="flex items-center gap-sm mb-md relative z-10">
+                            <span class="material-symbols-outlined text-text-secondary">directions_car</span>
+                            <span class="font-label-md text-label-md text-text-secondary uppercase tracking-widest">EV Miles Driven</span>
+                        </div>
+                        <div class="relative z-10">
+                            <div class="font-display-lg text-display-lg text-text-primary leading-none">{{ ev_miles }}</div>
+                            <div class="text-text-secondary font-code-sm text-code-sm mt-xs">Equivalent miles of emissions avoided</div>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </section>
+
+            <!-- Quick Actions -->
+            <section class="flex gap-md">
+                <a href="{{ url_for('classifier') }}" class="flex-1 border border-primary text-primary bg-transparent hover:bg-primary/5 py-md rounded-DEFAULT font-label-md text-label-md uppercase tracking-wider transition-all duration-200 ease-out flex justify-center items-center gap-sm no-underline">
+                    <span class="material-symbols-outlined">qr_code_scanner</span>
+                    Scan New Item
+                </a>
+                <a href="{{ url_for('rules') }}" class="flex-1 bg-surface-container border border-outline-variant/30 text-on-surface hover:bg-surface-container-high py-md rounded-DEFAULT font-label-md text-label-md uppercase tracking-wider transition-all duration-200 ease-out flex justify-center items-center gap-sm no-underline">
+                    <span class="material-symbols-outlined">insights</span>
+                    View Rules & Map
+                </a>
+            </section>
         </div>
 
-        <div class="bg-amber-50 border border-amber-200 p-4 rounded-2xl mb-10">
-            <h3 class="text-sm font-bold text-amber-900 mb-1">🏆 Earned Badges</h3>
-            <p class="text-sm text-amber-800">{{ user.badges }}</p>
-        </div>
-
-        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-            <div class="px-6 py-4 border-b border-slate-100 font-bold text-slate-800">Scan Activity Log</div>
-            <table class="w-full text-left border-collapse">
-                <thead>
-                    <tr class="bg-slate-50 text-xs font-semibold text-slate-500 uppercase tracking-wider border-b border-slate-100">
-                        <th class="px-6 py-3">Item Name</th>
-                        <th class="px-6 py-3">Material Composition</th>
-                        <th class="px-6 py-3">Category</th>
-                        <th class="px-6 py-3">Carbon Saved</th>
-                        <th class="px-6 py-3">Date</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-100 text-sm">
-                    {% for scan in recent_scans %}
-                    <tr>
-                        <td class="px-6 py-4 font-medium text-slate-900">{{ scan.item_name }}</td>
-                        <td class="px-6 py-4 text-slate-600">{{ scan.material }}</td>
-                        <td class="px-6 py-4">
-                            <span class="text-xs uppercase font-bold px-2.5 py-0.5 rounded-full
-                                {% if scan.category == 'Recyclable' %} bg-emerald-100 text-emerald-800
-                                {% elif scan.category == 'Compostable' %} bg-lime-100 text-lime-800
-                                {% else %} bg-slate-200 text-slate-800 {% endif %}">
-                                {{ scan.category }}
-                            </span>
-                        </td>
-                        <td class="px-6 py-4 text-emerald-700 font-medium">+{{ scan.co2_saved }}g</td>
-                        <td class="px-6 py-4 text-slate-400 text-xs">{{ scan.timestamp.strftime('%b %d, %Y • %I:%M %p') }}</td>
-                    </tr>
+        <!-- Right Column: History Log -->
+        <div class="md:col-span-5 h-[600px] flex flex-col">
+            <h2 class="font-headline-md text-headline-md text-on-surface mb-md flex items-center gap-sm">
+                <span class="material-symbols-outlined text-secondary">history</span>
+                Scan Chronology
+            </h2>
+            <div class="glass-card rounded-xl flex-grow overflow-hidden flex flex-col border border-outline-variant/30">
+                <!-- Table Header -->
+                <div class="grid grid-cols-12 gap-sm px-md py-sm bg-surface-container-highest/30 border-b border-outline-variant/30 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider text-xs">
+                    <div class="col-span-4">Time / Date</div>
+                    <div class="col-span-5">Item Name</div>
+                    <div class="col-span-3 text-right">Category</div>
+                </div>
+                <!-- Scrollable List -->
+                <div class="overflow-y-auto flex-grow p-xs">
+                    {% if recent_scans %}
+                        {% for scan in recent_scans %}
+                        <div class="grid grid-cols-12 gap-sm px-sm py-md border-b border-outline-variant/20 hover:bg-surface-container-high transition-colors cursor-pointer group items-center">
+                            <div class="col-span-4 font-code-sm text-code-sm text-on-surface-variant group-hover:text-on-surface transition-colors">
+                                {{ scan.timestamp.strftime('%b %d, %H:%M') }}
+                            </div>
+                            <div class="col-span-5 flex items-center gap-xs">
+                                <span class="font-medium text-sm text-slate-800 truncate">{{ scan.item_name }}</span>
+                            </div>
+                            <div class="col-span-3 text-right flex justify-end">
+                                <span class="px-2 py-1 text-[10px] rounded-full uppercase tracking-wider font-semibold border 
+                                    {% if scan.category == 'Recyclable' %} bg-emerald-100 text-emerald-800 border-emerald-200
+                                    {% elif scan.category == 'Compostable' %} bg-lime-100 text-lime-800 border-lime-200
+                                    {% else %} bg-slate-100 text-slate-800 border-slate-200 {% endif %}">
+                                    {{ scan.category }}
+                                </span>
+                            </div>
+                        </div>
+                        {% endfor %}
                     {% else %}
-                    <tr>
-                        <td colspan="5" class="px-6 py-8 text-center text-slate-400 text-sm">No items scanned yet. Head over to the classifier to make your first scan!</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                        <div class="p-8 text-center text-slate-400 text-sm">
+                            No scan history available yet. Try inspecting an item with the AI Inspector.
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
         </div>
-    </main>
+    </div>
+</main>
+
+<!-- Footer -->
+<footer class="bg-surface-container-lowest text-primary font-body-md text-body-md w-full py-xl border-t border-outline-variant mt-auto">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-lg px-gutter max-w-container-max mx-auto">
+        <div class="flex flex-col space-y-md">
+            <div class="font-headline-md text-headline-md font-semibold text-primary">
+                BinSync
+            </div>
+            <p class="text-on-surface-variant text-sm max-w-xs">
+                Advanced Waste Intelligence.
+            </p>
+        </div>
+        <div class="flex flex-col space-y-sm">
+            <h4 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-sm">Platform</h4>
+            <a class="text-on-surface-variant hover:text-primary transition-colors ease-out duration-200" href="{{ url_for('home') }}">Home</a>
+            <a class="text-on-surface-variant hover:text-primary transition-colors ease-out duration-200" href="{{ url_for('classifier') }}">AI Inspector</a>
+        </div>
+        <div class="flex flex-col space-y-sm">
+            <h4 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-sm">Support</h4>
+            <a class="text-on-surface-variant hover:text-primary transition-colors ease-out duration-200" href="{{ url_for('rules') }}">Rules & Map</a>
+            <a class="text-on-surface-variant hover:text-primary transition-colors ease-out duration-200" href="{{ url_for('leaderboard') }}">Leaderboard</a>
+        </div>
+    </div>
+</footer>
 </body>
 </html>
