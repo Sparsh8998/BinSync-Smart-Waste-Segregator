@@ -6,3 +6,4 @@ gunicorn
 Flask-SQLAlchemy
 Pillow
 python-dotenv
+Flask-Limiter
