@@ -1,0 +1,29 @@
+[build]
+  command = "pip install -r requirements.txt && mkdir -p public && cp -r static/* public/static/ 2>/dev/null || true"
+  functions = "netlify/functions"
+  publish = "public"
+
+[build.environment]
+  PYTHON_VERSION = "3.11"
+
+# Netlify Edge CDN caching headers for static assets
+[[headers]]
+  for = "/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# Direct traffic rewrite: static files in /public take precedence (force = false)
+# All dynamic routes and APIs pass directly to the Flask serverless function
+[[redirects]]
+  from = "/*"
+  to = "/.netlify/functions/app"
+  status = 200
+  force = false
+

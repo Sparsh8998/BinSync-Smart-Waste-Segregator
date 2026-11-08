@@ -2,3 +2,6 @@
 instance/
 *.db
 __pycache__/
+.netlify/
+.vscode/
+.impeccable/

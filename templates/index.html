@@ -1,238 +1,527 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>BinSync - Eradicate Wishcycling</title>
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-    <script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "on-surface-variant": "#3d4a42",
-                        "on-secondary": "#ffffff",
-                        "surface-variant": "#e0e3e5",
-                        "tertiary-fixed": "#d3e4fe",
-                        "inverse-primary": "#68dba9",
-                        "on-secondary-fixed": "#131b2e",
-                        "on-secondary-fixed-variant": "#3f465c",
-                        "tertiary-container": "#66768d",
-                        "inverse-surface": "#2d3133",
-                        "secondary-fixed-dim": "#bec6e0",
-                        "on-primary": "#ffffff",
-                        "secondary-fixed": "#dae2fd",
-                        "on-error-container": "#93000a",
-                        "surface-dim": "#d8dadc",
-                        "on-tertiary-fixed-variant": "#38485d",
-                        "outline": "#6d7a72",
-                        "surface-warm": "#fcfcfc",
-                        "error": "#ba1a1a",
-                        "secondary-container": "#dae2fd",
-                        "border-subtle": "#e2e8f0",
-                        "text-secondary": "#475569",
-                        "on-primary-fixed": "#002114",
-                        "on-tertiary-fixed": "#0b1c30",
-                        "on-surface": "#191c1e",
-                        "outline-variant": "#bccac0",
-                        "on-tertiary-container": "#fdfcff",
-                        "tertiary": "#4d5d73",
-                        "surface": "#f7f9fb",
-                        "primary-container": "#00855d",
-                        "on-secondary-container": "#5c647a",
-                        "surface-container-highest": "#e0e3e5",
-                        "secondary": "#565e74",
-                        "background": "#f7f9fb",
-                        "tertiary-fixed-dim": "#b7c8e1",
-                        "on-error": "#ffffff",
-                        "surface-container-lowest": "#ffffff",
-                        "surface-container": "#eceef0",
-                        "primary-fixed": "#85f8c4",
-                        "surface-container-low": "#f2f4f6",
-                        "inverse-on-surface": "#eff1f3",
-                        "surface-container-high": "#e6e8ea",
-                        "on-background": "#191c1e",
-                        "primary-fixed-dim": "#68dba9",
-                        "surface-tint": "#006c4a",
-                        "surface-bright": "#f7f9fb",
-                        "error-container": "#ffdad6",
-                        "text-primary": "#0f172a",
-                        "on-primary-fixed-variant": "#005137",
-                        "primary": "#006948",
-                        "on-primary-container": "#f5fff7",
-                        "on-tertiary": "#ffffff"
-                    },
-                    borderRadius: {
-                        DEFAULT: "0.125rem",
-                        lg: "0.25rem",
-                        xl: "0.5rem",
-                        full: "0.75rem"
-                    },
-                    spacing: {
-                        "container-max": "1440px",
-                        md: "16px",
-                        xs: "4px",
-                        base: "4px",
-                        lg: "32px",
-                        "margin-desktop": "80px",
-                        sm: "8px",
-                        "margin-mobile": "20px",
-                        gutter: "24px",
-                        xl: "64px"
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        @font-face {
-            font-family: 'Geist';
-            src: url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&display=swap');
-        }
-        body {
-            font-family: 'Geist', sans-serif;
-        }
-        .glow-effect {
-            box-shadow: 0 0 15px rgba(0, 105, 72, 0.15);
-        }
-        .glow-effect:hover {
-            box-shadow: 0 0 25px rgba(0, 105, 72, 0.3);
-        }
-    </style>
-</head>
-<body class="bg-background text-on-surface min-h-screen flex flex-col">
-<!-- Top Navigation Bar -->
-<nav class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-[20px] border-b border-border-subtle shadow-none">
-    <div class="flex justify-between items-center h-16 px-gutter max-w-container-max mx-auto">
-        <div class="flex items-center gap-sm">
-            <span class="font-display-lg text-[24px] font-bold text-primary tracking-tighter leading-none">BinSync</span>
-        </div>
-        <div class="hidden md:flex gap-lg items-center text-sm font-medium">
-            <a class="text-on-surface hover:text-primary transition-colors duration-200" href="{{ url_for('home') }}">Home</a>
-            <a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-variant transition-colors duration-200 px-sm py-xs rounded-DEFAULT" href="{{ url_for('classifier') }}">AI Inspector</a>
-            <a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-variant transition-colors duration-200 px-sm py-xs rounded-DEFAULT" href="{{ url_for('rules') }}">Rules</a>
-            <a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-variant transition-colors duration-200 px-sm py-xs rounded-DEFAULT" href="{{ url_for('leaderboard') }}">Leaderboard</a>
-            {% if user %}
-            <a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-variant transition-colors duration-200 px-sm py-xs rounded-DEFAULT" href="{{ url_for('dashboard') }}">Dashboard</a>
-            {% endif %}
-        </div>
-        <div class="flex items-center gap-3">
-            {% if user %}
-            <span class="text-sm font-medium text-slate-700">{{ user.username }}</span>
-            <a href="{{ url_for('logout') }}" class="text-sm font-medium text-rose-600 hover:underline">Log Out</a>
-            {% else %}
-            <a href="{{ url_for('login') }}" class="bg-primary text-on-primary font-body-md font-medium px-md py-xs rounded-DEFAULT hover:scale-[1.02] transition-transform duration-200 ease-out glow-effect">Sign In</a>
-            {% endif %}
-        </div>
-    </div>
-</nav>
+{% extends "base.html" %}
 
-<!-- Main Content -->
-<main class="flex-grow pt-24 px-gutter max-w-container-max mx-auto w-full">
-    <!-- Hero Section -->
-    <section class="grid grid-cols-1 md:grid-cols-12 gap-lg my-xl md:my-[120px] items-center">
-        <div class="md:col-span-7 space-y-md">
-            <h1 class="font-display-lg text-display-lg md:text-[64px] leading-tight text-on-surface">Eradicate Wishcycling with <span class="text-primary">Advanced Intelligence.</span></h1>
-            <p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">
-                Optimize municipal recycling infrastructure through high-precision decomposition analysis and AI-driven sorting protocols. Turn confusion into actionable ecological data.
+{% block title %}BinSync — Precision Waste Intelligence That Heals Our Planet{% endblock %}
+
+{% block content %}
+<div class="space-y-0">
+
+    <!-- Direct Action Hero Section (Nordic Glacier Search Style) -->
+    <section class="relative pt-12 pb-20 md:pt-20 md:pb-28 overflow-hidden bg-gradient-to-b from-[#EFF6FF]/70 via-[#F8FAFC] to-[#F8FAFC]">
+        <!-- Soft glacier ambient glow with scroll parallax -->
+        <div id="hero-glacier-orb" class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-[#93C5FD]/20 rounded-full blur-3xl pointer-events-none glacier-float transition-transform duration-100 ease-out"></div>
+
+        <div class="max-w-container mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 relative z-10 text-center">
+            
+            <!-- Confident Headline (No Kicker/Eyebrow per craft floor) -->
+            <h1 class="text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-8xl 2xl:text-[5.5rem] font-black tracking-tight text-text-primary leading-[1.06] max-w-5xl xl:max-w-6xl 2xl:max-w-7xl mx-auto">
+                Sort packaging with precision.<br class="hidden sm:inline"/>
+                <span class="text-[#2563EB]" style="color: #2563EB !important;">Protect the planet we love.</span>
+            </h1>
+
+            <p class="text-base sm:text-xl lg:text-2xl 2xl:text-3xl text-text-secondary max-w-3xl lg:max-w-4xl 2xl:max-w-5xl mx-auto mt-6 leading-relaxed font-normal">
+                Wishcycling contaminates circular recycling streams. <span class="text-[#2563EB] font-semibold">BinSync isolates every composite packaging layer in seconds</span> to give you exact municipal sorting directions.
             </p>
-            <div class="pt-sm flex gap-md">
-                <a href="{{ url_for('classifier') }}" class="bg-primary text-on-primary font-body-md font-medium px-lg py-sm rounded-DEFAULT hover:scale-[1.02] transition-transform duration-200 ease-out glow-effect flex items-center gap-xs">
-                    Deploy System
-                    <span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">arrow_forward</span>
-                </a>
-                <a href="{{ url_for('rules') }}" class="border border-primary text-primary font-body-md font-medium px-lg py-sm rounded-DEFAULT hover:bg-primary/5 transition-colors duration-200 ease-out flex items-center">
-                    View Rules & Map
-                </a>
+
+            <!-- Center-Stage Scanner Box -->
+            <div class="mt-12 w-full max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl mx-auto">
+                <div class="eco-card p-6 sm:p-10 border-2 border-dashed border-[#CBD5E1] hover:border-primary transition-all duration-300 relative group text-left">
+                    
+                    <!-- Search/Scan Action Bar -->
+                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-5 pb-5 border-b border-border-subtle">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 rounded-2xl bg-primary-light text-primary flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
+                                <span class="material-symbols-outlined text-[32px] text-[#2563EB]">document_scanner</span>
+                            </div>
+                            <div>
+                                <h2 class="text-lg sm:text-xl font-bold text-text-primary">Inspect packaging to <span class="text-[#2563EB]">sort</span></h2>
+                                <p class="text-xs sm:text-sm text-text-muted">Instant multi-layer decomposition</p>
+                            </div>
+                        </div>
+
+                        <!-- Direct Launch Buttons -->
+                        <div class="flex items-center gap-3">
+                            <a href="{{ url_for('classifier') }}" class="btn-primary py-3 px-6 text-sm font-bold flex items-center gap-2 shadow-sm">
+                                <span class="material-symbols-outlined text-[20px]">photo_camera</span>
+                                <span>Camera Scan</span>
+                            </a>
+                            <a href="{{ url_for('classifier') }}" class="btn-secondary py-3 px-5 text-sm font-bold flex items-center gap-2">
+                                <span class="material-symbols-outlined text-[20px]">upload_file</span>
+                                <span>Browse</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Instant Text & Barcode Query Bar -->
+                    <div class="py-4 border-b border-border-subtle">
+                        <form action="{{ url_for('classifier') }}" method="GET" class="flex gap-3">
+                            <div class="relative flex-1">
+                                <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-text-muted text-[22px]">search</span>
+                                <input type="text" name="q" list="packaging-suggestions" placeholder="Or type item name: coffee cup, pizza box, milk carton, bubble wrap…" class="w-full text-sm sm:text-base pl-12 pr-4 py-3.5 rounded-full border border-border-medium focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 bg-surface">
+                            </div>
+                            <button type="submit" class="btn-primary py-3.5 px-6 text-sm font-bold whitespace-nowrap">
+                                Decompose &rarr;
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- 1-Click Instant Demo Sample Chips -->
+                    <div class="pt-6">
+                        <div class="flex items-center justify-between mb-3.5 text-xs sm:text-sm">
+                            <span class="font-semibold text-text-secondary flex items-center gap-2">
+                                <span class="material-symbols-outlined text-[18px] text-[#2563EB]">bolt</span>
+                                <span>Test with <span class="text-[#2563EB] font-bold">one-click demo</span> items:</span>
+                            </span>
+                            <span class="text-text-muted text-xs">Instant AI classification</span>
+                        </div>
+
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                            <a href="{{ url_for('classifier') }}?sample=chips-bag.jpg" class="p-3 rounded-xl border border-border-subtle bg-surface-container hover:bg-primary-light hover:border-primary transition flex items-center gap-3 group/chip">
+                                <img src="/static/samples/chips-bag.jpg" alt="Snack Pouch" class="w-11 h-11 object-cover rounded-xl border border-border-subtle flex-shrink-0">
+                                <div class="truncate text-left">
+                                    <span class="block text-xs sm:text-sm font-bold text-text-primary group-hover/chip:text-primary truncate">Snack Pouch</span>
+                                    <span class="block text-[11px] text-solar-dark font-semibold">Composite</span>
+                                </div>
+                            </a>
+
+                            <a href="{{ url_for('classifier') }}?sample=sample-recyclable.jpg" class="p-3 rounded-xl border border-border-subtle bg-surface-container hover:bg-primary-light hover:border-primary transition flex items-center gap-3 group/chip">
+                                <img src="/static/samples/sample-recyclable.jpg" alt="Drink Pack" class="w-11 h-11 object-cover rounded-xl border border-border-subtle flex-shrink-0">
+                                <div class="truncate text-left">
+                                    <span class="block text-xs sm:text-sm font-bold text-text-primary group-hover/chip:text-primary truncate">Drink Pack</span>
+                                    <span class="block text-[11px] text-blue-700 font-semibold">Recyclable</span>
+                                </div>
+                            </a>
+
+                            <a href="{{ url_for('classifier') }}?sample=food-compost.jpg" class="p-3 rounded-xl border border-border-subtle bg-surface-container hover:bg-primary-light hover:border-primary transition flex items-center gap-3 group/chip">
+                                <img src="/static/samples/food-compost.jpg" alt="Organics" class="w-11 h-11 object-cover rounded-xl border border-border-subtle flex-shrink-0">
+                                <div class="truncate text-left">
+                                    <span class="block text-xs sm:text-sm font-bold text-text-primary group-hover/chip:text-primary truncate">Food Scraps</span>
+                                    <span class="block text-[11px] text-teal-700 font-semibold">Compost</span>
+                                </div>
+                            </a>
+
+                            <a href="{{ url_for('classifier') }}?sample=garbage-bag.jpg" class="p-3 rounded-xl border border-border-subtle bg-surface-container hover:bg-primary-light hover:border-primary transition flex items-center gap-3 group/chip">
+                                <img src="/static/samples/garbage-bag.jpg" alt="Trash Bag" class="w-11 h-11 object-cover rounded-xl border border-border-subtle flex-shrink-0">
+                                <div class="truncate text-left">
+                                    <span class="block text-xs sm:text-sm font-bold text-text-primary group-hover/chip:text-primary truncate">Trash Film</span>
+                                    <span class="block text-[11px] text-slate-700 font-semibold">Landfill</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Tangible Impact Live Counters Strip -->
+            <div class="mt-16 w-full max-w-5xl lg:max-w-6xl xl:max-w-7xl 2xl:max-w-[1500px] mx-auto grid grid-cols-1 sm:grid-cols-3 gap-6">
+                <div class="eco-card p-8 sm:p-10 text-center border-primary/20 hover:border-primary transition">
+                    <div class="counter-ticker text-4xl sm:text-5xl lg:text-6xl font-black text-[#2563EB] tracking-tight font-mono" data-count-target="{{ stats.wrappers_diverted }}">
+                        0
+                    </div>
+                    <div class="text-xs sm:text-sm font-bold text-text-secondary uppercase tracking-wider mt-2">
+                        Packages Diverted
+                    </div>
+                    <p class="text-xs sm:text-sm text-text-muted mt-2">Logged and verified through circular routing</p>
+                </div>
+
+                <div class="eco-card p-8 sm:p-10 text-center border-primary/30">
+                    <div class="counter-ticker text-4xl sm:text-5xl lg:text-6xl font-black text-[#2563EB] tracking-tight font-mono" data-count-target="{{ stats.contamination_prevented }}">
+                        0
+                    </div>
+                    <div class="text-xs sm:text-sm font-bold text-[#2563EB] uppercase tracking-wider mt-2">
+                        Contaminations Prevented
+                    </div>
+                    <p class="text-xs sm:text-sm text-text-muted mt-2">Municipal blue bins protected from spoilage</p>
+                </div>
+
+                <div class="eco-card p-8 sm:p-10 text-center">
+                    <div class="text-4xl sm:text-5xl lg:text-6xl font-black text-text-primary tracking-tight font-mono">
+                        <span class="counter-ticker" data-count-target="{{ stats.landfill_avoided_tons }}">0</span> <span class="text-xl sm:text-2xl font-normal text-text-muted">Tons</span>
+                    </div>
+                    <div class="text-xs sm:text-sm font-bold text-text-secondary uppercase tracking-wider mt-2">
+                        Landfill Avoided
+                    </div>
+                    <p class="text-xs sm:text-sm text-text-muted mt-2">Audited carbon savings diverted into clean streams</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Interactive Demonstration: Exploded Packaging Decomposition -->
+    <section class="py-20 md:py-32 bg-white border-y border-border-subtle">
+        <div class="max-w-container mx-auto px-4 sm:px-8 lg:px-12 xl:px-16">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+                
+                <!-- Left: Educational Breakdown -->
+                <div class="lg:col-span-6 space-y-7">
+                    <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-text-primary leading-tight">
+                        Wishcycling ruins circular recycling.<br/>
+                        <span class="text-[#2563EB]">Here is what happens when you decompose.</span>
+                    </h2>
+                    
+                    <p class="text-base sm:text-lg lg:text-xl text-text-secondary leading-relaxed">
+                        A single greasy foil liner or unpeeled plastic film can ruin entire bales of pulped cardboard at municipal recovery facilities. BinSync's vision engine isolates every layer before it reaches the bin.
+                    </p>
+
+                    <div class="space-y-5 pt-2">
+                        <div class="reveal-left flex items-start gap-4 transition-all" style="transition-delay: 0ms;">
+                            <div class="w-10 h-10 rounded-xl bg-primary-light text-primary flex items-center justify-center font-bold text-base flex-shrink-0 mt-0.5 shadow-sm">
+                                1
+                            </div>
+                            <div>
+                                <h3 class="text-base sm:text-lg font-bold text-text-primary">Separate Physical Layers</h3>
+                                <p class="text-sm text-text-secondary mt-1">Detach plastic caps, foil seals, and cardboard sleeves into individual pure materials.</p>
+                            </div>
+                        </div>
+
+                        <div class="reveal-left flex items-start gap-4 transition-all" style="transition-delay: 120ms;">
+                            <div class="w-10 h-10 rounded-xl bg-primary-light text-primary flex items-center justify-center font-bold text-base flex-shrink-0 mt-0.5 shadow-sm">
+                                2
+                            </div>
+                            <div>
+                                <h3 class="text-base sm:text-lg font-bold text-text-primary">Route to Local Drop-offs</h3>
+                                <p class="text-sm text-text-secondary mt-1">Direct items like soft plastic films and e-waste away from curbside bins to certified drop depots.</p>
+                            </div>
+                        </div>
+
+                        <div class="reveal-left flex items-start gap-4 transition-all" style="transition-delay: 240ms;">
+                            <div class="w-10 h-10 rounded-xl bg-primary-light text-primary flex items-center justify-center font-bold text-base flex-shrink-0 mt-0.5 shadow-sm">
+                                3
+                            </div>
+                            <div>
+                                <h3 class="text-base sm:text-lg font-bold text-text-primary">Track Real Carbon Equivalents</h3>
+                                <p class="text-sm text-text-secondary mt-1">Every gram of avoided CO₂ is translated into smartphone recharges and electric vehicle miles.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-4">
+                        <a href="{{ url_for('classifier') }}" class="btn-primary py-3.5 px-7 text-sm font-bold flex items-center gap-2">
+                            <span>Try AI Decomposition Live</span>
+                            <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Right: Visual Layer Diagram -->
+                <div class="lg:col-span-6">
+                    <div id="schema-card" class="eco-card reveal-right p-6 sm:p-9 space-y-5 group/schema cursor-pointer transition-all duration-300 hover:shadow-xl hover:border-primary/40 relative">
+                        <div class="flex items-center justify-between pb-4 border-b border-border-subtle">
+                            <div class="flex items-center gap-2.5">
+                                <span class="w-3 h-3 rounded-full bg-blue-500 animate-pulse"></span>
+                                <span class="text-xs sm:text-sm font-bold text-text-primary uppercase tracking-wider">Decomposition Schema</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="hidden sm:inline-flex items-center gap-1 text-[11px] font-semibold text-text-muted group-hover/schema:text-primary transition">
+                                    <span class="material-symbols-outlined text-[14px]">unfold_more</span>
+                                    <span>Hover or Scroll to Separate</span>
+                                </span>
+                                <span class="text-xs sm:text-sm font-bold text-primary bg-primary-light px-3.5 py-1 rounded-full">
+                                    Snack Pouch Identified
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- 3 Exploded Layer Cards with Dynamic Separation -->
+                        <div id="schema-layers-box" class="space-y-4 group-hover/schema:space-y-6 transition-all duration-500 relative">
+                            <!-- Layer 1 -->
+                            <div id="schema-layer-1" class="p-5 rounded-2xl bg-[#F0F9FF] border border-[#BAE6FD] flex items-center justify-between transition-all duration-500 transform group-hover/schema:-translate-y-2 group-hover/schema:shadow-md relative z-30">
+                                <div class="flex items-center gap-3.5">
+                                    <span class="w-8 h-8 rounded-xl bg-[#0284C7] text-white flex items-center justify-center text-sm font-bold">1</span>
+                                    <div>
+                                        <h4 class="text-sm sm:text-base font-bold text-slate-900">External Paper Sleeve</h4>
+                                        <p class="text-xs sm:text-sm text-slate-600">Pure Bleached Fiber</p>
+                                    </div>
+                                </div>
+                                <span class="text-xs font-bold px-3.5 py-1 bg-[#0284C7] text-white rounded-full">Curbside Blue Bin</span>
+                            </div>
+
+                            <!-- Subtle Connector 1 -->
+                            <div id="schema-connector-1" class="h-0 group-hover/schema:h-2 opacity-0 group-hover/schema:opacity-100 transition-all duration-500 flex justify-center -my-2 pointer-events-none">
+                                <div class="w-0.5 h-full bg-blue-300"></div>
+                            </div>
+
+                            <!-- Layer 2 -->
+                            <div id="schema-layer-2" class="p-5 rounded-2xl bg-[#FFFBEB] border border-[#FDE68A] flex items-center justify-between transition-all duration-500 transform group-hover/schema:scale-[1.02] group-hover/schema:shadow-md relative z-20">
+                                <div class="flex items-center gap-3.5">
+                                    <span class="w-8 h-8 rounded-xl bg-[#D97706] text-white flex items-center justify-center text-sm font-bold">2</span>
+                                    <div>
+                                        <h4 class="text-sm sm:text-base font-bold text-slate-900">Metallized Polymer Liner</h4>
+                                        <p class="text-xs sm:text-sm text-slate-600">BOPP Film + Aluminum Vapor</p>
+                                    </div>
+                                </div>
+                                <span class="text-xs font-bold px-3.5 py-1 bg-[#D97706] text-white rounded-full">Store Soft-Plastic</span>
+                            </div>
+
+                            <!-- Subtle Connector 2 -->
+                            <div id="schema-connector-2" class="h-0 group-hover/schema:h-2 opacity-0 group-hover/schema:opacity-100 transition-all duration-500 flex justify-center -my-2 pointer-events-none">
+                                <div class="w-0.5 h-full bg-amber-300"></div>
+                            </div>
+
+                            <!-- Layer 3 -->
+                            <div id="schema-layer-3" class="p-5 rounded-2xl bg-[#F8FAFC] border border-[#E2E8F0] flex items-center justify-between transition-all duration-500 transform group-hover/schema:translate-y-2 group-hover/schema:shadow-md relative z-10">
+                                <div class="flex items-center gap-3.5">
+                                    <span class="w-8 h-8 rounded-xl bg-[#475569] text-white flex items-center justify-center text-sm font-bold">3</span>
+                                    <div>
+                                        <h4 class="text-sm sm:text-base font-bold text-slate-900">Organic Food Residue</h4>
+                                        <p class="text-xs sm:text-sm text-slate-600">Seasoning and oil remnants</p>
+                                    </div>
+                                </div>
+                                <span class="text-xs font-bold px-3.5 py-1 bg-[#475569] text-white rounded-full">Wipe Clean First</span>
+                            </div>
+                        </div>
+
+                        <div class="pt-4 border-t border-border-subtle flex justify-between items-center text-xs sm:text-sm">
+                            <span class="text-text-muted">Measured Carbon Diversion:</span>
+                            <span class="font-bold text-primary font-mono text-base">+45.0g CO₂ Offset</span>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
-        <div class="md:col-span-5 relative h-[400px] w-full rounded-xl overflow-hidden border border-border-subtle bg-surface-container-lowest backdrop-blur-md">
-            <div class="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent"></div>
-            <div class="absolute inset-0 bg-cover bg-center opacity-90" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB3UkBGPJLUuEvEQmFTw6HOzx3jjOxqvTe2vm6Re-Nc_5z9coYhF9CDkRcJBobzt4G4mmZj0WFtqzWFl8AM-iJpDMCKBDTgZpJlGkMFzxFwg79HyFVc8sSVJ6j1Qnu54jX35Y9t2YsDlCfKLEQdL7EvlY2Eid1icFpK3VqnumRo8kEdLdWmBIEapK8mj5ZUbnWN7BVJF3Q5hREp9sfnyKVDaVi_K1vueFBMIaoazf1Kt5d5wv-XIfOpJw')"></div>
-        </div>
     </section>
 
-    <!-- Live Impact Metrics -->
-    <section class="grid grid-cols-1 md:grid-cols-3 gap-md mb-xl">
-        <div class="bg-surface-container-lowest border border-border-subtle p-lg rounded-lg flex flex-col justify-center items-start group hover:border-primary/50 transition-colors duration-300 shadow-sm">
-            <span class="font-label-md text-label-md text-text-secondary uppercase tracking-widest mb-xs opacity-70">Wrappers Diverted</span>
-            <div class="font-display-lg text-[40px] text-on-surface font-bold tracking-tighter">{{ stats.wrappers_diverted }}</div>
-            <div class="w-full h-px bg-border-subtle mt-sm group-hover:bg-primary transition-colors duration-300"></div>
-        </div>
-        <div class="bg-surface-container-lowest border border-border-subtle p-lg rounded-lg flex flex-col justify-center items-start group hover:border-primary/50 transition-colors duration-300 shadow-sm">
-            <span class="font-label-md text-label-md text-text-secondary uppercase tracking-widest mb-xs opacity-70">Contamination Prevented</span>
-            <div class="font-display-lg text-[40px] text-primary font-bold tracking-tighter">{{ stats.contamination_prevented }}</div>
-            <div class="w-full h-px bg-border-subtle mt-sm group-hover:bg-primary transition-colors duration-300"></div>
-        </div>
-        <div class="bg-surface-container-lowest border border-border-subtle p-lg rounded-lg flex flex-col justify-center items-start group hover:border-primary/50 transition-colors duration-300 shadow-sm">
-            <span class="font-label-md text-label-md text-text-secondary uppercase tracking-widest mb-xs opacity-70">Landfill Tonnage Avoided</span>
-            <div class="font-display-lg text-[40px] text-on-surface font-bold tracking-tighter">{{ stats.landfill_avoided_tons }} <span class="text-[20px] font-normal text-text-secondary">Tons</span></div>
-            <div class="w-full h-px bg-border-subtle mt-sm group-hover:bg-primary transition-colors duration-300"></div>
-        </div>
-    </section>
+    <!-- Why Wishcycling Fails & How BinSync Solves It -->
+    <section class="py-20 md:py-28">
+        <div class="max-w-container mx-auto px-4 sm:px-6">
+            <div class="text-center max-w-2xl mx-auto mb-16 space-y-3">
+                <h2 class="text-3xl sm:text-4xl font-black tracking-tight text-text-primary">
+                    Engineered to <span class="text-[#2563EB]">eliminate wishcycling</span> at every step
+                </h2>
+                <p class="text-sm sm:text-base text-text-secondary leading-relaxed">
+                    Wishcycling is tossing ambiguous items into the blue bin hoping they get recycled. BinSync gives you clear, verified answers before the bin closes.
+                </p>
+            </div>
 
-    <!-- Feature Preview Section -->
-    <section class="mb-xl">
-        <h2 class="font-headline-lg text-headline-lg text-on-surface mb-lg">System Modules</h2>
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-md auto-rows-[250px]">
-            <!-- AI Inspector -->
-            <a href="{{ url_for('classifier') }}" class="md:col-span-8 bg-surface-container-lowest backdrop-blur-[20px] border border-border-subtle rounded-xl p-lg flex flex-col justify-between relative overflow-hidden group hover:border-primary/50 transition-colors duration-300 shadow-sm block text-inherit no-underline">
-                <div class="absolute inset-0 bg-gradient-to-t from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <div class="relative z-10">
-                    <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mb-md">
-                        <span class="material-symbols-outlined text-primary">document_scanner</span>
-                    </div>
-                    <h3 class="font-headline-md text-headline-md text-on-surface mb-xs">AI Inspector</h3>
-                    <p class="font-body-md text-body-md text-on-surface-variant max-w-md">Real-time object detection utilizing edge computing to identify multi-layer packaging components instantly.</p>
-                </div>
-            </a>
-
-            <!-- Regional Rules -->
-            <a href="{{ url_for('rules') }}" class="md:col-span-4 bg-surface-container-lowest backdrop-blur-[20px] border border-border-subtle rounded-xl p-lg flex flex-col justify-between group hover:border-primary/50 transition-colors duration-300 shadow-sm block text-inherit no-underline">
-                <div>
-                    <div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center mb-md group-hover:bg-primary/10 transition-colors">
-                        <span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">rule_folder</span>
-                    </div>
-                    <h3 class="font-headline-md text-[20px] text-on-surface mb-xs">Regional Rules</h3>
-                    <p class="font-body-md text-[14px] text-on-surface-variant">Dynamic compliance protocols adapted to local municipal waste mandates.</p>
-                </div>
-            </a>
-
-            <!-- Global Leaderboard -->
-            <a href="{{ url_for('leaderboard') }}" class="md:col-span-12 bg-surface-container-lowest backdrop-blur-[20px] border border-border-subtle rounded-xl p-lg flex items-center justify-between group hover:border-primary/50 transition-colors duration-300 shadow-sm block text-inherit no-underline">
-                <div class="flex items-center gap-md">
-                    <div class="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center group-hover:bg-primary/10 transition-colors">
-                        <span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">trophy</span>
-                    </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Pillar 1 -->
+                <div class="eco-card reveal-on-scroll p-7 flex flex-col justify-between transition-all" style="transition-delay: 0ms;">
                     <div>
-                        <h3 class="font-headline-md text-[20px] text-on-surface">Global Leaderboard</h3>
-                        <p class="font-body-md text-[14px] text-on-surface-variant">Comparative metrics across deployed eco-champions.</p>
+                        <div class="w-12 h-12 rounded-2xl bg-primary-light text-primary flex items-center justify-center mb-6 shadow-sm">
+                            <span class="material-symbols-outlined text-[26px]">document_scanner</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-text-primary mb-3">Layered Optical AI</h3>
+                        <p class="text-sm text-text-secondary leading-relaxed">
+                            BinSync does not just guess the label. It separates packaging into lid, sleeve, film, and body so you know precisely what separates and where it belongs.
+                        </p>
+                    </div>
+                    <div class="pt-6 mt-6 border-t border-border-subtle flex items-center text-xs font-bold text-primary">
+                        <span>Multi-layer physical breakdown</span>
+                        <span class="material-symbols-outlined text-[16px] ml-1">chevron_right</span>
                     </div>
                 </div>
-                <span class="text-on-surface group-hover:text-primary transition-colors flex items-center gap-xs font-label-md">
-                    View Rankings <span class="material-symbols-outlined text-[16px]">chevron_right</span>
-                </span>
-            </a>
+
+                <!-- Pillar 2 -->
+                <div class="eco-card reveal-on-scroll p-7 flex flex-col justify-between transition-all" style="transition-delay: 120ms;">
+                    <div>
+                        <div class="w-12 h-12 rounded-2xl bg-primary-light text-primary flex items-center justify-center mb-6 shadow-sm">
+                            <span class="material-symbols-outlined text-[26px]">map</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-text-primary mb-3">Hyper-Local Bylaws</h3>
+                        <p class="text-sm text-text-secondary leading-relaxed">
+                            Recycling rules vary between cities. Find certified drop-off centers for soft plastics, batteries, electronics, and compost specific to your municipality.
+                        </p>
+                    </div>
+                    <div class="pt-6 mt-6 border-t border-border-subtle flex items-center text-xs font-bold text-primary">
+                        <span>Regional municipal mapping</span>
+                        <span class="material-symbols-outlined text-[16px] ml-1">chevron_right</span>
+                    </div>
+                </div>
+
+                <!-- Pillar 3 -->
+                <div class="eco-card reveal-on-scroll p-7 flex flex-col justify-between transition-all" style="transition-delay: 240ms;">
+                    <div>
+                        <div class="w-12 h-12 rounded-2xl bg-primary-light text-primary flex items-center justify-center mb-6 shadow-sm">
+                            <span class="material-symbols-outlined text-[26px]">emoji_events</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-text-primary mb-3">Gamified Impact Tracking</h3>
+                        <p class="text-sm text-text-secondary leading-relaxed">
+                            Earn eco-points, level up from Seedling to Eco Legend, build consecutive streaks, and translate carbon diversion into real smartphone charges and EV miles.
+                        </p>
+                    </div>
+                    <div class="pt-6 mt-6 border-t border-border-subtle flex items-center text-xs font-bold text-primary">
+                        <span>Verifiable carbon metrics</span>
+                        <span class="material-symbols-outlined text-[16px] ml-1">chevron_right</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
-</main>
 
-<!-- Footer -->
-<footer class="bg-surface-container border-t border-border-subtle w-full py-xl mt-auto">
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-lg px-gutter max-w-container-max mx-auto">
-        <div>
-            <span class="font-headline-md text-headline-md font-semibold text-primary block mb-sm">BinSync</span>
-            <p class="font-body-md text-body-md text-on-surface-variant">Advanced Waste Intelligence.</p>
+    <!-- Call to Action Section (Cobalt Climate Hero Banner) -->
+    <section class="py-20 md:py-28">
+        <div class="max-w-container mx-auto px-4 sm:px-6">
+            <div id="cta-banner" class="reveal-scale bg-gradient-to-br from-[#1D4ED8] via-[#2563EB] to-[#1E40AF] text-white rounded-3xl p-8 sm:p-14 lg:p-16 relative overflow-hidden shadow-2xl">
+                <!-- Ambient blue background glow with parallax -->
+                <div id="cta-glow-right" class="absolute -right-20 -bottom-20 w-96 h-96 rounded-full bg-white opacity-10 blur-3xl pointer-events-none transition-transform duration-300"></div>
+                <div id="cta-glow-left" class="absolute -left-20 -top-20 w-80 h-80 rounded-full bg-[#38BDF8] opacity-25 blur-3xl pointer-events-none transition-transform duration-300"></div>
+
+                <div class="max-w-2xl relative z-10 space-y-6">
+                    <h2 class="text-3xl sm:text-5xl font-black tracking-tight text-white leading-tight">
+                        Scan your first packaging item right now.
+                    </h2>
+
+                    <p class="text-blue-100 text-base sm:text-lg leading-relaxed">
+                        No sign-up or app download required to test. Use your camera, upload a photo, or click any sample to see real-time decomposition.
+                    </p>
+
+                    <div class="pt-2 flex flex-col sm:flex-row gap-4">
+                        <a href="{{ url_for('classifier') }}" class="bg-white hover:bg-blue-50 font-black py-3.5 px-8 rounded-full text-base shadow-lg flex items-center justify-center gap-2.5 transition hover:-translate-y-0.5 group" style="color: #2563EB !important;">
+                            <span class="material-symbols-outlined text-[20px]" style="color: #2563EB !important;">photo_camera</span>
+                            <span class="font-black text-[#2563EB]" style="color: #2563EB !important;">Launch AI Inspector Free</span>
+                        </a>
+                        <a href="{{ url_for('classifications') }}" class="btn-secondary bg-transparent text-white border-2 border-white/80 hover:bg-white hover:text-[#2563EB] py-3.5 px-8 text-base font-bold flex items-center justify-center gap-2 transition">
+                            <span class="font-bold">Explore Material Taxonomy</span>
+                            <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="md:col-span-2 flex flex-wrap gap-lg md:justify-end items-center">
-            <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors ease-out duration-200" href="{{ url_for('home') }}">Home</a>
-            <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors ease-out duration-200" href="{{ url_for('classifier') }}">Inspector</a>
-            <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors ease-out duration-200" href="{{ url_for('rules') }}">Rules & Map</a>
-            <a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors ease-out duration-200" href="{{ url_for('leaderboard') }}">Leaderboard</a>
-        </div>
-    </div>
-</footer>
-</body>
-</html>
+    </section>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // 1. Scroll-Triggered Count-Up Tickers with easeOutExpo & threshold: 0.35
+    const tickers = document.querySelectorAll('.counter-ticker');
+    const easeOutExpo = (x) => x === 1 ? 1 : 1 - Math.pow(2, -10 * x);
+
+    const animateTicker = (el) => {
+        const target = parseFloat(el.getAttribute('data-count-target')) || 0;
+        const isFloat = target % 1 !== 0;
+        if (prefersReducedMotion) {
+            el.innerText = isFloat ? target.toFixed(1) : Math.round(target).toLocaleString();
+            return;
+        }
+
+        const duration = 1400; // 1.4s
+        const startTime = performance.now();
+
+        const step = (currentTime) => {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const easedProgress = easeOutExpo(progress);
+            const currentVal = target * easedProgress;
+
+            el.innerText = isFloat 
+                ? currentVal.toFixed(1) 
+                : Math.round(currentVal).toLocaleString();
+
+            if (progress < 1) {
+                requestAnimationFrame(step);
+            } else {
+                el.innerText = isFloat 
+                    ? target.toFixed(1) 
+                    : Math.round(target).toLocaleString();
+            }
+        };
+
+        requestAnimationFrame(step);
+    };
+
+    if ('IntersectionObserver' in window) {
+        const tickerObserver = new IntersectionObserver((entries, obs) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateTicker(entry.target);
+                    obs.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.35 });
+
+        tickers.forEach(ticker => tickerObserver.observe(ticker));
+    } else {
+        tickers.forEach(animateTicker);
+    }
+
+    // 2. Hero & CTA Parallax + Scroll-Linked Exploding Schema
+    if (!prefersReducedMotion) {
+        const heroOrb = document.getElementById('hero-glacier-orb');
+        const schemaCard = document.getElementById('schema-card');
+        const layer1 = document.getElementById('schema-layer-1');
+        const conn1 = document.getElementById('schema-connector-1');
+        const layer2 = document.getElementById('schema-layer-2');
+        const conn2 = document.getElementById('schema-connector-2');
+        const layer3 = document.getElementById('schema-layer-3');
+        const ctaBanner = document.getElementById('cta-banner');
+        const ctaGlowRight = document.getElementById('cta-glow-right');
+        const ctaGlowLeft = document.getElementById('cta-glow-left');
+
+        let isExploded = false;
+        let parallaxTicking = false;
+
+        function updateParallaxChoreography() {
+            const scrollY = window.scrollY || window.pageYOffset;
+            const winH = window.innerHeight;
+
+            // Hero Ambient Glow Parallax Drift
+            if (heroOrb && scrollY < winH * 1.4) {
+                heroOrb.style.transform = `translate3d(-50%, calc(-50% + ${scrollY * 0.18}px), 0)`;
+            }
+
+            // Exploding Decomposition Schema Crossing Viewport Middle
+            if (schemaCard && layer1 && layer2 && layer3) {
+                const rect = schemaCard.getBoundingClientRect();
+                const cardMid = rect.top + rect.height * 0.5;
+                const inExplosionZone = cardMid <= winH * 0.72 && cardMid >= winH * 0.18;
+
+                if (inExplosionZone && !isExploded) {
+                    isExploded = true;
+                    layer1.style.transform = 'translateY(-10px)';
+                    layer1.style.boxShadow = '0 12px 28px -4px rgba(2, 132, 199, 0.2)';
+                    if (conn1) { conn1.style.height = '0.5rem'; conn1.style.opacity = '1'; }
+
+                    layer2.style.transform = 'scale(1.025)';
+                    layer2.style.boxShadow = '0 12px 28px -4px rgba(217, 119, 6, 0.2)';
+                    if (conn2) { conn2.style.height = '0.5rem'; conn2.style.opacity = '1'; }
+
+                    layer3.style.transform = 'translateY(10px)';
+                    layer3.style.boxShadow = '0 12px 28px -4px rgba(71, 85, 105, 0.2)';
+                } else if (!inExplosionZone && isExploded) {
+                    isExploded = false;
+                    layer1.style.transform = '';
+                    layer1.style.boxShadow = '';
+                    if (conn1) { conn1.style.height = ''; conn1.style.opacity = ''; }
+
+                    layer2.style.transform = '';
+                    layer2.style.boxShadow = '';
+                    if (conn2) { conn2.style.height = ''; conn2.style.opacity = ''; }
+
+                    layer3.style.transform = '';
+                    layer3.style.boxShadow = '';
+                }
+            }
+
+            // Bottom CTA Glow Parallax Movement
+            if (ctaBanner && ctaGlowRight && ctaGlowLeft) {
+                const ctaRect = ctaBanner.getBoundingClientRect();
+                if (ctaRect.top < winH && ctaRect.bottom > 0) {
+                    const relativeOffset = (ctaRect.top - winH * 0.5);
+                    ctaGlowRight.style.transform = `translate3d(0, ${relativeOffset * 0.08}px, 0)`;
+                    ctaGlowLeft.style.transform = `translate3d(0, ${-relativeOffset * 0.06}px, 0)`;
+                }
+            }
+
+            parallaxTicking = false;
+        }
+
+        window.addEventListener('scroll', () => {
+            if (!parallaxTicking) {
+                requestAnimationFrame(updateParallaxChoreography);
+                parallaxTicking = true;
+            }
+        }, { passive: true });
+
+        updateParallaxChoreography();
+    }
+});
+</script>
+{% endblock %}

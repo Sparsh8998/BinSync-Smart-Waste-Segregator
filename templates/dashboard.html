@@ -1,317 +1,1330 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>BinSync - Dashboard</title>
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com" rel="preconnect"/>
-    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
-    <script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "on-surface-variant": "#3d4a42",
-                        "on-secondary": "#ffffff",
-                        "surface-variant": "#e0e3e5",
-                        "tertiary-fixed": "#d3e4fe",
-                        "inverse-primary": "#68dba9",
-                        "on-secondary-fixed": "#131b2e",
-                        "on-secondary-fixed-variant": "#3f465c",
-                        "tertiary-container": "#66768d",
-                        "inverse-surface": "#2d3133",
-                        "secondary-fixed-dim": "#bec6e0",
-                        "on-primary": "#ffffff",
-                        "secondary-fixed": "#dae2fd",
-                        "on-error-container": "#93000a",
-                        "surface-dim": "#d8dadc",
-                        "on-tertiary-fixed-variant": "#38485d",
-                        "outline": "#6d7a72",
-                        "surface-warm": "#fcfcfc",
-                        "error": "#ba1a1a",
-                        "secondary-container": "#dae2fd",
-                        "border-subtle": "#e2e8f0",
-                        "text-secondary": "#475569",
-                        "on-primary-fixed": "#002114",
-                        "on-tertiary-fixed": "#0b1c30",
-                        "on-surface": "#191c1e",
-                        "outline-variant": "#bccac0",
-                        "on-tertiary-container": "#fdfcff",
-                        "tertiary": "#4d5d73",
-                        "surface": "#f7f9fb",
-                        "primary-container": "#00855d",
-                        "on-secondary-container": "#5c647a",
-                        "surface-container-highest": "#e0e3e5",
-                        "secondary": "#565e74",
-                        "background": "#f7f9fb",
-                        "tertiary-fixed-dim": "#b7c8e1",
-                        "on-error": "#ffffff",
-                        "surface-container-lowest": "#ffffff",
-                        "surface-container": "#eceef0",
-                        "primary-fixed": "#85f8c4",
-                        "surface-container-low": "#f2f4f6",
-                        "inverse-on-surface": "#eff1f3",
-                        "surface-container-high": "#e6e8ea",
-                        "on-background": "#191c1e",
-                        "primary-fixed-dim": "#68dba9",
-                        "surface-tint": "#006c4a",
-                        "surface-bright": "#f7f9fb",
-                        "error-container": "#ffdad6",
-                        "text-primary": "#0f172a",
-                        "on-primary-fixed-variant": "#005137",
-                        "primary": "#006948",
-                        "on-primary-container": "#f5fff7",
-                        "on-tertiary": "#ffffff"
-                    },
-                    borderRadius: {
-                        DEFAULT: "0.125rem",
-                        lg: "0.25rem",
-                        xl: "0.5rem",
-                        full: "0.75rem"
-                    },
-                    spacing: {
-                        md: "16px",
-                        xs: "4px",
-                        base: "4px",
-                        lg: "32px",
-                        "margin-desktop": "80px",
-                        sm: "8px",
-                        "margin-mobile": "20px",
-                        gutter: "24px",
-                        xl: "64px",
-                        "container-max": "1440px"
-                    },
-                    fontFamily: {
-                        body_md: ["Geist"],
-                        display_lg: ["Geist"],
-                        code_sm: ["Geist"],
-                        headline_md: ["Geist"],
-                        "headline-lg-mobile": ["Geist"],
-                        body_lg: ["Geist"],
-                        "label-md": ["Geist"],
-                        "headline-lg": ["Geist"],
-                        "label-sm": ["Geist"]
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        .glass-card {
-            background-color: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-        }
-        .data-card {
-            background-color: #ffffff;
-            color: #191c1e;
-            border: 1px solid #e0e3e5;
-        }
-        .glow-effect:hover {
-            box-shadow: 0 0 15px rgba(0, 105, 72, 0.15);
-        }
-        .progress-bar-fill {
-            background-color: #00855d;
-            box-shadow: 0 0 10px rgba(0, 133, 93, 0.3);
-        }
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.02); 
-        }
-        ::-webkit-scrollbar-thumb {
-            background: rgba(0, 0, 0, 0.15); 
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(0, 0, 0, 0.25); 
-        }
-    </style>
-</head>
-<body class="bg-background text-on-surface font-body-md min-h-screen flex flex-col antialiased">
-<!-- TopNavBar -->
-<!-- TopNavBar -->
-<nav class="bg-surface-container-lowest/80 backdrop-blur-xl font-body-md text-body-md fixed top-0 w-full shadow-sm border-b border-outline-variant/30 z-50">
-    <div class="flex justify-between items-center h-16 px-gutter max-w-container-max mx-auto">
-        <a href="{{ url_for('home') }}" class="flex items-center gap-sm no-underline">
-            <span class="font-display-lg text-[24px] font-bold text-primary tracking-tighter leading-none">BinSync</span>
-        </a>
-        <!-- Desktop Nav -->
-        <div class="hidden md:flex space-x-lg items-center">
-            <a class="text-on-surface-variant hover:text-on-surface transition-colors duration-200 ease-out" href="{{ url_for('home') }}">Home</a>
-            <a class="text-primary font-bold border-b-2 border-primary pb-1 duration-200 ease-out" href="{{ url_for('dashboard') }}">Dashboard</a>
-            <a class="text-on-surface-variant hover:text-on-surface transition-colors duration-200 ease-out" href="{{ url_for('classifier') }}">AI Inspector</a>
-            <a class="text-on-surface-variant hover:text-on-surface transition-colors duration-200 ease-out" href="{{ url_for('rules') }}">Rules</a>
-            <a class="text-on-surface-variant hover:text-on-surface transition-colors duration-200 ease-out" href="{{ url_for('leaderboard') }}">Leaderboard</a>
-        </div>
-        <div class="flex items-center space-x-md">
-            {% if user %}
-            <span class="text-sm font-medium text-slate-700">{{ user.username }}</span>
-            <a href="{{ url_for('logout') }}" class="bg-rose-50 text-rose-600 border border-rose-200 px-md py-sm rounded-DEFAULT text-sm font-medium transition-colors hover:bg-rose-100">Log Out</a>
-            {% else %}
-            <a href="{{ url_for('login') }}" class="bg-primary text-on-primary px-md py-sm rounded-DEFAULT font-label-md hover:scale-[1.02] duration-200 ease-out glow-effect transition-all">Connect</a>
-            {% endif %}
-        </div>
-    </div>
-</nav>
+{% extends "base.html" %}
 
-<!-- Main Content Canvas -->
-<main class="flex-grow pt-[104px] pb-xl px-gutter max-w-container-max mx-auto w-full">
-    <div class="grid grid-cols-1 md:grid-cols-12 gap-lg">
-        <!-- Left Column: Profile & Metrics -->
-        <div class="md:col-span-7 space-y-lg">
-            <!-- Profile Hub (Glassmorphism) -->
-            <section class="glass-card rounded-xl p-lg flex flex-col md:flex-row gap-lg items-start">
-                <div class="w-24 h-24 rounded-full border-2 border-primary overflow-hidden flex-shrink-0 relative bg-emerald-50 flex items-center justify-center text-primary font-bold text-2xl">
+{% block title %}Impact Dashboard — BinSync{% endblock %}
+
+{% block extra_head %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+    @media print {
+        body * {
+            visibility: hidden !important;
+        }
+        #kitchen-fridge-sheet, #kitchen-fridge-sheet * {
+            visibility: visible !important;
+        }
+        #kitchen-fridge-sheet {
+            position: absolute !important;
+            left: 0 !important;
+            top: 0 !important;
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 24px !important;
+            background: white !important;
+            color: #0F172A !important;
+            border: none !important;
+            box-shadow: none !important;
+        }
+        .no-print {
+            display: none !important;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="max-w-container mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 py-10 md:py-16 space-y-10">
+
+    <!-- Guest Session Warning & Claim CTA -->
+    {% if is_guest %}
+    <div class="p-4 sm:p-5 rounded-2xl bg-primary-light border border-primary/20 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs sm:text-sm text-text-primary">
+        <div class="flex items-center gap-3">
+            <span class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-xs flex-shrink-0">
+                <span class="material-symbols-outlined text-[18px]">person</span>
+            </span>
+            <span>
+                <strong>Temporary Guest Session ({{ user.username }}):</strong> Your scans, streaks, and eco-points are tracked in this browser.
+            </span>
+        </div>
+        <a href="{{ url_for('login') }}" class="btn-primary py-2 px-5 text-xs sm:text-sm font-bold shadow-none whitespace-nowrap">
+            Set Permanent Username &rarr;
+        </a>
+    </div>
+    {% endif %}
+
+    <!-- User Profile Hero Card -->
+    <div class="eco-card p-6 sm:p-10">
+        <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+            <!-- Identity -->
+            <div class="flex items-center gap-6">
+                <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-primary text-white flex items-center justify-center font-black text-3xl sm:text-4xl shadow-md flex-shrink-0">
                     {{ user.username[0]|upper }}
                 </div>
-                <div class="flex-grow w-full">
-                    <div class="flex justify-between items-end mb-sm">
-                        <div>
-                            <h1 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-xs">{{ user.username }}</h1>
-                            <p class="text-secondary font-code-sm text-code-sm tracking-widest uppercase">ID: SYNC-{{ user.id }}</p>
-                        </div>
-                        <div class="text-right">
-                            <span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider block">Level Tier</span>
-                            <span class="font-headline-md text-headline-md text-primary">{{ user.level_info.title }}</span>
-                        </div>
+                <div>
+                    <div class="flex items-center gap-3 flex-wrap">
+                        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black text-text-primary">{{ user.username }}</h1>
+                        <span class="text-xs sm:text-sm font-bold text-primary bg-primary-light px-3.5 py-1 rounded-full uppercase tracking-wider">{{ user.level_info.title }}</span>
                     </div>
-                    <!-- RPG Progression -->
-                    <div class="mt-md space-y-md">
-                        <div class="flex justify-between text-code-sm font-code-sm text-on-surface-variant mb-xs">
-                            <span>Total Points: {{ user.points }} pts</span>
-                            <span>Next Tier at {{ user.level_info.next_tier }} pts</span>
-                        </div>
-                        <div class="h-2 w-full bg-surface-container rounded-full overflow-hidden relative">
-                            <div class="absolute top-0 left-0 h-full progress-bar-fill rounded-full" style="width: {{ user.level_info.progress_pct }}%;"></div>
-                        </div>
-                        <div class="flex justify-between items-center text-[10px] text-on-surface-variant/70 uppercase tracking-widest mt-sm">
-                            <span class="text-primary font-bold">Active Streak: {{ user.current_streak }} days</span>
-                            <span>Total Scans: {{ user.total_recycled }}</span>
+                    <div class="flex items-center gap-2 mt-2 flex-wrap">
+                        <span class="text-xs text-text-muted font-mono">Citizen ID: SYNC-{{ "%04d"|format(user.id) }}</span>
+                        <span class="text-text-muted text-xs">·</span>
+                        <div class="relative inline-flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-teal-600 text-[16px]">groups</span>
+                            <select id="user-hub-selector" onchange="updateCitizenHub(this.value)" class="text-xs font-bold text-teal-900 bg-teal-50 border border-teal-200 rounded-full px-2.5 py-0.5 focus:outline-none focus:ring-2 focus:ring-teal-500/20 cursor-pointer">
+                                {% for hub in community_hubs %}
+                                <option value="{{ hub }}" {% if user.community_hub == hub %}selected{% endif %}>{{ hub }}</option>
+                                {% endfor %}
+                            </select>
+                            <span id="hub-saved-badge" class="hidden text-[10px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">Saved</span>
                         </div>
                     </div>
                 </div>
-            </section>
+            </div>
 
-            <!-- Carbon Equivalency Metrics (Bento Grid) -->
-            <section>
-                <h2 class="font-headline-md text-headline-md text-on-surface mb-md flex items-center gap-sm">
-                    <span class="material-symbols-outlined text-secondary">eco</span>
-                    Impact Equivalency
-                </h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-md">
-                    <!-- Metric 1 -->
-                    <div class="data-card rounded-xl p-md flex flex-col justify-between hover:border-primary transition-colors duration-200 relative overflow-hidden group">
-                        <div class="flex items-center gap-sm mb-md relative z-10">
-                            <span class="material-symbols-outlined text-text-secondary">smartphone</span>
-                            <span class="font-label-md text-label-md text-text-secondary uppercase tracking-widest">Smartphone Charges</span>
-                        </div>
-                        <div class="relative z-10">
-                            <div class="font-display-lg text-display-lg text-text-primary leading-none">{{ smartphone_charges }}</div>
-                            <div class="text-text-secondary font-code-sm text-code-sm mt-xs">Equivalent power saved from CO2 offsets</div>
-                        </div>
-                    </div>
-                    <!-- Metric 2 -->
-                    <div class="data-card rounded-xl p-md flex flex-col justify-between hover:border-primary transition-colors duration-200 relative overflow-hidden group">
-                        <div class="flex items-center gap-sm mb-md relative z-10">
-                            <span class="material-symbols-outlined text-text-secondary">directions_car</span>
-                            <span class="font-label-md text-label-md text-text-secondary uppercase tracking-widest">EV Miles Driven</span>
-                        </div>
-                        <div class="relative z-10">
-                            <div class="font-display-lg text-display-lg text-text-primary leading-none">{{ ev_miles }}</div>
-                            <div class="text-text-secondary font-code-sm text-code-sm mt-xs">Equivalent miles of emissions avoided</div>
-                        </div>
-                    </div>
+            <!-- Quick Stats Pills & Export Action -->
+            <div class="flex flex-wrap items-center gap-3.5">
+                <div class="px-6 py-3.5 rounded-2xl bg-surface border border-border-subtle text-center min-w-[95px]">
+                    <span class="block text-[11px] font-bold text-text-muted uppercase tracking-widest mb-0.5">Scans</span>
+                    <span class="text-2xl font-black text-text-primary font-mono">{{ user.total_recycled }}</span>
                 </div>
-            </section>
-
-            <!-- Quick Actions -->
-            <section class="flex gap-md">
-                <a href="{{ url_for('classifier') }}" class="flex-1 border border-primary text-primary bg-transparent hover:bg-primary/5 py-md rounded-DEFAULT font-label-md text-label-md uppercase tracking-wider transition-all duration-200 ease-out flex justify-center items-center gap-sm no-underline">
-                    <span class="material-symbols-outlined">qr_code_scanner</span>
-                    Scan New Item
+                <div class="px-6 py-3.5 rounded-2xl bg-surface border border-border-subtle text-center min-w-[95px]">
+                    <span class="block text-[11px] font-bold text-text-muted uppercase tracking-widest mb-0.5">Streak</span>
+                    <span class="text-2xl font-black text-solar-dark font-mono flex items-center justify-center gap-1">
+                        <span class="material-symbols-outlined text-[20px] text-solar flame-flicker">local_fire_department</span>
+                        {{ user.current_streak }}d
+                    </span>
+                </div>
+                <div class="px-6 py-3.5 rounded-2xl bg-primary text-white text-center shadow-sm min-w-[95px]">
+                    <span class="block text-[11px] font-bold text-[#93C5FD] uppercase tracking-widest mb-0.5">Points</span>
+                    <span class="text-2xl font-black font-mono">{{ user.points }}</span>
+                </div>
+                <a href="{{ url_for('export_scans') }}" title="Download verified CSV audit" class="p-3.5 rounded-2xl bg-surface border border-border-medium hover:border-primary text-text-secondary hover:text-primary transition flex items-center justify-center">
+                    <span class="material-symbols-outlined text-[22px]">download</span>
                 </a>
-                <a href="{{ url_for('rules') }}" class="flex-1 bg-surface-container border border-outline-variant/30 text-on-surface hover:bg-surface-container-high py-md rounded-DEFAULT font-label-md text-label-md uppercase tracking-wider transition-all duration-200 ease-out flex justify-center items-center gap-sm no-underline">
-                    <span class="material-symbols-outlined">insights</span>
-                    View Rules & Map
-                </a>
-            </section>
+            </div>
         </div>
 
-        <!-- Right Column: History Log -->
-        <div class="md:col-span-5 h-[600px] flex flex-col">
-            <h2 class="font-headline-md text-headline-md text-on-surface mb-md flex items-center gap-sm">
-                <span class="material-symbols-outlined text-secondary">history</span>
-                Scan Chronology
-            </h2>
-            <div class="glass-card rounded-xl flex-grow overflow-hidden flex flex-col border border-outline-variant/30">
-                <!-- Table Header -->
-                <div class="grid grid-cols-12 gap-sm px-md py-sm bg-surface-container-highest/30 border-b border-outline-variant/30 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider text-xs">
-                    <div class="col-span-4">Time / Date</div>
-                    <div class="col-span-5">Item Name</div>
-                    <div class="col-span-3 text-right">Category</div>
+        <!-- Level Progress Bar -->
+        <div class="mt-7 pt-6 border-t border-border-subtle space-y-2">
+            <div class="flex justify-between items-center text-xs">
+                <span class="font-semibold text-text-secondary">Progress to next tier: <strong class="text-text-primary">{{ user.level_info.title }}</strong></span>
+                <span class="text-text-muted font-mono font-medium">{{ user.points }} / {{ user.level_info.next_tier }} pts</span>
+            </div>
+            <div class="w-full h-2.5 rounded-full bg-surface border border-border-subtle overflow-hidden relative">
+                <div id="user-level-bar" class="h-full bg-primary rounded-full progress-shimmer transition-all duration-1000 ease-out" style="width: 0%;" data-target-width="{{ user.level_info.progress_pct }}%;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-7 items-start">
+
+        <!-- Left Col: Stats + Daily Quests + Simulator + Badges -->
+        <div class="lg:col-span-7 space-y-6">
+
+            <!-- Bento Impact Stats (Tangible Equivalencies) -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div class="eco-card p-5">
+                    <div class="w-9 h-9 rounded-xl bg-primary-light text-primary flex items-center justify-center mb-3">
+                        <span class="material-symbols-outlined text-[20px]">co2</span>
+                    </div>
+                    <div class="text-2xl font-black text-text-primary font-mono">{{ "%.1f"|format(user.total_co2_saved) }}g</div>
+                    <p class="text-xs text-text-secondary mt-0.5">Total CO₂ Diverted</p>
                 </div>
-                <!-- Scrollable List -->
-                <div class="overflow-y-auto flex-grow p-xs">
-                    {% if recent_scans %}
-                        {% for scan in recent_scans %}
-                        <div class="grid grid-cols-12 gap-sm px-sm py-md border-b border-outline-variant/20 hover:bg-surface-container-high transition-colors cursor-pointer group items-center">
-                            <div class="col-span-4 font-code-sm text-code-sm text-on-surface-variant group-hover:text-on-surface transition-colors">
-                                {{ scan.timestamp.strftime('%b %d, %H:%M') }}
+                <div class="eco-card p-5">
+                    <div class="w-9 h-9 rounded-xl bg-solar-light text-solar-dark flex items-center justify-center mb-3">
+                        <span class="material-symbols-outlined text-[20px]">battery_charging_full</span>
+                    </div>
+                    <div class="text-2xl font-black text-text-primary font-mono">{{ smartphone_charges }}</div>
+                    <p class="text-xs text-text-secondary mt-0.5">Smartphone Recharges</p>
+                </div>
+                <div class="eco-card p-5">
+                    <div class="w-9 h-9 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center mb-3">
+                        <span class="material-symbols-outlined text-[20px]">electric_car</span>
+                    </div>
+                    <div class="text-2xl font-black text-text-primary font-mono">{{ ev_miles }}<span class="text-sm font-normal text-text-muted ml-1">mi</span></div>
+                    <p class="text-xs text-text-secondary mt-0.5">EV Miles Offset</p>
+                </div>
+            </div>
+
+            <!-- Daily Climate Quests Widget -->
+            <div class="eco-card p-6 space-y-4">
+                <div class="flex items-center justify-between pb-3 border-b border-border-subtle">
+                    <h2 class="text-sm font-bold text-text-primary flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-[18px] text-solar">target</span>
+                        Today's Citizen Quests
+                    </h2>
+                    <span class="text-[11px] font-semibold text-primary bg-primary-light px-2.5 py-0.5 rounded-full">Resets Midnight</span>
+                </div>
+                <div class="space-y-3">
+                    {% for quest in daily_quests %}
+                    <div class="p-3.5 rounded-xl border {% if quest.completed %}bg-primary-light/40 border-primary/30{% else %}bg-surface border-border-subtle{% endif %} flex items-center justify-between gap-3 transition">
+                        <div class="flex items-center gap-3">
+                            <span class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold {% if quest.completed %}bg-primary text-white{% else %}bg-white text-text-muted border border-border-medium{% endif %}">
+                                {% if quest.completed %}
+                                <span class="material-symbols-outlined text-[16px]">check</span>
+                                {% else %}
+                                {{ loop.index }}
+                                {% endif %}
+                            </span>
+                            <div>
+                                <h4 class="text-xs font-bold text-text-primary {% if quest.completed %}line-through text-text-muted{% endif %}">{{ quest.title }}</h4>
+                                <p class="text-[11px] text-text-secondary">{{ quest.desc }}</p>
                             </div>
-                            <div class="col-span-5 flex items-center gap-xs">
-                                <span class="font-medium text-sm text-slate-800 truncate">{{ scan.item_name }}</span>
+                        </div>
+                        <span class="text-[11px] font-bold font-mono px-2 py-0.5 rounded-md {% if quest.completed %}bg-primary text-white{% else %}bg-solar-light text-solar-dark{% endif %}">
+                            {{ quest.reward }}
+                        </span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Virtual Household Dry-Waste Stash & Doorstep Pickup -->
+            <div class="eco-card p-6 space-y-5">
+                <div class="flex items-center justify-between pb-3 border-b border-border-subtle">
+                    <div>
+                        <h2 class="text-sm font-bold text-text-primary flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-[18px] text-teal-600">recycling</span>
+                            <span>Virtual Household Dry-Waste Stash</span>
+                        </h2>
+                        <p class="text-xs text-text-muted mt-0.5">Audited recyclable stream accumulation ready for circular commodity pickup</p>
+                    </div>
+                    <span class="text-xs font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full font-mono">
+                        ${{ "%.2f"|format(stash_value_usd) }} (₹{{ "%.0f"|format(stash_value_inr) }})
+                    </span>
+                </div>
+
+                <!-- Stash Progress toward 1,000g threshold -->
+                <div class="space-y-2">
+                    <div class="flex justify-between items-center text-xs">
+                        <span class="font-semibold text-text-secondary">Pickup Goal (1,000g Threshold):</span>
+                        <span class="font-mono font-bold text-primary">{{ stash_weight_g }}g / 1,000g ({{ stash_progress_pct }}%)</span>
+                    </div>
+                    <div class="w-full h-3 rounded-full bg-surface border border-border-subtle overflow-hidden">
+                        <div class="h-full bg-gradient-to-r from-blue-500 to-teal-500 rounded-full transition-all duration-700" style="width: {{ stash_progress_pct }}%;"></div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1">
+                    <div class="text-xs text-text-secondary">
+                        <span class="font-semibold text-text-primary">Doorstep Collection Status:</span>
+                        {% if stash_weight_g >= 1000 %}
+                        <span class="text-emerald-700 font-bold ml-1">Threshold Reached! Ready for Pickup</span>
+                        {% else %}
+                        <span class="text-amber-700 font-medium ml-1">{{ 1000 - stash_weight_g|round }}g remaining until free pickup</span>
+                        {% endif %}
+                    </div>
+                    <button type="button" onclick="openPickupModal()" class="btn-primary py-2 px-4 text-xs font-bold flex items-center justify-center gap-1.5 whitespace-nowrap shadow-sm">
+                        <span class="material-symbols-outlined text-[16px]">local_shipping</span>
+                        <span>Schedule Doorstep Pickup (+50 Pts)</span>
+                    </button>
+                </div>
+
+                <!-- Scheduled Pickups History -->
+                {% if pickup_requests %}
+                <div class="pt-3 border-t border-border-subtle space-y-2">
+                    <span class="text-[11px] font-bold uppercase tracking-wider text-text-muted block">Scheduled Doorstep Collections</span>
+                    <div class="space-y-1.5 max-h-40 overflow-y-auto pr-1">
+                        {% for p in pickup_requests %}
+                        <div class="p-2.5 rounded-lg bg-surface border border-border-subtle flex items-center justify-between text-xs">
+                            <div class="space-y-0.5">
+                                <span class="font-bold text-text-primary">{{ p.preferred_date }}</span>
+                                <span class="text-[10px] text-text-muted block truncate max-w-[200px]">{{ p.pickup_address }}</span>
                             </div>
-                            <div class="col-span-3 text-right flex justify-end">
-                                <span class="px-2 py-1 text-[10px] rounded-full uppercase tracking-wider font-semibold border 
-                                    {% if scan.category == 'Recyclable' %} bg-emerald-100 text-emerald-800 border-emerald-200
-                                    {% elif scan.category == 'Compostable' %} bg-lime-100 text-lime-800 border-lime-200
-                                    {% else %} bg-slate-100 text-slate-800 border-slate-200 {% endif %}">
-                                    {{ scan.category }}
+                            <div class="flex items-center gap-2">
+                                <span class="font-mono font-bold text-[11px] text-primary">{{ p.weight_grams|round }}g</span>
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full {% if p.status == 'Completed' %}bg-emerald-50 text-emerald-800 border border-emerald-200{% else %}bg-blue-50 text-blue-700 border border-blue-200{% endif %}">
+                                    {{ p.status }}
                                 </span>
                             </div>
                         </div>
                         {% endfor %}
-                    {% else %}
-                        <div class="p-8 text-center text-slate-400 text-sm">
-                            No scan history available yet. Try inspecting an item with the AI Inspector.
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Interactive Household Carbon Projection Simulator -->
+            <div class="eco-card p-6 space-y-5">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="text-sm font-bold text-text-primary flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-[18px] text-primary">analytics</span>
+                            Household Diversion Projection Calculator
+                        </h2>
+                        <p class="text-xs text-text-muted mt-0.5">Estimate your cumulative annual footprint impact</p>
+                    </div>
+                    <span id="slider-items-label" class="text-xs font-bold text-primary font-mono bg-primary-light px-2.5 py-1 rounded-full">4 items/day</span>
+                </div>
+
+                <div class="space-y-2">
+                    <input type="range" id="divert-slider" min="1" max="25" value="4" class="w-full h-2 bg-surface-container rounded-lg appearance-none cursor-pointer accent-primary">
+                    <div class="flex justify-between text-[10px] text-text-muted font-mono">
+                        <span>1 item/day</span>
+                        <span>10 items/day</span>
+                        <span>25 items/day</span>
+                    </div>
+                </div>
+
+                <!-- Simulation Output Grid -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
+                    <div class="p-3 bg-surface rounded-xl border border-border-subtle text-center space-y-1">
+                        <span class="text-[10px] font-bold text-text-muted uppercase">Annual CO₂</span>
+                        <div id="sim-co2" class="text-base font-black text-primary font-mono">51.1 kg</div>
+                    </div>
+                    <div class="p-3 bg-surface rounded-xl border border-border-subtle text-center space-y-1">
+                        <span class="text-[10px] font-bold text-text-muted uppercase">Phone Charges</span>
+                        <div id="sim-phones" class="text-base font-black text-text-primary font-mono">6,216</div>
+                    </div>
+                    <div class="p-3 bg-surface rounded-xl border border-border-subtle text-center space-y-1">
+                        <span class="text-[10px] font-bold text-text-muted uppercase">EV Miles</span>
+                        <div id="sim-ev" class="text-base font-black text-text-primary font-mono">340 mi</div>
+                    </div>
+                    <div class="p-3 bg-surface rounded-xl border border-border-subtle text-center space-y-1">
+                        <span class="text-[10px] font-bold text-text-muted uppercase">Ocean Bottles</span>
+                        <div id="sim-bottles" class="text-base font-black text-teal-700 font-mono">1,460</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 30-Day Sorting Consistency Activity Heatmap -->
+            <div class="eco-card p-6 space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-border-subtle">
+                    <div>
+                        <h2 class="text-sm font-bold text-text-primary flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-[18px] text-primary">calendar_month</span>
+                            30-Day Sorting Consistency
+                        </h2>
+                        <p class="text-xs text-text-muted mt-0.5">Daily municipal packaging scans &amp; streak progress</p>
+                    </div>
+                    <div>
+                        {% if streak_shields > 0 %}
+                        <span class="text-xs font-bold text-primary bg-primary-light border border-primary/20 px-3 py-1 rounded-full flex items-center gap-1.5 shadow-sm">
+                            <span class="material-symbols-outlined text-[16px] text-primary">shield</span>
+                            <span>{{ streak_shields }} Streak Shield{% if streak_shields > 1 %}s{% endif %} Active</span>
+                        </span>
+                        {% else %}
+                        <span class="text-[11px] font-semibold text-text-muted bg-surface-container border border-border-subtle px-2.5 py-1 rounded-full flex items-center gap-1">
+                            <span class="material-symbols-outlined text-[15px] text-text-muted">shield</span>
+                            <span>Next Shield: {{ 5 - (user.current_streak % 5) }}d</span>
+                        </span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Heatmap Grid -->
+                <div class="grid grid-cols-6 sm:grid-cols-10 gap-2" id="heatmap-grid">
+                    {% for day in heatmap_days %}
+                    <div class="group relative flex flex-col items-center justify-center p-2 rounded-xl text-center transition-transform hover:scale-110 cursor-pointer border border-border-subtle/50 {% if day.level == 0 %}bg-surface-container text-text-muted/60{% elif day.level == 1 %}bg-blue-200 text-blue-900 font-bold{% elif day.level == 2 %}bg-blue-400 text-white font-bold{% else %}bg-primary text-white font-black shadow-sm{% endif %}">
+                        <span class="text-[10px] font-mono leading-none">{{ day.date[-2:] }}</span>
+                        <span class="text-[9px] opacity-75 font-mono leading-none mt-0.5">{{ day.count }}</span>
+                        
+                        <!-- Tooltip -->
+                        <div class="absolute bottom-full mb-1.5 left-1/2 -translate-x-1/2 hidden group-hover:block z-30 whitespace-nowrap bg-[#0F172A] text-white text-[10px] font-semibold px-2.5 py-1 rounded-lg shadow-lg pointer-events-none">
+                            {{ day.label }}: {{ day.count }} item{{ 's' if day.count != 1 else '' }} sorted
                         </div>
-                    {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Heatmap Legend -->
+                <div class="flex items-center justify-between pt-2 text-[11px] text-text-muted">
+                    <span>Earn +1 Shield every 5 consecutive days</span>
+                    <div class="flex items-center gap-1.5">
+                        <span>Less</span>
+                        <span class="w-3 h-3 rounded bg-surface-container border border-border-subtle inline-block" title="0 scans"></span>
+                        <span class="w-3 h-3 rounded bg-blue-200 inline-block" title="1 scan"></span>
+                        <span class="w-3 h-3 rounded bg-blue-400 inline-block" title="2-3 scans"></span>
+                        <span class="w-3 h-3 rounded bg-primary inline-block" title="4+ scans"></span>
+                        <span>More</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Waste Stream Distribution & Chart.js Analytics -->
+            <div class="eco-card p-6 space-y-4">
+                <div class="flex items-center justify-between pb-3 border-b border-border-subtle">
+                    <h2 class="text-sm font-bold text-text-primary flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-[18px] text-primary">donut_small</span>
+                        Waste Stream Breakdown
+                    </h2>
+                    <span class="text-xs text-text-muted font-mono">{{ user.total_recycled }} items sorted</span>
+                </div>
+
+                <!-- 3 Summary Stat Pills -->
+                <div class="grid grid-cols-3 gap-3" id="waste-stream-pills">
+                    <div class="p-3.5 rounded-2xl bg-blue-50/70 border border-blue-200/80 space-y-1 text-center">
+                        <div class="text-[10px] font-bold text-blue-800 uppercase tracking-widest">Recyclable</div>
+                        <div class="stream-counter text-2xl font-black text-blue-900 font-mono" data-target="{{ category_counts.Recyclable }}">0</div>
+                        <div class="text-[11px] text-blue-700">Blue Stream</div>
+                    </div>
+                    <div class="p-3.5 rounded-2xl bg-teal-50/70 border border-teal-200/80 space-y-1 text-center">
+                        <div class="text-[10px] font-bold text-teal-800 uppercase tracking-widest">Compost</div>
+                        <div class="stream-counter text-2xl font-black text-teal-900 font-mono" data-target="{{ category_counts.Compostable }}">0</div>
+                        <div class="text-[11px] text-teal-700">Nutrient Cycle</div>
+                    </div>
+                    <div class="p-3.5 rounded-2xl bg-slate-100/80 border border-slate-200 space-y-1 text-center">
+                        <div class="text-[10px] font-bold text-slate-700 uppercase tracking-widest">Landfill</div>
+                        <div class="stream-counter text-2xl font-black text-slate-900 font-mono" data-target="{{ category_counts.Landfill }}">0</div>
+                        <div class="text-[11px] text-slate-600">Safely Managed</div>
+                    </div>
+                </div>
+
+                <!-- Interactive Chart.js Visualizations (Doughnut + 7-Day Trend) -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-3 border-t border-border-subtle">
+                    <div class="p-3 bg-surface rounded-2xl border border-border-subtle flex flex-col items-center">
+                        <span class="text-[11px] font-bold text-text-primary self-start mb-2 flex items-center gap-1">
+                            <span class="material-symbols-outlined text-primary text-[15px]">pie_chart</span>
+                            Stream Share
+                        </span>
+                        <div class="relative w-full max-w-[190px] h-[180px] flex items-center justify-center">
+                            <canvas id="streamShareChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="p-3 bg-surface rounded-2xl border border-border-subtle flex flex-col">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-[11px] font-bold text-text-primary flex items-center gap-1">
+                                <span class="material-symbols-outlined text-teal-600 text-[15px]">trending_up</span>
+                                7-Day CO₂ Diversion
+                            </span>
+                            <span class="text-[10px] font-mono font-bold text-primary">Grams CO₂</span>
+                        </div>
+                        <div class="relative w-full h-[180px]">
+                            <canvas id="co2TrendChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Locked vs. Unlocked Achievement Badges Gallery with Progress Bars -->
+            <div class="eco-card p-6 space-y-4">
+                <div class="flex items-center justify-between pb-3 border-b border-border-subtle">
+                    <div>
+                        <h2 class="text-sm font-bold text-text-primary flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-[18px] text-solar">workspace_premium</span>
+                            Citizen Achievements Gallery
+                        </h2>
+                        <p class="text-xs text-text-muted mt-0.5">Verified sorting badges &amp; milestone progression</p>
+                    </div>
+                    <span class="text-xs font-mono font-bold text-primary bg-primary-light px-2.5 py-1 rounded-full">
+                        {{ all_badges|selectattr("unlocked", "equalto", true)|list|length }} / {{ all_badges|length }} Unlocked
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                    {% for badge in all_badges %}
+                    <div class="badge-card reveal-on-scroll p-4 rounded-2xl border transition-all duration-200 {% if badge.unlocked %}bg-white border-primary/30 shadow-sm hover:border-primary{% else %}bg-surface-container/60 border-border-medium/60 opacity-70{% endif %} flex items-start gap-3.5" style="transition-delay: {{ (loop.index0 % 4) * 80 }}ms;">
+                        <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5 {% if badge.unlocked %}bg-solar-light text-solar-dark border border-solar/30 shadow-sm{% else %}bg-slate-200 text-slate-500 border border-slate-300{% endif %}">
+                            {% if badge.unlocked %}
+                            <span class="material-symbols-outlined text-[22px]">{{ badge.icon }}</span>
+                            {% else %}
+                            <span class="material-symbols-outlined text-[20px]">lock</span>
+                            {% endif %}
+                        </div>
+
+                        <div class="flex-1 min-w-0 space-y-1">
+                            <div class="flex items-center justify-between gap-2">
+                                <h4 class="text-xs font-bold text-text-primary truncate">{{ badge.name }}</h4>
+                                {% if badge.unlocked %}
+                                <span class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-solar-light text-solar-dark border border-solar/30">Unlocked</span>
+                                {% else %}
+                                <span class="text-[10px] font-mono text-text-muted">{{ badge.progress }}%</span>
+                                {% endif %}
+                            </div>
+                            <p class="text-[11px] text-text-secondary leading-snug">{{ badge.desc }}</p>
+
+                            <!-- Progress Bar & Target -->
+                            <div class="pt-1.5 space-y-1">
+                                <div class="w-full h-1.5 rounded-full bg-slate-200 overflow-hidden">
+                                    <div class="h-full {% if badge.unlocked %}bg-solar{% else %}bg-primary/70{% endif %} rounded-full transition-all duration-500" style="width: {{ badge.progress }}%;"></div>
+                                </div>
+                                <div class="flex justify-between items-center text-[10px] font-mono text-text-muted">
+                                    <span>Target</span>
+                                    <span>{{ badge.target_text }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Col: Filterable Activity & Audit Certificate -->
+        <div class="lg:col-span-5 space-y-6">
+            
+            <div class="eco-card p-6 space-y-4">
+                <!-- Activity Header -->
+                <div class="flex items-center justify-between pb-3 border-b border-border-subtle">
+                    <h2 class="text-sm font-bold text-text-primary flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-[18px] text-primary">history</span>
+                        Recent Activity
+                    </h2>
+                    <a href="{{ url_for('classifier') }}" class="text-xs font-bold text-primary hover:underline flex items-center gap-0.5">
+                        <span class="material-symbols-outlined text-[16px]">add</span> New Scan
+                    </a>
+                </div>
+
+                <!-- Instant Filter Controls -->
+                <div class="space-y-2">
+                    <div class="relative">
+                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-muted text-[16px]">search</span>
+                        <input type="text" id="scan-search-input" placeholder="Search past items…" class="w-full text-xs pl-8 pr-3 py-2 rounded-xl border border-border-subtle bg-surface focus:outline-none focus:border-primary transition">
+                    </div>
+
+                    <div class="flex gap-1.5" id="scan-stream-filters">
+                        <button type="button" data-stream="all" class="scan-filter-btn px-2.5 py-1 rounded-full text-[11px] font-bold bg-primary text-white">All</button>
+                        <button type="button" data-stream="Recyclable" class="scan-filter-btn px-2.5 py-1 rounded-full text-[11px] font-medium bg-surface text-text-secondary border border-border-subtle hover:border-primary">Recyclable</button>
+                        <button type="button" data-stream="Compostable" class="scan-filter-btn px-2.5 py-1 rounded-full text-[11px] font-medium bg-surface text-text-secondary border border-border-subtle hover:border-primary">Compost</button>
+                        <button type="button" data-stream="Landfill" class="scan-filter-btn px-2.5 py-1 rounded-full text-[11px] font-medium bg-surface text-text-secondary border border-border-subtle hover:border-primary">Landfill</button>
+                    </div>
+                </div>
+
+                <!-- Scan Items Accordion List -->
+                {% if recent_scans %}
+                <div class="space-y-2.5 max-h-[500px] overflow-y-auto pr-1" id="scans-list-container">
+                    {% for scan in recent_scans %}
+                    <details class="scan-item-card reveal-on-scroll group bg-surface border border-border-subtle rounded-xl p-3.5 transition hover:border-primary/40 cursor-pointer" style="transition-delay: {{ (loop.index0 % 6) * 60 }}ms;" data-category="{{ scan.category }}" data-name="{{ scan.item_name.lower() }}">
+                        <summary class="flex items-center justify-between list-none gap-3">
+                            <div class="min-w-0 flex-1 space-y-0.5">
+                                <h4 class="text-xs font-bold text-text-primary truncate">{{ scan.item_name }}</h4>
+                                <p class="text-[10px] text-text-muted font-mono">{{ scan.timestamp.strftime('%b %d, %Y · %H:%M') }}</p>
+                            </div>
+                            <div class="flex items-center gap-2 flex-shrink-0">
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full {% if scan.category == 'Recyclable' %}bg-blue-50 text-blue-700 border border-blue-200{% elif scan.category == 'Compostable' %}bg-teal-50 text-teal-800 border border-teal-200{% elif scan.category == 'Hazmat' %}bg-rose-50 text-rose-700 border border-rose-200{% else %}bg-slate-100 text-slate-700 border border-slate-200{% endif %}">
+                                    {{ scan.category }}
+                                </span>
+                                <button type="button" onclick="event.preventDefault(); event.stopPropagation(); deleteScan({{ scan.id }}, this)" class="p-1 text-slate-400 hover:text-rose-600 transition" title="Delete scan record">
+                                    <span class="material-symbols-outlined text-[16px]">delete</span>
+                                </button>
+                                <span class="material-symbols-outlined text-text-muted text-[16px] transition-transform group-open:rotate-180">expand_more</span>
+                            </div>
+                        </summary>
+
+                        <div class="mt-3 pt-3 border-t border-border-subtle space-y-2">
+                            <p class="text-[11px] text-text-secondary"><span class="font-semibold text-text-primary">Material:</span> {{ scan.material }}</p>
+                            {% if scan.parsed_components %}
+                            <div class="space-y-1">
+                                <span class="text-[10px] font-bold uppercase tracking-widest text-text-muted block">Directives</span>
+                                {% for comp in scan.parsed_components %}
+                                <div class="text-[11px] bg-white p-2 rounded-lg border border-border-subtle flex justify-between items-center gap-2">
+                                    <div class="min-w-0">
+                                        <strong class="text-text-primary text-xs">{{ comp.part }}</strong>
+                                        <span class="text-text-muted text-[10px]"> · {{ comp.material }}</span>
+                                    </div>
+                                    <span class="text-[10px] font-bold text-primary px-2 py-0.5 bg-primary-light rounded-full whitespace-nowrap">{{ comp.destination }}</span>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                            <div class="flex justify-between items-center text-[11px] text-text-muted pt-1">
+                                <span>CO₂ diverted:</span>
+                                <span class="font-bold text-primary font-mono">+{{ scan.co2_saved }}g</span>
+                            </div>
+                        </div>
+                    </details>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="py-16 text-center space-y-4">
+                    <div class="w-14 h-14 rounded-2xl bg-surface flex items-center justify-center mx-auto border border-border-subtle text-text-muted">
+                        <span class="material-symbols-outlined text-[28px]">qr_code_scanner</span>
+                    </div>
+                    <div class="space-y-1">
+                        <p class="text-sm font-bold text-text-secondary">No scans yet</p>
+                        <p class="text-xs text-text-muted max-w-[220px] mx-auto">Inspect your first packaging item to begin tracking your carbon diversion.</p>
+                    </div>
+                    <a href="{{ url_for('classifier') }}" class="btn-primary py-2.5 px-5 text-xs">
+                        Scan First Item
+                    </a>
+                </div>
+                {% endif %}
+
+                <!-- Export & Print Actions -->
+                <div class="pt-4 border-t border-border-subtle flex flex-wrap items-center justify-between gap-2 text-xs">
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <a href="{{ url_for('export_scans') }}" class="font-bold text-primary hover:underline flex items-center gap-1">
+                            <span class="material-symbols-outlined text-[16px]">file_download</span>
+                            <span>Export CSV</span>
+                        </a>
+                        <button type="button" onclick="openShareImpactModal()" class="font-bold text-teal-700 bg-teal-50 border border-teal-200 hover:bg-teal-100 px-3 py-1.5 rounded-full transition flex items-center gap-1">
+                            <span class="material-symbols-outlined text-[15px]">share</span>
+                            <span>Share Impact</span>
+                        </button>
+                        <button type="button" onclick="openKitchenGuideModal()" class="font-bold text-primary bg-primary-light border border-primary/20 hover:bg-primary-light/80 px-3 py-1.5 rounded-full transition flex items-center gap-1">
+                            <span class="material-symbols-outlined text-[15px]">kitchen</span>
+                            <span>Print Kitchen Guide</span>
+                        </button>
+                    </div>
+                    <button type="button" onclick="window.print()" class="text-text-secondary hover:text-text-primary flex items-center gap-1 font-medium">
+                        <span class="material-symbols-outlined text-[16px]">print</span>
+                        <span>Print Certificate</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Certified Diversion Certificate Card -->
+            <div class="eco-card p-6 border-2 border-primary/20 space-y-4 bg-gradient-to-br from-white via-surface to-primary-light/20">
+                <div class="flex items-center justify-between">
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-primary bg-primary-light px-2.5 py-0.5 rounded-full">Official Verification</span>
+                    <span class="text-[10px] font-mono text-text-muted">ID: SYNC-{{ "%04d"|format(user.id) }}</span>
+                </div>
+                <div>
+                    <h3 class="text-sm font-bold text-text-primary">Verified Citizen Climate Ledger</h3>
+                    <p class="text-xs text-text-secondary mt-1">This citizen profile is verified active in the zero-waste municipal diversion protocol.</p>
+                </div>
+                <div class="pt-3 border-t border-border-subtle flex justify-between items-center text-xs">
+                    <span class="font-medium text-text-secondary">Community Ranking:</span>
+                    <a href="{{ url_for('leaderboard') }}" class="text-primary hover:underline font-bold flex items-center gap-0.5">
+                        View Leaderboard &rarr;
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Scroll-Triggered Level Progress Bar & Waste Stream Breakdown Counters
+    document.addEventListener('DOMContentLoaded', () => {
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const levelBar = document.getElementById('user-level-bar');
+        const streamPills = document.getElementById('waste-stream-pills');
+        const streamCounters = document.querySelectorAll('.stream-counter');
+
+        function fillLevelBar() {
+            if (levelBar) {
+                const targetWidth = levelBar.getAttribute('data-target-width') || '0%';
+                if (prefersReducedMotion) {
+                    levelBar.style.width = targetWidth;
+                } else {
+                    requestAnimationFrame(() => {
+                        setTimeout(() => {
+                            levelBar.style.width = targetWidth;
+                        }, 120);
+                    });
+                }
+            }
+        }
+
+        function animateStreamCounters() {
+            streamCounters.forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-target')) || 0;
+                if (prefersReducedMotion || target === 0) {
+                    counter.textContent = target.toLocaleString();
+                    return;
+                }
+                const duration = 1200;
+                const startTime = performance.now();
+                function step(currentTime) {
+                    const elapsed = currentTime - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const ease = 1 - Math.pow(1 - progress, 3);
+                    counter.textContent = Math.round(target * ease).toLocaleString();
+                    if (progress < 1) {
+                        requestAnimationFrame(step);
+                    } else {
+                        counter.textContent = target.toLocaleString();
+                    }
+                }
+                requestAnimationFrame(step);
+            });
+        }
+
+        if ('IntersectionObserver' in window) {
+            // Level Bar Observer
+            if (levelBar) {
+                const levelObserver = new IntersectionObserver((entries, obs) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            fillLevelBar();
+                            obs.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.2 });
+                levelObserver.observe(levelBar);
+            }
+
+            // Waste Stream Observer
+            if (streamPills) {
+                const streamObserver = new IntersectionObserver((entries, obs) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            animateStreamCounters();
+                            obs.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.25 });
+                streamObserver.observe(streamPills);
+            }
+        } else {
+            fillLevelBar();
+            animateStreamCounters();
+        }
+    });
+
+    // Carbon Projection Simulator with 200ms tweening
+    const slider = document.getElementById('divert-slider');
+    const itemsLabel = document.getElementById('slider-items-label');
+    const simCo2 = document.getElementById('sim-co2');
+    const simPhones = document.getElementById('sim-phones');
+    const simEv = document.getElementById('sim-ev');
+    const simBottles = document.getElementById('sim-bottles');
+
+    let currentAnimId = null;
+    let simState = {
+        co2: 51.1,
+        phones: 6216,
+        ev: 340,
+        bottles: 1460
+    };
+
+    function tweenSimulator(targetState) {
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            if (simCo2) simCo2.textContent = `${targetState.co2.toFixed(1)} kg`;
+            if (simPhones) simPhones.textContent = Math.round(targetState.phones).toLocaleString();
+            if (simEv) simEv.textContent = `${Math.round(targetState.ev).toLocaleString()} mi`;
+            if (simBottles) simBottles.textContent = Math.round(targetState.bottles).toLocaleString();
+            simState = { ...targetState };
+            return;
+        }
+
+        if (currentAnimId) cancelAnimationFrame(currentAnimId);
+        const startState = { ...simState };
+        const startTime = performance.now();
+        const duration = 200;
+
+        function frame(time) {
+            const elapsed = time - startTime;
+            const t = Math.min(elapsed / duration, 1);
+            const ease = 1 - Math.pow(1 - t, 2);
+
+            const co2 = startState.co2 + (targetState.co2 - startState.co2) * ease;
+            const phones = startState.phones + (targetState.phones - startState.phones) * ease;
+            const ev = startState.ev + (targetState.ev - startState.ev) * ease;
+            const bottles = startState.bottles + (targetState.bottles - startState.bottles) * ease;
+
+            if (simCo2) simCo2.textContent = `${co2.toFixed(1)} kg`;
+            if (simPhones) simPhones.textContent = Math.round(phones).toLocaleString();
+            if (simEv) simEv.textContent = `${Math.round(ev).toLocaleString()} mi`;
+            if (simBottles) simBottles.textContent = Math.round(bottles).toLocaleString();
+
+            if (t < 1) {
+                currentAnimId = requestAnimationFrame(frame);
+            } else {
+                simState = { ...targetState };
+            }
+        }
+        currentAnimId = requestAnimationFrame(frame);
+    }
+
+    if (slider) {
+        slider.addEventListener('input', (e) => {
+            const count = parseInt(e.target.value);
+            if (itemsLabel) itemsLabel.textContent = `${count} item${count > 1 ? 's' : ''}/day`;
+            
+            // Average grams per packaging item = 35g CO2 avoided
+            const annualGrams = count * 35.0 * 365;
+            const targetCo2 = annualGrams / 1000.0;
+            const targetPhones = annualGrams / 8.22;
+            const targetEv = annualGrams / 150.0;
+            const targetBottles = count * 365;
+
+            tweenSimulator({
+                co2: targetCo2,
+                phones: targetPhones,
+                ev: targetEv,
+                bottles: targetBottles
+            });
+        });
+    }
+
+    // Recent Scans Live Search & Filter
+    const searchInput = document.getElementById('scan-search-input');
+    const filterButtons = document.querySelectorAll('.scan-filter-btn');
+    const scanCards = document.querySelectorAll('.scan-item-card');
+
+    let currentStream = 'all';
+    let currentQuery = '';
+
+    function filterScans() {
+        scanCards.forEach(card => {
+            const cat = card.dataset.category;
+            const name = card.dataset.name;
+            const matchesStream = (currentStream === 'all' || cat === currentStream);
+            const matchesQuery = (!currentQuery || name.includes(currentQuery));
+
+            if (matchesStream && matchesQuery) {
+                card.classList.remove('hidden');
+            } else {
+                card.classList.add('hidden');
+            }
+        });
+    }
+
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            currentQuery = e.target.value.trim().toLowerCase();
+            filterScans();
+        });
+    }
+
+    filterButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            filterButtons.forEach(b => {
+                b.className = "scan-filter-btn px-2.5 py-1 rounded-full text-[11px] font-medium bg-surface text-text-secondary border border-border-subtle hover:border-primary";
+            });
+            btn.className = "scan-filter-btn px-2.5 py-1 rounded-full text-[11px] font-bold bg-primary text-white";
+            currentStream = btn.dataset.stream;
+            filterScans();
+        });
+    });
+
+    // Chart.js: Stream Share Doughnut Chart
+    const streamCanvas = document.getElementById('streamShareChart');
+    if (streamCanvas && typeof Chart !== 'undefined') {
+        const recyclableCount = {{ category_counts.Recyclable }};
+        const compostCount = {{ category_counts.Compostable }};
+        const landfillCount = {{ category_counts.Landfill }};
+        const total = recyclableCount + compostCount + landfillCount;
+        const hasData = total > 0;
+
+        new Chart(streamCanvas, {
+            type: 'doughnut',
+            data: {
+                labels: ['Recyclable', 'Compostable', 'Landfill'],
+                datasets: [{
+                    data: hasData ? [recyclableCount, compostCount, landfillCount] : [1, 0, 0],
+                    backgroundColor: hasData ? ['#0284C7', '#0D9488', '#475569'] : ['#E2E8F0', '#E2E8F0', '#E2E8F0'],
+                    borderWidth: 2,
+                    borderColor: '#FFFFFF',
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '70%',
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        enabled: hasData,
+                        callbacks: {
+                            label: function(context) {
+                                const val = context.raw || 0;
+                                const pct = total > 0 ? Math.round((val / total) * 100) : 0;
+                                return ` ${context.label}: ${val} items (${pct}%)`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // Chart.js: 7-Day Carbon Diversion Trend Bar/Line Chart
+    const co2Canvas = document.getElementById('co2TrendChart');
+    if (co2Canvas && typeof Chart !== 'undefined') {
+        const seriesData = {{ daily_co2_series|tojson }};
+        const labels = seriesData.map(d => d.date_label);
+        const co2Values = seriesData.map(d => d.co2_grams);
+
+        new Chart(co2Canvas, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'CO₂ Diverted (g)',
+                    data: co2Values,
+                    backgroundColor: '#2563EB',
+                    borderRadius: 6,
+                    borderSkipped: false,
+                    maxBarThickness: 28
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            title: function(items) {
+                                const idx = items[0].dataIndex;
+                                return seriesData[idx].full_date;
+                            },
+                            label: function(context) {
+                                const idx = context.dataIndex;
+                                return ` CO₂ Diverted: ${context.raw}g (${seriesData[idx].count} items)`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: { display: false },
+                        ticks: { font: { size: 10, family: 'Geist, Inter, sans-serif' }, color: '#64748B' }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: '#F1F5F9' },
+                        ticks: { font: { size: 10, family: 'monospace' }, color: '#64748B', precision: 0 }
+                    }
+                }
+            }
+        });
+    }
+
+    // Hub Switching Handler
+    async function updateCitizenHub(newHub) {
+        const badge = document.getElementById('hub-saved-badge');
+        try {
+            const res = await fetch('/api/update_hub', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ community_hub: newHub })
+            });
+            const data = await res.json();
+            if (data.success && badge) {
+                badge.classList.remove('hidden');
+                setTimeout(() => badge.classList.add('hidden'), 2500);
+            }
+        } catch (e) {
+            console.warn("Failed to update hub:", e);
+        }
+    }
+
+    // Doorstep Pickup Modal Handlers
+    function openPickupModal() {
+        const modal = document.getElementById('pickupModal');
+        const dateInput = document.getElementById('pickupDateInput');
+        if (dateInput && !dateInput.value) {
+            const tom = new Date();
+            tom.setDate(tom.getDate() + 2);
+            dateInput.value = tom.toISOString().split('T')[0];
+        }
+        if (modal) modal.classList.remove('hidden');
+    }
+
+    function closePickupModal() {
+        const modal = document.getElementById('pickupModal');
+        if (modal) modal.classList.add('hidden');
+    }
+
+    async function handlePickupSubmit(e) {
+        e.preventDefault();
+        const address = document.getElementById('pickupAddressInput').value;
+        const date = document.getElementById('pickupDateInput').value;
+        const btn = document.getElementById('submitPickupBtn');
+        if (btn) btn.disabled = true;
+
+        try {
+            const resp = await fetch('/api/schedule_pickup', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    address: address,
+                    date: date,
+                    weight_g: {{ stash_weight_g|float }},
+                    value_usd: {{ stash_value_usd|float }}
+                })
+            });
+            const data = await resp.json();
+            if (data.success) {
+                closePickupModal();
+                alert(data.message || "Pickup scheduled! +50 Eco-Points added to your profile.");
+                window.location.reload();
+            } else {
+                alert(data.error || "Could not schedule pickup.");
+                if (btn) btn.disabled = false;
+            }
+        } catch (err) {
+            alert("Error: " + err.message);
+            if (btn) btn.disabled = false;
+        }
+    }
+
+    // EPR Social Impact Card Modal Handlers
+    function openShareImpactModal() {
+        const modal = document.getElementById('shareImpactModal');
+        if (modal) modal.classList.remove('hidden');
+        renderShareImpactCanvas();
+    }
+
+    function closeShareImpactModal() {
+        const modal = document.getElementById('shareImpactModal');
+        if (modal) modal.classList.add('hidden');
+    }
+
+    function renderShareImpactCanvas() {
+        const canvas = document.getElementById('shareImpactCanvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const width = 600;
+        const height = 380;
+
+        // Background Gradient (Nordic Glacier Midnight)
+        const bgGrad = ctx.createLinearGradient(0, 0, width, height);
+        bgGrad.addColorStop(0, '#0F172A');
+        bgGrad.addColorStop(0.6, '#1E293B');
+        bgGrad.addColorStop(1, '#0B1120');
+        ctx.fillStyle = bgGrad;
+        ctx.fillRect(0, 0, width, height);
+
+        // Accent top bar
+        const barGrad = ctx.createLinearGradient(0, 0, width, 0);
+        barGrad.addColorStop(0, '#2563EB');
+        barGrad.addColorStop(0.5, '#0D9488');
+        barGrad.addColorStop(1, '#F59E0B');
+        ctx.fillStyle = barGrad;
+        ctx.fillRect(0, 0, width, 6);
+
+        // Header Brand
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = 'bold 22px Geist, Inter, sans-serif';
+        ctx.fillText('BinSync', 40, 48);
+
+        ctx.fillStyle = '#93C5FD';
+        ctx.font = 'bold 11px Geist, Inter, sans-serif';
+        ctx.fillText('CLIMATE INTELLIGENCE LEDGER', 40, 68);
+
+        // Verified Badge
+        ctx.fillStyle = 'rgba(13, 148, 136, 0.2)';
+        ctx.strokeStyle = '#0D9488';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.roundRect(width - 170, 32, 130, 28, 14);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = '#2DD4BF';
+        ctx.font = 'bold 10px Geist, Inter, sans-serif';
+        ctx.fillText('✓ EPR VERIFIED', width - 150, 50);
+
+        // Citizen Name & Level
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = 'bold 28px Geist, Inter, sans-serif';
+        ctx.fillText('{{ user.username }}', 40, 125);
+
+        ctx.fillStyle = '#94A3B8';
+        ctx.font = '13px Geist, Inter, sans-serif';
+        ctx.fillText('Citizen ID: SYNC-{{ "%04d"|format(user.id) }} · {{ user.community_hub }} · {{ user.level_info.title }}', 40, 150);
+
+        // 3 Stat Boxes
+        const statBoxes = [
+            { label: 'CO₂ DIVERTED', val: '{{ "%.1f"|format(user.total_co2_saved) }}g' },
+            { label: 'ITEMS SORTED', val: '{{ user.total_recycled }}' },
+            { label: 'ECO-POINTS', val: '{{ user.points }}' }
+        ];
+
+        statBoxes.forEach((box, i) => {
+            const x = 40 + i * 175;
+            const y = 180;
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+            ctx.beginPath();
+            ctx.roundRect(x, y, 160, 85, 12);
+            ctx.fill();
+            ctx.stroke();
+
+            ctx.fillStyle = '#94A3B8';
+            ctx.font = 'bold 10px monospace';
+            ctx.fillText(box.label, x + 16, y + 28);
+
+            ctx.fillStyle = '#F8FAFC';
+            ctx.font = 'bold 24px monospace';
+            ctx.fillText(box.val, x + 16, y + 62);
+        });
+
+        // EPR Cryptographic Hash strip
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.8)';
+        ctx.strokeStyle = 'rgba(51, 65, 85, 0.8)';
+        ctx.beginPath();
+        ctx.roundRect(40, 290, width - 80, 50, 10);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = '#64748B';
+        ctx.font = '10px monospace';
+        ctx.fillText('AUDIT HASH: EPR-7A9B3E2F8C1D0462  |  CIRCULARITY PROTOCOL 2.0', 56, 312);
+
+        ctx.fillStyle = '#38BDF8';
+        ctx.font = 'bold 11px monospace';
+        ctx.fillText('ZERO-WASTE MUNICIPAL LANDFILL DIVERSION ACCREDITATION', 56, 328);
+    }
+
+    function downloadImpactCard() {
+        const canvas = document.getElementById('shareImpactCanvas');
+        if (!canvas) return;
+        const link = document.createElement('a');
+        link.download = `BinSync_Impact_{{ user.username }}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+    }
+
+    // Kitchen Fridge Guide Modal Handlers
+    function openKitchenGuideModal() {
+        const modal = document.getElementById('kitchenGuideModal');
+        if (modal) modal.classList.remove('hidden');
+    }
+
+    function closeKitchenGuideModal() {
+        const modal = document.getElementById('kitchenGuideModal');
+        if (modal) modal.classList.add('hidden');
+    }
+
+    function printKitchenGuide() {
+        window.print();
+    }
+
+    // Delete Accidental Scan Handler
+    async function deleteScan(scanId, btn) {
+        if (!scanId) return;
+        if (!confirm("Delete this scan? Earned points and carbon offset will be reversed.")) return;
+        
+        try {
+            const resp = await fetch(`/api/scan/${scanId}`, { method: 'DELETE' });
+            const res = await resp.json();
+            if (res.status === 'success') {
+                const card = btn.closest('.scan-item-card');
+                if (card) card.remove();
+                if (window.triggerFeedback) window.triggerFeedback('error');
+                window.location.reload();
+            } else {
+                alert(res.error || "Could not delete scan record.");
+            }
+        } catch(e) {
+            alert("Delete failed: " + e.message);
+        }
+    }
+</script>
+
+<!-- Doorstep Pickup Scheduling Modal -->
+<div id="pickupModal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 space-y-5 border border-border-subtle shadow-2xl relative">
+        <div class="flex items-center justify-between pb-3 border-b border-border-subtle">
+            <div class="flex items-center gap-2">
+                <div class="w-9 h-9 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center font-bold">
+                    <span class="material-symbols-outlined text-[20px]">local_shipping</span>
+                </div>
+                <div>
+                    <h3 class="text-base font-bold text-text-primary">Doorstep Stash Pickup</h3>
+                    <span class="text-[11px] text-text-muted">Direct Circular Stream Handover (+50 Pts)</span>
+                </div>
+            </div>
+            <button type="button" onclick="closePickupModal()" class="text-text-muted hover:text-text-primary p-1">
+                <span class="material-symbols-outlined text-[20px]">close</span>
+            </button>
+        </div>
+
+        <form id="pickupForm" onsubmit="handlePickupSubmit(event)" class="space-y-4 text-xs">
+            <div>
+                <label class="block font-bold text-text-primary mb-1">Pickup Address / Doorstep Location</label>
+                <input type="text" id="pickupAddressInput" required placeholder="e.g. 742 Evergreen Terrace, Apt 4B" class="w-full text-xs px-3.5 py-2.5 rounded-xl border border-border-medium bg-surface focus:outline-none focus:border-primary">
+            </div>
+
+            <div>
+                <label class="block font-bold text-text-primary mb-1">Preferred Collection Date</label>
+                <input type="date" id="pickupDateInput" required class="w-full text-xs px-3.5 py-2.5 rounded-xl border border-border-medium bg-surface focus:outline-none focus:border-primary">
+            </div>
+
+            <div class="p-3 bg-surface rounded-xl border border-border-subtle flex justify-between items-center text-xs">
+                <div>
+                    <span class="text-text-muted block">Estimated Dry Stash:</span>
+                    <strong class="text-text-primary">{{ stash_weight_g }} grams</strong>
+                </div>
+                <div class="text-right">
+                    <span class="text-text-muted block">Recovery Scrap Value:</span>
+                    <strong class="text-emerald-700">${{ "%.2f"|format(stash_value_usd) }} (₹{{ "%.0f"|format(stash_value_inr) }})</strong>
+                </div>
+            </div>
+
+            <div class="pt-2 flex gap-3">
+                <button type="button" onclick="closePickupModal()" class="flex-1 btn-secondary py-2.5 text-xs font-bold">Cancel</button>
+                <button type="submit" id="submitPickupBtn" class="flex-1 btn-primary py-2.5 text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm">
+                    <span class="material-symbols-outlined text-[16px]">check_circle</span>
+                    <span>Confirm Pickup (+50 Pts)</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Social Impact Card Share Modal -->
+<div id="shareImpactModal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 space-y-4 border border-border-subtle shadow-2xl relative">
+        <div class="flex items-center justify-between pb-2 border-b border-border-subtle">
+            <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary text-[22px]">verified</span>
+                <h3 class="text-base font-bold text-text-primary">EPR Verified Social Impact Card</h3>
+            </div>
+            <button type="button" onclick="closeShareImpactModal()" class="text-text-muted hover:text-text-primary p-1">
+                <span class="material-symbols-outlined text-[20px]">close</span>
+            </button>
+        </div>
+
+        <div class="flex justify-center overflow-hidden rounded-2xl border border-border-subtle shadow-md">
+            <canvas id="shareImpactCanvas" width="600" height="380" class="w-full h-auto rounded-2xl max-w-[500px]"></canvas>
+        </div>
+
+        <div class="flex items-center justify-between gap-3 pt-2">
+            <span class="text-[11px] text-text-muted">Cryptographically audited zero-waste credential</span>
+            <button type="button" onclick="downloadImpactCard()" class="btn-primary py-2.5 px-5 text-xs font-bold flex items-center gap-1.5 shadow-sm">
+                <span class="material-symbols-outlined text-[16px]">download</span>
+                <span>Download PNG Card</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Kitchen Fridge Bin Guide Modal -->
+<div id="kitchenGuideModal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 space-y-5 border border-border-subtle shadow-2xl relative max-h-[90vh] overflow-y-auto">
+        <div class="flex items-center justify-between pb-3 border-b border-border-subtle no-print">
+            <div class="flex items-center gap-2">
+                <div class="w-9 h-9 rounded-xl bg-primary-light text-primary flex items-center justify-center font-bold">
+                    <span class="material-symbols-outlined text-[20px]">kitchen</span>
+                </div>
+                <div>
+                    <h3 class="text-base font-bold text-text-primary">Kitchen Fridge Sorting Cheat Sheet</h3>
+                    <span class="text-[11px] text-text-muted">Customized for your household's frequent packaging</span>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <button type="button" onclick="printKitchenGuide()" class="btn-primary py-1.5 px-3.5 text-xs font-bold flex items-center gap-1.5 shadow-sm">
+                    <span class="material-symbols-outlined text-[16px]">print</span>
+                    <span>Print Sheet</span>
+                </button>
+                <button type="button" onclick="closeKitchenGuideModal()" class="text-text-muted hover:text-text-primary p-1">
+                    <span class="material-symbols-outlined text-[20px]">close</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- The Printable Fridge Guide Container -->
+        <div id="kitchen-fridge-sheet" class="space-y-5 bg-white text-slate-900 p-6 rounded-2xl border-2 border-slate-200">
+            <!-- Header Strip -->
+            <div class="flex items-center justify-between border-b-2 border-slate-800 pb-4">
+                <div class="flex items-center gap-3">
+                    <img src="{{ url_for('static', filename='img/logo-icon.svg') }}" alt="BinSync" class="w-10 h-10 rounded-xl shadow-sm">
+                    <div>
+                        <h2 class="text-xl font-black text-slate-900 tracking-tight">BinSync Kitchen Sorting Guide</h2>
+                        <p class="text-xs text-slate-600 font-semibold">Household of {{ user.username }} · {{ user.community_hub }}</p>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <span class="text-[10px] font-mono font-bold uppercase tracking-wider bg-slate-100 text-slate-800 px-2.5 py-1 rounded-md border border-slate-300">FRIDGE CHEAT SHEET</span>
+                    <p class="text-[10px] text-slate-500 mt-1 font-mono">Verified Zero-Waste</p>
+                </div>
+            </div>
+
+            <!-- Standard 4-Stream Bin Legend -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+                <div class="p-3 rounded-xl bg-blue-50 border-2 border-blue-400 space-y-1">
+                    <strong class="text-blue-900 font-bold block text-xs flex items-center gap-1">
+                        <span class="w-3 h-3 rounded-full bg-blue-600 inline-block"></span> Blue Bin
+                    </strong>
+                    <span class="text-[10px] text-blue-800 font-semibold block">RECYCLABLES</span>
+                    <p class="text-[10px] text-slate-600 leading-tight">Clean &amp; dry bottles #1/#2/#5, cans, dry cardboard boxes.</p>
+                </div>
+                <div class="p-3 rounded-xl bg-teal-50 border-2 border-teal-400 space-y-1">
+                    <strong class="text-teal-900 font-bold block text-xs flex items-center gap-1">
+                        <span class="w-3 h-3 rounded-full bg-teal-600 inline-block"></span> Green Bin
+                    </strong>
+                    <span class="text-[10px] text-teal-800 font-semibold block">ORGANICS</span>
+                    <p class="text-[10px] text-slate-600 leading-tight">Food scraps, greasy pizza box bottoms, coffee grounds.</p>
+                </div>
+                <div class="p-3 rounded-xl bg-slate-100 border-2 border-slate-400 space-y-1">
+                    <strong class="text-slate-900 font-bold block text-xs flex items-center gap-1">
+                        <span class="w-3 h-3 rounded-full bg-slate-700 inline-block"></span> Black Bin
+                    </strong>
+                    <span class="text-[10px] text-slate-700 font-semibold block">LANDFILL</span>
+                    <p class="text-[10px] text-slate-600 leading-tight">Soiled wraps, metallized chip bags, plastic utensils.</p>
+                </div>
+                <div class="p-3 rounded-xl bg-rose-50 border-2 border-rose-400 space-y-1">
+                    <strong class="text-rose-900 font-bold block text-xs flex items-center gap-1">
+                        <span class="w-3 h-3 rounded-full bg-rose-600 inline-block"></span> Red / Depot
+                    </strong>
+                    <span class="text-[10px] text-rose-800 font-semibold block">HAZMAT / E-WASTE</span>
+                    <p class="text-[10px] text-slate-600 leading-tight">Batteries, cables, electronics, light bulbs. Never curb.</p>
+                </div>
+            </div>
+
+            <!-- Household Top Frequent Items Table -->
+            <div class="space-y-2">
+                <div class="flex items-center justify-between text-xs font-bold text-slate-800 border-b pb-1">
+                    <span>Your Frequent Household Items &amp; Actions</span>
+                    <span class="text-[10px] text-slate-500 font-normal">Based on verified scans</span>
+                </div>
+                <table class="w-full text-left text-xs border-collapse">
+                    <thead>
+                        <tr class="border-b text-[10px] uppercase tracking-wider text-slate-500">
+                            <th class="py-1.5">Item Name</th>
+                            <th class="py-1.5">Material</th>
+                            <th class="py-1.5">Stream</th>
+                            <th class="py-1.5">Prep Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        {% if top_household_items %}
+                        {% for item in top_household_items %}
+                        <tr>
+                            <td class="py-2 font-bold text-slate-900">{{ item.item_name }}</td>
+                            <td class="py-2 text-slate-600 text-[11px]">{{ item.material }}</td>
+                            <td class="py-2">
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold {% if item.category == 'Recyclable' %}bg-blue-100 text-blue-800{% elif item.category == 'Compostable' %}bg-teal-100 text-teal-800{% elif item.category == 'Hazmat' %}bg-rose-100 text-rose-800{% else %}bg-slate-200 text-slate-800{% endif %}">
+                                    {{ item.category }}
+                                </span>
+                            </td>
+                            <td class="py-2 text-[11px] text-slate-700 font-medium">{{ item.action }}</td>
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        <tr>
+                            <td class="py-2 font-bold text-slate-900">Hot Coffee Cup with Lid</td>
+                            <td class="py-2 text-slate-600 text-[11px]">Poly-coated paper &amp; PS #6</td>
+                            <td class="py-2"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-200 text-slate-800">Landfill</span></td>
+                            <td class="py-2 text-[11px] text-slate-700 font-medium">Recycle cardboard sleeve; trash cup body &amp; lid</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 font-bold text-slate-900">Delivery Pizza Box</td>
+                            <td class="py-2 text-slate-600 text-[11px]">Corrugated cardboard</td>
+                            <td class="py-2"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-teal-100 text-teal-800">Compost</span></td>
+                            <td class="py-2 text-[11px] text-slate-700 font-medium">Tear off clean lid for blue bin; compost greasy bottom</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 font-bold text-slate-900">Clear Beverage Bottle</td>
+                            <td class="py-2 text-slate-600 text-[11px]">PET #1 Plastic</td>
+                            <td class="py-2"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-blue-800">Recyclable</span></td>
+                            <td class="py-2 text-[11px] text-slate-700 font-medium">Empty liquids; reattach cap loosely; crush</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 font-bold text-slate-900">Household AA / AAA Batteries</td>
+                            <td class="py-2 text-slate-600 text-[11px]">Alkaline / Heavy metals</td>
+                            <td class="py-2"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-rose-100 text-rose-800">Hazmat</span></td>
+                            <td class="py-2 text-[11px] text-slate-700 font-medium">Tape terminals; deposit at certified store kiosk</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Footer Notes & QR Code -->
+            <div class="pt-3 border-t-2 border-slate-200 flex items-center justify-between text-[10px] text-slate-500">
+                <div>
+                    <span class="font-bold text-slate-700">Golden Rule:</span> When in doubt, check BinSync or keep fiber dry.
+                    <p>Contamination ruins entire truckloads of recyclable paper.</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="font-mono font-bold text-slate-800">binsync.local</span>
                 </div>
             </div>
         </div>
     </div>
-</main>
-
-<!-- Footer -->
-<footer class="bg-surface-container-lowest text-primary font-body-md text-body-md w-full py-xl border-t border-outline-variant mt-auto">
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-lg px-gutter max-w-container-max mx-auto">
-        <div class="flex flex-col space-y-md">
-            <div class="font-headline-md text-headline-md font-semibold text-primary">
-                BinSync
-            </div>
-            <p class="text-on-surface-variant text-sm max-w-xs">
-                Advanced Waste Intelligence.
-            </p>
-        </div>
-        <div class="flex flex-col space-y-sm">
-            <h4 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-sm">Platform</h4>
-            <a class="text-on-surface-variant hover:text-primary transition-colors ease-out duration-200" href="{{ url_for('home') }}">Home</a>
-            <a class="text-on-surface-variant hover:text-primary transition-colors ease-out duration-200" href="{{ url_for('classifier') }}">AI Inspector</a>
-        </div>
-        <div class="flex flex-col space-y-sm">
-            <h4 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-sm">Support</h4>
-            <a class="text-on-surface-variant hover:text-primary transition-colors ease-out duration-200" href="{{ url_for('rules') }}">Rules & Map</a>
-            <a class="text-on-surface-variant hover:text-primary transition-colors ease-out duration-200" href="{{ url_for('leaderboard') }}">Leaderboard</a>
-        </div>
-    </div>
-</footer>
-</body>
-</html>
+</div>
+{% endblock %}

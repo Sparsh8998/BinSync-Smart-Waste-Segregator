@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" class="w-full h-full">
+  <defs>
+    <linearGradient id="bs-cobalt-grad" x1="4" y1="4" x2="44" y2="44" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#2563EB" />
+      <stop offset="100%" stop-color="#1D4ED8" />
+    </linearGradient>
+    <linearGradient id="bs-cyan-grad" x1="12" y1="8" x2="36" y2="40" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#38BDF8" />
+      <stop offset="100%" stop-color="#0284C7" />
+    </linearGradient>
+    <linearGradient id="bs-emerald-grad" x1="18" y1="18" x2="30" y2="30" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#34D399" />
+      <stop offset="100%" stop-color="#059669" />
+    </linearGradient>
+    <filter id="bs-shadow" x="-10%" y="-10%" width="120%" height="120%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.12" flood-color="#0F172A" />
+    </filter>
+  </defs>
+  
+  <!-- Outer Rounded Shield Container -->
+  <rect x="2" y="2" width="44" height="44" rx="14" fill="url(#bs-cobalt-grad)" filter="url(#bs-shadow)" />
+  
+  <!-- Subtle inner crystalline highlight -->
+  <rect x="3" y="3" width="42" height="42" rx="13" stroke="rgba(255, 255, 255, 0.22)" stroke-width="1.5" fill="none" />
+  
+  <!-- Circular Packaging Sync Loop (Top-right arc with arrow) -->
+  <path d="M 24 10 C 31.73 10 38 16.27 38 24 C 38 27.2 36.92 30.15 35.1 32.5" stroke="#FFFFFF" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+  <path d="M 33 9 L 24 10 L 25 19" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+
+  <!-- Circular Packaging Sync Loop (Bottom-left counter arc with arrow) -->
+  <path d="M 24 38 C 16.27 38 10 31.73 10 24 C 10 20.8 11.08 17.85 12.9 15.5" stroke="#93C5FD" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+  <path d="M 15 39 L 24 38 L 23 29" stroke="#93C5FD" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+
+  <!-- Center Layer Decomposition Facets -->
+  <!-- Layer 1: Recycled Fiber Base -->
+  <rect x="18" y="22" width="12" height="6.5" rx="2" fill="#FFFFFF" fill-opacity="0.95" />
+  <!-- Layer 2: Isolated Film Barrier -->
+  <rect x="19.5" y="18" width="9" height="3" rx="1.5" fill="#38BDF8" />
+  <!-- Layer 3: Circular Nucleus Node -->
+  <circle cx="24" cy="25.2" r="1.6" fill="#2563EB" />
+</svg>
+
