@@ -19,6 +19,19 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET_KEY", "super_secret_eco_key_change_me")
 
+# Netlify & Serverless path prefix normalizer
+class NetlifyPathFixer:
+    def __init__(self, wsgi_app):
+        self.wsgi_app = wsgi_app
+
+    def __call__(self, environ, start_response):
+        path = environ.get('PATH_INFO', '')
+        if path.startswith('/.netlify/functions/app'):
+            environ['PATH_INFO'] = path[len('/.netlify/functions/app'):] or '/'
+        return self.wsgi_app(environ, start_response)
+
+app.wsgi_app = NetlifyPathFixer(app.wsgi_app)
+
 # Initialize Limiter after app creation
 limiter = Limiter(
     app=app,

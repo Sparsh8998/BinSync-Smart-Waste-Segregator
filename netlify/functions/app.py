@@ -1,32 +1,57 @@
 import sys
 import os
+import urllib.parse
 from pathlib import Path
 
 # Set serverless environment flags
 os.environ["NETLIFY"] = "true"
 
-# Add project root directory to Python path
-root_path = Path(__file__).resolve().parent.parent.parent
-sys.path.insert(0, str(root_path))
+# Add current directory, parent directories, and /var/task to sys.path
+current_dir = Path(__file__).resolve().parent
+root_dir = current_dir.parent.parent
+sys.path.insert(0, str(current_dir))
+sys.path.insert(0, str(root_dir))
+if os.path.exists("/var/task"):
+    sys.path.insert(0, "/var/task")
 
 from app import app
+
+def normalize_event_path(event):
+    """Extract and normalize the true requested client URL from Netlify rewrite metadata."""
+    headers = event.get('headers') or {}
+    
+    # Check Netlify original URL headers injected by CDN rewrites
+    for h in ['x-nf-original-url', 'x-nf-original-path', 'x-original-url', 'x-forwarded-uri']:
+        val = headers.get(h) or headers.get(h.lower())
+        if val:
+            parsed = urllib.parse.urlparse(val)
+            if parsed.path:
+                return parsed.path
+
+    # Check rawUrl
+    raw_url = event.get('rawUrl')
+    if raw_url:
+        parsed = urllib.parse.urlparse(raw_url)
+        if parsed.path:
+            return parsed.path
+
+    # Fallback to event['path'], stripping Netlify function slug if present
+    path = event.get('path', '/')
+    if path.startswith('/.netlify/functions/app'):
+        path = path[len('/.netlify/functions/app'):] or '/'
+    return path
 
 try:
     from serverless_wsgi import handle as handle_wsgi
     def handler(event, context):
+        event['path'] = normalize_event_path(event)
         return handle_wsgi(app, event, context)
 except ImportError:
-    # High-performance native WSGI adapter for Netlify Functions when serverless_wsgi is not loaded
     import base64
-    import urllib.parse
 
     def handler(event, context):
         http_method = event.get('httpMethod', 'GET')
-        path = event.get('path', '/')
-        
-        # Strip Netlify function prefix if route is invoked directly
-        if path.startswith('/.netlify/functions/app'):
-            path = path[len('/.netlify/functions/app'):] or '/'
+        path = normalize_event_path(event)
         
         # Query parameters handling
         query_params = event.get('queryStringParameters') or {}
@@ -70,4 +95,3 @@ except ImportError:
                 "body": resp_str,
                 "isBase64Encoded": is_base64
             }
-
