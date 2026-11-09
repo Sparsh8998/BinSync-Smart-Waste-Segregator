@@ -28,6 +28,8 @@ class NetlifyPathFixer:
         path = environ.get('PATH_INFO', '')
         if path.startswith('/.netlify/functions/app'):
             environ['PATH_INFO'] = path[len('/.netlify/functions/app'):] or '/'
+        elif path.startswith('/app') and (len(path) == 4 or path[4] == '/'):
+            environ['PATH_INFO'] = path[4:] or '/'
         return self.wsgi_app(environ, start_response)
 
 app.wsgi_app = NetlifyPathFixer(app.wsgi_app)

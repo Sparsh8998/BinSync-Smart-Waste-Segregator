@@ -44,7 +44,13 @@ def normalize_event_path(event):
 try:
     from serverless_wsgi import handle as handle_wsgi
     def handler(event, context):
-        event['path'] = normalize_event_path(event)
+        clean_path = normalize_event_path(event)
+        event['path'] = clean_path
+        if 'rawPath' in event:
+            event['rawPath'] = clean_path
+        if 'requestContext' in event and isinstance(event['requestContext'], dict):
+            if 'http' in event['requestContext'] and isinstance(event['requestContext']['http'], dict):
+                event['requestContext']['http']['path'] = clean_path
         return handle_wsgi(app, event, context)
 except ImportError:
     import base64

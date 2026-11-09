@@ -1,5 +1,5 @@
 [build]
-  command = "pip install -r requirements.txt && mkdir -p public/static && cp -r static/* public/static/ 2>/dev/null || true && cp _redirects public/_redirects 2>/dev/null || true"
+  command = "pip install -r requirements.txt && mkdir -p public/static && cp -r static/* public/static/ && cp _redirects public/_redirects"
   functions = "netlify/functions"
   publish = "public"
 
