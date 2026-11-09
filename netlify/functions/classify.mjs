@@ -289,3 +289,4 @@ Category must be ONLY one of: "Recyclable", "Landfill", "Compostable", "Hazmat".
 export const config = {
   path: ["/api/classify", "/.netlify/functions/classify"]
 };
+

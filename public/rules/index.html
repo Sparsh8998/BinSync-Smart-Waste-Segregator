@@ -441,14 +441,14 @@
 <div id="scroll-progress-bar" class="fixed top-0 left-0 h-[3px] bg-gradient-to-r from-primary via-[#38BDF8] to-solar z-[60] w-0 transition-[width] duration-75 ease-out pointer-events-none"></div>
 
 <!-- Nordic Arctic Glacier Frosted Header -->
-<header id="main-header" class="sticky top-0 z-50 transition-all duration-300 bg-white/95 backdrop-blur-md border-b border-border-subtle h-20 flex items-center">
+<header id="main-header" class="sticky top-0 z-50 transition-all duration-300 bg-white/95 backdrop-blur-md border-b border-border-subtle h-16 sm:h-20 flex items-center">
     <div class="max-w-container mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 w-full flex items-center justify-between">
         <!-- Brand Logo with Climate Intelligence Identity -->
-        <a href="/" class="flex items-center gap-3 hover:opacity-90 transition-opacity flex-shrink-0">
-            <img src="/static/img/logo-icon.svg" alt="BinSync Logo" class="w-9 h-9 rounded-xl shadow-sm">
+        <a href="/" class="flex items-center gap-2.5 sm:gap-3 hover:opacity-90 transition-opacity flex-shrink-0">
+            <img src="/static/img/logo-icon.svg" alt="BinSync Logo" class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl shadow-sm">
             <div class="flex flex-col">
-                <span class="text-xl font-black tracking-tight text-text-primary leading-none">Bin<span class="text-primary">Sync</span></span>
-                <span class="text-[9px] font-bold text-primary tracking-widest uppercase mt-0.5">CLIMATE INTELLIGENCE</span>
+                <span class="text-lg sm:text-xl font-black tracking-tight text-text-primary leading-none">Bin<span class="text-primary">Sync</span></span>
+                <span class="text-[8px] sm:text-[9px] font-bold text-primary tracking-widest uppercase mt-0.5">CLIMATE INTELLIGENCE</span>
             </div>
         </a>
 
@@ -478,54 +478,61 @@
         </nav>
 
         <!-- Right Side: User Profile / Action -->
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2 sm:gap-3">
             
-            <a href="/dashboard" class="hidden sm:flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-surface-container border border-border-subtle hover:border-primary/40 transition">
+            <a href="/dashboard" class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container border border-border-subtle hover:border-primary/40 transition">
                 <span class="w-6 h-6 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center">
                     C
                 </span>
-                <span class="text-xs font-bold text-text-primary">Citizen_9b4c8</span>
-                <span id="nav-points-pill" class="text-xs font-mono font-bold text-primary bg-primary-light px-2.5 py-0.5 rounded-full">0 pts</span>
+                <span class="hidden sm:inline text-xs font-bold text-text-primary">Citizen_57734</span>
+                <span id="nav-points-pill" class="text-xs font-mono font-bold text-primary bg-primary-light px-2 py-0.5 rounded-full">0 pts</span>
             </a>
-            <a href="/logout" title="Log out" class="text-xs font-semibold text-text-muted hover:text-rose-600 px-2 py-1 transition">
+            <a href="/logout" title="Log out" class="hidden sm:inline text-xs font-semibold text-text-muted hover:text-rose-600 px-2 py-1 transition">
                 Sign Out
             </a>
             
 
             <!-- Mobile Hamburger Button -->
-            <button type="button" id="mobile-menu-btn" class="md:hidden text-text-secondary hover:text-text-primary p-2 focus:outline-none rounded-xl hover:bg-surface-container" aria-label="Toggle Menu">
+            <button type="button" id="mobile-menu-btn" class="md:hidden text-text-secondary hover:text-text-primary p-1.5 focus:outline-none rounded-xl hover:bg-surface-container" aria-label="Toggle Menu">
                 <span class="material-symbols-outlined text-[24px]" id="mobile-menu-icon">menu</span>
             </button>
         </div>
     </div>
 
     <!-- Mobile Slide Drawer -->
-    <div id="mobile-menu" class="hidden md:hidden absolute top-20 left-0 right-0 bg-white border-b border-border-subtle shadow-xl px-5 py-4 space-y-2 z-50">
+    <div id="mobile-menu" class="hidden md:hidden absolute top-16 sm:top-20 left-0 right-0 bg-white/98 backdrop-blur-xl border-b border-border-subtle shadow-2xl px-5 py-4 space-y-2 z-50">
         <div class="flex items-center gap-2.5 pb-3 mb-2 border-b border-border-subtle">
             <img src="/static/img/logo-icon.svg" alt="BinSync" class="w-7 h-7 rounded-lg">
             <span class="font-bold text-sm text-text-primary">BinSync Quick Navigation</span>
         </div>
-        <a href="/" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-text-secondary hover:bg-surface-container">
-            Home
+        <a href="/" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-text-secondary hover:bg-surface-container">
+            <span class="material-symbols-outlined text-[20px]">home</span>
+            <span>Home</span>
         </a>
-        <a href="/classifier" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-text-secondary hover:bg-surface-container">
-            Waste Sorter
+        <a href="/classifier" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-text-secondary hover:bg-surface-container">
+            <span class="material-symbols-outlined text-[20px] text-primary">photo_camera</span>
+            <span>AI Waste Sorter</span>
         </a>
-        <a href="/rules" class="block px-4 py-2.5 rounded-xl text-sm font-medium bg-primary-light text-primary font-bold">
-            Rules &amp; Map
+        <a href="/rules" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium bg-primary-light text-primary font-bold">
+            <span class="material-symbols-outlined text-[20px]">map</span>
+            <span>Rules &amp; Municipal Map</span>
         </a>
-        <a href="/classifications" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-text-secondary hover:bg-surface-container">
-            Taxonomy Directory
+        <a href="/classifications" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-text-secondary hover:bg-surface-container">
+            <span class="material-symbols-outlined text-[20px]">account_tree</span>
+            <span>Taxonomy Directory</span>
         </a>
-        <a href="/leaderboard" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-text-secondary hover:bg-surface-container">
-            Community Leaderboard
+        <a href="/leaderboard" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-text-secondary hover:bg-surface-container">
+            <span class="material-symbols-outlined text-[20px]">leaderboard</span>
+            <span>Community Leaderboard</span>
         </a>
         
-        <a href="/dashboard" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-text-secondary hover:bg-surface-container">
-            My Dashboard (0 pts)
+        <a href="/dashboard" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-text-secondary hover:bg-surface-container">
+            <span class="material-symbols-outlined text-[20px]">dashboard</span>
+            <span>My Dashboard (0 pts)</span>
         </a>
-        <a href="/logout" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-rose-600 hover:bg-rose-50">
-            Sign Out
+        <a href="/logout" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-rose-600 hover:bg-rose-50">
+            <span class="material-symbols-outlined text-[20px]">logout</span>
+            <span>Sign Out</span>
         </a>
         
     </div>
@@ -727,19 +734,19 @@
                 <iframe id="dynamic-map" width="100%" height="100%" frameborder="0" scrolling="no" src="" class="hidden w-full h-full"></iframe>
                 
                 <!-- Community Drop Bin Submission Button -->
-                <button type="button" id="toggle-submit-pin-btn" class="absolute top-3 left-3 z-[400] bg-solar hover:bg-solar-dark text-white font-bold px-3.5 py-1.5 rounded-full border border-solar/30 shadow-md text-xs flex items-center gap-1.5 transition hover:scale-105">
+                <button type="button" id="toggle-submit-pin-btn" class="absolute top-3 left-3 z-[400] bg-solar hover:bg-solar-dark text-white font-bold px-3 sm:px-3.5 py-1.5 rounded-full border border-solar/30 shadow-md text-xs flex items-center gap-1.5 transition hover:scale-105 active:scale-95">
                     <span class="material-symbols-outlined text-[16px]">add_location_alt</span>
-                    <span id="submit-pin-btn-text">Submit Local Drop Bin (+20 Pts)</span>
+                    <span id="submit-pin-btn-text"><span class="sm:hidden">+ Drop Bin</span><span class="hidden sm:inline">Submit Local Drop Bin (+20 Pts)</span></span>
                 </button>
 
                 <!-- Map Top Overlay Overlay Tag -->
-                <div class="absolute top-3 right-3 z-[400] bg-white/95 backdrop-blur px-3.5 py-1.5 rounded-full border border-border-subtle shadow-sm text-xs sm:text-sm font-semibold text-text-primary flex items-center gap-2">
-                    <span class="w-2.5 h-2.5 rounded-full bg-primary animate-ping"></span>
-                    <span id="map-label">Region: Initializing…</span>
+                <div class="absolute top-3 right-3 z-[400] bg-white/95 backdrop-blur px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full border border-border-subtle shadow-sm text-[11px] sm:text-sm font-semibold text-text-primary flex items-center gap-1.5 sm:gap-2">
+                    <span class="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-primary animate-ping"></span>
+                    <span id="map-label">Region: Locating…</span>
                 </div>
 
                 <!-- Map Hint Tooltip -->
-                <div class="absolute bottom-3 left-3 z-[400] bg-white/95 backdrop-blur px-3.5 py-1.5 rounded-full border border-border-subtle shadow-sm text-xs font-medium text-text-secondary flex items-center gap-1.5">
+                <div class="absolute bottom-3 left-3 z-[400] bg-white/95 backdrop-blur px-3 py-1.5 rounded-full border border-border-subtle shadow-sm text-xs font-medium text-text-secondary hidden sm:flex items-center gap-1.5">
                     <span class="material-symbols-outlined text-[16px] text-primary">touch_app</span>
                     <span>Click anywhere on map to inspect or drop community pins</span>
                 </div>
@@ -951,25 +958,28 @@
     </div>
 </footer>
 
-<!-- Mobile Bottom Navigation Bar (Light Arctic Glacier) -->
-<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-xl border-t border-border-subtle z-40 pt-2 safe-bottom-nav px-3 flex justify-around items-center shadow-lg">
-    <a href="/" class="min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-xs px-2 text-text-muted hover:text-text-primary">
+<!-- Mobile Bottom Navigation Bar (Light Arctic Glacier with Elevated Scanner Action) -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-xl border-t border-border-subtle z-40 pt-1.5 safe-bottom-nav px-2 flex justify-around items-end shadow-2xl">
+    <a href="/" class="min-h-[48px] flex-1 flex flex-col items-center justify-center gap-0.5 text-[11px] text-text-muted hover:text-text-primary transition-colors">
         <span class="material-symbols-outlined text-[22px]">home</span>
         <span>Home</span>
     </a>
-    <a href="/classifier" class="min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-xs px-2 text-text-muted hover:text-text-primary">
-        <span class="material-symbols-outlined text-[22px]">center_focus_strong</span>
-        <span>Inspect</span>
-    </a>
-    <a href="/rules" class="min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-xs px-2 text-primary font-bold">
+    <a href="/rules" class="min-h-[48px] flex-1 flex flex-col items-center justify-center gap-0.5 text-[11px] text-primary font-bold transition-colors">
         <span class="material-symbols-outlined text-[22px]">map</span>
         <span>Rules</span>
     </a>
-    <a href="/leaderboard" class="min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-xs px-2 text-text-muted hover:text-text-primary">
+    <!-- Primary Floating Scanner Action Button -->
+    <a href="/classifier" onclick="if(window.triggerFeedback) window.triggerFeedback('tap');" class="flex-1 flex flex-col items-center justify-center -mt-6 group focus:outline-none">
+        <div class="w-14 h-14 rounded-full bg-primary text-white shadow-xl shadow-primary/30 flex items-center justify-center border-4 border-white group-hover:scale-105 active:scale-95 transition-transform ">
+            <span class="material-symbols-outlined text-[26px]">photo_camera</span>
+        </div>
+        <span class="text-[10px] font-bold text-text-secondary mt-0.5">Scan Waste</span>
+    </a>
+    <a href="/leaderboard" class="min-h-[48px] flex-1 flex flex-col items-center justify-center gap-0.5 text-[11px] text-text-muted hover:text-text-primary transition-colors">
         <span class="material-symbols-outlined text-[22px]">leaderboard</span>
         <span>Rank</span>
     </a>
-    <a href="/dashboard" class="min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-xs px-2 text-text-muted hover:text-text-primary">
+    <a href="/dashboard" class="min-h-[48px] flex-1 flex flex-col items-center justify-center gap-0.5 text-[11px] text-text-muted hover:text-text-primary transition-colors">
         <span class="material-symbols-outlined text-[22px]">account_circle</span>
         <span>Profile</span>
     </a>

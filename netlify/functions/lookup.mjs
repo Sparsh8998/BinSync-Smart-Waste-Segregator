@@ -137,3 +137,4 @@ export default async (req, context) => {
 export const config = {
   path: ["/api/lookup", "/.netlify/functions/lookup"]
 };
+

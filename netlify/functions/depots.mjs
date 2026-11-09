@@ -99,3 +99,4 @@ export default async (req, context) => {
 export const config = {
   path: ["/api/depots", "/api/depots/*", "/.netlify/functions/depots"]
 };
+

@@ -42,3 +42,4 @@ export default async (req, context) => {
 export const config = {
   path: ["/api/audit_bin", "/.netlify/functions/audit_bin"]
 };
+

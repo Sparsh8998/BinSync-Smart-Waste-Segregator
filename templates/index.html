@@ -13,39 +13,39 @@
         <div class="max-w-container mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 relative z-10 text-center">
             
             <!-- Confident Headline (No Kicker/Eyebrow per craft floor) -->
-            <h1 class="text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-8xl 2xl:text-[5.5rem] font-black tracking-tight text-text-primary leading-[1.06] max-w-5xl xl:max-w-6xl 2xl:max-w-7xl mx-auto">
+            <h1 class="text-3xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-8xl 2xl:text-[5.5rem] font-black tracking-tight text-text-primary leading-[1.08] max-w-5xl xl:max-w-6xl 2xl:max-w-7xl mx-auto">
                 Sort packaging with precision.<br class="hidden sm:inline"/>
                 <span class="text-[#2563EB]" style="color: #2563EB !important;">Protect the planet we love.</span>
             </h1>
 
-            <p class="text-base sm:text-xl lg:text-2xl 2xl:text-3xl text-text-secondary max-w-3xl lg:max-w-4xl 2xl:max-w-5xl mx-auto mt-6 leading-relaxed font-normal">
+            <p class="text-sm sm:text-lg lg:text-2xl 2xl:text-3xl text-text-secondary max-w-3xl lg:max-w-4xl 2xl:max-w-5xl mx-auto mt-4 sm:mt-6 leading-relaxed font-normal px-2">
                 Wishcycling contaminates circular recycling streams. <span class="text-[#2563EB] font-semibold">BinSync isolates every composite packaging layer in seconds</span> to give you exact municipal sorting directions.
             </p>
 
             <!-- Center-Stage Scanner Box -->
-            <div class="mt-12 w-full max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl mx-auto">
-                <div class="eco-card p-6 sm:p-10 border-2 border-dashed border-[#CBD5E1] hover:border-primary transition-all duration-300 relative group text-left">
+            <div class="mt-8 sm:mt-12 w-full max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl mx-auto">
+                <div class="eco-card p-4 sm:p-8 lg:p-10 border-2 border-dashed border-[#CBD5E1] hover:border-primary transition-all duration-300 relative group text-left">
                     
                     <!-- Search/Scan Action Bar -->
-                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-5 pb-5 border-b border-border-subtle">
-                        <div class="flex items-center gap-4">
-                            <div class="w-14 h-14 rounded-2xl bg-primary-light text-primary flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
-                                <span class="material-symbols-outlined text-[32px] text-[#2563EB]">document_scanner</span>
+                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 sm:gap-5 pb-5 border-b border-border-subtle">
+                        <div class="flex items-center gap-3 sm:gap-4">
+                            <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-primary-light text-primary flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
+                                <span class="material-symbols-outlined text-[28px] sm:text-[32px] text-[#2563EB]">document_scanner</span>
                             </div>
                             <div>
-                                <h2 class="text-lg sm:text-xl font-bold text-text-primary">Inspect packaging to <span class="text-[#2563EB]">sort</span></h2>
+                                <h2 class="text-base sm:text-xl font-bold text-text-primary">Inspect packaging to <span class="text-[#2563EB]">sort</span></h2>
                                 <p class="text-xs sm:text-sm text-text-muted">Instant multi-layer decomposition</p>
                             </div>
                         </div>
 
                         <!-- Direct Launch Buttons -->
-                        <div class="flex items-center gap-3">
-                            <a href="{{ url_for('classifier') }}" class="btn-primary py-3 px-6 text-sm font-bold flex items-center gap-2 shadow-sm">
-                                <span class="material-symbols-outlined text-[20px]">photo_camera</span>
+                        <div class="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
+                            <a href="{{ url_for('classifier') }}" class="btn-primary flex-1 sm:flex-none py-2.5 sm:py-3 px-4 sm:px-6 text-xs sm:text-sm font-bold flex items-center justify-center gap-2 shadow-sm">
+                                <span class="material-symbols-outlined text-[18px] sm:text-[20px]">photo_camera</span>
                                 <span>Camera Scan</span>
                             </a>
-                            <a href="{{ url_for('classifier') }}" class="btn-secondary py-3 px-5 text-sm font-bold flex items-center gap-2">
-                                <span class="material-symbols-outlined text-[20px]">upload_file</span>
+                            <a href="{{ url_for('classifier') }}" class="btn-secondary flex-1 sm:flex-none py-2.5 sm:py-3 px-4 sm:px-5 text-xs sm:text-sm font-bold flex items-center justify-center gap-2">
+                                <span class="material-symbols-outlined text-[18px] sm:text-[20px]">upload_file</span>
                                 <span>Browse</span>
                             </a>
                         </div>
@@ -53,57 +53,57 @@
 
                     <!-- Instant Text & Barcode Query Bar -->
                     <div class="py-4 border-b border-border-subtle">
-                        <form action="{{ url_for('classifier') }}" method="GET" class="flex gap-3">
+                        <form action="{{ url_for('classifier') }}" method="GET" class="flex flex-col sm:flex-row gap-2.5 sm:gap-3">
                             <div class="relative flex-1">
                                 <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-text-muted text-[22px]">search</span>
-                                <input type="text" name="q" list="packaging-suggestions" placeholder="Or type item name: coffee cup, pizza box, milk carton, bubble wrap…" class="w-full text-sm sm:text-base pl-12 pr-4 py-3.5 rounded-full border border-border-medium focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 bg-surface">
+                                <input type="text" name="q" list="packaging-suggestions" placeholder="Or type item name: coffee cup, pizza box, milk carton…" class="w-full text-xs sm:text-base pl-11 pr-4 py-3 sm:py-3.5 rounded-full border border-border-medium focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 bg-surface">
                             </div>
-                            <button type="submit" class="btn-primary py-3.5 px-6 text-sm font-bold whitespace-nowrap">
+                            <button type="submit" class="btn-primary py-3 sm:py-3.5 px-6 text-xs sm:text-sm font-bold whitespace-nowrap">
                                 Decompose &rarr;
                             </button>
                         </form>
                     </div>
 
                     <!-- 1-Click Instant Demo Sample Chips -->
-                    <div class="pt-6">
-                        <div class="flex items-center justify-between mb-3.5 text-xs sm:text-sm">
-                            <span class="font-semibold text-text-secondary flex items-center gap-2">
-                                <span class="material-symbols-outlined text-[18px] text-[#2563EB]">bolt</span>
+                    <div class="pt-5 sm:pt-6">
+                        <div class="flex items-center justify-between mb-3 text-xs sm:text-sm">
+                            <span class="font-semibold text-text-secondary flex items-center gap-1.5 sm:gap-2">
+                                <span class="material-symbols-outlined text-[16px] sm:text-[18px] text-[#2563EB]">bolt</span>
                                 <span>Test with <span class="text-[#2563EB] font-bold">one-click demo</span> items:</span>
                             </span>
-                            <span class="text-text-muted text-xs">Instant AI classification</span>
+                            <span class="text-text-muted text-[11px] sm:text-xs">Instant AI classification</span>
                         </div>
 
-                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                            <a href="{{ url_for('classifier') }}?sample=chips-bag.jpg" class="p-3 rounded-xl border border-border-subtle bg-surface-container hover:bg-primary-light hover:border-primary transition flex items-center gap-3 group/chip">
-                                <img src="/static/samples/chips-bag.jpg" alt="Snack Pouch" class="w-11 h-11 object-cover rounded-xl border border-border-subtle flex-shrink-0">
+                        <div class="flex overflow-x-auto no-scrollbar sm:grid sm:grid-cols-4 gap-2.5 pb-1 -mx-1 px-1">
+                            <a href="{{ url_for('classifier') }}?sample=chips-bag.jpg" class="flex-shrink-0 w-[155px] sm:w-auto p-2.5 sm:p-3 rounded-xl border border-border-subtle bg-surface-container hover:bg-primary-light hover:border-primary transition flex items-center gap-2.5 sm:gap-3 group/chip">
+                                <img src="/static/samples/chips-bag.jpg" alt="Snack Pouch" class="w-10 h-10 sm:w-11 sm:h-11 object-cover rounded-xl border border-border-subtle flex-shrink-0">
                                 <div class="truncate text-left">
                                     <span class="block text-xs sm:text-sm font-bold text-text-primary group-hover/chip:text-primary truncate">Snack Pouch</span>
-                                    <span class="block text-[11px] text-solar-dark font-semibold">Composite</span>
+                                    <span class="block text-[10px] sm:text-[11px] text-solar-dark font-semibold">Composite</span>
                                 </div>
                             </a>
 
-                            <a href="{{ url_for('classifier') }}?sample=sample-recyclable.jpg" class="p-3 rounded-xl border border-border-subtle bg-surface-container hover:bg-primary-light hover:border-primary transition flex items-center gap-3 group/chip">
-                                <img src="/static/samples/sample-recyclable.jpg" alt="Drink Pack" class="w-11 h-11 object-cover rounded-xl border border-border-subtle flex-shrink-0">
+                            <a href="{{ url_for('classifier') }}?sample=sample-recyclable.jpg" class="flex-shrink-0 w-[155px] sm:w-auto p-2.5 sm:p-3 rounded-xl border border-border-subtle bg-surface-container hover:bg-primary-light hover:border-primary transition flex items-center gap-2.5 sm:gap-3 group/chip">
+                                <img src="/static/samples/sample-recyclable.jpg" alt="Drink Pack" class="w-10 h-10 sm:w-11 sm:h-11 object-cover rounded-xl border border-border-subtle flex-shrink-0">
                                 <div class="truncate text-left">
                                     <span class="block text-xs sm:text-sm font-bold text-text-primary group-hover/chip:text-primary truncate">Drink Pack</span>
-                                    <span class="block text-[11px] text-blue-700 font-semibold">Recyclable</span>
+                                    <span class="block text-[10px] sm:text-[11px] text-blue-700 font-semibold">Recyclable</span>
                                 </div>
                             </a>
 
-                            <a href="{{ url_for('classifier') }}?sample=food-compost.jpg" class="p-3 rounded-xl border border-border-subtle bg-surface-container hover:bg-primary-light hover:border-primary transition flex items-center gap-3 group/chip">
-                                <img src="/static/samples/food-compost.jpg" alt="Organics" class="w-11 h-11 object-cover rounded-xl border border-border-subtle flex-shrink-0">
+                            <a href="{{ url_for('classifier') }}?sample=food-compost.jpg" class="flex-shrink-0 w-[155px] sm:w-auto p-2.5 sm:p-3 rounded-xl border border-border-subtle bg-surface-container hover:bg-primary-light hover:border-primary transition flex items-center gap-2.5 sm:gap-3 group/chip">
+                                <img src="/static/samples/food-compost.jpg" alt="Organics" class="w-10 h-10 sm:w-11 sm:h-11 object-cover rounded-xl border border-border-subtle flex-shrink-0">
                                 <div class="truncate text-left">
                                     <span class="block text-xs sm:text-sm font-bold text-text-primary group-hover/chip:text-primary truncate">Food Scraps</span>
-                                    <span class="block text-[11px] text-teal-700 font-semibold">Compost</span>
+                                    <span class="block text-[10px] sm:text-[11px] text-teal-700 font-semibold">Compost</span>
                                 </div>
                             </a>
 
-                            <a href="{{ url_for('classifier') }}?sample=garbage-bag.jpg" class="p-3 rounded-xl border border-border-subtle bg-surface-container hover:bg-primary-light hover:border-primary transition flex items-center gap-3 group/chip">
-                                <img src="/static/samples/garbage-bag.jpg" alt="Trash Bag" class="w-11 h-11 object-cover rounded-xl border border-border-subtle flex-shrink-0">
+                            <a href="{{ url_for('classifier') }}?sample=garbage-bag.jpg" class="flex-shrink-0 w-[155px] sm:w-auto p-2.5 sm:p-3 rounded-xl border border-border-subtle bg-surface-container hover:bg-primary-light hover:border-primary transition flex items-center gap-2.5 sm:gap-3 group/chip">
+                                <img src="/static/samples/garbage-bag.jpg" alt="Trash Bag" class="w-10 h-10 sm:w-11 sm:h-11 object-cover rounded-xl border border-border-subtle flex-shrink-0">
                                 <div class="truncate text-left">
                                     <span class="block text-xs sm:text-sm font-bold text-text-primary group-hover/chip:text-primary truncate">Trash Film</span>
-                                    <span class="block text-[11px] text-slate-700 font-semibold">Landfill</span>
+                                    <span class="block text-[10px] sm:text-[11px] text-slate-700 font-semibold">Landfill</span>
                                 </div>
                             </a>
                         </div>

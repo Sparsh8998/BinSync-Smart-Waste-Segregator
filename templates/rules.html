@@ -245,19 +245,19 @@
                 <iframe id="dynamic-map" width="100%" height="100%" frameborder="0" scrolling="no" src="" class="hidden w-full h-full"></iframe>
                 
                 <!-- Community Drop Bin Submission Button -->
-                <button type="button" id="toggle-submit-pin-btn" class="absolute top-3 left-3 z-[400] bg-solar hover:bg-solar-dark text-white font-bold px-3.5 py-1.5 rounded-full border border-solar/30 shadow-md text-xs flex items-center gap-1.5 transition hover:scale-105">
+                <button type="button" id="toggle-submit-pin-btn" class="absolute top-3 left-3 z-[400] bg-solar hover:bg-solar-dark text-white font-bold px-3 sm:px-3.5 py-1.5 rounded-full border border-solar/30 shadow-md text-xs flex items-center gap-1.5 transition hover:scale-105 active:scale-95">
                     <span class="material-symbols-outlined text-[16px]">add_location_alt</span>
-                    <span id="submit-pin-btn-text">Submit Local Drop Bin (+20 Pts)</span>
+                    <span id="submit-pin-btn-text"><span class="sm:hidden">+ Drop Bin</span><span class="hidden sm:inline">Submit Local Drop Bin (+20 Pts)</span></span>
                 </button>
 
                 <!-- Map Top Overlay Overlay Tag -->
-                <div class="absolute top-3 right-3 z-[400] bg-white/95 backdrop-blur px-3.5 py-1.5 rounded-full border border-border-subtle shadow-sm text-xs sm:text-sm font-semibold text-text-primary flex items-center gap-2">
-                    <span class="w-2.5 h-2.5 rounded-full bg-primary animate-ping"></span>
-                    <span id="map-label">Region: Initializing…</span>
+                <div class="absolute top-3 right-3 z-[400] bg-white/95 backdrop-blur px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full border border-border-subtle shadow-sm text-[11px] sm:text-sm font-semibold text-text-primary flex items-center gap-1.5 sm:gap-2">
+                    <span class="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-primary animate-ping"></span>
+                    <span id="map-label">Region: Locating…</span>
                 </div>
 
                 <!-- Map Hint Tooltip -->
-                <div class="absolute bottom-3 left-3 z-[400] bg-white/95 backdrop-blur px-3.5 py-1.5 rounded-full border border-border-subtle shadow-sm text-xs font-medium text-text-secondary flex items-center gap-1.5">
+                <div class="absolute bottom-3 left-3 z-[400] bg-white/95 backdrop-blur px-3 py-1.5 rounded-full border border-border-subtle shadow-sm text-xs font-medium text-text-secondary hidden sm:flex items-center gap-1.5">
                     <span class="material-symbols-outlined text-[16px] text-primary">touch_app</span>
                     <span>Click anywhere on map to inspect or drop community pins</span>
                 </div>

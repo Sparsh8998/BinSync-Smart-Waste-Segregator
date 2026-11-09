@@ -394,14 +394,14 @@
 <div id="scroll-progress-bar" class="fixed top-0 left-0 h-[3px] bg-gradient-to-r from-primary via-[#38BDF8] to-solar z-[60] w-0 transition-[width] duration-75 ease-out pointer-events-none"></div>
 
 <!-- Nordic Arctic Glacier Frosted Header -->
-<header id="main-header" class="sticky top-0 z-50 transition-all duration-300 bg-white/95 backdrop-blur-md border-b border-border-subtle h-20 flex items-center">
+<header id="main-header" class="sticky top-0 z-50 transition-all duration-300 bg-white/95 backdrop-blur-md border-b border-border-subtle h-16 sm:h-20 flex items-center">
     <div class="max-w-container mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 w-full flex items-center justify-between">
         <!-- Brand Logo with Climate Intelligence Identity -->
-        <a href="/" class="flex items-center gap-3 hover:opacity-90 transition-opacity flex-shrink-0">
-            <img src="/static/img/logo-icon.svg" alt="BinSync Logo" class="w-9 h-9 rounded-xl shadow-sm">
+        <a href="/" class="flex items-center gap-2.5 sm:gap-3 hover:opacity-90 transition-opacity flex-shrink-0">
+            <img src="/static/img/logo-icon.svg" alt="BinSync Logo" class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl shadow-sm">
             <div class="flex flex-col">
-                <span class="text-xl font-black tracking-tight text-text-primary leading-none">Bin<span class="text-primary">Sync</span></span>
-                <span class="text-[9px] font-bold text-primary tracking-widest uppercase mt-0.5">CLIMATE INTELLIGENCE</span>
+                <span class="text-lg sm:text-xl font-black tracking-tight text-text-primary leading-none">Bin<span class="text-primary">Sync</span></span>
+                <span class="text-[8px] sm:text-[9px] font-bold text-primary tracking-widest uppercase mt-0.5">CLIMATE INTELLIGENCE</span>
             </div>
         </a>
 
@@ -427,48 +427,54 @@
         </nav>
 
         <!-- Right Side: User Profile / Action -->
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2 sm:gap-3">
             
-            <a href="/login" class="text-xs sm:text-sm font-semibold text-text-secondary hover:text-primary px-3 py-2 transition">
+            <a href="/login" class="text-xs sm:text-sm font-semibold text-text-secondary hover:text-primary px-2.5 sm:px-3 py-1.5 sm:py-2 transition">
                 Sign In
             </a>
-            <a href="/classifier" class="btn-primary py-2 px-4 sm:px-5 text-xs sm:text-sm font-bold flex items-center gap-1.5 shadow-sm">
+            <a href="/classifier" class="hidden sm:inline-flex btn-primary py-2 px-4 sm:px-5 text-xs sm:text-sm font-bold items-center gap-1.5 shadow-sm">
                 <span class="material-symbols-outlined text-[18px]">photo_camera</span>
                 <span>Scan Waste</span>
             </a>
             
 
             <!-- Mobile Hamburger Button -->
-            <button type="button" id="mobile-menu-btn" class="md:hidden text-text-secondary hover:text-text-primary p-2 focus:outline-none rounded-xl hover:bg-surface-container" aria-label="Toggle Menu">
+            <button type="button" id="mobile-menu-btn" class="md:hidden text-text-secondary hover:text-text-primary p-1.5 focus:outline-none rounded-xl hover:bg-surface-container" aria-label="Toggle Menu">
                 <span class="material-symbols-outlined text-[24px]" id="mobile-menu-icon">menu</span>
             </button>
         </div>
     </div>
 
     <!-- Mobile Slide Drawer -->
-    <div id="mobile-menu" class="hidden md:hidden absolute top-20 left-0 right-0 bg-white border-b border-border-subtle shadow-xl px-5 py-4 space-y-2 z-50">
+    <div id="mobile-menu" class="hidden md:hidden absolute top-16 sm:top-20 left-0 right-0 bg-white/98 backdrop-blur-xl border-b border-border-subtle shadow-2xl px-5 py-4 space-y-2 z-50">
         <div class="flex items-center gap-2.5 pb-3 mb-2 border-b border-border-subtle">
             <img src="/static/img/logo-icon.svg" alt="BinSync" class="w-7 h-7 rounded-lg">
             <span class="font-bold text-sm text-text-primary">BinSync Quick Navigation</span>
         </div>
-        <a href="/" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-text-secondary hover:bg-surface-container">
-            Home
+        <a href="/" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-text-secondary hover:bg-surface-container">
+            <span class="material-symbols-outlined text-[20px]">home</span>
+            <span>Home</span>
         </a>
-        <a href="/classifier" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-text-secondary hover:bg-surface-container">
-            Waste Sorter
+        <a href="/classifier" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-text-secondary hover:bg-surface-container">
+            <span class="material-symbols-outlined text-[20px] text-primary">photo_camera</span>
+            <span>AI Waste Sorter</span>
         </a>
-        <a href="/rules" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-text-secondary hover:bg-surface-container">
-            Rules &amp; Map
+        <a href="/rules" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-text-secondary hover:bg-surface-container">
+            <span class="material-symbols-outlined text-[20px]">map</span>
+            <span>Rules &amp; Municipal Map</span>
         </a>
-        <a href="/classifications" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-text-secondary hover:bg-surface-container">
-            Taxonomy Directory
+        <a href="/classifications" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-text-secondary hover:bg-surface-container">
+            <span class="material-symbols-outlined text-[20px]">account_tree</span>
+            <span>Taxonomy Directory</span>
         </a>
-        <a href="/leaderboard" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-text-secondary hover:bg-surface-container">
-            Community Leaderboard
+        <a href="/leaderboard" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-text-secondary hover:bg-surface-container">
+            <span class="material-symbols-outlined text-[20px]">leaderboard</span>
+            <span>Community Leaderboard</span>
         </a>
         
-        <a href="/login" class="block px-4 py-2.5 rounded-xl text-sm font-semibold text-primary hover:bg-primary-light">
-            Sign In / Profile
+        <a href="/login" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-semibold text-primary hover:bg-primary-light">
+            <span class="material-symbols-outlined text-[20px]">login</span>
+            <span>Sign In / Profile</span>
         </a>
         
     </div>
@@ -657,25 +663,28 @@
     </div>
 </footer>
 
-<!-- Mobile Bottom Navigation Bar (Light Arctic Glacier) -->
-<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-xl border-t border-border-subtle z-40 pt-2 safe-bottom-nav px-3 flex justify-around items-center shadow-lg">
-    <a href="/" class="min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-xs px-2 text-text-muted hover:text-text-primary">
+<!-- Mobile Bottom Navigation Bar (Light Arctic Glacier with Elevated Scanner Action) -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-xl border-t border-border-subtle z-40 pt-1.5 safe-bottom-nav px-2 flex justify-around items-end shadow-2xl">
+    <a href="/" class="min-h-[48px] flex-1 flex flex-col items-center justify-center gap-0.5 text-[11px] text-text-muted hover:text-text-primary transition-colors">
         <span class="material-symbols-outlined text-[22px]">home</span>
         <span>Home</span>
     </a>
-    <a href="/classifier" class="min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-xs px-2 text-text-muted hover:text-text-primary">
-        <span class="material-symbols-outlined text-[22px]">center_focus_strong</span>
-        <span>Inspect</span>
-    </a>
-    <a href="/rules" class="min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-xs px-2 text-text-muted hover:text-text-primary">
+    <a href="/rules" class="min-h-[48px] flex-1 flex flex-col items-center justify-center gap-0.5 text-[11px] text-text-muted hover:text-text-primary transition-colors">
         <span class="material-symbols-outlined text-[22px]">map</span>
         <span>Rules</span>
     </a>
-    <a href="/leaderboard" class="min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-xs px-2 text-text-muted hover:text-text-primary">
+    <!-- Primary Floating Scanner Action Button -->
+    <a href="/classifier" onclick="if(window.triggerFeedback) window.triggerFeedback('tap');" class="flex-1 flex flex-col items-center justify-center -mt-6 group focus:outline-none">
+        <div class="w-14 h-14 rounded-full bg-primary text-white shadow-xl shadow-primary/30 flex items-center justify-center border-4 border-white group-hover:scale-105 active:scale-95 transition-transform ">
+            <span class="material-symbols-outlined text-[26px]">photo_camera</span>
+        </div>
+        <span class="text-[10px] font-bold text-text-secondary mt-0.5">Scan Waste</span>
+    </a>
+    <a href="/leaderboard" class="min-h-[48px] flex-1 flex flex-col items-center justify-center gap-0.5 text-[11px] text-text-muted hover:text-text-primary transition-colors">
         <span class="material-symbols-outlined text-[22px]">leaderboard</span>
         <span>Rank</span>
     </a>
-    <a href="/login" class="min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-xs px-2 text-primary font-bold">
+    <a href="/login" class="min-h-[48px] flex-1 flex flex-col items-center justify-center gap-0.5 text-[11px] text-primary font-bold transition-colors">
         <span class="material-symbols-outlined text-[22px]">account_circle</span>
         <span>Sign In</span>
     </a>
