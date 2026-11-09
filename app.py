@@ -26,10 +26,15 @@ class NetlifyPathFixer:
 
     def __call__(self, environ, start_response):
         path = environ.get('PATH_INFO', '')
-        if path.startswith('/.netlify/functions/app'):
-            environ['PATH_INFO'] = path[len('/.netlify/functions/app'):] or '/'
-        elif path.startswith('/app') and (len(path) == 4 or path[4] == '/'):
-            environ['PATH_INFO'] = path[4:] or '/'
+        for prefix in ['/.netlify/functions/server', '/.netlify/functions/app', '/.netlify/functions/api']:
+            if path.startswith(prefix):
+                environ['PATH_INFO'] = path[len(prefix):] or '/'
+                break
+        else:
+            for prefix in ['/server', '/app']:
+                if path.startswith(prefix) and (len(path) == len(prefix) or path[len(prefix)] == '/'):
+                    environ['PATH_INFO'] = path[len(prefix):] or '/'
+                    break
         return self.wsgi_app(environ, start_response)
 
 app.wsgi_app = NetlifyPathFixer(app.wsgi_app)
