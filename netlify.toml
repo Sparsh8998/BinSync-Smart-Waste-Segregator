@@ -1,9 +1,13 @@
 [build]
   command = "pip install -r requirements.txt && python freeze_site.py"
   publish = "public"
+  functions = "netlify/functions"
 
 [build.environment]
   PYTHON_VERSION = "3.11"
+
+[functions]
+  directory = "netlify/functions"
 
 # Netlify Edge CDN caching headers for static assets
 [[headers]]

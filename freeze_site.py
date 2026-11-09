@@ -50,6 +50,16 @@ def freeze():
     redirects_content = """# Netlify Redirects & Clean URL Routing
 /static/*          /static/:splat               200
 
+# API routes to Netlify Serverless Functions
+/api/classify      /.netlify/functions/classify 200
+/api/lookup        /.netlify/functions/lookup   200
+/api/depots        /.netlify/functions/depots   200
+/api/depots/*      /.netlify/functions/depots   200
+/api/bylaws        /.netlify/functions/bylaws   200
+/api/ask_followup  /.netlify/functions/ask_followup 200
+/api/audit_bin     /.netlify/functions/audit_bin 200
+/api/*             /.netlify/functions/:splat   200
+
 # Route Clean URLs
 /classifier        /classifier/index.html        200
 /dashboard         /dashboard/index.html         200
@@ -70,3 +80,4 @@ def freeze():
 
 if __name__ == '__main__':
     freeze()
+
