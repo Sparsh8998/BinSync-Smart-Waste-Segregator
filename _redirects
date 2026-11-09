@@ -1,2 +1,13 @@
-/static/*   /static/:splat               200
-/*          /.netlify/functions/server   200
+# Netlify Redirects & Clean URL Routing
+/static/*          /static/:splat               200
+
+# Route Clean URLs
+/classifier        /classifier/index.html        200
+/dashboard         /dashboard/index.html         200
+/leaderboard       /leaderboard/index.html       200
+/classifications   /classifications/index.html   200
+/rules             /rules/index.html             200
+/login             /login/index.html             200
+
+# Single Page App fallback
+/*                 /index.html                   200

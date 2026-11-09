@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="utf-8"/>
+    <script>
+        // Strictly light mode enforcement — remove any legacy dark theme traces
+        try {
+            document.documentElement.classList.remove('dark');
+            localStorage.removeItem('binsync_theme');
+        } catch(e) {}
+    </script>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>BinSync — Precision Waste Intelligence That Heals Our Planet</title>
+    <link rel="icon" type="image/svg+xml" href="/static/img/logo-icon.svg">
+    <link rel="apple-touch-icon" href="/static/img/logo-icon.svg">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#2563EB">
+
+    <!-- Fonts: Plus Jakarta Sans, Inter, JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+
+    <!-- Tailwind CSS with Nordic Arctic Glacier Design Tokens -->
+    <script>
+        tailwind = {
+            config: {
+                theme: {
+                    extend: {
+                        colors: {
+                            primary: {
+                                DEFAULT: "#2563EB",   /* Electric Precision Cobalt */
+                                hover:   "#1D4ED8",   /* Deep Royal Cobalt */
+                                light:   "#EFF6FF",   /* Ice Blue Tint */
+                                container: "#0F172A", /* Obsidian Graphite */
+                                fixed:   "#38BDF8"    /* Glacier Sky */
+                            },
+                            solar: {
+                                DEFAULT: "#F59E0B",
+                                hover:   "#D97706",
+                                light:   "#FEF3C7",
+                                dark:    "#B45309"
+                            },
+                            surface: {
+                                DEFAULT: "#F8FAFC",   /* Glacier Ice-White Canvas */
+                                card:    "#FFFFFF",   /* Pristine Card White */
+                                container: "#F1F5F9", /* Ice Slate Inset */
+                                subtle:  "#E2E8F0"    /* Glacier Border Line */
+                            },
+                            text: {
+                                primary:   "#0F172A", /* Obsidian Slate — 15:1 contrast */
+                                secondary: "#334155", /* Cool Charcoal Slate */
+                                muted:     "#64748B"  /* Glacier Muted Slate */
+                            },
+                            border: {
+                                subtle: "#E2E8F0",   /* Glacier Border Line */
+                                medium: "#CBD5E1",   /* Slate Medium Input Border */
+                                hover:  "#2563EB"    /* Active Precision Cobalt */
+                            },
+                            bin: {
+                                recycle:        "#0284C7", /* Curbside Blue */
+                                recycleLight:   "#F0F9FF",
+                                recycleBorder:  "#BAE6FD",
+                                compost:        "#0D9488", /* Glacier Teal */
+                                compostLight:   "#F0FDFA",
+                                compostBorder:  "#99F6E4",
+                                landfill:       "#475569", /* Managed Slate */
+                                landfillLight:  "#F8FAFC",
+                                landfillBorder: "#E2E8F0",
+                                specialty:      "#D97706",
+                                specialtyLight: "#FFFBEB",
+                                specialtyBorder:"#FDE68A",
+                                hazmat:         "#DC2626", /* Hazmat Red */
+                                hazmatLight:    "#FEF2F2",
+                                hazmatBorder:   "#FECACA"
+                            }
+                        },
+                        fontFamily: {
+                            sans: ['Plus Jakarta Sans', 'Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+                            mono: ['JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace']
+                        },
+                        maxWidth: {
+                            container: 'min(96vw, 1720px)'
+                        },
+                        boxShadow: {
+                            'glacier': '0 2px 8px -2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.02)',
+                            'glacier-hover': '0 12px 28px -4px rgba(15, 23, 42, 0.08), 0 4px 8px rgba(15, 23, 42, 0.03)',
+                            'botanical': '0 2px 8px -2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.02)',
+                            'botanical-hover': '0 12px 28px -4px rgba(15, 23, 42, 0.08), 0 4px 8px rgba(15, 23, 42, 0.03)'
+                        }
+                    }
+                }
+            }
+        };
+    </script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <style>
+        /* ── Fluid Dynamic Typography & Viewport Scaling ── */
+        html {
+            font-size: 16px;
+            -webkit-text-size-adjust: 100%;
+        }
+        @media (min-width: 1280px) {
+            html {
+                font-size: 16.5px;
+            }
+        }
+        @media (min-width: 1536px) {
+            html {
+                font-size: 17.5px;
+            }
+        }
+        @media (min-width: 1920px) {
+            html {
+                font-size: 18.5px;
+            }
+        }
+        @media (min-width: 2560px) {
+            html {
+                font-size: 20px;
+            }
+        }
+
+        .max-w-container {
+            max-width: min(96vw, 1720px) !important;
+            width: 100%;
+        }
+
+        /* ── Editorial Tight Tracking Standards ── */
+        h1, h2, h3, .font-heading {
+            letter-spacing: -0.03em;
+        }
+        .meta-tag, .tech-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        /* ── Nordic Arctic Glacier Custom Utilities ── */
+        .text-primary {
+            color: #2563EB !important;
+        }
+        .bg-primary {
+            background-color: #2563EB !important;
+        }
+        .border-primary {
+            border-color: #2563EB !important;
+        }
+        .bg-primary-light {
+            background-color: #EFF6FF !important;
+        }
+
+        .eco-card {
+            background-color: #FFFFFF;
+            border: 1px solid #E2E8F0;
+            border-radius: 1.5rem;
+            box-shadow: 0 2px 8px -2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.02);
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .eco-card:hover {
+            border-color: #CBD5E1;
+            box-shadow: 0 12px 28px -4px rgba(15, 23, 42, 0.08), 0 4px 8px rgba(15, 23, 42, 0.03);
+        }
+
+        .btn-primary {
+            background-color: #2563EB;
+            color: #FFFFFF !important;
+            padding: 0.75rem 1.6rem;
+            border-radius: 9999px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+            min-height: 44px;
+            border: 1px solid transparent;
+        }
+        .btn-primary:hover {
+            background-color: #1D4ED8;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+            transform: translateY(-1px);
+        }
+        .btn-secondary {
+            background-color: #FFFFFF;
+            color: #0F172A;
+            border: 1.5px solid #CBD5E1;
+            padding: 0.75rem 1.6rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+            min-height: 44px;
+        }
+        .btn-secondary:hover {
+            border-color: #2563EB;
+            background-color: #EFF6FF;
+            color: #2563EB;
+            transform: translateY(-1px);
+        }
+        .btn-solar {
+            background-color: #F59E0B;
+            color: #FFFFFF;
+            padding: 0.75rem 1.6rem;
+            border-radius: 9999px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+            min-height: 44px;
+        }
+        .btn-solar:hover {
+            background-color: #D97706;
+            box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35);
+            transform: translateY(-1px);
+        }
+
+        /* ── Micro-Animations ── */
+        @keyframes fade-up {
+            from {
+                opacity: 0;
+                transform: translateY(14px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .animate-fade-up {
+            animation: fade-up 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+        .stagger-1 { animation-delay: 80ms; }
+        .stagger-2 { animation-delay: 160ms; }
+        .stagger-3 { animation-delay: 240ms; }
+        .stagger-4 { animation-delay: 320ms; }
+
+        @keyframes shimmer-move {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(200%); }
+        }
+        .progress-shimmer {
+            position: relative;
+            overflow: hidden;
+        }
+        .progress-shimmer::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.45), transparent);
+            animation: shimmer-move 2.2s infinite ease-in-out;
+            pointer-events-none;
+        }
+
+        @keyframes flame-pulse {
+            0%, 100% { transform: scale(1) rotate(0deg); filter: drop-shadow(0 0 2px rgba(245, 158, 11, 0.4)); }
+            50% { transform: scale(1.14) rotate(-3deg); filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.8)); }
+        }
+        .flame-flicker {
+            display: inline-block;
+            animation: flame-pulse 1.8s infinite ease-in-out;
+            transform-origin: bottom center;
+        }
+
+        @keyframes glacier-drift {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-48%, -52%) scale(1.08); }
+        }
+        .glacier-float {
+            animation: glacier-drift 16s infinite ease-in-out;
+        }
+
+        @keyframes subtle-pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.65; transform: scale(0.97); }
+        }
+        .pulse-subtle {
+            animation: subtle-pulse 2.4s infinite ease-in-out;
+        }
+
+        @keyframes spring-pop {
+            0% { transform: scale(0.8); opacity: 0; }
+            40% { transform: scale(1.22); }
+            70% { transform: scale(0.95); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .animate-pop {
+            animation: spring-pop 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes golden-glow-pulse {
+            0%, 100% {
+                box-shadow: 0 0 15px rgba(245, 158, 11, 0.2), 0 4px 16px rgba(0, 0, 0, 0.05);
+            }
+            50% {
+                box-shadow: 0 0 30px rgba(245, 158, 11, 0.45), 0 8px 24px rgba(245, 158, 11, 0.15);
+            }
+        }
+        .golden-glow-pulse {
+            animation: golden-glow-pulse 3s infinite ease-in-out;
+        }
+
+        /* ── Universal Scroll-Reveal Directions ── */
+        @media (prefers-reduced-motion: no-preference) {
+            .reveal-on-scroll {
+                opacity: 0;
+                transform: translateY(28px) scale(0.985);
+                transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+                will-change: opacity, transform;
+            }
+            .reveal-on-scroll.is-visible {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+
+            .reveal-left {
+                opacity: 0;
+                transform: translateX(-32px);
+                transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+                will-change: opacity, transform;
+            }
+            .reveal-left.is-visible {
+                opacity: 1;
+                transform: translateX(0);
+            }
+
+            .reveal-right {
+                opacity: 0;
+                transform: translateX(32px);
+                transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+                will-change: opacity, transform;
+            }
+            .reveal-right.is-visible {
+                opacity: 1;
+                transform: translateX(0);
+            }
+
+            .reveal-scale {
+                opacity: 0;
+                transform: scale(0.92);
+                transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+                will-change: opacity, transform;
+            }
+            .reveal-scale.is-visible {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* ── Accessibility: Reduced Motion Standards ── */
+        @media (prefers-reduced-motion: reduce) {
+            *, ::before, ::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+            .reveal-on-scroll, .reveal-left, .reveal-right, .reveal-scale {
+                opacity: 1 !important;
+                transform: none !important;
+                transition: none !important;
+            }
+        }
+
+        /* ── Mobile Input Zoom Prevention & Safe Area Standards ── */
+        @media (max-width: 768px) {
+            input, select, textarea {
+                font-size: 16px !important;
+            }
+        }
+        .safe-bottom-nav {
+            padding-bottom: max(0.65rem, env(safe-area-inset-bottom, 0.65rem));
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+    
+</head>
+<body class="bg-surface text-text-primary font-sans min-h-screen flex flex-col antialiased selection:bg-blue-100 selection:text-blue-950">
+
+<!-- Top Fixed Glacier Scroll Progress Bar -->
+<div id="scroll-progress-bar" class="fixed top-0 left-0 h-[3px] bg-gradient-to-r from-primary via-[#38BDF8] to-solar z-[60] w-0 transition-[width] duration-75 ease-out pointer-events-none"></div>
+
+<!-- Nordic Arctic Glacier Frosted Header -->
+<header id="main-header" class="sticky top-0 z-50 transition-all duration-300 bg-white/95 backdrop-blur-md border-b border-border-subtle h-20 flex items-center">
+    <div class="max-w-container mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 w-full flex items-center justify-between">
+        <!-- Brand Logo with Climate Intelligence Identity -->
+        <a href="/" class="flex items-center gap-3 hover:opacity-90 transition-opacity flex-shrink-0">
+            <img src="/static/img/logo-icon.svg" alt="BinSync Logo" class="w-9 h-9 rounded-xl shadow-sm">
+            <div class="flex flex-col">
+                <span class="text-xl font-black tracking-tight text-text-primary leading-none">Bin<span class="text-primary">Sync</span></span>
+                <span class="text-[9px] font-bold text-primary tracking-widest uppercase mt-0.5">CLIMATE INTELLIGENCE</span>
+            </div>
+        </a>
+
+        <!-- Desktop Navigation Tabs (Nordic Glacier Capsule Tabs) -->
+        <nav class="hidden md:flex items-center gap-1.5 text-sm font-semibold">
+            <a href="/" class="px-4 py-2 rounded-full transition-all text-primary bg-primary-light font-bold">
+                Home
+            </a>
+            <a href="/classifier" class="px-4 py-2 rounded-full transition-all text-text-secondary hover:text-text-primary hover:bg-surface-container flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-[18px]">photo_camera</span>
+                <span>Waste Sorter</span>
+            </a>
+            <a href="/rules" class="px-4 py-2 rounded-full transition-all text-text-secondary hover:text-text-primary hover:bg-surface-container">
+                Rules &amp; Map
+            </a>
+            <a href="/classifications" class="px-4 py-2 rounded-full transition-all text-text-secondary hover:text-text-primary hover:bg-surface-container">
+                Taxonomy
+            </a>
+            <a href="/leaderboard" class="px-4 py-2 rounded-full transition-all text-text-secondary hover:text-text-primary hover:bg-surface-container">
+                Leaderboard
+            </a>
+            
+        </nav>
+
+        <!-- Right Side: User Profile / Action -->
+        <div class="flex items-center gap-3">
+            
+            <a href="/login" class="text-xs sm:text-sm font-semibold text-text-secondary hover:text-primary px-3 py-2 transition">
+                Sign In
+            </a>
+            <a href="/classifier" class="btn-primary py-2 px-4 sm:px-5 text-xs sm:text-sm font-bold flex items-center gap-1.5 shadow-sm">
+                <span class="material-symbols-outlined text-[18px]">photo_camera</span>
+                <span>Scan Waste</span>
+            </a>
+            
+
+            <!-- Mobile Hamburger Button -->
+            <button type="button" id="mobile-menu-btn" class="md:hidden text-text-secondary hover:text-text-primary p-2 focus:outline-none rounded-xl hover:bg-surface-container" aria-label="Toggle Menu">
+                <span class="material-symbols-outlined text-[24px]" id="mobile-menu-icon">menu</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Mobile Slide Drawer -->
+    <div id="mobile-menu" class="hidden md:hidden absolute top-20 left-0 right-0 bg-white border-b border-border-subtle shadow-xl px-5 py-4 space-y-2 z-50">
+        <div class="flex items-center gap-2.5 pb-3 mb-2 border-b border-border-subtle">
+            <img src="/static/img/logo-icon.svg" alt="BinSync" class="w-7 h-7 rounded-lg">
+            <span class="font-bold text-sm text-text-primary">BinSync Quick Navigation</span>
+        </div>
+        <a href="/" class="block px-4 py-2.5 rounded-xl text-sm font-medium bg-primary-light text-primary font-bold">
+            Home
+        </a>
+        <a href="/classifier" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-text-secondary hover:bg-surface-container">
+            Waste Sorter
+        </a>
+        <a href="/rules" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-text-secondary hover:bg-surface-container">
+            Rules &amp; Map
+        </a>
+        <a href="/classifications" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-text-secondary hover:bg-surface-container">
+            Taxonomy Directory
+        </a>
+        <a href="/leaderboard" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-text-secondary hover:bg-surface-container">
+            Community Leaderboard
+        </a>
+        
+        <a href="/login" class="block px-4 py-2.5 rounded-xl text-sm font-semibold text-primary hover:bg-primary-light">
+            Sign In / Profile
+        </a>
+        
+    </div>
+</header>
+
+<!-- Main Body Slot -->
+<main class="flex-grow pb-24 md:pb-0">
+    
+<div class="space-y-0">
+
+    <!-- Direct Action Hero Section (Nordic Glacier Search Style) -->
+    <section class="relative pt-12 pb-20 md:pt-20 md:pb-28 overflow-hidden bg-gradient-to-b from-[#EFF6FF]/70 via-[#F8FAFC] to-[#F8FAFC]">
+        <!-- Soft glacier ambient glow with scroll parallax -->
+        <div id="hero-glacier-orb" class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-[#93C5FD]/20 rounded-full blur-3xl pointer-events-none glacier-float transition-transform duration-100 ease-out"></div>
+
+        <div class="max-w-container mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 relative z-10 text-center">
+            
+            <!-- Confident Headline (No Kicker/Eyebrow per craft floor) -->
+            <h1 class="text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-8xl 2xl:text-[5.5rem] font-black tracking-tight text-text-primary leading-[1.06] max-w-5xl xl:max-w-6xl 2xl:max-w-7xl mx-auto">
+                Sort packaging with precision.<br class="hidden sm:inline"/>
+                <span class="text-[#2563EB]" style="color: #2563EB !important;">Protect the planet we love.</span>
+            </h1>
+
+            <p class="text-base sm:text-xl lg:text-2xl 2xl:text-3xl text-text-secondary max-w-3xl lg:max-w-4xl 2xl:max-w-5xl mx-auto mt-6 leading-relaxed font-normal">
+                Wishcycling contaminates circular recycling streams. <span class="text-[#2563EB] font-semibold">BinSync isolates every composite packaging layer in seconds</span> to give you exact municipal sorting directions.
+            </p>
+
+            <!-- Center-Stage Scanner Box -->
+            <div class="mt-12 w-full max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl mx-auto">
+                <div class="eco-card p-6 sm:p-10 border-2 border-dashed border-[#CBD5E1] hover:border-primary transition-all duration-300 relative group text-left">
+                    
+                    <!-- Search/Scan Action Bar -->
+                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-5 pb-5 border-b border-border-subtle">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 rounded-2xl bg-primary-light text-primary flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
+                                <span class="material-symbols-outlined text-[32px] text-[#2563EB]">document_scanner</span>
+                            </div>
+                            <div>
+                                <h2 class="text-lg sm:text-xl font-bold text-text-primary">Inspect packaging to <span class="text-[#2563EB]">sort</span></h2>
+                                <p class="text-xs sm:text-sm text-text-muted">Instant multi-layer decomposition</p>
+                            </div>
+                        </div>
+
+                        <!-- Direct Launch Buttons -->
+                        <div class="flex items-center gap-3">
+                            <a href="/classifier" class="btn-primary py-3 px-6 text-sm font-bold flex items-center gap-2 shadow-sm">
+                                <span class="material-symbols-outlined text-[20px]">photo_camera</span>
+                                <span>Camera Scan</span>
+                            </a>
+                            <a href="/classifier" class="btn-secondary py-3 px-5 text-sm font-bold flex items-center gap-2">
+                                <span class="material-symbols-outlined text-[20px]">upload_file</span>
+                                <span>Browse</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Instant Text & Barcode Query Bar -->
+                    <div class="py-4 border-b border-border-subtle">
+                        <form action="/classifier" method="GET" class="flex gap-3">
+                            <div class="relative flex-1">
+                                <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-text-muted text-[22px]">search</span>
+                                <input type="text" name="q" list="packaging-suggestions" placeholder="Or type item name: coffee cup, pizza box, milk carton, bubble wrap…" class="w-full text-sm sm:text-base pl-12 pr-4 py-3.5 rounded-full border border-border-medium focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 bg-surface">
+                            </div>
+                            <button type="submit" class="btn-primary py-3.5 px-6 text-sm font-bold whitespace-nowrap">
+                                Decompose &rarr;
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- 1-Click Instant Demo Sample Chips -->
+                    <div class="pt-6">
+                        <div class="flex items-center justify-between mb-3.5 text-xs sm:text-sm">
+                            <span class="font-semibold text-text-secondary flex items-center gap-2">
+                                <span class="material-symbols-outlined text-[18px] text-[#2563EB]">bolt</span>
+                                <span>Test with <span class="text-[#2563EB] font-bold">one-click demo</span> items:</span>
+                            </span>
+                            <span class="text-text-muted text-xs">Instant AI classification</span>
+                        </div>
+
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                            <a href="/classifier?sample=chips-bag.jpg" class="p-3 rounded-xl border border-border-subtle bg-surface-container hover:bg-primary-light hover:border-primary transition flex items-center gap-3 group/chip">
+                                <img src="/static/samples/chips-bag.jpg" alt="Snack Pouch" class="w-11 h-11 object-cover rounded-xl border border-border-subtle flex-shrink-0">
+                                <div class="truncate text-left">
+                                    <span class="block text-xs sm:text-sm font-bold text-text-primary group-hover/chip:text-primary truncate">Snack Pouch</span>
+                                    <span class="block text-[11px] text-solar-dark font-semibold">Composite</span>
+                                </div>
+                            </a>
+
+                            <a href="/classifier?sample=sample-recyclable.jpg" class="p-3 rounded-xl border border-border-subtle bg-surface-container hover:bg-primary-light hover:border-primary transition flex items-center gap-3 group/chip">
+                                <img src="/static/samples/sample-recyclable.jpg" alt="Drink Pack" class="w-11 h-11 object-cover rounded-xl border border-border-subtle flex-shrink-0">
+                                <div class="truncate text-left">
+                                    <span class="block text-xs sm:text-sm font-bold text-text-primary group-hover/chip:text-primary truncate">Drink Pack</span>
+                                    <span class="block text-[11px] text-blue-700 font-semibold">Recyclable</span>
+                                </div>
+                            </a>
+
+                            <a href="/classifier?sample=food-compost.jpg" class="p-3 rounded-xl border border-border-subtle bg-surface-container hover:bg-primary-light hover:border-primary transition flex items-center gap-3 group/chip">
+                                <img src="/static/samples/food-compost.jpg" alt="Organics" class="w-11 h-11 object-cover rounded-xl border border-border-subtle flex-shrink-0">
+                                <div class="truncate text-left">
+                                    <span class="block text-xs sm:text-sm font-bold text-text-primary group-hover/chip:text-primary truncate">Food Scraps</span>
+                                    <span class="block text-[11px] text-teal-700 font-semibold">Compost</span>
+                                </div>
+                            </a>
+
+                            <a href="/classifier?sample=garbage-bag.jpg" class="p-3 rounded-xl border border-border-subtle bg-surface-container hover:bg-primary-light hover:border-primary transition flex items-center gap-3 group/chip">
+                                <img src="/static/samples/garbage-bag.jpg" alt="Trash Bag" class="w-11 h-11 object-cover rounded-xl border border-border-subtle flex-shrink-0">
+                                <div class="truncate text-left">
+                                    <span class="block text-xs sm:text-sm font-bold text-text-primary group-hover/chip:text-primary truncate">Trash Film</span>
+                                    <span class="block text-[11px] text-slate-700 font-semibold">Landfill</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Tangible Impact Live Counters Strip -->
+            <div class="mt-16 w-full max-w-5xl lg:max-w-6xl xl:max-w-7xl 2xl:max-w-[1500px] mx-auto grid grid-cols-1 sm:grid-cols-3 gap-6">
+                <div class="eco-card p-8 sm:p-10 text-center border-primary/20 hover:border-primary transition">
+                    <div class="counter-ticker text-4xl sm:text-5xl lg:text-6xl font-black text-[#2563EB] tracking-tight font-mono" data-count-target="14,395">
+                        0
+                    </div>
+                    <div class="text-xs sm:text-sm font-bold text-text-secondary uppercase tracking-wider mt-2">
+                        Packages Diverted
+                    </div>
+                    <p class="text-xs sm:text-sm text-text-muted mt-2">Logged and verified through circular routing</p>
+                </div>
+
+                <div class="eco-card p-8 sm:p-10 text-center border-primary/30">
+                    <div class="counter-ticker text-4xl sm:text-5xl lg:text-6xl font-black text-[#2563EB] tracking-tight font-mono" data-count-target="87.4%">
+                        0
+                    </div>
+                    <div class="text-xs sm:text-sm font-bold text-[#2563EB] uppercase tracking-wider mt-2">
+                        Contaminations Prevented
+                    </div>
+                    <p class="text-xs sm:text-sm text-text-muted mt-2">Municipal blue bins protected from spoilage</p>
+                </div>
+
+                <div class="eco-card p-8 sm:p-10 text-center">
+                    <div class="text-4xl sm:text-5xl lg:text-6xl font-black text-text-primary tracking-tight font-mono">
+                        <span class="counter-ticker" data-count-target="18.51">0</span> <span class="text-xl sm:text-2xl font-normal text-text-muted">Tons</span>
+                    </div>
+                    <div class="text-xs sm:text-sm font-bold text-text-secondary uppercase tracking-wider mt-2">
+                        Landfill Avoided
+                    </div>
+                    <p class="text-xs sm:text-sm text-text-muted mt-2">Audited carbon savings diverted into clean streams</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Interactive Demonstration: Exploded Packaging Decomposition -->
+    <section class="py-20 md:py-32 bg-white border-y border-border-subtle">
+        <div class="max-w-container mx-auto px-4 sm:px-8 lg:px-12 xl:px-16">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+                
+                <!-- Left: Educational Breakdown -->
+                <div class="lg:col-span-6 space-y-7">
+                    <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-text-primary leading-tight">
+                        Wishcycling ruins circular recycling.<br/>
+                        <span class="text-[#2563EB]">Here is what happens when you decompose.</span>
+                    </h2>
+                    
+                    <p class="text-base sm:text-lg lg:text-xl text-text-secondary leading-relaxed">
+                        A single greasy foil liner or unpeeled plastic film can ruin entire bales of pulped cardboard at municipal recovery facilities. BinSync's vision engine isolates every layer before it reaches the bin.
+                    </p>
+
+                    <div class="space-y-5 pt-2">
+                        <div class="reveal-left flex items-start gap-4 transition-all" style="transition-delay: 0ms;">
+                            <div class="w-10 h-10 rounded-xl bg-primary-light text-primary flex items-center justify-center font-bold text-base flex-shrink-0 mt-0.5 shadow-sm">
+                                1
+                            </div>
+                            <div>
+                                <h3 class="text-base sm:text-lg font-bold text-text-primary">Separate Physical Layers</h3>
+                                <p class="text-sm text-text-secondary mt-1">Detach plastic caps, foil seals, and cardboard sleeves into individual pure materials.</p>
+                            </div>
+                        </div>
+
+                        <div class="reveal-left flex items-start gap-4 transition-all" style="transition-delay: 120ms;">
+                            <div class="w-10 h-10 rounded-xl bg-primary-light text-primary flex items-center justify-center font-bold text-base flex-shrink-0 mt-0.5 shadow-sm">
+                                2
+                            </div>
+                            <div>
+                                <h3 class="text-base sm:text-lg font-bold text-text-primary">Route to Local Drop-offs</h3>
+                                <p class="text-sm text-text-secondary mt-1">Direct items like soft plastic films and e-waste away from curbside bins to certified drop depots.</p>
+                            </div>
+                        </div>
+
+                        <div class="reveal-left flex items-start gap-4 transition-all" style="transition-delay: 240ms;">
+                            <div class="w-10 h-10 rounded-xl bg-primary-light text-primary flex items-center justify-center font-bold text-base flex-shrink-0 mt-0.5 shadow-sm">
+                                3
+                            </div>
+                            <div>
+                                <h3 class="text-base sm:text-lg font-bold text-text-primary">Track Real Carbon Equivalents</h3>
+                                <p class="text-sm text-text-secondary mt-1">Every gram of avoided CO₂ is translated into smartphone recharges and electric vehicle miles.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-4">
+                        <a href="/classifier" class="btn-primary py-3.5 px-7 text-sm font-bold flex items-center gap-2">
+                            <span>Try AI Decomposition Live</span>
+                            <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Right: Visual Layer Diagram -->
+                <div class="lg:col-span-6">
+                    <div id="schema-card" class="eco-card reveal-right p-6 sm:p-9 space-y-5 group/schema cursor-pointer transition-all duration-300 hover:shadow-xl hover:border-primary/40 relative">
+                        <div class="flex items-center justify-between pb-4 border-b border-border-subtle">
+                            <div class="flex items-center gap-2.5">
+                                <span class="w-3 h-3 rounded-full bg-blue-500 animate-pulse"></span>
+                                <span class="text-xs sm:text-sm font-bold text-text-primary uppercase tracking-wider">Decomposition Schema</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="hidden sm:inline-flex items-center gap-1 text-[11px] font-semibold text-text-muted group-hover/schema:text-primary transition">
+                                    <span class="material-symbols-outlined text-[14px]">unfold_more</span>
+                                    <span>Hover or Scroll to Separate</span>
+                                </span>
+                                <span class="text-xs sm:text-sm font-bold text-primary bg-primary-light px-3.5 py-1 rounded-full">
+                                    Snack Pouch Identified
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- 3 Exploded Layer Cards with Dynamic Separation -->
+                        <div id="schema-layers-box" class="space-y-4 group-hover/schema:space-y-6 transition-all duration-500 relative">
+                            <!-- Layer 1 -->
+                            <div id="schema-layer-1" class="p-5 rounded-2xl bg-[#F0F9FF] border border-[#BAE6FD] flex items-center justify-between transition-all duration-500 transform group-hover/schema:-translate-y-2 group-hover/schema:shadow-md relative z-30">
+                                <div class="flex items-center gap-3.5">
+                                    <span class="w-8 h-8 rounded-xl bg-[#0284C7] text-white flex items-center justify-center text-sm font-bold">1</span>
+                                    <div>
+                                        <h4 class="text-sm sm:text-base font-bold text-slate-900">External Paper Sleeve</h4>
+                                        <p class="text-xs sm:text-sm text-slate-600">Pure Bleached Fiber</p>
+                                    </div>
+                                </div>
+                                <span class="text-xs font-bold px-3.5 py-1 bg-[#0284C7] text-white rounded-full">Curbside Blue Bin</span>
+                            </div>
+
+                            <!-- Subtle Connector 1 -->
+                            <div id="schema-connector-1" class="h-0 group-hover/schema:h-2 opacity-0 group-hover/schema:opacity-100 transition-all duration-500 flex justify-center -my-2 pointer-events-none">
+                                <div class="w-0.5 h-full bg-blue-300"></div>
+                            </div>
+
+                            <!-- Layer 2 -->
+                            <div id="schema-layer-2" class="p-5 rounded-2xl bg-[#FFFBEB] border border-[#FDE68A] flex items-center justify-between transition-all duration-500 transform group-hover/schema:scale-[1.02] group-hover/schema:shadow-md relative z-20">
+                                <div class="flex items-center gap-3.5">
+                                    <span class="w-8 h-8 rounded-xl bg-[#D97706] text-white flex items-center justify-center text-sm font-bold">2</span>
+                                    <div>
+                                        <h4 class="text-sm sm:text-base font-bold text-slate-900">Metallized Polymer Liner</h4>
+                                        <p class="text-xs sm:text-sm text-slate-600">BOPP Film + Aluminum Vapor</p>
+                                    </div>
+                                </div>
+                                <span class="text-xs font-bold px-3.5 py-1 bg-[#D97706] text-white rounded-full">Store Soft-Plastic</span>
+                            </div>
+
+                            <!-- Subtle Connector 2 -->
+                            <div id="schema-connector-2" class="h-0 group-hover/schema:h-2 opacity-0 group-hover/schema:opacity-100 transition-all duration-500 flex justify-center -my-2 pointer-events-none">
+                                <div class="w-0.5 h-full bg-amber-300"></div>
+                            </div>
+
+                            <!-- Layer 3 -->
+                            <div id="schema-layer-3" class="p-5 rounded-2xl bg-[#F8FAFC] border border-[#E2E8F0] flex items-center justify-between transition-all duration-500 transform group-hover/schema:translate-y-2 group-hover/schema:shadow-md relative z-10">
+                                <div class="flex items-center gap-3.5">
+                                    <span class="w-8 h-8 rounded-xl bg-[#475569] text-white flex items-center justify-center text-sm font-bold">3</span>
+                                    <div>
+                                        <h4 class="text-sm sm:text-base font-bold text-slate-900">Organic Food Residue</h4>
+                                        <p class="text-xs sm:text-sm text-slate-600">Seasoning and oil remnants</p>
+                                    </div>
+                                </div>
+                                <span class="text-xs font-bold px-3.5 py-1 bg-[#475569] text-white rounded-full">Wipe Clean First</span>
+                            </div>
+                        </div>
+
+                        <div class="pt-4 border-t border-border-subtle flex justify-between items-center text-xs sm:text-sm">
+                            <span class="text-text-muted">Measured Carbon Diversion:</span>
+                            <span class="font-bold text-primary font-mono text-base">+45.0g CO₂ Offset</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Wishcycling Fails & How BinSync Solves It -->
+    <section class="py-20 md:py-28">
+        <div class="max-w-container mx-auto px-4 sm:px-6">
+            <div class="text-center max-w-2xl mx-auto mb-16 space-y-3">
+                <h2 class="text-3xl sm:text-4xl font-black tracking-tight text-text-primary">
+                    Engineered to <span class="text-[#2563EB]">eliminate wishcycling</span> at every step
+                </h2>
+                <p class="text-sm sm:text-base text-text-secondary leading-relaxed">
+                    Wishcycling is tossing ambiguous items into the blue bin hoping they get recycled. BinSync gives you clear, verified answers before the bin closes.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Pillar 1 -->
+                <div class="eco-card reveal-on-scroll p-7 flex flex-col justify-between transition-all" style="transition-delay: 0ms;">
+                    <div>
+                        <div class="w-12 h-12 rounded-2xl bg-primary-light text-primary flex items-center justify-center mb-6 shadow-sm">
+                            <span class="material-symbols-outlined text-[26px]">document_scanner</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-text-primary mb-3">Layered Optical AI</h3>
+                        <p class="text-sm text-text-secondary leading-relaxed">
+                            BinSync does not just guess the label. It separates packaging into lid, sleeve, film, and body so you know precisely what separates and where it belongs.
+                        </p>
+                    </div>
+                    <div class="pt-6 mt-6 border-t border-border-subtle flex items-center text-xs font-bold text-primary">
+                        <span>Multi-layer physical breakdown</span>
+                        <span class="material-symbols-outlined text-[16px] ml-1">chevron_right</span>
+                    </div>
+                </div>
+
+                <!-- Pillar 2 -->
+                <div class="eco-card reveal-on-scroll p-7 flex flex-col justify-between transition-all" style="transition-delay: 120ms;">
+                    <div>
+                        <div class="w-12 h-12 rounded-2xl bg-primary-light text-primary flex items-center justify-center mb-6 shadow-sm">
+                            <span class="material-symbols-outlined text-[26px]">map</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-text-primary mb-3">Hyper-Local Bylaws</h3>
+                        <p class="text-sm text-text-secondary leading-relaxed">
+                            Recycling rules vary between cities. Find certified drop-off centers for soft plastics, batteries, electronics, and compost specific to your municipality.
+                        </p>
+                    </div>
+                    <div class="pt-6 mt-6 border-t border-border-subtle flex items-center text-xs font-bold text-primary">
+                        <span>Regional municipal mapping</span>
+                        <span class="material-symbols-outlined text-[16px] ml-1">chevron_right</span>
+                    </div>
+                </div>
+
+                <!-- Pillar 3 -->
+                <div class="eco-card reveal-on-scroll p-7 flex flex-col justify-between transition-all" style="transition-delay: 240ms;">
+                    <div>
+                        <div class="w-12 h-12 rounded-2xl bg-primary-light text-primary flex items-center justify-center mb-6 shadow-sm">
+                            <span class="material-symbols-outlined text-[26px]">emoji_events</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-text-primary mb-3">Gamified Impact Tracking</h3>
+                        <p class="text-sm text-text-secondary leading-relaxed">
+                            Earn eco-points, level up from Seedling to Eco Legend, build consecutive streaks, and translate carbon diversion into real smartphone charges and EV miles.
+                        </p>
+                    </div>
+                    <div class="pt-6 mt-6 border-t border-border-subtle flex items-center text-xs font-bold text-primary">
+                        <span>Verifiable carbon metrics</span>
+                        <span class="material-symbols-outlined text-[16px] ml-1">chevron_right</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action Section (Cobalt Climate Hero Banner) -->
+    <section class="py-20 md:py-28">
+        <div class="max-w-container mx-auto px-4 sm:px-6">
+            <div id="cta-banner" class="reveal-scale bg-gradient-to-br from-[#1D4ED8] via-[#2563EB] to-[#1E40AF] text-white rounded-3xl p-8 sm:p-14 lg:p-16 relative overflow-hidden shadow-2xl">
+                <!-- Ambient blue background glow with parallax -->
+                <div id="cta-glow-right" class="absolute -right-20 -bottom-20 w-96 h-96 rounded-full bg-white opacity-10 blur-3xl pointer-events-none transition-transform duration-300"></div>
+                <div id="cta-glow-left" class="absolute -left-20 -top-20 w-80 h-80 rounded-full bg-[#38BDF8] opacity-25 blur-3xl pointer-events-none transition-transform duration-300"></div>
+
+                <div class="max-w-2xl relative z-10 space-y-6">
+                    <h2 class="text-3xl sm:text-5xl font-black tracking-tight text-white leading-tight">
+                        Scan your first packaging item right now.
+                    </h2>
+
+                    <p class="text-blue-100 text-base sm:text-lg leading-relaxed">
+                        No sign-up or app download required to test. Use your camera, upload a photo, or click any sample to see real-time decomposition.
+                    </p>
+
+                    <div class="pt-2 flex flex-col sm:flex-row gap-4">
+                        <a href="/classifier" class="bg-white hover:bg-blue-50 font-black py-3.5 px-8 rounded-full text-base shadow-lg flex items-center justify-center gap-2.5 transition hover:-translate-y-0.5 group" style="color: #2563EB !important;">
+                            <span class="material-symbols-outlined text-[20px]" style="color: #2563EB !important;">photo_camera</span>
+                            <span class="font-black text-[#2563EB]" style="color: #2563EB !important;">Launch AI Inspector Free</span>
+                        </a>
+                        <a href="/classifications" class="btn-secondary bg-transparent text-white border-2 border-white/80 hover:bg-white hover:text-[#2563EB] py-3.5 px-8 text-base font-bold flex items-center justify-center gap-2 transition">
+                            <span class="font-bold">Explore Material Taxonomy</span>
+                            <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+</main>
+
+<!-- Global Autocomplete Datalist for Waste & Packaging Items -->
+<datalist id="packaging-suggestions">
+    <option value="Starbucks Hot Coffee Cup with Lid">
+    <option value="Delivery Corrugated Pizza Box">
+    <option value="Clear Plastic Water Bottle (PET #1)">
+    <option value="Multi-Layer Potato Chips Pouch (BOPP #7)">
+    <option value="Corrugated Shipping Box">
+    <option value="Aluminum Beverage Can">
+    <option value="Household AA / Lithium Battery">
+    <option value="Aseptic Gable-Top Milk Carton">
+    <option value="Glass Pickle Jar with Metal Lid">
+    <option value="Styrofoam Clamshell Container (PS #6)">
+    <option value="Air Cushion Bubble Wrap (LDPE #4)">
+    <option value="Organic Food Remnants & Produce Scraps">
+    <option value="HDPE Milk Jug with Cap">
+    <option value="Broken Smartphone / Cable E-Waste">
+    <option value="Aerosol Spray Can">
+</datalist>
+
+<!-- Nordic Arctic Glacier Obsidian & Ice Slate Footer -->
+<footer class="bg-[#0B1120] text-slate-400 border-t border-slate-800 mt-24 pt-16 pb-20 text-sm">
+    <div class="max-w-container mx-auto px-4 sm:px-8 lg:px-12 xl:px-16">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+            <!-- Brand Column -->
+            <div class="md:col-span-2 space-y-4">
+                <div class="flex items-center gap-3 font-bold text-xl">
+                    <img src="/static/img/logo-icon.svg" alt="BinSync Logo" class="w-8 h-8 rounded-xl shadow-sm">
+                    <span class="tracking-tight text-xl font-black text-white">Bin<span class="text-[#38BDF8]">Sync</span></span>
+                </div>
+                <p class="text-slate-400 text-sm max-w-md leading-relaxed">
+                    Precision computer vision engineered for composite packaging decomposition. Eliminating wishcycling through automated material layer separation and verifiable municipal diversion.
+                </p>
+                <div class="flex items-center gap-3 pt-2 text-xs">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-950/80 border border-blue-800/60 text-[#38BDF8] font-semibold text-xs">
+                        <span class="w-2 h-2 rounded-full bg-[#38BDF8] pulse-subtle"></span>
+                        Vision Inspection System Active
+                    </span>
+                    <span class="text-slate-500 text-xs">Verified Circular Infrastructure</span>
+                </div>
+            </div>
+
+            <!-- Core Modules -->
+            <div>
+                <h3 class="font-bold text-white uppercase tracking-widest text-[11px] mb-4">Core Modules</h3>
+                <ul class="space-y-2.5 text-sm text-slate-400">
+                    <li><a href="/classifier" class="hover:text-[#38BDF8] transition">Material Inspector</a></li>
+                    <li><a href="/rules" class="hover:text-[#38BDF8] transition">Drop-off Map &amp; Bylaws</a></li>
+                    <li><a href="/classifications" class="hover:text-[#38BDF8] transition">Material Taxonomy</a></li>
+                    <li><a href="/leaderboard" class="hover:text-[#38BDF8] transition">Community Leaderboard</a></li>
+                </ul>
+            </div>
+
+            <!-- Climate & Transparency -->
+            <div>
+                <h3 class="font-bold text-white uppercase tracking-widest text-[11px] mb-4">Climate &amp; Auditing</h3>
+                <ul class="space-y-2.5 text-sm text-slate-400">
+                    <li><a href="/rules#faq" class="hover:text-[#38BDF8] transition">Wishcycling Guide</a></li>
+                    <li><a href="/dashboard" class="hover:text-[#38BDF8] transition">CO₂ Diversion Audit</a></li>
+                    <li><a href="/login" class="hover:text-[#38BDF8] transition">Citizen Portal</a></li>
+                    <li><span class="text-slate-500">&copy; 2026 BinSync Inc.</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="border-t border-slate-800 pt-8 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-500 gap-4">
+            <p>Empowering eco-citizens and zero-waste cities with transparent, verifiable carbon diversion metrics.</p>
+            <div class="flex items-center gap-6">
+                <a href="/rules" class="hover:text-[#38BDF8] transition">Municipal Bylaws</a>
+                <a href="/classifications" class="hover:text-[#38BDF8] transition">Taxonomy API</a>
+                <span class="text-[#38BDF8] font-bold">Clean Planet First</span>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Mobile Bottom Navigation Bar (Light Arctic Glacier) -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-xl border-t border-border-subtle z-40 pt-2 safe-bottom-nav px-3 flex justify-around items-center shadow-lg">
+    <a href="/" class="min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-xs px-2 text-primary font-bold">
+        <span class="material-symbols-outlined text-[22px]">home</span>
+        <span>Home</span>
+    </a>
+    <a href="/classifier" class="min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-xs px-2 text-text-muted hover:text-text-primary">
+        <span class="material-symbols-outlined text-[22px]">center_focus_strong</span>
+        <span>Inspect</span>
+    </a>
+    <a href="/rules" class="min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-xs px-2 text-text-muted hover:text-text-primary">
+        <span class="material-symbols-outlined text-[22px]">map</span>
+        <span>Rules</span>
+    </a>
+    <a href="/leaderboard" class="min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-xs px-2 text-text-muted hover:text-text-primary">
+        <span class="material-symbols-outlined text-[22px]">leaderboard</span>
+        <span>Rank</span>
+    </a>
+    <a href="/login" class="min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-xs px-2 text-text-muted hover:text-text-primary">
+        <span class="material-symbols-outlined text-[22px]">account_circle</span>
+        <span>Sign In</span>
+    </a>
+</nav>
+
+<!-- Mobile Menu Toggle Script & Feedback + PWA -->
+<script>
+    // Universal Haptic & Audio Feedback Helper
+    window.triggerFeedback = function(type = 'success') {
+        try {
+            if ('vibrate' in navigator) {
+                if (type === 'success') navigator.vibrate([40, 30, 60]);
+                else if (type === 'error') navigator.vibrate([80, 50, 80]);
+                else navigator.vibrate(35);
+            }
+            const AudioCtx = window.AudioContext || window.webkitAudioContext;
+            if (AudioCtx) {
+                const ctx = new AudioCtx();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                const now = ctx.currentTime;
+                if (type === 'success') {
+                    osc.frequency.setValueAtTime(587.33, now); // D5
+                    osc.frequency.setValueAtTime(880, now + 0.09); // A5
+                    gain.gain.setValueAtTime(0.06, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.26);
+                    osc.start(now);
+                    osc.stop(now + 0.28);
+                } else if (type === 'error') {
+                    osc.frequency.setValueAtTime(329.63, now); // E4
+                    osc.frequency.setValueAtTime(220, now + 0.1); // A3
+                    gain.gain.setValueAtTime(0.08, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+                    osc.start(now);
+                    osc.stop(now + 0.28);
+                } else {
+                    osc.frequency.setValueAtTime(659.25, now); // E5
+                    gain.gain.setValueAtTime(0.04, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+                    osc.start(now);
+                    osc.stop(now + 0.14);
+                }
+            }
+        } catch(e) {}
+    };
+
+    const menuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuIcon = document.getElementById('mobile-menu-icon');
+
+    if (menuBtn && mobileMenu) {
+        menuBtn.addEventListener('click', () => {
+            const isHidden = mobileMenu.classList.contains('hidden');
+            if (isHidden) {
+                mobileMenu.classList.remove('hidden');
+                if (menuIcon) menuIcon.textContent = 'close';
+            } else {
+                mobileMenu.classList.add('hidden');
+                if (menuIcon) menuIcon.textContent = 'menu';
+            }
+        });
+    }
+
+    // Register PWA Service Worker for Offline Resilience
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js').catch(err => {
+                console.log('SW registration note:', err);
+            });
+        });
+    }
+
+    // ==========================================
+    // NORDIC GLACIER SCROLL ENGINE
+    // ==========================================
+    document.addEventListener('DOMContentLoaded', () => {
+        const progressBar = document.getElementById('scroll-progress-bar');
+        const mainHeader = document.getElementById('main-header');
+        const backToTopBtn = document.getElementById('back-to-top-btn');
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        // 1. Passive Scroll Handler (Progress Bar, Sticky Header Compact & Back-To-Top)
+        let ticking = false;
+        function onScroll() {
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    const scrollY = window.scrollY || window.pageYOffset;
+                    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+
+                    // Progress bar
+                    if (progressBar) {
+                        const progress = docHeight > 0 ? (scrollY / docHeight) * 100 : 0;
+                        progressBar.style.width = `${Math.min(100, Math.max(0, progress))}%`;
+                    }
+
+                    // Sticky header compact elevation
+                    if (mainHeader) {
+                        if (scrollY > 24) {
+                            mainHeader.classList.remove('h-20', 'bg-white/95');
+                            mainHeader.classList.add('h-16', 'bg-white/90', 'shadow-sm');
+                        } else {
+                            mainHeader.classList.remove('h-16', 'bg-white/90', 'shadow-sm');
+                            mainHeader.classList.add('h-20', 'bg-white/95');
+                        }
+                    }
+
+                    // Floating Back to Top Button
+                    if (backToTopBtn) {
+                        if (scrollY > 450) {
+                            backToTopBtn.classList.remove('opacity-0', 'translate-y-4', 'scale-90', 'pointer-events-none');
+                            backToTopBtn.classList.add('opacity-100', 'translate-y-0', 'scale-100', 'pointer-events-auto');
+                        } else {
+                            backToTopBtn.classList.add('opacity-0', 'translate-y-4', 'scale-90', 'pointer-events-none');
+                            backToTopBtn.classList.remove('opacity-100', 'translate-y-0', 'scale-100', 'pointer-events-auto');
+                        }
+                    }
+
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }
+
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+
+        if (backToTopBtn) {
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: prefersReducedMotion ? 'auto' : 'smooth'
+                });
+                if (window.triggerFeedback) window.triggerFeedback('tap');
+            });
+        }
+
+        // 2. Universal IntersectionObserver Scroll-Reveal Engine
+        if ('IntersectionObserver' in window && !prefersReducedMotion) {
+            const revealObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                root: null,
+                rootMargin: '0px 0px -40px 0px',
+                threshold: 0.1
+            });
+
+            window.observeScrollReveals = function(root = document) {
+                const candidates = root.querySelectorAll('.eco-card, section h1, section h2, .tax-card, .facility-card, tbody tr, .reveal-on-scroll, .reveal-left, .reveal-right, .reveal-scale');
+                const winH = window.innerHeight;
+
+                candidates.forEach((el) => {
+                    const rect = el.getBoundingClientRect();
+                    if (rect.top < winH - 20) {
+                        el.classList.add('is-visible');
+                        return;
+                    }
+
+                    if (!el.classList.contains('reveal-left') && 
+                        !el.classList.contains('reveal-right') && 
+                        !el.classList.contains('reveal-scale') && 
+                        !el.classList.contains('reveal-on-scroll')) {
+                        el.classList.add('reveal-on-scroll');
+                    }
+
+                    if (!el.style.transitionDelay) {
+                        const parent = el.parentElement;
+                        if (parent) {
+                            const siblings = Array.from(parent.children);
+                            const indexInRow = siblings.indexOf(el);
+                            if (indexInRow >= 0) {
+                                el.style.transitionDelay = `${(indexInRow % 4) * 90}ms`;
+                            }
+                        }
+                    }
+
+                    revealObserver.observe(el);
+                });
+            };
+
+            window.observeScrollReveals(document);
+        } else {
+            document.querySelectorAll('.reveal-on-scroll, .reveal-left, .reveal-right, .reveal-scale').forEach(el => {
+                el.classList.add('is-visible');
+            });
+            window.observeScrollReveals = function() {};
+        }
+    });
+</script>
+
+<!-- Floating Back to Top Button -->
+<button id="back-to-top-btn" type="button" aria-label="Back to top" class="fixed bottom-20 md:bottom-8 right-6 z-40 p-3 rounded-2xl bg-white hover:bg-surface-container text-primary border border-border-medium shadow-lg opacity-0 translate-y-4 scale-90 pointer-events-none transition-all duration-300 flex items-center justify-center group focus:outline-none focus:ring-2 focus:ring-primary/40">
+    <span class="material-symbols-outlined text-[22px] group-hover:-translate-y-0.5 transition-transform">arrow_upward</span>
+</button>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // 1. Scroll-Triggered Count-Up Tickers with easeOutExpo & threshold: 0.35
+    const tickers = document.querySelectorAll('.counter-ticker');
+    const easeOutExpo = (x) => x === 1 ? 1 : 1 - Math.pow(2, -10 * x);
+
+    const animateTicker = (el) => {
+        const target = parseFloat(el.getAttribute('data-count-target')) || 0;
+        const isFloat = target % 1 !== 0;
+        if (prefersReducedMotion) {
+            el.innerText = isFloat ? target.toFixed(1) : Math.round(target).toLocaleString();
+            return;
+        }
+
+        const duration = 1400; // 1.4s
+        const startTime = performance.now();
+
+        const step = (currentTime) => {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const easedProgress = easeOutExpo(progress);
+            const currentVal = target * easedProgress;
+
+            el.innerText = isFloat 
+                ? currentVal.toFixed(1) 
+                : Math.round(currentVal).toLocaleString();
+
+            if (progress < 1) {
+                requestAnimationFrame(step);
+            } else {
+                el.innerText = isFloat 
+                    ? target.toFixed(1) 
+                    : Math.round(target).toLocaleString();
+            }
+        };
+
+        requestAnimationFrame(step);
+    };
+
+    if ('IntersectionObserver' in window) {
+        const tickerObserver = new IntersectionObserver((entries, obs) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateTicker(entry.target);
+                    obs.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.35 });
+
+        tickers.forEach(ticker => tickerObserver.observe(ticker));
+    } else {
+        tickers.forEach(animateTicker);
+    }
+
+    // 2. Hero & CTA Parallax + Scroll-Linked Exploding Schema
+    if (!prefersReducedMotion) {
+        const heroOrb = document.getElementById('hero-glacier-orb');
+        const schemaCard = document.getElementById('schema-card');
+        const layer1 = document.getElementById('schema-layer-1');
+        const conn1 = document.getElementById('schema-connector-1');
+        const layer2 = document.getElementById('schema-layer-2');
+        const conn2 = document.getElementById('schema-connector-2');
+        const layer3 = document.getElementById('schema-layer-3');
+        const ctaBanner = document.getElementById('cta-banner');
+        const ctaGlowRight = document.getElementById('cta-glow-right');
+        const ctaGlowLeft = document.getElementById('cta-glow-left');
+
+        let isExploded = false;
+        let parallaxTicking = false;
+
+        function updateParallaxChoreography() {
+            const scrollY = window.scrollY || window.pageYOffset;
+            const winH = window.innerHeight;
+
+            // Hero Ambient Glow Parallax Drift
+            if (heroOrb && scrollY < winH * 1.4) {
+                heroOrb.style.transform = `translate3d(-50%, calc(-50% + ${scrollY * 0.18}px), 0)`;
+            }
+
+            // Exploding Decomposition Schema Crossing Viewport Middle
+            if (schemaCard && layer1 && layer2 && layer3) {
+                const rect = schemaCard.getBoundingClientRect();
+                const cardMid = rect.top + rect.height * 0.5;
+                const inExplosionZone = cardMid <= winH * 0.72 && cardMid >= winH * 0.18;
+
+                if (inExplosionZone && !isExploded) {
+                    isExploded = true;
+                    layer1.style.transform = 'translateY(-10px)';
+                    layer1.style.boxShadow = '0 12px 28px -4px rgba(2, 132, 199, 0.2)';
+                    if (conn1) { conn1.style.height = '0.5rem'; conn1.style.opacity = '1'; }
+
+                    layer2.style.transform = 'scale(1.025)';
+                    layer2.style.boxShadow = '0 12px 28px -4px rgba(217, 119, 6, 0.2)';
+                    if (conn2) { conn2.style.height = '0.5rem'; conn2.style.opacity = '1'; }
+
+                    layer3.style.transform = 'translateY(10px)';
+                    layer3.style.boxShadow = '0 12px 28px -4px rgba(71, 85, 105, 0.2)';
+                } else if (!inExplosionZone && isExploded) {
+                    isExploded = false;
+                    layer1.style.transform = '';
+                    layer1.style.boxShadow = '';
+                    if (conn1) { conn1.style.height = ''; conn1.style.opacity = ''; }
+
+                    layer2.style.transform = '';
+                    layer2.style.boxShadow = '';
+                    if (conn2) { conn2.style.height = ''; conn2.style.opacity = ''; }
+
+                    layer3.style.transform = '';
+                    layer3.style.boxShadow = '';
+                }
+            }
+
+            // Bottom CTA Glow Parallax Movement
+            if (ctaBanner && ctaGlowRight && ctaGlowLeft) {
+                const ctaRect = ctaBanner.getBoundingClientRect();
+                if (ctaRect.top < winH && ctaRect.bottom > 0) {
+                    const relativeOffset = (ctaRect.top - winH * 0.5);
+                    ctaGlowRight.style.transform = `translate3d(0, ${relativeOffset * 0.08}px, 0)`;
+                    ctaGlowLeft.style.transform = `translate3d(0, ${-relativeOffset * 0.06}px, 0)`;
+                }
+            }
+
+            parallaxTicking = false;
+        }
+
+        window.addEventListener('scroll', () => {
+            if (!parallaxTicking) {
+                requestAnimationFrame(updateParallaxChoreography);
+                parallaxTicking = true;
+            }
+        }, { passive: true });
+
+        updateParallaxChoreography();
+    }
+});
+</script>
+
+</body>
+</html>

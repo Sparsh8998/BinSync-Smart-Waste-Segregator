@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="utf-8"/>
+    <script>
+        // Strictly light mode enforcement — remove any legacy dark theme traces
+        try {
+            document.documentElement.classList.remove('dark');
+            localStorage.removeItem('binsync_theme');
+        } catch(e) {}
+    </script>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Sign In — BinSync Citizen Access</title>
+    <link rel="icon" type="image/svg+xml" href="/static/img/logo-icon.svg">
+    <link rel="apple-touch-icon" href="/static/img/logo-icon.svg">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#2563EB">
+
+    <!-- Fonts: Plus Jakarta Sans, Inter, JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+
+    <!-- Tailwind CSS with Nordic Arctic Glacier Design Tokens -->
+    <script>
+        tailwind = {
+            config: {
+                theme: {
+                    extend: {
+                        colors: {
+                            primary: {
+                                DEFAULT: "#2563EB",   /* Electric Precision Cobalt */
+                                hover:   "#1D4ED8",   /* Deep Royal Cobalt */
+                                light:   "#EFF6FF",   /* Ice Blue Tint */
+                                container: "#0F172A", /* Obsidian Graphite */
+                                fixed:   "#38BDF8"    /* Glacier Sky */
+                            },
+                            solar: {
+                                DEFAULT: "#F59E0B",
+                                hover:   "#D97706",
+                                light:   "#FEF3C7",
+                                dark:    "#B45309"
+                            },
+                            surface: {
+                                DEFAULT: "#F8FAFC",   /* Glacier Ice-White Canvas */
+                                card:    "#FFFFFF",   /* Pristine Card White */
+                                container: "#F1F5F9", /* Ice Slate Inset */
+                                subtle:  "#E2E8F0"    /* Glacier Border Line */
+                            },
+                            text: {
+                                primary:   "#0F172A", /* Obsidian Slate — 15:1 contrast */
+                                secondary: "#334155", /* Cool Charcoal Slate */
+                                muted:     "#64748B"  /* Glacier Muted Slate */
+                            },
+                            border: {
+                                subtle: "#E2E8F0",   /* Glacier Border Line */
+                                medium: "#CBD5E1",   /* Slate Medium Input Border */
+                                hover:  "#2563EB"    /* Active Precision Cobalt */
+                            },
+                            bin: {
+                                recycle:        "#0284C7", /* Curbside Blue */
+                                recycleLight:   "#F0F9FF",
+                                recycleBorder:  "#BAE6FD",
+                                compost:        "#0D9488", /* Glacier Teal */
+                                compostLight:   "#F0FDFA",
+                                compostBorder:  "#99F6E4",
+                                landfill:       "#475569", /* Managed Slate */
+                                landfillLight:  "#F8FAFC",
+                                landfillBorder: "#E2E8F0",
+                                specialty:      "#D97706",
+                                specialtyLight: "#FFFBEB",
+                                specialtyBorder:"#FDE68A",
+                                hazmat:         "#DC2626", /* Hazmat Red */
+                                hazmatLight:    "#FEF2F2",
+                                hazmatBorder:   "#FECACA"
+                            }
+                        },
+                        fontFamily: {
+                            sans: ['Plus Jakarta Sans', 'Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+                            mono: ['JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace']
+                        },
+                        maxWidth: {
+                            container: 'min(96vw, 1720px)'
+                        },
+                        boxShadow: {
+                            'glacier': '0 2px 8px -2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.02)',
+                            'glacier-hover': '0 12px 28px -4px rgba(15, 23, 42, 0.08), 0 4px 8px rgba(15, 23, 42, 0.03)',
+                            'botanical': '0 2px 8px -2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.02)',
+                            'botanical-hover': '0 12px 28px -4px rgba(15, 23, 42, 0.08), 0 4px 8px rgba(15, 23, 42, 0.03)'
+                        }
+                    }
+                }
+            }
+        };
+    </script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <style>
+        /* ── Fluid Dynamic Typography & Viewport Scaling ── */
+        html {
+            font-size: 16px;
+            -webkit-text-size-adjust: 100%;
+        }
+        @media (min-width: 1280px) {
+            html {
+                font-size: 16.5px;
+            }
+        }
+        @media (min-width: 1536px) {
+            html {
+                font-size: 17.5px;
+            }
+        }
+        @media (min-width: 1920px) {
+            html {
+                font-size: 18.5px;
+            }
+        }
+        @media (min-width: 2560px) {
+            html {
+                font-size: 20px;
+            }
+        }
+
+        .max-w-container {
+            max-width: min(96vw, 1720px) !important;
+            width: 100%;
+        }
+
+        /* ── Editorial Tight Tracking Standards ── */
+        h1, h2, h3, .font-heading {
+            letter-spacing: -0.03em;
+        }
+        .meta-tag, .tech-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        /* ── Nordic Arctic Glacier Custom Utilities ── */
+        .text-primary {
+            color: #2563EB !important;
+        }
+        .bg-primary {
+            background-color: #2563EB !important;
+        }
+        .border-primary {
+            border-color: #2563EB !important;
+        }
+        .bg-primary-light {
+            background-color: #EFF6FF !important;
+        }
+
+        .eco-card {
+            background-color: #FFFFFF;
+            border: 1px solid #E2E8F0;
+            border-radius: 1.5rem;
+            box-shadow: 0 2px 8px -2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.02);
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .eco-card:hover {
+            border-color: #CBD5E1;
+            box-shadow: 0 12px 28px -4px rgba(15, 23, 42, 0.08), 0 4px 8px rgba(15, 23, 42, 0.03);
+        }
+
+        .btn-primary {
+            background-color: #2563EB;
+            color: #FFFFFF !important;
+            padding: 0.75rem 1.6rem;
+            border-radius: 9999px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+            min-height: 44px;
+            border: 1px solid transparent;
+        }
+        .btn-primary:hover {
+            background-color: #1D4ED8;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+            transform: translateY(-1px);
+        }
+        .btn-secondary {
+            background-color: #FFFFFF;
+            color: #0F172A;
+            border: 1.5px solid #CBD5E1;
+            padding: 0.75rem 1.6rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+            min-height: 44px;
+        }
+        .btn-secondary:hover {
+            border-color: #2563EB;
+            background-color: #EFF6FF;
+            color: #2563EB;
+            transform: translateY(-1px);
+        }
+        .btn-solar {
+            background-color: #F59E0B;
+            color: #FFFFFF;
+            padding: 0.75rem 1.6rem;
+            border-radius: 9999px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+            min-height: 44px;
+        }
+        .btn-solar:hover {
+            background-color: #D97706;
+            box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35);
+            transform: translateY(-1px);
+        }
+
+        /* ── Micro-Animations ── */
+        @keyframes fade-up {
+            from {
+                opacity: 0;
+                transform: translateY(14px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .animate-fade-up {
+            animation: fade-up 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+        .stagger-1 { animation-delay: 80ms; }
+        .stagger-2 { animation-delay: 160ms; }
+        .stagger-3 { animation-delay: 240ms; }
+        .stagger-4 { animation-delay: 320ms; }
+
+        @keyframes shimmer-move {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(200%); }
+        }
+        .progress-shimmer {
+            position: relative;
+            overflow: hidden;
+        }
+        .progress-shimmer::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.45), transparent);
+            animation: shimmer-move 2.2s infinite ease-in-out;
+            pointer-events-none;
+        }
+
+        @keyframes flame-pulse {
+            0%, 100% { transform: scale(1) rotate(0deg); filter: drop-shadow(0 0 2px rgba(245, 158, 11, 0.4)); }
+            50% { transform: scale(1.14) rotate(-3deg); filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.8)); }
+        }
+        .flame-flicker {
+            display: inline-block;
+            animation: flame-pulse 1.8s infinite ease-in-out;
+            transform-origin: bottom center;
+        }
+
+        @keyframes glacier-drift {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-48%, -52%) scale(1.08); }
+        }
+        .glacier-float {
+            animation: glacier-drift 16s infinite ease-in-out;
+        }
+
+        @keyframes subtle-pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.65; transform: scale(0.97); }
+        }
+        .pulse-subtle {
+            animation: subtle-pulse 2.4s infinite ease-in-out;
+        }
+
+        @keyframes spring-pop {
+            0% { transform: scale(0.8); opacity: 0; }
+            40% { transform: scale(1.22); }
+            70% { transform: scale(0.95); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .animate-pop {
+            animation: spring-pop 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes golden-glow-pulse {
+            0%, 100% {
+                box-shadow: 0 0 15px rgba(245, 158, 11, 0.2), 0 4px 16px rgba(0, 0, 0, 0.05);
+            }
+            50% {
+                box-shadow: 0 0 30px rgba(245, 158, 11, 0.45), 0 8px 24px rgba(245, 158, 11, 0.15);
+            }
+        }
+        .golden-glow-pulse {
+            animation: golden-glow-pulse 3s infinite ease-in-out;
+        }
+
+        /* ── Universal Scroll-Reveal Directions ── */
+        @media (prefers-reduced-motion: no-preference) {
+            .reveal-on-scroll {
+                opacity: 0;
+                transform: translateY(28px) scale(0.985);
+                transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+                will-change: opacity, transform;
+            }
+            .reveal-on-scroll.is-visible {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+
+            .reveal-left {
+                opacity: 0;
+                transform: translateX(-32px);
+                transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+                will-change: opacity, transform;
+            }
+            .reveal-left.is-visible {
+                opacity: 1;
+                transform: translateX(0);
+            }
+
+            .reveal-right {
+                opacity: 0;
+                transform: translateX(32px);
+                transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+                will-change: opacity, transform;
+            }
+            .reveal-right.is-visible {
+                opacity: 1;
+                transform: translateX(0);
+            }
+
+            .reveal-scale {
+                opacity: 0;
+                transform: scale(0.92);
+                transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+                will-change: opacity, transform;
+            }
+            .reveal-scale.is-visible {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* ── Accessibility: Reduced Motion Standards ── */
+        @media (prefers-reduced-motion: reduce) {
+            *, ::before, ::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+            .reveal-on-scroll, .reveal-left, .reveal-right, .reveal-scale {
+                opacity: 1 !important;
+                transform: none !important;
+                transition: none !important;
+            }
+        }
+
+        /* ── Mobile Input Zoom Prevention & Safe Area Standards ── */
+        @media (max-width: 768px) {
+            input, select, textarea {
+                font-size: 16px !important;
+            }
+        }
+        .safe-bottom-nav {
+            padding-bottom: max(0.65rem, env(safe-area-inset-bottom, 0.65rem));
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+    
+</head>
+<body class="bg-surface text-text-primary font-sans min-h-screen flex flex-col antialiased selection:bg-blue-100 selection:text-blue-950">
+
+<!-- Top Fixed Glacier Scroll Progress Bar -->
+<div id="scroll-progress-bar" class="fixed top-0 left-0 h-[3px] bg-gradient-to-r from-primary via-[#38BDF8] to-solar z-[60] w-0 transition-[width] duration-75 ease-out pointer-events-none"></div>
+
+<!-- Nordic Arctic Glacier Frosted Header -->
+<header id="main-header" class="sticky top-0 z-50 transition-all duration-300 bg-white/95 backdrop-blur-md border-b border-border-subtle h-20 flex items-center">
+    <div class="max-w-container mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 w-full flex items-center justify-between">
+        <!-- Brand Logo with Climate Intelligence Identity -->
+        <a href="/" class="flex items-center gap-3 hover:opacity-90 transition-opacity flex-shrink-0">
+            <img src="/static/img/logo-icon.svg" alt="BinSync Logo" class="w-9 h-9 rounded-xl shadow-sm">
+            <div class="flex flex-col">
+                <span class="text-xl font-black tracking-tight text-text-primary leading-none">Bin<span class="text-primary">Sync</span></span>
+                <span class="text-[9px] font-bold text-primary tracking-widest uppercase mt-0.5">CLIMATE INTELLIGENCE</span>
+            </div>
+        </a>
+
+        <!-- Desktop Navigation Tabs (Nordic Glacier Capsule Tabs) -->
+        <nav class="hidden md:flex items-center gap-1.5 text-sm font-semibold">
+            <a href="/" class="px-4 py-2 rounded-full transition-all text-text-secondary hover:text-text-primary hover:bg-surface-container">
+                Home
+            </a>
+            <a href="/classifier" class="px-4 py-2 rounded-full transition-all text-text-secondary hover:text-text-primary hover:bg-surface-container flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-[18px]">photo_camera</span>
+                <span>Waste Sorter</span>
+            </a>
+            <a href="/rules" class="px-4 py-2 rounded-full transition-all text-text-secondary hover:text-text-primary hover:bg-surface-container">
+                Rules &amp; Map
+            </a>
+            <a href="/classifications" class="px-4 py-2 rounded-full transition-all text-text-secondary hover:text-text-primary hover:bg-surface-container">
+                Taxonomy
+            </a>
+            <a href="/leaderboard" class="px-4 py-2 rounded-full transition-all text-text-secondary hover:text-text-primary hover:bg-surface-container">
+                Leaderboard
+            </a>
+            
+        </nav>
+
+        <!-- Right Side: User Profile / Action -->
+        <div class="flex items-center gap-3">
+            
+            <a href="/login" class="text-xs sm:text-sm font-semibold text-text-secondary hover:text-primary px-3 py-2 transition">
+                Sign In
+            </a>
+            <a href="/classifier" class="btn-primary py-2 px-4 sm:px-5 text-xs sm:text-sm font-bold flex items-center gap-1.5 shadow-sm">
+                <span class="material-symbols-outlined text-[18px]">photo_camera</span>
+                <span>Scan Waste</span>
+            </a>
+            
+
+            <!-- Mobile Hamburger Button -->
+            <button type="button" id="mobile-menu-btn" class="md:hidden text-text-secondary hover:text-text-primary p-2 focus:outline-none rounded-xl hover:bg-surface-container" aria-label="Toggle Menu">
+                <span class="material-symbols-outlined text-[24px]" id="mobile-menu-icon">menu</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Mobile Slide Drawer -->
+    <div id="mobile-menu" class="hidden md:hidden absolute top-20 left-0 right-0 bg-white border-b border-border-subtle shadow-xl px-5 py-4 space-y-2 z-50">
+        <div class="flex items-center gap-2.5 pb-3 mb-2 border-b border-border-subtle">
+            <img src="/static/img/logo-icon.svg" alt="BinSync" class="w-7 h-7 rounded-lg">
+            <span class="font-bold text-sm text-text-primary">BinSync Quick Navigation</span>
+        </div>
+        <a href="/" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-text-secondary hover:bg-surface-container">
+            Home
+        </a>
+        <a href="/classifier" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-text-secondary hover:bg-surface-container">
+            Waste Sorter
+        </a>
+        <a href="/rules" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-text-secondary hover:bg-surface-container">
+            Rules &amp; Map
+        </a>
+        <a href="/classifications" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-text-secondary hover:bg-surface-container">
+            Taxonomy Directory
+        </a>
+        <a href="/leaderboard" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-text-secondary hover:bg-surface-container">
+            Community Leaderboard
+        </a>
+        
+        <a href="/login" class="block px-4 py-2.5 rounded-xl text-sm font-semibold text-primary hover:bg-primary-light">
+            Sign In / Profile
+        </a>
+        
+    </div>
+</header>
+
+<!-- Main Body Slot -->
+<main class="flex-grow pb-24 md:pb-0">
+    
+<div
+    class="min-h-[calc(100vh-16rem)] flex items-center justify-center px-4 py-16 sm:py-24 bg-gradient-to-b from-surface via-surface to-surface-container">
+    <div class="w-full max-w-md space-y-6">
+
+        <!-- Header & Branding -->
+        <div class="text-center space-y-3">
+            <img src="/static/img/logo-icon.svg" alt="BinSync"
+                class="w-14 h-14 rounded-2xl shadow-sm mx-auto">
+            <h1 class="text-2xl sm:text-3xl font-black tracking-tight text-text-primary">
+                Citizen Profile Portal
+            </h1>
+            <p class="text-xs sm:text-sm text-text-secondary max-w-sm mx-auto leading-relaxed">
+                Sign in to view your personalized carbon diversion metrics, tier streak history, and verified milestone
+                badges.
+            </p>
+        </div>
+
+        <!-- Auth Card -->
+        <div class="eco-card p-7 sm:p-9 space-y-6 shadow-botanical-hover">
+            <form method="POST" action="/login" class="space-y-5">
+                <div class="space-y-2">
+                    <label class="block text-xs font-bold text-text-secondary uppercase tracking-wider"
+                        for="username-input">
+                        Citizen Username
+                    </label>
+                    <div class="relative">
+                        <span
+                            class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-text-muted text-[20px]">person</span>
+                        <input type="text" id="username-input" name="username" required placeholder="e.g., EcoWarrior"
+                            class="w-full text-sm pl-11 pr-4 py-3 rounded-full border border-border-medium bg-surface text-text-primary placeholder:text-text-muted focus:outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 transition">
+                    </div>
+                    <p class="text-[11px] text-text-muted">New citizen? Entering any handle creates your profile
+                        instantly without passwords.</p>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-xs font-bold text-text-secondary uppercase tracking-wider"
+                        for="hub-select">
+                        Campus or Neighborhood Hub
+                    </label>
+                    <div class="relative">
+                        <span
+                            class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-text-muted text-[20px]">corporate_fare</span>
+                        <select id="hub-select" name="community_hub"
+                            class="w-full text-sm pl-11 pr-4 py-3 rounded-full border border-border-medium bg-surface text-text-primary focus:outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 transition appearance-none cursor-pointer">
+                            
+                            <option value="Global Network">Global Network</option>
+                            
+                            <option value="University Campus">University Campus</option>
+                            
+                            <option value="Green Tech Park">Green Tech Park</option>
+                            
+                            <option value="Downtown Metro">Downtown Metro</option>
+                            
+                            <option value="Eco Neighborhood">Eco Neighborhood</option>
+                            
+                        </select>
+                        <span
+                            class="material-symbols-outlined absolute right-3.5 top-1/2 -translate-y-1/2 text-text-muted text-[18px] pointer-events-none">expand_more</span>
+                    </div>
+                    <p class="text-[11px] text-text-muted">Compete with your campus, tech park, or local town in
+                        collaborative rankings.</p>
+                </div>
+
+                <!-- Quick Suggested Handles for Demo Testing -->
+                <div class="pt-1">
+                    <span class="block text-[10px] font-bold uppercase tracking-wider text-text-muted mb-2">Quick Test
+                        Accounts:</span>
+                    <div class="flex flex-wrap gap-2">
+                        <button type="button" onclick="setUsername('EcoChampion')"
+                            class="px-3 py-1.5 rounded-full text-xs font-semibold bg-surface border border-border-subtle text-text-secondary hover:border-primary hover:text-primary hover:bg-primary-light transition">EcoChampion</button>
+                        <button type="button" onclick="setUsername('GreenGuardian')"
+                            class="px-3 py-1.5 rounded-full text-xs font-semibold bg-surface border border-border-subtle text-text-secondary hover:border-primary hover:text-primary hover:bg-primary-light transition">GreenGuardian</button>
+                        <button type="button" onclick="setUsername('ZeroWaster')"
+                            class="px-3 py-1.5 rounded-full text-xs font-semibold bg-surface border border-border-subtle text-text-secondary hover:border-primary hover:text-primary hover:bg-primary-light transition">ZeroWaster</button>
+                    </div>
+                </div>
+
+                <button type="submit"
+                    class="btn-primary w-full py-3.5 rounded-full text-sm font-bold shadow-md flex items-center justify-center gap-2">
+                    <span>Continue to Impact Dashboard</span>
+                    <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+                </button>
+            </form>
+        </div>
+
+        <!-- Tagline & Navigation -->
+        <div class="text-center space-y-4">
+            <p class="text-[11px] font-bold tracking-widest uppercase text-text-muted">
+                Scan with care. Restore circularity.
+            </p>
+            <div>
+                <a href="/"
+                    class="text-xs font-semibold text-text-secondary hover:text-primary transition inline-flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[16px]">arrow_back</span>
+                    <span>Return to Home</span>
+                </a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</main>
+
+<!-- Global Autocomplete Datalist for Waste & Packaging Items -->
+<datalist id="packaging-suggestions">
+    <option value="Starbucks Hot Coffee Cup with Lid">
+    <option value="Delivery Corrugated Pizza Box">
+    <option value="Clear Plastic Water Bottle (PET #1)">
+    <option value="Multi-Layer Potato Chips Pouch (BOPP #7)">
+    <option value="Corrugated Shipping Box">
+    <option value="Aluminum Beverage Can">
+    <option value="Household AA / Lithium Battery">
+    <option value="Aseptic Gable-Top Milk Carton">
+    <option value="Glass Pickle Jar with Metal Lid">
+    <option value="Styrofoam Clamshell Container (PS #6)">
+    <option value="Air Cushion Bubble Wrap (LDPE #4)">
+    <option value="Organic Food Remnants & Produce Scraps">
+    <option value="HDPE Milk Jug with Cap">
+    <option value="Broken Smartphone / Cable E-Waste">
+    <option value="Aerosol Spray Can">
+</datalist>
+
+<!-- Nordic Arctic Glacier Obsidian & Ice Slate Footer -->
+<footer class="bg-[#0B1120] text-slate-400 border-t border-slate-800 mt-24 pt-16 pb-20 text-sm">
+    <div class="max-w-container mx-auto px-4 sm:px-8 lg:px-12 xl:px-16">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+            <!-- Brand Column -->
+            <div class="md:col-span-2 space-y-4">
+                <div class="flex items-center gap-3 font-bold text-xl">
+                    <img src="/static/img/logo-icon.svg" alt="BinSync Logo" class="w-8 h-8 rounded-xl shadow-sm">
+                    <span class="tracking-tight text-xl font-black text-white">Bin<span class="text-[#38BDF8]">Sync</span></span>
+                </div>
+                <p class="text-slate-400 text-sm max-w-md leading-relaxed">
+                    Precision computer vision engineered for composite packaging decomposition. Eliminating wishcycling through automated material layer separation and verifiable municipal diversion.
+                </p>
+                <div class="flex items-center gap-3 pt-2 text-xs">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-950/80 border border-blue-800/60 text-[#38BDF8] font-semibold text-xs">
+                        <span class="w-2 h-2 rounded-full bg-[#38BDF8] pulse-subtle"></span>
+                        Vision Inspection System Active
+                    </span>
+                    <span class="text-slate-500 text-xs">Verified Circular Infrastructure</span>
+                </div>
+            </div>
+
+            <!-- Core Modules -->
+            <div>
+                <h3 class="font-bold text-white uppercase tracking-widest text-[11px] mb-4">Core Modules</h3>
+                <ul class="space-y-2.5 text-sm text-slate-400">
+                    <li><a href="/classifier" class="hover:text-[#38BDF8] transition">Material Inspector</a></li>
+                    <li><a href="/rules" class="hover:text-[#38BDF8] transition">Drop-off Map &amp; Bylaws</a></li>
+                    <li><a href="/classifications" class="hover:text-[#38BDF8] transition">Material Taxonomy</a></li>
+                    <li><a href="/leaderboard" class="hover:text-[#38BDF8] transition">Community Leaderboard</a></li>
+                </ul>
+            </div>
+
+            <!-- Climate & Transparency -->
+            <div>
+                <h3 class="font-bold text-white uppercase tracking-widest text-[11px] mb-4">Climate &amp; Auditing</h3>
+                <ul class="space-y-2.5 text-sm text-slate-400">
+                    <li><a href="/rules#faq" class="hover:text-[#38BDF8] transition">Wishcycling Guide</a></li>
+                    <li><a href="/dashboard" class="hover:text-[#38BDF8] transition">CO₂ Diversion Audit</a></li>
+                    <li><a href="/login" class="hover:text-[#38BDF8] transition">Citizen Portal</a></li>
+                    <li><span class="text-slate-500">&copy; 2026 BinSync Inc.</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="border-t border-slate-800 pt-8 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-500 gap-4">
+            <p>Empowering eco-citizens and zero-waste cities with transparent, verifiable carbon diversion metrics.</p>
+            <div class="flex items-center gap-6">
+                <a href="/rules" class="hover:text-[#38BDF8] transition">Municipal Bylaws</a>
+                <a href="/classifications" class="hover:text-[#38BDF8] transition">Taxonomy API</a>
+                <span class="text-[#38BDF8] font-bold">Clean Planet First</span>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Mobile Bottom Navigation Bar (Light Arctic Glacier) -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-xl border-t border-border-subtle z-40 pt-2 safe-bottom-nav px-3 flex justify-around items-center shadow-lg">
+    <a href="/" class="min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-xs px-2 text-text-muted hover:text-text-primary">
+        <span class="material-symbols-outlined text-[22px]">home</span>
+        <span>Home</span>
+    </a>
+    <a href="/classifier" class="min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-xs px-2 text-text-muted hover:text-text-primary">
+        <span class="material-symbols-outlined text-[22px]">center_focus_strong</span>
+        <span>Inspect</span>
+    </a>
+    <a href="/rules" class="min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-xs px-2 text-text-muted hover:text-text-primary">
+        <span class="material-symbols-outlined text-[22px]">map</span>
+        <span>Rules</span>
+    </a>
+    <a href="/leaderboard" class="min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-xs px-2 text-text-muted hover:text-text-primary">
+        <span class="material-symbols-outlined text-[22px]">leaderboard</span>
+        <span>Rank</span>
+    </a>
+    <a href="/login" class="min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-xs px-2 text-primary font-bold">
+        <span class="material-symbols-outlined text-[22px]">account_circle</span>
+        <span>Sign In</span>
+    </a>
+</nav>
+
+<!-- Mobile Menu Toggle Script & Feedback + PWA -->
+<script>
+    // Universal Haptic & Audio Feedback Helper
+    window.triggerFeedback = function(type = 'success') {
+        try {
+            if ('vibrate' in navigator) {
+                if (type === 'success') navigator.vibrate([40, 30, 60]);
+                else if (type === 'error') navigator.vibrate([80, 50, 80]);
+                else navigator.vibrate(35);
+            }
+            const AudioCtx = window.AudioContext || window.webkitAudioContext;
+            if (AudioCtx) {
+                const ctx = new AudioCtx();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                const now = ctx.currentTime;
+                if (type === 'success') {
+                    osc.frequency.setValueAtTime(587.33, now); // D5
+                    osc.frequency.setValueAtTime(880, now + 0.09); // A5
+                    gain.gain.setValueAtTime(0.06, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.26);
+                    osc.start(now);
+                    osc.stop(now + 0.28);
+                } else if (type === 'error') {
+                    osc.frequency.setValueAtTime(329.63, now); // E4
+                    osc.frequency.setValueAtTime(220, now + 0.1); // A3
+                    gain.gain.setValueAtTime(0.08, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+                    osc.start(now);
+                    osc.stop(now + 0.28);
+                } else {
+                    osc.frequency.setValueAtTime(659.25, now); // E5
+                    gain.gain.setValueAtTime(0.04, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+                    osc.start(now);
+                    osc.stop(now + 0.14);
+                }
+            }
+        } catch(e) {}
+    };
+
+    const menuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuIcon = document.getElementById('mobile-menu-icon');
+
+    if (menuBtn && mobileMenu) {
+        menuBtn.addEventListener('click', () => {
+            const isHidden = mobileMenu.classList.contains('hidden');
+            if (isHidden) {
+                mobileMenu.classList.remove('hidden');
+                if (menuIcon) menuIcon.textContent = 'close';
+            } else {
+                mobileMenu.classList.add('hidden');
+                if (menuIcon) menuIcon.textContent = 'menu';
+            }
+        });
+    }
+
+    // Register PWA Service Worker for Offline Resilience
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js').catch(err => {
+                console.log('SW registration note:', err);
+            });
+        });
+    }
+
+    // ==========================================
+    // NORDIC GLACIER SCROLL ENGINE
+    // ==========================================
+    document.addEventListener('DOMContentLoaded', () => {
+        const progressBar = document.getElementById('scroll-progress-bar');
+        const mainHeader = document.getElementById('main-header');
+        const backToTopBtn = document.getElementById('back-to-top-btn');
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        // 1. Passive Scroll Handler (Progress Bar, Sticky Header Compact & Back-To-Top)
+        let ticking = false;
+        function onScroll() {
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    const scrollY = window.scrollY || window.pageYOffset;
+                    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+
+                    // Progress bar
+                    if (progressBar) {
+                        const progress = docHeight > 0 ? (scrollY / docHeight) * 100 : 0;
+                        progressBar.style.width = `${Math.min(100, Math.max(0, progress))}%`;
+                    }
+
+                    // Sticky header compact elevation
+                    if (mainHeader) {
+                        if (scrollY > 24) {
+                            mainHeader.classList.remove('h-20', 'bg-white/95');
+                            mainHeader.classList.add('h-16', 'bg-white/90', 'shadow-sm');
+                        } else {
+                            mainHeader.classList.remove('h-16', 'bg-white/90', 'shadow-sm');
+                            mainHeader.classList.add('h-20', 'bg-white/95');
+                        }
+                    }
+
+                    // Floating Back to Top Button
+                    if (backToTopBtn) {
+                        if (scrollY > 450) {
+                            backToTopBtn.classList.remove('opacity-0', 'translate-y-4', 'scale-90', 'pointer-events-none');
+                            backToTopBtn.classList.add('opacity-100', 'translate-y-0', 'scale-100', 'pointer-events-auto');
+                        } else {
+                            backToTopBtn.classList.add('opacity-0', 'translate-y-4', 'scale-90', 'pointer-events-none');
+                            backToTopBtn.classList.remove('opacity-100', 'translate-y-0', 'scale-100', 'pointer-events-auto');
+                        }
+                    }
+
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }
+
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+
+        if (backToTopBtn) {
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: prefersReducedMotion ? 'auto' : 'smooth'
+                });
+                if (window.triggerFeedback) window.triggerFeedback('tap');
+            });
+        }
+
+        // 2. Universal IntersectionObserver Scroll-Reveal Engine
+        if ('IntersectionObserver' in window && !prefersReducedMotion) {
+            const revealObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                root: null,
+                rootMargin: '0px 0px -40px 0px',
+                threshold: 0.1
+            });
+
+            window.observeScrollReveals = function(root = document) {
+                const candidates = root.querySelectorAll('.eco-card, section h1, section h2, .tax-card, .facility-card, tbody tr, .reveal-on-scroll, .reveal-left, .reveal-right, .reveal-scale');
+                const winH = window.innerHeight;
+
+                candidates.forEach((el) => {
+                    const rect = el.getBoundingClientRect();
+                    if (rect.top < winH - 20) {
+                        el.classList.add('is-visible');
+                        return;
+                    }
+
+                    if (!el.classList.contains('reveal-left') && 
+                        !el.classList.contains('reveal-right') && 
+                        !el.classList.contains('reveal-scale') && 
+                        !el.classList.contains('reveal-on-scroll')) {
+                        el.classList.add('reveal-on-scroll');
+                    }
+
+                    if (!el.style.transitionDelay) {
+                        const parent = el.parentElement;
+                        if (parent) {
+                            const siblings = Array.from(parent.children);
+                            const indexInRow = siblings.indexOf(el);
+                            if (indexInRow >= 0) {
+                                el.style.transitionDelay = `${(indexInRow % 4) * 90}ms`;
+                            }
+                        }
+                    }
+
+                    revealObserver.observe(el);
+                });
+            };
+
+            window.observeScrollReveals(document);
+        } else {
+            document.querySelectorAll('.reveal-on-scroll, .reveal-left, .reveal-right, .reveal-scale').forEach(el => {
+                el.classList.add('is-visible');
+            });
+            window.observeScrollReveals = function() {};
+        }
+    });
+</script>
+
+<!-- Floating Back to Top Button -->
+<button id="back-to-top-btn" type="button" aria-label="Back to top" class="fixed bottom-20 md:bottom-8 right-6 z-40 p-3 rounded-2xl bg-white hover:bg-surface-container text-primary border border-border-medium shadow-lg opacity-0 translate-y-4 scale-90 pointer-events-none transition-all duration-300 flex items-center justify-center group focus:outline-none focus:ring-2 focus:ring-primary/40">
+    <span class="material-symbols-outlined text-[22px] group-hover:-translate-y-0.5 transition-transform">arrow_upward</span>
+</button>
+
+
+<script>
+    function setUsername(name) {
+        const input = document.getElementById('username-input');
+        if (input) {
+            input.value = name;
+            input.focus();
+        }
+    }
+</script>
+
+</body>
+</html>

@@ -1,14 +1,9 @@
 [build]
-  command = "pip install -r requirements.txt && mkdir -p public/static && cp -r static/* public/static/ && cp _redirects public/_redirects"
-  functions = "netlify/functions"
+  command = "pip install -r requirements.txt && python freeze_site.py"
   publish = "public"
 
 [build.environment]
   PYTHON_VERSION = "3.11"
-
-[functions]
-  directory = "netlify/functions"
-  included_files = ["templates/**", "app.py", "static/**", "requirements.txt"]
 
 # Netlify Edge CDN caching headers for static assets
 [[headers]]
@@ -22,15 +17,3 @@
     X-Frame-Options = "DENY"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
-
-# Direct traffic rewrite: serve static files via CDN first,
-# then pass all dynamic app and API routes to the Flask serverless function
-[[redirects]]
-  from = "/static/*"
-  to = "/static/:splat"
-  status = 200
-
-[[redirects]]
-  from = "/*"
-  to = "/.netlify/functions/server"
-  status = 200

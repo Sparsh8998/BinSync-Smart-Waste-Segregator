@@ -1,0 +1,2161 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="utf-8"/>
+    <script>
+        // Strictly light mode enforcement — remove any legacy dark theme traces
+        try {
+            document.documentElement.classList.remove('dark');
+            localStorage.removeItem('binsync_theme');
+        } catch(e) {}
+    </script>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Regional Rules &amp; Municipal Drop-off Map — BinSync</title>
+    <link rel="icon" type="image/svg+xml" href="/static/img/logo-icon.svg">
+    <link rel="apple-touch-icon" href="/static/img/logo-icon.svg">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#2563EB">
+
+    <!-- Fonts: Plus Jakarta Sans, Inter, JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+
+    <!-- Tailwind CSS with Nordic Arctic Glacier Design Tokens -->
+    <script>
+        tailwind = {
+            config: {
+                theme: {
+                    extend: {
+                        colors: {
+                            primary: {
+                                DEFAULT: "#2563EB",   /* Electric Precision Cobalt */
+                                hover:   "#1D4ED8",   /* Deep Royal Cobalt */
+                                light:   "#EFF6FF",   /* Ice Blue Tint */
+                                container: "#0F172A", /* Obsidian Graphite */
+                                fixed:   "#38BDF8"    /* Glacier Sky */
+                            },
+                            solar: {
+                                DEFAULT: "#F59E0B",
+                                hover:   "#D97706",
+                                light:   "#FEF3C7",
+                                dark:    "#B45309"
+                            },
+                            surface: {
+                                DEFAULT: "#F8FAFC",   /* Glacier Ice-White Canvas */
+                                card:    "#FFFFFF",   /* Pristine Card White */
+                                container: "#F1F5F9", /* Ice Slate Inset */
+                                subtle:  "#E2E8F0"    /* Glacier Border Line */
+                            },
+                            text: {
+                                primary:   "#0F172A", /* Obsidian Slate — 15:1 contrast */
+                                secondary: "#334155", /* Cool Charcoal Slate */
+                                muted:     "#64748B"  /* Glacier Muted Slate */
+                            },
+                            border: {
+                                subtle: "#E2E8F0",   /* Glacier Border Line */
+                                medium: "#CBD5E1",   /* Slate Medium Input Border */
+                                hover:  "#2563EB"    /* Active Precision Cobalt */
+                            },
+                            bin: {
+                                recycle:        "#0284C7", /* Curbside Blue */
+                                recycleLight:   "#F0F9FF",
+                                recycleBorder:  "#BAE6FD",
+                                compost:        "#0D9488", /* Glacier Teal */
+                                compostLight:   "#F0FDFA",
+                                compostBorder:  "#99F6E4",
+                                landfill:       "#475569", /* Managed Slate */
+                                landfillLight:  "#F8FAFC",
+                                landfillBorder: "#E2E8F0",
+                                specialty:      "#D97706",
+                                specialtyLight: "#FFFBEB",
+                                specialtyBorder:"#FDE68A",
+                                hazmat:         "#DC2626", /* Hazmat Red */
+                                hazmatLight:    "#FEF2F2",
+                                hazmatBorder:   "#FECACA"
+                            }
+                        },
+                        fontFamily: {
+                            sans: ['Plus Jakarta Sans', 'Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+                            mono: ['JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace']
+                        },
+                        maxWidth: {
+                            container: 'min(96vw, 1720px)'
+                        },
+                        boxShadow: {
+                            'glacier': '0 2px 8px -2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.02)',
+                            'glacier-hover': '0 12px 28px -4px rgba(15, 23, 42, 0.08), 0 4px 8px rgba(15, 23, 42, 0.03)',
+                            'botanical': '0 2px 8px -2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.02)',
+                            'botanical-hover': '0 12px 28px -4px rgba(15, 23, 42, 0.08), 0 4px 8px rgba(15, 23, 42, 0.03)'
+                        }
+                    }
+                }
+            }
+        };
+    </script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <style>
+        /* ── Fluid Dynamic Typography & Viewport Scaling ── */
+        html {
+            font-size: 16px;
+            -webkit-text-size-adjust: 100%;
+        }
+        @media (min-width: 1280px) {
+            html {
+                font-size: 16.5px;
+            }
+        }
+        @media (min-width: 1536px) {
+            html {
+                font-size: 17.5px;
+            }
+        }
+        @media (min-width: 1920px) {
+            html {
+                font-size: 18.5px;
+            }
+        }
+        @media (min-width: 2560px) {
+            html {
+                font-size: 20px;
+            }
+        }
+
+        .max-w-container {
+            max-width: min(96vw, 1720px) !important;
+            width: 100%;
+        }
+
+        /* ── Editorial Tight Tracking Standards ── */
+        h1, h2, h3, .font-heading {
+            letter-spacing: -0.03em;
+        }
+        .meta-tag, .tech-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        /* ── Nordic Arctic Glacier Custom Utilities ── */
+        .text-primary {
+            color: #2563EB !important;
+        }
+        .bg-primary {
+            background-color: #2563EB !important;
+        }
+        .border-primary {
+            border-color: #2563EB !important;
+        }
+        .bg-primary-light {
+            background-color: #EFF6FF !important;
+        }
+
+        .eco-card {
+            background-color: #FFFFFF;
+            border: 1px solid #E2E8F0;
+            border-radius: 1.5rem;
+            box-shadow: 0 2px 8px -2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.02);
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .eco-card:hover {
+            border-color: #CBD5E1;
+            box-shadow: 0 12px 28px -4px rgba(15, 23, 42, 0.08), 0 4px 8px rgba(15, 23, 42, 0.03);
+        }
+
+        .btn-primary {
+            background-color: #2563EB;
+            color: #FFFFFF !important;
+            padding: 0.75rem 1.6rem;
+            border-radius: 9999px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+            min-height: 44px;
+            border: 1px solid transparent;
+        }
+        .btn-primary:hover {
+            background-color: #1D4ED8;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+            transform: translateY(-1px);
+        }
+        .btn-secondary {
+            background-color: #FFFFFF;
+            color: #0F172A;
+            border: 1.5px solid #CBD5E1;
+            padding: 0.75rem 1.6rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+            min-height: 44px;
+        }
+        .btn-secondary:hover {
+            border-color: #2563EB;
+            background-color: #EFF6FF;
+            color: #2563EB;
+            transform: translateY(-1px);
+        }
+        .btn-solar {
+            background-color: #F59E0B;
+            color: #FFFFFF;
+            padding: 0.75rem 1.6rem;
+            border-radius: 9999px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+            min-height: 44px;
+        }
+        .btn-solar:hover {
+            background-color: #D97706;
+            box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35);
+            transform: translateY(-1px);
+        }
+
+        /* ── Micro-Animations ── */
+        @keyframes fade-up {
+            from {
+                opacity: 0;
+                transform: translateY(14px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .animate-fade-up {
+            animation: fade-up 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+        .stagger-1 { animation-delay: 80ms; }
+        .stagger-2 { animation-delay: 160ms; }
+        .stagger-3 { animation-delay: 240ms; }
+        .stagger-4 { animation-delay: 320ms; }
+
+        @keyframes shimmer-move {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(200%); }
+        }
+        .progress-shimmer {
+            position: relative;
+            overflow: hidden;
+        }
+        .progress-shimmer::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.45), transparent);
+            animation: shimmer-move 2.2s infinite ease-in-out;
+            pointer-events-none;
+        }
+
+        @keyframes flame-pulse {
+            0%, 100% { transform: scale(1) rotate(0deg); filter: drop-shadow(0 0 2px rgba(245, 158, 11, 0.4)); }
+            50% { transform: scale(1.14) rotate(-3deg); filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.8)); }
+        }
+        .flame-flicker {
+            display: inline-block;
+            animation: flame-pulse 1.8s infinite ease-in-out;
+            transform-origin: bottom center;
+        }
+
+        @keyframes glacier-drift {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-48%, -52%) scale(1.08); }
+        }
+        .glacier-float {
+            animation: glacier-drift 16s infinite ease-in-out;
+        }
+
+        @keyframes subtle-pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.65; transform: scale(0.97); }
+        }
+        .pulse-subtle {
+            animation: subtle-pulse 2.4s infinite ease-in-out;
+        }
+
+        @keyframes spring-pop {
+            0% { transform: scale(0.8); opacity: 0; }
+            40% { transform: scale(1.22); }
+            70% { transform: scale(0.95); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .animate-pop {
+            animation: spring-pop 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes golden-glow-pulse {
+            0%, 100% {
+                box-shadow: 0 0 15px rgba(245, 158, 11, 0.2), 0 4px 16px rgba(0, 0, 0, 0.05);
+            }
+            50% {
+                box-shadow: 0 0 30px rgba(245, 158, 11, 0.45), 0 8px 24px rgba(245, 158, 11, 0.15);
+            }
+        }
+        .golden-glow-pulse {
+            animation: golden-glow-pulse 3s infinite ease-in-out;
+        }
+
+        /* ── Universal Scroll-Reveal Directions ── */
+        @media (prefers-reduced-motion: no-preference) {
+            .reveal-on-scroll {
+                opacity: 0;
+                transform: translateY(28px) scale(0.985);
+                transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+                will-change: opacity, transform;
+            }
+            .reveal-on-scroll.is-visible {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+
+            .reveal-left {
+                opacity: 0;
+                transform: translateX(-32px);
+                transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+                will-change: opacity, transform;
+            }
+            .reveal-left.is-visible {
+                opacity: 1;
+                transform: translateX(0);
+            }
+
+            .reveal-right {
+                opacity: 0;
+                transform: translateX(32px);
+                transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+                will-change: opacity, transform;
+            }
+            .reveal-right.is-visible {
+                opacity: 1;
+                transform: translateX(0);
+            }
+
+            .reveal-scale {
+                opacity: 0;
+                transform: scale(0.92);
+                transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+                will-change: opacity, transform;
+            }
+            .reveal-scale.is-visible {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* ── Accessibility: Reduced Motion Standards ── */
+        @media (prefers-reduced-motion: reduce) {
+            *, ::before, ::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+            .reveal-on-scroll, .reveal-left, .reveal-right, .reveal-scale {
+                opacity: 1 !important;
+                transform: none !important;
+                transition: none !important;
+            }
+        }
+
+        /* ── Mobile Input Zoom Prevention & Safe Area Standards ── */
+        @media (max-width: 768px) {
+            input, select, textarea {
+                font-size: 16px !important;
+            }
+        }
+        .safe-bottom-nav {
+            padding-bottom: max(0.65rem, env(safe-area-inset-bottom, 0.65rem));
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+    
+<!-- Leaflet.js Interactive OpenStreetMap CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+<style>
+    /* Leaflet Custom Marker & Popup Styles conforming to Nordic Glacier Design */
+    #leaflet-map {
+        width: 100% !important;
+        height: 100% !important;
+        min-height: 100% !important;
+    }
+    .leaflet-popup-content-wrapper {
+        border-radius: 16px !important;
+        box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.1) !important;
+        border: 1px solid #E2E8F0 !important;
+        padding: 0 !important;
+    }
+    .leaflet-popup-content {
+        margin: 14px 16px !important;
+        font-family: inherit !important;
+    }
+    .user-gps-dot {
+        width: 20px;
+        height: 20px;
+        background: #2563EB;
+        border: 3.5px solid #FFFFFF;
+        border-radius: 50%;
+        box-shadow: 0 0 0 5px rgba(37, 99, 235, 0.35);
+        animation: user-gps-pulse 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+    }
+    @keyframes user-gps-pulse {
+        0%, 100% { box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.4); }
+        50% { box-shadow: 0 0 0 12px rgba(37, 99, 235, 0.1); }
+    }
+    .depot-marker-pin {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        border: 2px solid #FFFFFF;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        color: #FFFFFF;
+        font-size: 16px;
+        font-weight: bold;
+    }
+</style>
+
+</head>
+<body class="bg-surface text-text-primary font-sans min-h-screen flex flex-col antialiased selection:bg-blue-100 selection:text-blue-950">
+
+<!-- Top Fixed Glacier Scroll Progress Bar -->
+<div id="scroll-progress-bar" class="fixed top-0 left-0 h-[3px] bg-gradient-to-r from-primary via-[#38BDF8] to-solar z-[60] w-0 transition-[width] duration-75 ease-out pointer-events-none"></div>
+
+<!-- Nordic Arctic Glacier Frosted Header -->
+<header id="main-header" class="sticky top-0 z-50 transition-all duration-300 bg-white/95 backdrop-blur-md border-b border-border-subtle h-20 flex items-center">
+    <div class="max-w-container mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 w-full flex items-center justify-between">
+        <!-- Brand Logo with Climate Intelligence Identity -->
+        <a href="/" class="flex items-center gap-3 hover:opacity-90 transition-opacity flex-shrink-0">
+            <img src="/static/img/logo-icon.svg" alt="BinSync Logo" class="w-9 h-9 rounded-xl shadow-sm">
+            <div class="flex flex-col">
+                <span class="text-xl font-black tracking-tight text-text-primary leading-none">Bin<span class="text-primary">Sync</span></span>
+                <span class="text-[9px] font-bold text-primary tracking-widest uppercase mt-0.5">CLIMATE INTELLIGENCE</span>
+            </div>
+        </a>
+
+        <!-- Desktop Navigation Tabs (Nordic Glacier Capsule Tabs) -->
+        <nav class="hidden md:flex items-center gap-1.5 text-sm font-semibold">
+            <a href="/" class="px-4 py-2 rounded-full transition-all text-text-secondary hover:text-text-primary hover:bg-surface-container">
+                Home
+            </a>
+            <a href="/classifier" class="px-4 py-2 rounded-full transition-all text-text-secondary hover:text-text-primary hover:bg-surface-container flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-[18px]">photo_camera</span>
+                <span>Waste Sorter</span>
+            </a>
+            <a href="/rules" class="px-4 py-2 rounded-full transition-all text-primary bg-primary-light font-bold">
+                Rules &amp; Map
+            </a>
+            <a href="/classifications" class="px-4 py-2 rounded-full transition-all text-text-secondary hover:text-text-primary hover:bg-surface-container">
+                Taxonomy
+            </a>
+            <a href="/leaderboard" class="px-4 py-2 rounded-full transition-all text-text-secondary hover:text-text-primary hover:bg-surface-container">
+                Leaderboard
+            </a>
+            
+            <a href="/dashboard" class="px-4 py-2 rounded-full transition-all text-text-secondary hover:text-text-primary hover:bg-surface-container">
+                Dashboard
+            </a>
+            
+        </nav>
+
+        <!-- Right Side: User Profile / Action -->
+        <div class="flex items-center gap-3">
+            
+            <a href="/dashboard" class="hidden sm:flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-surface-container border border-border-subtle hover:border-primary/40 transition">
+                <span class="w-6 h-6 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center">
+                    C
+                </span>
+                <span class="text-xs font-bold text-text-primary">Citizen_b361d</span>
+                <span id="nav-points-pill" class="text-xs font-mono font-bold text-primary bg-primary-light px-2.5 py-0.5 rounded-full">0 pts</span>
+            </a>
+            <a href="/logout" title="Log out" class="text-xs font-semibold text-text-muted hover:text-rose-600 px-2 py-1 transition">
+                Sign Out
+            </a>
+            
+
+            <!-- Mobile Hamburger Button -->
+            <button type="button" id="mobile-menu-btn" class="md:hidden text-text-secondary hover:text-text-primary p-2 focus:outline-none rounded-xl hover:bg-surface-container" aria-label="Toggle Menu">
+                <span class="material-symbols-outlined text-[24px]" id="mobile-menu-icon">menu</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Mobile Slide Drawer -->
+    <div id="mobile-menu" class="hidden md:hidden absolute top-20 left-0 right-0 bg-white border-b border-border-subtle shadow-xl px-5 py-4 space-y-2 z-50">
+        <div class="flex items-center gap-2.5 pb-3 mb-2 border-b border-border-subtle">
+            <img src="/static/img/logo-icon.svg" alt="BinSync" class="w-7 h-7 rounded-lg">
+            <span class="font-bold text-sm text-text-primary">BinSync Quick Navigation</span>
+        </div>
+        <a href="/" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-text-secondary hover:bg-surface-container">
+            Home
+        </a>
+        <a href="/classifier" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-text-secondary hover:bg-surface-container">
+            Waste Sorter
+        </a>
+        <a href="/rules" class="block px-4 py-2.5 rounded-xl text-sm font-medium bg-primary-light text-primary font-bold">
+            Rules &amp; Map
+        </a>
+        <a href="/classifications" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-text-secondary hover:bg-surface-container">
+            Taxonomy Directory
+        </a>
+        <a href="/leaderboard" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-text-secondary hover:bg-surface-container">
+            Community Leaderboard
+        </a>
+        
+        <a href="/dashboard" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-text-secondary hover:bg-surface-container">
+            My Dashboard (0 pts)
+        </a>
+        <a href="/logout" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-rose-600 hover:bg-rose-50">
+            Sign Out
+        </a>
+        
+    </div>
+</header>
+
+<!-- Main Body Slot -->
+<main class="flex-grow pb-24 md:pb-0">
+    
+<div class="max-w-container mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 py-8 md:py-14 space-y-8">
+
+    <!-- Header & GPS Status Bar -->
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-4 border-b border-border-subtle">
+        <div class="space-y-2">
+            <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-text-primary leading-tight">
+                Regional Rules &amp; Drop-off Map
+            </h1>
+            <p class="text-sm sm:text-base lg:text-lg text-text-secondary max-w-3xl">
+                Real-time municipal routing connected to your device's GPS location. Find specialized depots for soft plastics, lithium batteries, e-waste, and organics.
+            </p>
+        </div>
+
+        <!-- Live GPS Pill Indicator -->
+        <div class="flex items-center gap-2 self-start md:self-auto">
+            <div id="gps-status-pill" class="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-surface-container border border-border-subtle text-xs font-semibold text-text-secondary shadow-sm">
+                <span class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse" id="gps-status-dot"></span>
+                <span id="gps-status-text">Locating GPS…</span>
+            </div>
+            <button type="button" id="force-gps-btn" class="btn-primary py-1.5 px-3 text-xs flex items-center gap-1.5" title="Re-fetch device GPS location">
+                <span class="material-symbols-outlined text-[16px]">my_location</span>
+                <span>Update GPS</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Active Region Prompt / Alert Banner -->
+    <div id="gps-alert-banner" class="p-4 sm:p-5 rounded-2xl bg-primary-light border border-primary/20 flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-xs sm:text-sm text-text-primary">
+        <div class="flex items-center gap-3.5">
+            <div class="w-10 h-10 rounded-xl bg-primary text-white flex items-center justify-center font-bold flex-shrink-0">
+                <span class="material-symbols-outlined text-[20px]">near_me</span>
+            </div>
+            <div>
+                <span class="font-bold text-text-primary text-sm sm:text-base" id="banner-city-title">Regional Grid: Detecting Location…</span>
+                <p class="text-text-secondary text-xs sm:text-sm mt-0.5" id="banner-city-sub">
+                    Displaying specialized drop-off facilities calculated by real geographic distance from your active GPS position.
+                </p>
+            </div>
+        </div>
+        <div class="flex items-center gap-2">
+            <button type="button" id="prompt-gps-action" class="btn-primary py-2.5 px-4 text-xs sm:text-sm font-bold flex items-center gap-1.5 whitespace-nowrap shadow-sm">
+                <span class="material-symbols-outlined text-[18px]">gps_fixed</span>
+                <span>Sync Current GPS</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main 12-col Layout -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        <!-- Left Column: Search, Distance, Stream Filters & Local Rules (4 cols, 3 on 2xl) -->
+        <div class="lg:col-span-4 2xl:col-span-3 space-y-6">
+            
+            <!-- Location Search & Metro Presets Card -->
+            <div class="eco-card p-6 space-y-4">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-sm font-bold text-text-primary flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-primary text-[18px]">location_searching</span>
+                        Search City or Area
+                    </h2>
+                    <span class="text-[11px] font-mono font-bold text-primary" id="coord-display">--</span>
+                </div>
+
+                <div class="space-y-3">
+                    <div class="relative">
+                        <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-text-muted text-[18px]">search</span>
+                        <input type="text" id="location-input" placeholder="Enter City, State, or Zip Code" class="w-full text-xs pl-10 pr-3 py-2.5 rounded-full border border-border-medium focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition bg-surface">
+                    </div>
+                    <div class="flex gap-2">
+                        <button type="button" id="search-btn" class="flex-1 btn-primary py-2 px-3 text-xs">
+                            Search Area
+                        </button>
+                        <button type="button" id="detect-loc-btn" class="btn-secondary py-2 px-3 text-xs flex items-center gap-1">
+                            <span class="material-symbols-outlined text-[16px]">my_location</span>
+                            <span>GPS</span>
+                        </button>
+                    </div>
+
+                    <!-- Quick Metro Hub Pills -->
+                    <div class="pt-2 border-t border-border-subtle">
+                        <div class="text-[11px] font-semibold text-text-muted mb-2">Preset Municipal Grids:</div>
+                        <div class="flex flex-wrap gap-1.5" id="city-presets">
+                            <button type="button" data-city="Seattle, WA" data-lat="47.6062" data-lon="-122.3321" class="city-pill text-[11px] font-semibold px-2.5 py-1 rounded-md bg-surface-container hover:bg-primary-light hover:text-primary transition">Seattle</button>
+                            <button type="button" data-city="New York, NY" data-lat="40.7128" data-lon="-74.0060" class="city-pill text-[11px] font-semibold px-2.5 py-1 rounded-md bg-surface-container hover:bg-primary-light hover:text-primary transition">New York</button>
+                            <button type="button" data-city="San Francisco, CA" data-lat="37.7749" data-lon="-122.4194" class="city-pill text-[11px] font-semibold px-2.5 py-1 rounded-md bg-surface-container hover:bg-primary-light hover:text-primary transition">San Francisco</button>
+                            <button type="button" data-city="Austin, TX" data-lat="30.2672" data-lon="-97.7431" class="city-pill text-[11px] font-semibold px-2.5 py-1 rounded-md bg-surface-container hover:bg-primary-light hover:text-primary transition">Austin</button>
+                            <button type="button" data-city="Chicago, IL" data-lat="41.8781" data-lon="-87.6298" class="city-pill text-[11px] font-semibold px-2.5 py-1 rounded-md bg-surface-container hover:bg-primary-light hover:text-primary transition">Chicago</button>
+                            <button type="button" data-city="London, UK" data-lat="51.5074" data-lon="-0.1278" class="city-pill text-[11px] font-semibold px-2.5 py-1 rounded-md bg-surface-container hover:bg-primary-light hover:text-primary transition">London</button>
+                            <button type="button" data-city="New Delhi, India" data-lat="28.6139" data-lon="77.2090" class="city-pill text-[11px] font-semibold px-2.5 py-1 rounded-md bg-surface-container hover:bg-primary-light hover:text-primary transition">New Delhi</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GPS Radius Distance Filter -->
+            <div class="eco-card p-6 space-y-3">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-sm font-bold text-text-primary">Distance Radius</h2>
+                    <span id="radius-label" class="text-xs font-semibold text-text-muted">Any Distance</span>
+                </div>
+                <div class="flex flex-wrap gap-2" id="radius-container">
+                    <button type="button" data-radius="all" class="radius-pill px-3 py-1.5 rounded-full text-xs font-bold bg-primary text-white transition">Any Distance</button>
+                    <button type="button" data-radius="2" class="radius-pill px-3 py-1.5 rounded-full text-xs font-semibold bg-surface text-text-secondary border border-border-subtle hover:border-primary transition">&lt; 2 Miles</button>
+                    <button type="button" data-radius="5" class="radius-pill px-3 py-1.5 rounded-full text-xs font-semibold bg-surface text-text-secondary border border-border-subtle hover:border-primary transition">&lt; 5 Miles</button>
+                    <button type="button" data-radius="10" class="radius-pill px-3 py-1.5 rounded-full text-xs font-semibold bg-surface text-text-secondary border border-border-subtle hover:border-primary transition">&lt; 10 Miles</button>
+                </div>
+            </div>
+
+            <!-- Facility Stream Filters -->
+            <div class="eco-card p-6 space-y-3">
+                <h2 class="text-sm font-bold text-text-primary">Filter Accepted Material</h2>
+                <div class="flex flex-wrap gap-2" id="filter-container">
+                    <button type="button" data-filter="all" class="filter-pill px-3.5 py-1.5 rounded-full text-xs font-bold bg-primary text-white transition">All Streams</button>
+                    <button type="button" data-filter="Soft Plastics" class="filter-pill px-3.5 py-1.5 rounded-full text-xs font-semibold bg-surface text-text-secondary border border-border-subtle hover:border-primary transition">Soft Plastics</button>
+                    <button type="button" data-filter="E-Waste" class="filter-pill px-3.5 py-1.5 rounded-full text-xs font-semibold bg-surface text-text-secondary border border-border-subtle hover:border-primary transition">E-Waste &amp; Batteries</button>
+                    <button type="button" data-filter="Compost" class="filter-pill px-3.5 py-1.5 rounded-full text-xs font-semibold bg-surface text-text-secondary border border-border-subtle hover:border-primary transition">Organics &amp; Soil</button>
+                    <button type="button" data-filter="Hazmat" class="filter-pill px-3.5 py-1.5 rounded-full text-xs font-semibold bg-surface text-text-secondary border border-border-subtle hover:border-primary transition">Hazmat / Bulk</button>
+                    <button type="button" data-filter="Textiles" class="filter-pill px-3.5 py-1.5 rounded-full text-xs font-semibold bg-surface text-text-secondary border border-border-subtle hover:border-primary transition">Textiles</button>
+                </div>
+
+                <!-- Open Right Now Live Filter Toggle -->
+                <div class="pt-3 border-t border-border-subtle flex items-center justify-between">
+                    <span class="text-xs font-bold text-text-primary flex items-center gap-1.5">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <span>Open Right Now</span>
+                    </span>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="open-now-toggle" class="sr-only peer">
+                        <div class="w-11 h-6 bg-surface-container border border-border-medium peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Curbside Local Rules Summary & Bylaw Engine -->
+            <div id="local-rules-card" class="eco-card p-6 space-y-4">
+                <div class="flex items-center justify-between pb-3 border-b border-border-subtle">
+                    <div>
+                        <h2 class="text-sm font-bold text-text-primary flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-teal-600 text-[18px]">verified</span>
+                            <span id="bylaw-city-heading">Curbside Rules: Detecting…</span>
+                        </h2>
+                        <p id="bylaw-authority-tag" class="text-[11px] text-text-muted mt-0.5">Municipal Waste Sorting Standard</p>
+                    </div>
+                </div>
+
+                <div class="space-y-3 text-xs" id="bylaw-details-container">
+                    <!-- Bin Terminology -->
+                    <div class="p-3 rounded-xl bg-blue-50 border border-blue-200 space-y-1">
+                        <span class="font-bold text-blue-900 block" id="bylaw-recycle-title">Recycling Stream:</span>
+                        <p id="bylaw-recycle-desc" class="text-blue-800 leading-relaxed">
+                            Clean paper, cardboard boxes, rigid containers. Keep completely loose—never bag in plastic.
+                        </p>
+                    </div>
+
+                    <!-- Material Criteria Checklist -->
+                    <div class="p-3 rounded-xl bg-surface border border-border-subtle space-y-2">
+                        <span class="font-bold text-text-primary block text-[11px] uppercase tracking-wider">Curbside Acceptance Criteria:</span>
+                        <div class="grid grid-cols-2 gap-2 text-[11px]" id="bylaw-criteria-grid">
+                            <div class="flex items-center gap-1.5"><span id="badge-pp5" class="w-4 h-4 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-[10px]">✓</span> <span>PP #5 Plastic</span></div>
+                            <div class="flex items-center gap-1.5"><span id="badge-ps6" class="w-4 h-4 rounded-full bg-rose-100 text-rose-800 flex items-center justify-center font-bold text-[10px]">✕</span> <span>PS #6 Foam</span></div>
+                            <div class="flex items-center gap-1.5"><span id="badge-cups" class="w-4 h-4 rounded-full bg-rose-100 text-rose-800 flex items-center justify-center font-bold text-[10px]">✕</span> <span>Coffee Cups</span></div>
+                            <div class="flex items-center gap-1.5"><span id="badge-compost" class="w-4 h-4 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-[10px]">✓</span> <span>Organics Mandate</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Schedule Preview -->
+                    <div class="p-3 rounded-xl bg-teal-50 border border-teal-200 space-y-1.5">
+                        <span class="font-bold text-teal-900 block flex items-center gap-1">
+                            <span class="material-symbols-outlined text-[15px]">calendar_month</span>
+                            <span>Curbside Collection Schedule:</span>
+                        </span>
+                        <div id="bylaw-schedule-list" class="space-y-1 text-[11px] text-teal-800"></div>
+                    </div>
+
+                    <!-- Calendar .ics Download CTA -->
+                    <a id="calendar-download-btn" href="/api/calendar.ics?city=Seattle%2C%20WA" class="w-full btn-primary py-2.5 px-4 text-xs font-bold flex items-center justify-center gap-2 shadow-sm">
+                        <span class="material-symbols-outlined text-[16px]">event_available</span>
+                        <span>Download Curbside Calendar (.ics)</span>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Right Column: Interactive Map, Closest Depot Spotlight & Facilities Grid (8 cols, 9 on 2xl) -->
+        <div class="lg:col-span-8 2xl:col-span-9 space-y-6">
+            
+            <!-- Map Container with Leaflet / Fallback Embed -->
+            <div class="eco-card overflow-hidden h-[440px] sm:h-[520px] lg:h-[580px] xl:h-[650px] 2xl:h-[720px] relative border border-border-subtle shadow-sm">
+                <div id="leaflet-map" class="w-full h-full z-10" style="min-height: 100%;"></div>
+                <iframe id="dynamic-map" width="100%" height="100%" frameborder="0" scrolling="no" src="" class="hidden w-full h-full"></iframe>
+                
+                <!-- Community Drop Bin Submission Button -->
+                <button type="button" id="toggle-submit-pin-btn" class="absolute top-3 left-3 z-[400] bg-solar hover:bg-solar-dark text-white font-bold px-3.5 py-1.5 rounded-full border border-solar/30 shadow-md text-xs flex items-center gap-1.5 transition hover:scale-105">
+                    <span class="material-symbols-outlined text-[16px]">add_location_alt</span>
+                    <span id="submit-pin-btn-text">Submit Local Drop Bin (+20 Pts)</span>
+                </button>
+
+                <!-- Map Top Overlay Overlay Tag -->
+                <div class="absolute top-3 right-3 z-[400] bg-white/95 backdrop-blur px-3.5 py-1.5 rounded-full border border-border-subtle shadow-sm text-xs sm:text-sm font-semibold text-text-primary flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-primary animate-ping"></span>
+                    <span id="map-label">Region: Initializing…</span>
+                </div>
+
+                <!-- Map Hint Tooltip -->
+                <div class="absolute bottom-3 left-3 z-[400] bg-white/95 backdrop-blur px-3.5 py-1.5 rounded-full border border-border-subtle shadow-sm text-xs font-medium text-text-secondary flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[16px] text-primary">touch_app</span>
+                    <span>Click anywhere on map to inspect or drop community pins</span>
+                </div>
+
+                <!-- Floating GPS Recenter Button -->
+                <button type="button" id="recenter-map-btn" onclick="recenterMapOnUser()" class="absolute bottom-3 right-3 z-[400] w-10 h-10 rounded-full bg-white text-slate-800 border border-border-medium shadow-md flex items-center justify-center hover:bg-surface-container hover:text-primary transition active:scale-95" title="Recenter Map on My GPS">
+                    <span class="material-symbols-outlined text-[20px]">my_location</span>
+                </button>
+
+                <!-- Loading Spinner Overlay -->
+                <div id="map-loader" class="hidden absolute inset-0 z-[500] bg-white/70 backdrop-blur-sm flex items-center justify-center">
+                    <div class="flex items-center gap-2.5 text-xs sm:text-sm font-bold text-primary bg-white px-5 py-2.5 rounded-full shadow-md border border-border-subtle">
+                        <span class="material-symbols-outlined text-[20px] animate-spin">refresh</span>
+                        <span>Syncing GPS Coordinates &amp; Routes…</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Spotlight Card: Nearest Drop-off to User GPS -->
+            <div id="nearest-spotlight-card" class="eco-card p-6 sm:p-7 border-primary/30 bg-gradient-to-r from-primary-light/50 via-white to-white flex flex-col sm:flex-row sm:items-center justify-between gap-5">
+                <div class="flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-2xl bg-primary text-white flex items-center justify-center font-bold flex-shrink-0 mt-0.5 shadow-sm">
+                        <span class="material-symbols-outlined text-[26px]">navigation</span>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-[11px] font-bold px-2.5 py-0.5 rounded bg-primary text-white uppercase tracking-wider">Closest Drop Depot</span>
+                            <span id="spotlight-open-badge" class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-teal-50 text-teal-700 border border-teal-200">Open Now</span>
+                        </div>
+                        <h3 id="spotlight-name" class="text-base sm:text-lg font-bold text-text-primary mt-1">CleanFilm Soft Plastics Depot</h3>
+                        <p id="spotlight-desc" class="text-xs sm:text-sm text-text-secondary mt-0.5">
+                            Takes clean bubble wrap, stretch bags, and flexible pouches.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-4 self-end sm:self-center">
+                    <div class="text-right">
+                        <span id="spotlight-distance" class="text-xl sm:text-2xl font-black text-primary font-mono block">--</span>
+                        <span id="spotlight-time" class="text-xs text-text-muted font-medium">Calculating…</span>
+                    </div>
+                    <a id="spotlight-nav-btn" href="#" target="_blank" rel="noopener noreferrer" class="btn-primary py-3 px-5 text-xs sm:text-sm font-bold flex items-center gap-2 shadow-sm">
+                        <span class="material-symbols-outlined text-[18px]">directions</span>
+                        <span>GPS Route</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Facilities Grid Header -->
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                <div>
+                    <h3 class="text-base font-bold text-text-primary">Facilities Sorted by Proximity</h3>
+                    <p class="text-xs sm:text-sm text-text-muted">Distances computed in real time from your active coordinates</p>
+                </div>
+                <span id="depot-count" class="text-xs sm:text-sm text-text-muted font-medium">Showing 6 Facilities</span>
+            </div>
+
+            <!-- Dynamic Depot Cards Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-3 gap-5" id="facility-grid">
+                <!-- Dynamically generated via JavaScript based on user's exact coordinates -->
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<!-- Submit Community Depot Modal -->
+<div id="submit-depot-modal" class="fixed inset-0 z-[600] bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+    <div class="bg-surface rounded-2xl max-w-lg w-full border border-border-subtle shadow-2xl overflow-hidden">
+        <div class="p-5 sm:p-6 border-b border-border-subtle flex items-start justify-between bg-surface-container">
+            <div>
+                <div class="flex items-center gap-2">
+                    <h3 class="text-base font-bold text-text-primary flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-solar text-[20px]">add_location_alt</span>
+                        Submit Local Drop-Off Pin
+                    </h3>
+                    <span class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">+20 Eco-Pts</span>
+                </div>
+                <p class="text-xs text-text-muted mt-1">Share a store drop bin, organics depot, or e-waste station with your community.</p>
+            </div>
+            <button type="button" id="close-depot-modal-btn" class="text-text-muted hover:text-text-primary p-1 rounded-lg hover:bg-surface transition">
+                <span class="material-symbols-outlined text-[20px]">close</span>
+            </button>
+        </div>
+
+        <form id="submit-depot-form" class="p-5 sm:p-6 space-y-4">
+            <div id="depot-form-error" class="hidden p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-semibold"></div>
+
+            <div class="space-y-1.5">
+                <label for="depot-name-input" class="text-xs font-bold text-text-primary block">Drop-Off Location Name *</label>
+                <input type="text" id="depot-name-input" required placeholder="e.g. Whole Foods Soft Plastics Vestibule Bin" class="w-full text-xs px-3.5 py-2.5 rounded-xl border border-border-medium focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 bg-surface">
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div class="space-y-1.5">
+                    <label for="depot-stream-select" class="text-xs font-bold text-text-primary block">Accepted Material Stream *</label>
+                    <select id="depot-stream-select" required class="w-full text-xs px-3 py-2.5 rounded-xl border border-border-medium focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 bg-surface">
+                        <option value="Soft Plastics">Soft Plastics &amp; Bags</option>
+                        <option value="E-Waste">E-Waste &amp; Batteries</option>
+                        <option value="Compost">Organics &amp; Soil</option>
+                        <option value="Hazmat">Hazmat &amp; Bulk</option>
+                        <option value="Textiles">Textiles &amp; Apparel</option>
+                        <option value="Glass">Glass &amp; Aluminum</option>
+                        <option value="Multi-Stream">Multi-Stream Depot</option>
+                    </select>
+                </div>
+
+                <div class="space-y-1.5">
+                    <label class="text-xs font-bold text-text-primary block">Selected Map Coordinates</label>
+                    <div id="depot-coords-display" class="w-full text-xs font-mono font-bold text-primary px-3 py-2.5 rounded-xl bg-surface-container border border-border-subtle truncate">
+                        Lat: --, Lon: --
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-y-1.5">
+                <label for="depot-desc-input" class="text-xs font-bold text-text-primary block">Description &amp; Access Notes *</label>
+                <textarea id="depot-desc-input" rows="3" required placeholder="e.g. Blue collection bin located immediately inside the double sliding doors. Accepts bubble wrap, cereal liners, and grocery sacks." class="w-full text-xs px-3.5 py-2.5 rounded-xl border border-border-medium focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 bg-surface"></textarea>
+            </div>
+
+            <div class="pt-2 flex items-center justify-end gap-2 border-t border-border-subtle">
+                <button type="button" id="cancel-depot-modal-btn" class="btn-secondary py-2 px-4 text-xs font-semibold">
+                    Cancel
+                </button>
+                <button type="submit" id="save-depot-btn" class="btn-primary py-2 px-4 text-xs font-bold flex items-center gap-1.5 shadow-sm">
+                    <span class="material-symbols-outlined text-[16px]">verified</span>
+                    <span>Submit &amp; Earn +20 Pts</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+</main>
+
+<!-- Global Autocomplete Datalist for Waste & Packaging Items -->
+<datalist id="packaging-suggestions">
+    <option value="Starbucks Hot Coffee Cup with Lid">
+    <option value="Delivery Corrugated Pizza Box">
+    <option value="Clear Plastic Water Bottle (PET #1)">
+    <option value="Multi-Layer Potato Chips Pouch (BOPP #7)">
+    <option value="Corrugated Shipping Box">
+    <option value="Aluminum Beverage Can">
+    <option value="Household AA / Lithium Battery">
+    <option value="Aseptic Gable-Top Milk Carton">
+    <option value="Glass Pickle Jar with Metal Lid">
+    <option value="Styrofoam Clamshell Container (PS #6)">
+    <option value="Air Cushion Bubble Wrap (LDPE #4)">
+    <option value="Organic Food Remnants & Produce Scraps">
+    <option value="HDPE Milk Jug with Cap">
+    <option value="Broken Smartphone / Cable E-Waste">
+    <option value="Aerosol Spray Can">
+</datalist>
+
+<!-- Nordic Arctic Glacier Obsidian & Ice Slate Footer -->
+<footer class="bg-[#0B1120] text-slate-400 border-t border-slate-800 mt-24 pt-16 pb-20 text-sm">
+    <div class="max-w-container mx-auto px-4 sm:px-8 lg:px-12 xl:px-16">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+            <!-- Brand Column -->
+            <div class="md:col-span-2 space-y-4">
+                <div class="flex items-center gap-3 font-bold text-xl">
+                    <img src="/static/img/logo-icon.svg" alt="BinSync Logo" class="w-8 h-8 rounded-xl shadow-sm">
+                    <span class="tracking-tight text-xl font-black text-white">Bin<span class="text-[#38BDF8]">Sync</span></span>
+                </div>
+                <p class="text-slate-400 text-sm max-w-md leading-relaxed">
+                    Precision computer vision engineered for composite packaging decomposition. Eliminating wishcycling through automated material layer separation and verifiable municipal diversion.
+                </p>
+                <div class="flex items-center gap-3 pt-2 text-xs">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-950/80 border border-blue-800/60 text-[#38BDF8] font-semibold text-xs">
+                        <span class="w-2 h-2 rounded-full bg-[#38BDF8] pulse-subtle"></span>
+                        Vision Inspection System Active
+                    </span>
+                    <span class="text-slate-500 text-xs">Verified Circular Infrastructure</span>
+                </div>
+            </div>
+
+            <!-- Core Modules -->
+            <div>
+                <h3 class="font-bold text-white uppercase tracking-widest text-[11px] mb-4">Core Modules</h3>
+                <ul class="space-y-2.5 text-sm text-slate-400">
+                    <li><a href="/classifier" class="hover:text-[#38BDF8] transition">Material Inspector</a></li>
+                    <li><a href="/rules" class="hover:text-[#38BDF8] transition">Drop-off Map &amp; Bylaws</a></li>
+                    <li><a href="/classifications" class="hover:text-[#38BDF8] transition">Material Taxonomy</a></li>
+                    <li><a href="/leaderboard" class="hover:text-[#38BDF8] transition">Community Leaderboard</a></li>
+                </ul>
+            </div>
+
+            <!-- Climate & Transparency -->
+            <div>
+                <h3 class="font-bold text-white uppercase tracking-widest text-[11px] mb-4">Climate &amp; Auditing</h3>
+                <ul class="space-y-2.5 text-sm text-slate-400">
+                    <li><a href="/rules#faq" class="hover:text-[#38BDF8] transition">Wishcycling Guide</a></li>
+                    <li><a href="/dashboard" class="hover:text-[#38BDF8] transition">CO₂ Diversion Audit</a></li>
+                    <li><a href="/login" class="hover:text-[#38BDF8] transition">Citizen Portal</a></li>
+                    <li><span class="text-slate-500">&copy; 2026 BinSync Inc.</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="border-t border-slate-800 pt-8 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-500 gap-4">
+            <p>Empowering eco-citizens and zero-waste cities with transparent, verifiable carbon diversion metrics.</p>
+            <div class="flex items-center gap-6">
+                <a href="/rules" class="hover:text-[#38BDF8] transition">Municipal Bylaws</a>
+                <a href="/classifications" class="hover:text-[#38BDF8] transition">Taxonomy API</a>
+                <span class="text-[#38BDF8] font-bold">Clean Planet First</span>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Mobile Bottom Navigation Bar (Light Arctic Glacier) -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-xl border-t border-border-subtle z-40 pt-2 safe-bottom-nav px-3 flex justify-around items-center shadow-lg">
+    <a href="/" class="min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-xs px-2 text-text-muted hover:text-text-primary">
+        <span class="material-symbols-outlined text-[22px]">home</span>
+        <span>Home</span>
+    </a>
+    <a href="/classifier" class="min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-xs px-2 text-text-muted hover:text-text-primary">
+        <span class="material-symbols-outlined text-[22px]">center_focus_strong</span>
+        <span>Inspect</span>
+    </a>
+    <a href="/rules" class="min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-xs px-2 text-primary font-bold">
+        <span class="material-symbols-outlined text-[22px]">map</span>
+        <span>Rules</span>
+    </a>
+    <a href="/leaderboard" class="min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-xs px-2 text-text-muted hover:text-text-primary">
+        <span class="material-symbols-outlined text-[22px]">leaderboard</span>
+        <span>Rank</span>
+    </a>
+    <a href="/dashboard" class="min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-xs px-2 text-text-muted hover:text-text-primary">
+        <span class="material-symbols-outlined text-[22px]">account_circle</span>
+        <span>Profile</span>
+    </a>
+</nav>
+
+<!-- Mobile Menu Toggle Script & Feedback + PWA -->
+<script>
+    // Universal Haptic & Audio Feedback Helper
+    window.triggerFeedback = function(type = 'success') {
+        try {
+            if ('vibrate' in navigator) {
+                if (type === 'success') navigator.vibrate([40, 30, 60]);
+                else if (type === 'error') navigator.vibrate([80, 50, 80]);
+                else navigator.vibrate(35);
+            }
+            const AudioCtx = window.AudioContext || window.webkitAudioContext;
+            if (AudioCtx) {
+                const ctx = new AudioCtx();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                const now = ctx.currentTime;
+                if (type === 'success') {
+                    osc.frequency.setValueAtTime(587.33, now); // D5
+                    osc.frequency.setValueAtTime(880, now + 0.09); // A5
+                    gain.gain.setValueAtTime(0.06, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.26);
+                    osc.start(now);
+                    osc.stop(now + 0.28);
+                } else if (type === 'error') {
+                    osc.frequency.setValueAtTime(329.63, now); // E4
+                    osc.frequency.setValueAtTime(220, now + 0.1); // A3
+                    gain.gain.setValueAtTime(0.08, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+                    osc.start(now);
+                    osc.stop(now + 0.28);
+                } else {
+                    osc.frequency.setValueAtTime(659.25, now); // E5
+                    gain.gain.setValueAtTime(0.04, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+                    osc.start(now);
+                    osc.stop(now + 0.14);
+                }
+            }
+        } catch(e) {}
+    };
+
+    const menuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuIcon = document.getElementById('mobile-menu-icon');
+
+    if (menuBtn && mobileMenu) {
+        menuBtn.addEventListener('click', () => {
+            const isHidden = mobileMenu.classList.contains('hidden');
+            if (isHidden) {
+                mobileMenu.classList.remove('hidden');
+                if (menuIcon) menuIcon.textContent = 'close';
+            } else {
+                mobileMenu.classList.add('hidden');
+                if (menuIcon) menuIcon.textContent = 'menu';
+            }
+        });
+    }
+
+    // Register PWA Service Worker for Offline Resilience
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js').catch(err => {
+                console.log('SW registration note:', err);
+            });
+        });
+    }
+
+    // ==========================================
+    // NORDIC GLACIER SCROLL ENGINE
+    // ==========================================
+    document.addEventListener('DOMContentLoaded', () => {
+        const progressBar = document.getElementById('scroll-progress-bar');
+        const mainHeader = document.getElementById('main-header');
+        const backToTopBtn = document.getElementById('back-to-top-btn');
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        // 1. Passive Scroll Handler (Progress Bar, Sticky Header Compact & Back-To-Top)
+        let ticking = false;
+        function onScroll() {
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    const scrollY = window.scrollY || window.pageYOffset;
+                    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+
+                    // Progress bar
+                    if (progressBar) {
+                        const progress = docHeight > 0 ? (scrollY / docHeight) * 100 : 0;
+                        progressBar.style.width = `${Math.min(100, Math.max(0, progress))}%`;
+                    }
+
+                    // Sticky header compact elevation
+                    if (mainHeader) {
+                        if (scrollY > 24) {
+                            mainHeader.classList.remove('h-20', 'bg-white/95');
+                            mainHeader.classList.add('h-16', 'bg-white/90', 'shadow-sm');
+                        } else {
+                            mainHeader.classList.remove('h-16', 'bg-white/90', 'shadow-sm');
+                            mainHeader.classList.add('h-20', 'bg-white/95');
+                        }
+                    }
+
+                    // Floating Back to Top Button
+                    if (backToTopBtn) {
+                        if (scrollY > 450) {
+                            backToTopBtn.classList.remove('opacity-0', 'translate-y-4', 'scale-90', 'pointer-events-none');
+                            backToTopBtn.classList.add('opacity-100', 'translate-y-0', 'scale-100', 'pointer-events-auto');
+                        } else {
+                            backToTopBtn.classList.add('opacity-0', 'translate-y-4', 'scale-90', 'pointer-events-none');
+                            backToTopBtn.classList.remove('opacity-100', 'translate-y-0', 'scale-100', 'pointer-events-auto');
+                        }
+                    }
+
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }
+
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+
+        if (backToTopBtn) {
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: prefersReducedMotion ? 'auto' : 'smooth'
+                });
+                if (window.triggerFeedback) window.triggerFeedback('tap');
+            });
+        }
+
+        // 2. Universal IntersectionObserver Scroll-Reveal Engine
+        if ('IntersectionObserver' in window && !prefersReducedMotion) {
+            const revealObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                root: null,
+                rootMargin: '0px 0px -40px 0px',
+                threshold: 0.1
+            });
+
+            window.observeScrollReveals = function(root = document) {
+                const candidates = root.querySelectorAll('.eco-card, section h1, section h2, .tax-card, .facility-card, tbody tr, .reveal-on-scroll, .reveal-left, .reveal-right, .reveal-scale');
+                const winH = window.innerHeight;
+
+                candidates.forEach((el) => {
+                    const rect = el.getBoundingClientRect();
+                    if (rect.top < winH - 20) {
+                        el.classList.add('is-visible');
+                        return;
+                    }
+
+                    if (!el.classList.contains('reveal-left') && 
+                        !el.classList.contains('reveal-right') && 
+                        !el.classList.contains('reveal-scale') && 
+                        !el.classList.contains('reveal-on-scroll')) {
+                        el.classList.add('reveal-on-scroll');
+                    }
+
+                    if (!el.style.transitionDelay) {
+                        const parent = el.parentElement;
+                        if (parent) {
+                            const siblings = Array.from(parent.children);
+                            const indexInRow = siblings.indexOf(el);
+                            if (indexInRow >= 0) {
+                                el.style.transitionDelay = `${(indexInRow % 4) * 90}ms`;
+                            }
+                        }
+                    }
+
+                    revealObserver.observe(el);
+                });
+            };
+
+            window.observeScrollReveals(document);
+        } else {
+            document.querySelectorAll('.reveal-on-scroll, .reveal-left, .reveal-right, .reveal-scale').forEach(el => {
+                el.classList.add('is-visible');
+            });
+            window.observeScrollReveals = function() {};
+        }
+    });
+</script>
+
+<!-- Floating Back to Top Button -->
+<button id="back-to-top-btn" type="button" aria-label="Back to top" class="fixed bottom-20 md:bottom-8 right-6 z-40 p-3 rounded-2xl bg-white hover:bg-surface-container text-primary border border-border-medium shadow-lg opacity-0 translate-y-4 scale-90 pointer-events-none transition-all duration-300 flex items-center justify-center group focus:outline-none focus:ring-2 focus:ring-primary/40">
+    <span class="material-symbols-outlined text-[22px] group-hover:-translate-y-0.5 transition-transform">arrow_upward</span>
+</button>
+
+
+<!-- Leaflet.js Interactive OpenStreetMap library -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+<script>
+    // State management for user's active geographic position
+    let userCoords = {
+        lat: 47.6062,
+        lon: -122.3321
+    };
+    let userAccuracyMeters = null;
+    let activeCityName = "Seattle, WA";
+    let activeRadiusFilter = "all";
+    let activeStreamFilter = "all";
+    let leafletMapInstance = null;
+    let userLocationMarker = null;
+    let userAccuracyCircle = null;
+    let facilityMarkers = [];
+    let gpsLockedByDevice = false;
+    let ipFallbackTriggered = false;
+    let communityDepots = [];
+    let submitPinMode = false;
+    let pendingPinCoords = null;
+
+    // Facility Templates centered dynamically around coordinates
+    const FACILITY_ARCHETYPES = [
+        {
+            id: 'soft-plastics',
+            name: "CleanFilm Storefront Drop Depot",
+            type: "Soft Plastics",
+            color: "#D97706",
+            badgeClass: "bg-amber-50 text-amber-800 border-amber-200",
+            desc: "Grocery sacks, bubble wrap, stretch film, bread bags, clean pouch wrappers",
+            tags: ["PE Film", "Bubble Wrap", "Bread Bags"],
+            days: [0, 1, 2, 3, 4, 5, 6], // Daily
+            start: 7,
+            end: 21,
+            scheduleText: "Daily: 7:00 AM - 9:00 PM",
+            latOffset: 0.007,
+            lonOffset: 0.009
+        },
+        {
+            id: 'ewaste',
+            name: "Metro E-Waste & Battery Hub",
+            type: "E-Waste",
+            color: "#7C3AED",
+            badgeClass: "bg-violet-50 text-violet-700 border-violet-200",
+            desc: "Lithium-ion batteries, circuit boards, cables, chargers, laptops, phones",
+            tags: ["Batteries", "Laptops", "Wires"],
+            days: [1, 2, 3, 4, 5, 6], // Mon-Sat
+            start: 8,
+            end: 17,
+            scheduleText: "Mon - Sat: 8:00 AM - 5:00 PM",
+            latOffset: -0.011,
+            lonOffset: 0.014
+        },
+        {
+            id: 'organics',
+            name: "Community Organics & Soil Yard",
+            type: "Compost",
+            color: "#0D9488",
+            badgeClass: "bg-teal-50 text-teal-800 border-teal-200",
+            desc: "Raw food scraps, coffee grounds, compostable packaging, plant trimmings",
+            tags: ["Food Scraps", "Coffee", "Soil Trays"],
+            days: [2, 3, 4, 5, 6, 0], // Tue-Sun
+            start: 9,
+            end: 18,
+            scheduleText: "Tue - Sun: 9:00 AM - 6:00 PM",
+            latOffset: 0.018,
+            lonOffset: -0.015
+        },
+        {
+            id: 'hazmat',
+            name: "Regional Transfer Depot & Hazmat",
+            type: "Hazmat",
+            color: "#2563EB",
+            badgeClass: "bg-blue-50 text-blue-700 border-blue-200",
+            desc: "Scrap metals, paint, motor oil, appliances, fluorescent tubes, bulk materials",
+            tags: ["Scrap Metal", "Paint", "Appliances"],
+            days: [1, 2, 3, 4, 5], // Mon-Fri
+            start: 8,
+            end: 16,
+            scheduleText: "Mon - Fri: 8:00 AM - 4:30 PM",
+            latOffset: -0.026,
+            lonOffset: -0.022
+        },
+        {
+            id: 'glass',
+            name: "Glass & Aluminum Redemption Center",
+            type: "Multi-Stream",
+            color: "#0284C7",
+            badgeClass: "bg-sky-50 text-sky-800 border-sky-200",
+            desc: "Beverage cans, clean foil containers, wine bottles, glass food jars",
+            tags: ["Cans", "Glass Jars", "Foil Trays"],
+            days: [1, 2, 3, 4, 5, 6, 0],
+            start: 8,
+            end: 19,
+            scheduleText: "Daily: 8:00 AM - 7:00 PM",
+            latOffset: 0.012,
+            lonOffset: -0.008
+        },
+        {
+            id: 'textiles',
+            name: "Circular Textile & Apparel Drop Chute",
+            type: "Textiles",
+            color: "#475569",
+            badgeClass: "bg-slate-100 text-slate-800 border-slate-300",
+            desc: "Worn clothing, shoes, bed sheets, towels, fabric scrap recovery",
+            tags: ["Apparel", "Towels", "Footwear"],
+            days: [0, 1, 2, 3, 4, 5, 6],
+            start: 0,
+            end: 24,
+            scheduleText: "24/7 Drop Chute Always Open",
+            latOffset: -0.005,
+            lonOffset: -0.006
+        }
+    ];
+
+    // Math: Haversine distance in statute miles
+    function calculateDistanceMiles(lat1, lon1, lat2, lon2) {
+        const R = 3958.8; // Earth's radius in miles
+        const dLat = (lat2 - lat1) * Math.PI / 180;
+        const dLon = (lon2 - lon1) * Math.PI / 180;
+        const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                  Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                  Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return R * c;
+    }
+
+    // UI Elements
+    const facilityGrid = document.getElementById('facility-grid');
+    const depotCount = document.getElementById('depot-count');
+    const mapLabel = document.getElementById('map-label');
+    const coordDisplay = document.getElementById('coord-display');
+    const bannerCityTitle = document.getElementById('banner-city-title');
+    const bannerCitySub = document.getElementById('banner-city-sub');
+    const locationInput = document.getElementById('location-input');
+    const searchBtn = document.getElementById('search-btn');
+    const detectBtn = document.getElementById('detect-loc-btn');
+    const forceGpsBtn = document.getElementById('force-gps-btn');
+    const promptGpsAction = document.getElementById('prompt-gps-action');
+    const gpsStatusDot = document.getElementById('gps-status-dot');
+    const gpsStatusText = document.getElementById('gps-status-text');
+    const mapLoader = document.getElementById('map-loader');
+    const cityPresets = document.getElementById('city-presets');
+    const filterContainer = document.getElementById('filter-container');
+    const radiusContainer = document.getElementById('radius-container');
+
+    // Spotlight elements
+    const spotlightCard = document.getElementById('nearest-spotlight-card');
+    const spotlightName = document.getElementById('spotlight-name');
+    const spotlightDesc = document.getElementById('spotlight-desc');
+    const spotlightDistance = document.getElementById('spotlight-distance');
+    const spotlightTime = document.getElementById('spotlight-time');
+    const spotlightNavBtn = document.getElementById('spotlight-nav-btn');
+    const spotlightOpenBadge = document.getElementById('spotlight-open-badge');
+
+    // Community Depot Submission Elements
+    const toggleSubmitPinBtn = document.getElementById('toggle-submit-pin-btn');
+    const submitPinBtnText = document.getElementById('submit-pin-btn-text');
+    const submitDepotModal = document.getElementById('submit-depot-modal');
+    const closeDepotModalBtn = document.getElementById('close-depot-modal-btn');
+    const cancelDepotModalBtn = document.getElementById('cancel-depot-modal-btn');
+    const submitDepotForm = document.getElementById('submit-depot-form');
+    const depotNameInput = document.getElementById('depot-name-input');
+    const depotStreamSelect = document.getElementById('depot-stream-select');
+    const depotDescInput = document.getElementById('depot-desc-input');
+    const depotCoordsDisplay = document.getElementById('depot-coords-display');
+    const depotFormError = document.getElementById('depot-form-error');
+    const saveDepotBtn = document.getElementById('save-depot-btn');
+
+    // Compute live facilities with exact GPS distances (municipal archetypes + crowdsourced community pins)
+    function computeFacilities() {
+        const now = new Date();
+        const currentDay = now.getDay();
+        const currentHour = now.getHours();
+
+        const baseFacilities = FACILITY_ARCHETYPES.map(arch => {
+            const facLat = userCoords.lat + arch.latOffset;
+            const facLon = userCoords.lon + arch.lonOffset;
+            const dist = calculateDistanceMiles(userCoords.lat, userCoords.lon, facLat, facLon);
+            
+            const isOpenDay = arch.days.includes(currentDay);
+            const isOpenHour = arch.start === 0 && arch.end === 24 ? true : (currentHour >= arch.start && currentHour < arch.end);
+            const isOpen = isOpenDay && isOpenHour;
+
+            const driveMinutes = Math.max(2, Math.round(dist * 2.8));
+
+            // Generate full Google Maps GPS routing URL with user's origin
+            const directionsUrl = `https://www.google.com/maps/dir/?api=1&origin=${userCoords.lat.toFixed(5)},${userCoords.lon.toFixed(5)}&destination=${facLat.toFixed(5)},${facLon.toFixed(5)}`;
+
+            return {
+                ...arch,
+                lat: facLat,
+                lon: facLon,
+                distance: dist,
+                isOpen: isOpen,
+                driveMinutes: driveMinutes,
+                directionsUrl: directionsUrl,
+                isCommunity: false
+            };
+        });
+
+        const communityList = communityDepots.map(depot => {
+            const dist = calculateDistanceMiles(userCoords.lat, userCoords.lon, depot.lat, depot.lon);
+            const driveMinutes = Math.max(2, Math.round(dist * 2.8));
+            const directionsUrl = `https://www.google.com/maps/dir/?api=1&origin=${userCoords.lat.toFixed(5)},${userCoords.lon.toFixed(5)}&destination=${depot.lat.toFixed(5)},${depot.lon.toFixed(5)}`;
+
+            let color = "#0D9488";
+            let badgeClass = "bg-teal-50 text-teal-800 border-teal-200";
+            if (depot.stream_type === "Soft Plastics") { color = "#D97706"; badgeClass = "bg-amber-50 text-amber-800 border-amber-200"; }
+            else if (depot.stream_type === "E-Waste") { color = "#7C3AED"; badgeClass = "bg-violet-50 text-violet-700 border-violet-200"; }
+            else if (depot.stream_type === "Compost") { color = "#0D9488"; badgeClass = "bg-teal-50 text-teal-800 border-teal-200"; }
+            else if (depot.stream_type === "Hazmat") { color = "#EF4444"; badgeClass = "bg-rose-50 text-rose-700 border-rose-200"; }
+            else if (depot.stream_type === "Textiles") { color = "#475569"; badgeClass = "bg-slate-100 text-slate-800 border-slate-300"; }
+            else if (depot.stream_type === "Glass") { color = "#0284C7"; badgeClass = "bg-sky-50 text-sky-800 border-sky-200"; }
+
+            return {
+                id: 'community-' + depot.id,
+                depotId: depot.id,
+                name: depot.name,
+                type: depot.stream_type,
+                color: color,
+                badgeClass: badgeClass,
+                desc: depot.description,
+                tags: [depot.stream_type, "Community Pin"],
+                days: [0, 1, 2, 3, 4, 5, 6],
+                start: 0,
+                end: 24,
+                scheduleText: `Submitted by ${depot.submitted_by || 'Eco Citizen'}`,
+                lat: depot.lat,
+                lon: depot.lon,
+                distance: dist,
+                isOpen: true,
+                driveMinutes: driveMinutes,
+                directionsUrl: directionsUrl,
+                isCommunity: true,
+                upvotes: depot.upvotes || 1
+            };
+        });
+
+        return [...baseFacilities, ...communityList].sort((a, b) => a.distance - b.distance);
+    }
+
+    // Render Cards in Grid
+    function renderFacilityCards() {
+        const facilities = computeFacilities();
+        facilityGrid.innerHTML = '';
+
+        let visibleCount = 0;
+        let nearestVisible = null;
+
+        facilities.forEach((fac, idx) => {
+            const matchesStream = (activeStreamFilter === 'all' || fac.type === activeStreamFilter);
+            let matchesRadius = true;
+            if (activeRadiusFilter !== 'all') {
+                const maxRad = parseFloat(activeRadiusFilter);
+                matchesRadius = fac.distance <= maxRad;
+            }
+            const openNowToggle = document.getElementById('open-now-toggle');
+            const matchesOpen = !openNowToggle || !openNowToggle.checked || fac.isOpen;
+
+            if (matchesStream && matchesRadius && matchesOpen) {
+                visibleCount++;
+                if (!nearestVisible) nearestVisible = fac;
+
+                const card = document.createElement('div');
+                card.className = "facility-card eco-card p-5 space-y-3 transition hover:border-primary cursor-pointer group reveal-on-scroll";
+                card.style.transitionDelay = `${(visibleCount % 4) * 80}ms`;
+                card.dataset.id = fac.id;
+                card.dataset.lat = fac.lat;
+                card.dataset.lon = fac.lon;
+
+                const statusBadge = fac.isCommunity
+                    ? `<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-50 text-amber-800 border border-amber-200 flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span><span>Community Pin</span></span>`
+                    : (fac.isOpen
+                        ? `<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-teal-50 text-teal-700 border border-teal-200 flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-teal-600"></span><span>Open Now</span></span>`
+                        : `<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200 flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span><span>Closed</span></span>`);
+
+                card.innerHTML = `
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <div class="flex items-center gap-1.5">
+                                <span class="text-xs font-mono font-bold text-primary">#${idx + 1}</span>
+                                <h4 class="text-sm font-bold text-text-primary group-hover:text-primary transition">${fac.name}</h4>
+                            </div>
+                            <p class="text-xs text-text-secondary mt-0.5">${fac.desc}</p>
+                        </div>
+                        <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full border ${fac.badgeClass}">${fac.type}</span>
+                    </div>
+
+                    <div class="text-xs text-text-muted space-y-1.5">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-1.5">
+                                <span class="material-symbols-outlined text-[16px] text-text-muted">schedule</span>
+                                <span>${fac.scheduleText}</span>
+                            </div>
+                            ${statusBadge}
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-1.5">
+                                <span class="material-symbols-outlined text-[16px] text-primary">near_me</span>
+                                <span class="font-bold text-text-primary font-mono">${fac.distance.toFixed(1)} miles away</span>
+                                <span class="text-[11px] text-text-muted">(~${fac.driveMinutes} min drive)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-3 border-t border-border-subtle flex items-center justify-between">
+                        <div class="flex flex-wrap items-center gap-1.5">
+                            ${fac.tags.map(t => `<span class="text-[10px] font-medium px-2 py-0.5 rounded bg-surface-container text-text-secondary">${t}</span>`).join('')}
+                            ${fac.isCommunity ? `
+                                <button type="button" class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-teal-50 hover:bg-teal-100 text-teal-800 text-[11px] font-bold border border-teal-200 transition" onclick="upvoteCommunityDepot(${fac.depotId}, event)">
+                                    <span class="material-symbols-outlined text-[13px]">thumb_up</span>
+                                    <span id="upvotes-count-${fac.depotId}">${fac.upvotes}</span>
+                                </button>
+                            ` : ''}
+                        </div>
+                        <a href="${fac.directionsUrl}" target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-primary hover:underline flex items-center gap-1" onclick="event.stopPropagation();">
+                            <span>GPS Route</span>
+                            <span class="material-symbols-outlined text-[14px]">open_in_new</span>
+                        </a>
+                    </div>
+                `;
+
+                // Clicking the card zooms and centers the interactive map
+                card.addEventListener('click', () => {
+                    if (leafletMapInstance) {
+                        leafletMapInstance.setView([fac.lat, fac.lon], 15, { animate: true });
+                        const targetMarker = facilityMarkers.find(m => m.facilityId === fac.id);
+                        if (targetMarker) {
+                            targetMarker.openPopup();
+                            const iconEl = targetMarker.getElement ? targetMarker.getElement() : targetMarker._icon;
+                            if (iconEl && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                                iconEl.classList.remove('marker-bounce');
+                                void iconEl.offsetWidth;
+                                iconEl.classList.add('marker-bounce');
+                                setTimeout(() => iconEl.classList.remove('marker-bounce'), 600);
+                            }
+                        }
+                    }
+                });
+
+                facilityGrid.appendChild(card);
+            }
+        });
+
+        if (window.observeScrollReveals) {
+            window.observeScrollReveals(facilityGrid);
+        }
+
+        depotCount.textContent = `Showing ${visibleCount} of ${facilities.length} Facilities`;
+
+        // Update Nearest Spotlight Card
+        if (nearestVisible) {
+            spotlightCard.classList.remove('hidden');
+            spotlightName.textContent = nearestVisible.name;
+            spotlightDesc.textContent = nearestVisible.desc;
+            spotlightDistance.textContent = `${nearestVisible.distance.toFixed(1)} mi`;
+            spotlightTime.textContent = `~${nearestVisible.driveMinutes} min drive from GPS`;
+            spotlightNavBtn.href = nearestVisible.directionsUrl;
+
+            if (nearestVisible.isOpen) {
+                spotlightOpenBadge.className = "text-[10px] font-bold px-2 py-0.5 rounded-full bg-teal-50 text-teal-700 border border-teal-200";
+                spotlightOpenBadge.textContent = "Open Now";
+            } else {
+                spotlightOpenBadge.className = "text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200";
+                spotlightOpenBadge.textContent = "Closed Now";
+            }
+        } else {
+            spotlightCard.classList.add('hidden');
+        }
+
+        // Update markers on Leaflet map
+        updateMapMarkers(facilities);
+    }
+
+    // Initialize or update Leaflet Map
+    function initOrUpdateMap() {
+        coordDisplay.textContent = `${userCoords.lat.toFixed(4)}, ${userCoords.lon.toFixed(4)}`;
+        mapLabel.textContent = `Region: ${activeCityName}`;
+
+        if (typeof L === 'undefined') {
+            // Fallback to embedded OpenStreetMap iframe
+            const delta = 0.04;
+            const bbox = `${(userCoords.lon - delta).toFixed(4)}%2C${(userCoords.lat - delta).toFixed(4)}%2C${(userCoords.lon + delta).toFixed(4)}%2C${(userCoords.lat + delta).toFixed(4)}`;
+            const dynamicMap = document.getElementById('dynamic-map');
+            const leafletDiv = document.getElementById('leaflet-map');
+            leafletDiv.classList.add('hidden');
+            dynamicMap.classList.remove('hidden');
+            dynamicMap.src = `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${userCoords.lat.toFixed(5)}%2C${userCoords.lon.toFixed(5)}`;
+            renderFacilityCards();
+            return;
+        }
+
+        const mapContainer = document.getElementById('leaflet-map');
+        mapContainer.classList.remove('hidden');
+
+        if (!leafletMapInstance) {
+            leafletMapInstance = L.map('leaflet-map', {
+                center: [userCoords.lat, userCoords.lon],
+                zoom: 14,
+                zoomControl: true,
+                tap: true
+            });
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors',
+                maxZoom: 19
+            }).addTo(leafletMapInstance);
+
+            // Allow clicking anywhere on the map to set a new custom GPS reference location or drop a community pin
+            leafletMapInstance.on('click', (e) => {
+                if (submitPinMode) {
+                    openDepotModal(e.latlng.lat, e.latlng.lng);
+                } else {
+                    setUserCoordinates(e.latlng.lat, e.latlng.lng, "Pinned Location");
+                }
+            });
+
+            window.addEventListener('resize', () => {
+                if (leafletMapInstance) leafletMapInstance.invalidateSize();
+            });
+        } else {
+            // Instantly sync center to user coordinates
+            leafletMapInstance.setView([userCoords.lat, userCoords.lon], 14, { animate: false });
+        }
+
+        setTimeout(() => {
+            if (leafletMapInstance) leafletMapInstance.invalidateSize();
+        }, 120);
+
+        renderFacilityCards();
+    }
+
+    function updateMapMarkers(facilities) {
+        if (!leafletMapInstance) return;
+
+        // Clear existing facility markers
+        facilityMarkers.forEach(m => leafletMapInstance.removeLayer(m));
+        facilityMarkers = [];
+
+        // Update or create User GPS Marker
+        if (userLocationMarker) {
+            userLocationMarker.setLatLng([userCoords.lat, userCoords.lon]);
+        } else {
+            const userIcon = L.divIcon({
+                className: 'custom-user-icon',
+                html: '<div class="user-gps-dot"></div>',
+                iconSize: [22, 22],
+                iconAnchor: [11, 11]
+            });
+
+            userLocationMarker = L.marker([userCoords.lat, userCoords.lon], { icon: userIcon, zIndexOffset: 1000 })
+                .addTo(leafletMapInstance);
+        }
+
+        userLocationMarker.bindPopup(`<div class="text-xs font-bold text-text-primary">📍 Your Location<br><span class="text-text-muted font-normal">${activeCityName}</span></div>`);
+
+        // Update or create User Accuracy Circle
+        if (userAccuracyMeters) {
+            if (userAccuracyCircle) {
+                userAccuracyCircle.setLatLng([userCoords.lat, userCoords.lon]);
+                userAccuracyCircle.setRadius(Math.max(userAccuracyMeters, 80));
+            } else {
+                userAccuracyCircle = L.circle([userCoords.lat, userCoords.lon], {
+                    radius: Math.max(userAccuracyMeters, 80),
+                    color: '#2563EB',
+                    fillColor: '#3B82F6',
+                    fillOpacity: 0.12,
+                    weight: 1.5
+                }).addTo(leafletMapInstance);
+            }
+        }
+
+        // Add pins for each facility
+        facilities.forEach(fac => {
+            const matchesStream = (activeStreamFilter === 'all' || fac.type === activeStreamFilter);
+            let matchesRadius = true;
+            if (activeRadiusFilter !== 'all') {
+                matchesRadius = fac.distance <= parseFloat(activeRadiusFilter);
+            }
+            const openNowToggle = document.getElementById('open-now-toggle');
+            const matchesOpen = !openNowToggle || !openNowToggle.checked || fac.isOpen;
+            if (!matchesStream || !matchesRadius || !matchesOpen) return;
+
+            let iconLetter = "♻";
+            if (fac.isCommunity) iconLetter = "📍";
+            else if (fac.type === "Soft Plastics") iconLetter = "🛍";
+            else if (fac.type === "E-Waste") iconLetter = "🔋";
+            else if (fac.type === "Compost") iconLetter = "🌱";
+            else if (fac.type === "Hazmat") iconLetter = "⚠️";
+            else if (fac.type === "Textiles") iconLetter = "👕";
+
+            const depotIcon = L.divIcon({
+                className: 'custom-depot-icon',
+                html: `<div class="depot-marker-pin" style="background-color: ${fac.color};">${iconLetter}</div>`,
+                iconSize: [34, 34],
+                iconAnchor: [17, 17],
+                popupAnchor: [0, -18]
+            });
+
+            const popupBadge = fac.isCommunity
+                ? `<span class="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-200">Community Pin</span>`
+                : `<span class="text-[10px] font-bold px-2 py-0.5 rounded ${fac.isOpen ? 'bg-teal-50 text-teal-800' : 'bg-slate-100 text-slate-700'}">${fac.isOpen ? 'Open Now' : 'Closed'}</span>`;
+
+            const upvoteHtml = fac.isCommunity
+                ? `<button type="button" onclick="upvoteCommunityDepot(${fac.depotId}, event)" class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-teal-50 hover:bg-teal-100 text-teal-800 text-[11px] font-bold border border-teal-200">
+                    👍 <span id="popup-upvotes-${fac.depotId}">${fac.upvotes}</span>
+                   </button>`
+                : '';
+
+            const marker = L.marker([fac.lat, fac.lon], { icon: depotIcon })
+                .addTo(leafletMapInstance)
+                .bindPopup(`
+                    <div class="space-y-1.5 text-xs">
+                        <div class="flex items-center justify-between gap-2">
+                            <strong class="text-text-primary font-bold">${fac.name}</strong>
+                            ${popupBadge}
+                        </div>
+                        <p class="text-text-muted text-[11px]">${fac.desc}</p>
+                        <div class="flex items-center justify-between pt-1 font-mono text-primary font-bold">
+                            <span>${fac.distance.toFixed(1)} miles away</span>
+                            <div class="flex items-center gap-2">
+                                ${upvoteHtml}
+                                <a href="${fac.directionsUrl}" target="_blank" class="text-primary hover:underline font-sans text-xs font-bold">Directions &rarr;</a>
+                            </div>
+                        </div>
+                    </div>
+                `);
+
+            marker.facilityId = fac.id;
+            facilityMarkers.push(marker);
+        });
+    }
+
+    // Set coordinates immediately, sync map, and reverse geocode asynchronously
+    function setUserCoordinates(lat, lon, knownCityName = null, accuracy = null) {
+        userCoords.lat = lat;
+        userCoords.lon = lon;
+        if (accuracy) userAccuracyMeters = accuracy;
+
+        coordDisplay.textContent = `${lat.toFixed(4)}, ${lon.toFixed(4)}`;
+
+        if (knownCityName) {
+            activeCityName = knownCityName;
+            bannerCityTitle.textContent = `Regional Grid: ${activeCityName}`;
+            bannerCitySub.textContent = `Displaying facilities calculated by real geographic distance from your position (${lat.toFixed(3)}, ${lon.toFixed(3)}).`;
+            fetchBylaws(activeCityName);
+        }
+
+        // IMMEDIATELY sync map view, markers, and cards without waiting for any API!
+        initOrUpdateMap();
+
+        // In the background, refine city/neighborhood name if not provided
+        if (!knownCityName) {
+            fetchCityNameAsync(lat, lon);
+        }
+    }
+
+    async function fetchBylaws(cityName) {
+        const heading = document.getElementById('bylaw-city-heading');
+        const authorityTag = document.getElementById('bylaw-authority-tag');
+        const recycleTitle = document.getElementById('bylaw-recycle-title');
+        const recycleDesc = document.getElementById('bylaw-recycle-desc');
+        const scheduleList = document.getElementById('bylaw-schedule-list');
+        const calBtn = document.getElementById('calendar-download-btn');
+        const badgePP5 = document.getElementById('badge-pp5');
+        const badgePS6 = document.getElementById('badge-ps6');
+        const badgeCups = document.getElementById('badge-cups');
+        const badgeCompost = document.getElementById('badge-compost');
+
+        if (heading) heading.textContent = `Curbside Rules: ${cityName}`;
+        if (calBtn) calBtn.href = `/api/calendar.ics?city=${encodeURIComponent(cityName)}`;
+
+        try {
+            const resp = await fetch(`/api/bylaws?city=${encodeURIComponent(cityName)}`);
+            const bylaws = await resp.json();
+
+            if (bylaws) {
+                if (heading) heading.textContent = `Curbside Rules: ${bylaws.city_name}`;
+                if (authorityTag) authorityTag.textContent = bylaws.tagline || 'Regional Municipal Protocol';
+                if (recycleTitle && bylaws.bin_terminology) {
+                    recycleTitle.textContent = `${bylaws.bin_terminology.recycle || 'Curbside Recycling'}:`;
+                }
+                if (recycleDesc && bylaws.bin_terminology) {
+                    recycleDesc.textContent = `Curbside stream: ${bylaws.bin_terminology.recycle}. Organics: ${bylaws.bin_terminology.compost || 'Compost'}. Residual: ${bylaws.bin_terminology.trash || 'Landfill'}.`;
+                }
+
+                if (badgePP5) {
+                    badgePP5.textContent = bylaws.accepts_pp_5 ? '✓' : '✕';
+                    badgePP5.className = bylaws.accepts_pp_5 ? 'w-4 h-4 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-[10px]' : 'w-4 h-4 rounded-full bg-rose-100 text-rose-800 flex items-center justify-center font-bold text-[10px]';
+                }
+                if (badgePS6) {
+                    badgePS6.textContent = bylaws.accepts_ps_6 ? '✓' : '✕';
+                    badgePS6.className = bylaws.accepts_ps_6 ? 'w-4 h-4 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-[10px]' : 'w-4 h-4 rounded-full bg-rose-100 text-rose-800 flex items-center justify-center font-bold text-[10px]';
+                }
+                if (badgeCups) {
+                    badgeCups.textContent = bylaws.accepts_coffee_cups ? '✓' : '✕';
+                    badgeCups.className = bylaws.accepts_coffee_cups ? 'w-4 h-4 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-[10px]' : 'w-4 h-4 rounded-full bg-rose-100 text-rose-800 flex items-center justify-center font-bold text-[10px]';
+                }
+                if (badgeCompost) {
+                    badgeCompost.textContent = bylaws.compost_mandatory ? '✓' : '—';
+                    badgeCompost.className = bylaws.compost_mandatory ? 'w-4 h-4 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-[10px]' : 'w-4 h-4 rounded-full bg-slate-100 text-slate-700 flex items-center justify-center font-bold text-[10px]';
+                }
+
+                if (scheduleList) {
+                    scheduleList.innerHTML = '';
+                    (bylaws.collection_schedule || []).forEach(ev => {
+                        const row = document.createElement('div');
+                        row.className = "flex justify-between items-center";
+                        row.innerHTML = `<strong>${ev.day}:</strong> <span>${ev.stream} (${ev.frequency})</span>`;
+                        scheduleList.appendChild(row);
+                    });
+                }
+
+                if (calBtn) calBtn.href = `/api/calendar.ics?city=${encodeURIComponent(bylaws.city_name)}`;
+            }
+        } catch (e) {
+            console.warn("Bylaw fetch notice:", e);
+        }
+    }
+
+    async function fetchCityNameAsync(lat, lon) {
+        try {
+            const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=14`;
+            const res = await fetch(url);
+            const data = await res.json();
+
+            if (data && data.address) {
+                const addr = data.address;
+                const city = addr.city || addr.town || addr.village || addr.suburb || addr.county || "Local Area";
+                const state = addr.state || addr.country || "";
+                activeCityName = `${city}${state ? ', ' + state : ''}`;
+                bannerCityTitle.textContent = `Regional Grid: ${activeCityName}`;
+                bannerCitySub.textContent = `Displaying facilities calculated by real geographic distance from your position (${lat.toFixed(3)}, ${lon.toFixed(3)}).`;
+                mapLabel.textContent = `Region: ${activeCityName}`;
+                if (userLocationMarker) {
+                    userLocationMarker.bindPopup(`<div class="text-xs font-bold text-text-primary">📍 Your Location<br><span class="text-text-muted font-normal">${activeCityName}</span></div>`);
+                }
+                fetchBylaws(activeCityName);
+            }
+        } catch (err) {
+            console.warn("Async reverse geocode fallback:", err);
+        }
+    }
+
+    // IP Geolocation Fallback
+    async function fallbackIpLocation() {
+        if (gpsLockedByDevice || ipFallbackTriggered) return;
+        ipFallbackTriggered = true;
+
+        try {
+            const res = await fetch('https://ipwho.is/');
+            const data = await res.json();
+            if (data && data.success && data.latitude && data.longitude && !gpsLockedByDevice) {
+                const cityName = `${data.city}, ${data.region_code || data.country}`;
+                gpsStatusDot.className = "w-2.5 h-2.5 rounded-full bg-blue-500";
+                gpsStatusText.textContent = `IP Grid: ${data.city}`;
+                setUserCoordinates(data.latitude, data.longitude, cityName);
+            }
+        } catch (e) {
+            console.warn("IP geolocation fallback error:", e);
+        }
+    }
+
+    // Request device GPS with high accuracy
+    function requestDeviceLocation(isAutomatic = false) {
+        if (!("geolocation" in navigator)) {
+            if (!isAutomatic) alert("Geolocation is not supported by your browser.");
+            gpsStatusDot.className = "w-2.5 h-2.5 rounded-full bg-slate-400";
+            gpsStatusText.textContent = "GPS Unavailable";
+            fallbackIpLocation();
+            return;
+        }
+
+        gpsStatusDot.className = "w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse";
+        gpsStatusText.textContent = "Acquiring GPS Fix…";
+        detectBtn.innerHTML = '<span class="material-symbols-outlined text-[16px] animate-spin">refresh</span><span>Locating…</span>';
+
+        navigator.geolocation.getCurrentPosition(
+            (pos) => {
+                gpsLockedByDevice = true;
+                const lat = pos.coords.latitude;
+                const lon = pos.coords.longitude;
+                const accuracy = pos.coords.accuracy ? Math.round(pos.coords.accuracy) : null;
+
+                gpsStatusDot.className = "w-2.5 h-2.5 rounded-full bg-teal-500";
+                gpsStatusText.textContent = accuracy ? `GPS Active (±${accuracy}m)` : `GPS Active`;
+                detectBtn.innerHTML = '<span class="material-symbols-outlined text-[16px]">check</span><span>GPS Locked</span>';
+
+                // Instantly sync the map to exact GPS!
+                setUserCoordinates(lat, lon, null, accuracy);
+            },
+            (err) => {
+                console.warn("GPS error code:", err.code, err.message);
+                detectBtn.innerHTML = '<span class="material-symbols-outlined text-[16px]">my_location</span><span>GPS</span>';
+
+                if (!isAutomatic) {
+                    alert("Unable to access GPS directly. Attempting network IP location…");
+                }
+                fallbackIpLocation();
+            },
+            {
+                enableHighAccuracy: true,
+                timeout: 8000,
+                maximumAge: 0
+            }
+        );
+    }
+
+    // Event Listeners
+    if (detectBtn) detectBtn.addEventListener('click', () => requestDeviceLocation(false));
+    if (forceGpsBtn) forceGpsBtn.addEventListener('click', () => requestDeviceLocation(false));
+    if (promptGpsAction) promptGpsAction.addEventListener('click', () => requestDeviceLocation(false));
+
+    // Preset city pill click handler
+    if (cityPresets) {
+        cityPresets.addEventListener('click', (e) => {
+            const btn = e.target.closest('.city-pill');
+            if (!btn) return;
+            const city = btn.dataset.city;
+            const lat = parseFloat(btn.dataset.lat);
+            const lon = parseFloat(btn.dataset.lon);
+            if (locationInput) locationInput.value = city;
+
+            gpsStatusDot.className = "w-2.5 h-2.5 rounded-full bg-blue-500";
+            gpsStatusText.textContent = `Preset: ${city}`;
+            setUserCoordinates(lat, lon, city);
+        });
+    }
+
+    // Forward Search Geocoding via Nominatim
+    async function searchLocation(query) {
+        if (!query.trim()) return;
+        if (mapLoader) mapLoader.classList.remove('hidden');
+
+        try {
+            const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=1`;
+            const res = await fetch(url);
+            const data = await res.json();
+
+            if (data && data.length > 0) {
+                const item = data[0];
+                const lat = parseFloat(item.lat);
+                const lon = parseFloat(item.lon);
+                const shortName = item.display_name.split(',').slice(0, 2).join(',');
+                gpsStatusDot.className = "w-2.5 h-2.5 rounded-full bg-blue-500";
+                gpsStatusText.textContent = `Region: ${shortName}`;
+                setUserCoordinates(lat, lon, shortName);
+            } else {
+                alert(`No geographic results found for "${query}". Try adding state or country (e.g. Austin, TX).`);
+            }
+        } catch (err) {
+            console.warn("Geocoding search error:", err);
+            alert("Regional search connection failed. Please check network connectivity.");
+        } finally {
+            if (mapLoader) mapLoader.classList.add('hidden');
+        }
+    }
+
+    if (searchBtn && locationInput) {
+        searchBtn.addEventListener('click', () => searchLocation(locationInput.value));
+        locationInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                searchLocation(locationInput.value);
+            }
+        });
+    }
+
+    // Stream Filter Pills
+    if (filterContainer) {
+        filterContainer.addEventListener('click', (e) => {
+            const btn = e.target.closest('.filter-pill');
+            if (!btn) return;
+
+            filterContainer.querySelectorAll('.filter-pill').forEach(b => {
+                b.className = "filter-pill px-3.5 py-1.5 rounded-full text-xs font-semibold bg-surface text-text-secondary border border-border-subtle hover:border-primary transition";
+            });
+            btn.className = "filter-pill px-3.5 py-1.5 rounded-full text-xs font-bold bg-primary text-white transition";
+
+            activeStreamFilter = btn.dataset.filter;
+            renderFacilityCards();
+        });
+    }
+
+    // Radius Filter Pills
+    if (radiusContainer) {
+        radiusContainer.addEventListener('click', (e) => {
+            const btn = e.target.closest('.radius-pill');
+            if (!btn) return;
+
+            radiusContainer.querySelectorAll('.radius-pill').forEach(b => {
+                b.className = "radius-pill px-3 py-1.5 rounded-full text-xs font-semibold bg-surface text-text-secondary border border-border-subtle hover:border-primary transition";
+            });
+            btn.className = "radius-pill px-3 py-1.5 rounded-full text-xs font-bold bg-primary text-white transition";
+
+            activeRadiusFilter = btn.dataset.radius;
+            renderFacilityCards();
+        });
+    }
+
+    // Handle Window Resizing for Leaflet Tile Bounds
+    window.addEventListener('resize', () => {
+        if (leafletMapInstance) leafletMapInstance.invalidateSize();
+    });
+
+    // Community Pin Submission & Upvote Controls
+    function setSubmitPinMode(active) {
+        submitPinMode = active;
+        const mapContainer = document.getElementById('leaflet-map');
+        if (!toggleSubmitPinBtn) return;
+        if (submitPinMode) {
+            toggleSubmitPinBtn.classList.remove('bg-solar', 'text-white');
+            toggleSubmitPinBtn.classList.add('bg-primary', 'text-white', 'ring-4', 'ring-primary/20');
+            if (submitPinBtnText) submitPinBtnText.textContent = "Click Map to Drop Pin (Cancel)";
+            if (mapContainer) mapContainer.style.cursor = 'crosshair';
+        } else {
+            toggleSubmitPinBtn.classList.remove('bg-primary', 'text-white', 'ring-4', 'ring-primary/20');
+            toggleSubmitPinBtn.classList.add('bg-solar', 'text-white');
+            if (submitPinBtnText) submitPinBtnText.textContent = "Submit Local Drop Bin (+20 Pts)";
+            if (mapContainer) mapContainer.style.cursor = '';
+        }
+    }
+
+    if (toggleSubmitPinBtn) {
+        toggleSubmitPinBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            setSubmitPinMode(!submitPinMode);
+        });
+    }
+
+    function openDepotModal(lat, lon) {
+        pendingPinCoords = { lat: lat, lon: lon };
+        if (depotCoordsDisplay) depotCoordsDisplay.textContent = `Lat: ${lat.toFixed(5)}, Lon: ${lon.toFixed(5)}`;
+        if (depotFormError) {
+            depotFormError.classList.add('hidden');
+            depotFormError.textContent = '';
+        }
+        if (submitDepotModal) submitDepotModal.classList.remove('hidden');
+    }
+
+    function closeDepotModal() {
+        if (submitDepotModal) submitDepotModal.classList.add('hidden');
+        if (submitDepotForm) submitDepotForm.reset();
+        setSubmitPinMode(false);
+    }
+
+    if (closeDepotModalBtn) closeDepotModalBtn.addEventListener('click', closeDepotModal);
+    if (cancelDepotModalBtn) cancelDepotModalBtn.addEventListener('click', closeDepotModal);
+
+    if (submitDepotForm) {
+        submitDepotForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!pendingPinCoords) return;
+
+            saveDepotBtn.disabled = true;
+            saveDepotBtn.innerHTML = '<span class="material-symbols-outlined text-[16px] animate-spin">refresh</span><span>Saving…</span>';
+
+            try {
+                const payload = {
+                    name: depotNameInput.value.trim(),
+                    stream_type: depotStreamSelect.value,
+                    description: depotDescInput.value.trim(),
+                    lat: pendingPinCoords.lat,
+                    lon: pendingPinCoords.lon
+                };
+
+                const res = await fetch('/api/depots', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+
+                if (!res.ok || data.error) {
+                    depotFormError.textContent = data.error || "Failed to submit depot. Please try again.";
+                    depotFormError.classList.remove('hidden');
+                    return;
+                }
+
+                if (data.depot) {
+                    communityDepots.push(data.depot);
+                    renderFacilityCards();
+                    if (leafletMapInstance) {
+                        leafletMapInstance.setView([data.depot.lat, data.depot.lon], 15, { animate: true });
+                    }
+                }
+
+                closeDepotModal();
+                alert(`🎉 Community Drop-Off Verified! You earned +${data.points_earned || 20} Eco-Points for crowd-mapping local recycling resources.`);
+            } catch (err) {
+                console.error("Depot submission error:", err);
+                depotFormError.textContent = "Network error. Please try again.";
+                depotFormError.classList.remove('hidden');
+            } finally {
+                saveDepotBtn.disabled = false;
+                saveDepotBtn.innerHTML = '<span class="material-symbols-outlined text-[16px]">verified</span><span>Submit & Earn +20 Pts</span>';
+            }
+        });
+    }
+
+    window.upvoteCommunityDepot = async function(depotId, event) {
+        if (event) event.stopPropagation();
+        try {
+            const res = await fetch(`/api/depots/${depotId}/upvote`, { method: 'POST' });
+            const data = await res.json();
+            if (data.success) {
+                const target = communityDepots.find(d => d.id === depotId);
+                if (target) target.upvotes = data.upvotes;
+                
+                const cardUpvotes = document.getElementById(`upvotes-count-${depotId}`);
+                if (cardUpvotes) cardUpvotes.textContent = data.upvotes;
+                const popupUpvotes = document.getElementById(`popup-upvotes-${depotId}`);
+                if (popupUpvotes) popupUpvotes.textContent = data.upvotes;
+            }
+        } catch (err) {
+            console.error("Upvote failed:", err);
+        }
+    };
+
+    async function loadCommunityDepots() {
+        try {
+            const res = await fetch('/api/depots');
+            if (res.ok) {
+                const data = await res.json();
+                if (Array.isArray(data)) {
+                    communityDepots = data;
+                    renderFacilityCards();
+                }
+            }
+        } catch (err) {
+            console.warn("Could not load community depots:", err);
+        }
+    }
+
+    // Recenter Map on User GPS Handler
+    function recenterMapOnUser() {
+        if (leafletMapInstance && userCoords) {
+            leafletMapInstance.setView([userCoords.lat, userCoords.lon], 15, { animate: true });
+            if (userLocationMarker) userLocationMarker.openPopup();
+            if (window.triggerFeedback) window.triggerFeedback('tap');
+        }
+    }
+
+    // Live Open Right Now Filter Toggle Listener
+    const openNowToggle = document.getElementById('open-now-toggle');
+    if (openNowToggle) {
+        openNowToggle.addEventListener('change', () => {
+            renderFacilityCards();
+            if (window.triggerFeedback) window.triggerFeedback('tap');
+        });
+    }
+
+    // Boot: Initialize map and request GPS immediately on visit
+    window.addEventListener('DOMContentLoaded', () => {
+        // Check for URL query filter param (e.g. ?filter=E-Waste)
+        const urlParams = new URLSearchParams(window.location.search);
+        const filterParam = urlParams.get('filter');
+        if (filterParam) {
+            activeStreamFilter = filterParam;
+            document.querySelectorAll('.filter-pill').forEach(btn => {
+                if (btn.dataset.filter === filterParam || (filterParam === 'E-Waste' && btn.dataset.filter.includes('E-Waste'))) {
+                    document.querySelectorAll('.filter-pill').forEach(b => {
+                        b.className = "filter-pill px-3.5 py-1.5 rounded-full text-xs font-semibold bg-surface text-text-secondary border border-border-subtle hover:border-primary transition";
+                    });
+                    btn.className = "filter-pill px-3.5 py-1.5 rounded-full text-xs font-bold bg-primary text-white transition";
+                }
+            });
+        }
+
+        initOrUpdateMap();
+        requestDeviceLocation(true);
+        loadCommunityDepots();
+
+        // If GPS permission prompt is unhandled after 1.5s, auto-center via IP
+        setTimeout(() => {
+            if (!gpsLockedByDevice) {
+                fallbackIpLocation();
+            }
+        }, 1500);
+    });
+</script>
+
+</body>
+</html>

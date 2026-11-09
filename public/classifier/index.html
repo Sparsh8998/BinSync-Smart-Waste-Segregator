@@ -1,0 +1,2968 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="utf-8"/>
+    <script>
+        // Strictly light mode enforcement — remove any legacy dark theme traces
+        try {
+            document.documentElement.classList.remove('dark');
+            localStorage.removeItem('binsync_theme');
+        } catch(e) {}
+    </script>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>AI Waste Inspector — BinSync</title>
+    <link rel="icon" type="image/svg+xml" href="/static/img/logo-icon.svg">
+    <link rel="apple-touch-icon" href="/static/img/logo-icon.svg">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#2563EB">
+
+    <!-- Fonts: Plus Jakarta Sans, Inter, JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+
+    <!-- Tailwind CSS with Nordic Arctic Glacier Design Tokens -->
+    <script>
+        tailwind = {
+            config: {
+                theme: {
+                    extend: {
+                        colors: {
+                            primary: {
+                                DEFAULT: "#2563EB",   /* Electric Precision Cobalt */
+                                hover:   "#1D4ED8",   /* Deep Royal Cobalt */
+                                light:   "#EFF6FF",   /* Ice Blue Tint */
+                                container: "#0F172A", /* Obsidian Graphite */
+                                fixed:   "#38BDF8"    /* Glacier Sky */
+                            },
+                            solar: {
+                                DEFAULT: "#F59E0B",
+                                hover:   "#D97706",
+                                light:   "#FEF3C7",
+                                dark:    "#B45309"
+                            },
+                            surface: {
+                                DEFAULT: "#F8FAFC",   /* Glacier Ice-White Canvas */
+                                card:    "#FFFFFF",   /* Pristine Card White */
+                                container: "#F1F5F9", /* Ice Slate Inset */
+                                subtle:  "#E2E8F0"    /* Glacier Border Line */
+                            },
+                            text: {
+                                primary:   "#0F172A", /* Obsidian Slate — 15:1 contrast */
+                                secondary: "#334155", /* Cool Charcoal Slate */
+                                muted:     "#64748B"  /* Glacier Muted Slate */
+                            },
+                            border: {
+                                subtle: "#E2E8F0",   /* Glacier Border Line */
+                                medium: "#CBD5E1",   /* Slate Medium Input Border */
+                                hover:  "#2563EB"    /* Active Precision Cobalt */
+                            },
+                            bin: {
+                                recycle:        "#0284C7", /* Curbside Blue */
+                                recycleLight:   "#F0F9FF",
+                                recycleBorder:  "#BAE6FD",
+                                compost:        "#0D9488", /* Glacier Teal */
+                                compostLight:   "#F0FDFA",
+                                compostBorder:  "#99F6E4",
+                                landfill:       "#475569", /* Managed Slate */
+                                landfillLight:  "#F8FAFC",
+                                landfillBorder: "#E2E8F0",
+                                specialty:      "#D97706",
+                                specialtyLight: "#FFFBEB",
+                                specialtyBorder:"#FDE68A",
+                                hazmat:         "#DC2626", /* Hazmat Red */
+                                hazmatLight:    "#FEF2F2",
+                                hazmatBorder:   "#FECACA"
+                            }
+                        },
+                        fontFamily: {
+                            sans: ['Plus Jakarta Sans', 'Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+                            mono: ['JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace']
+                        },
+                        maxWidth: {
+                            container: 'min(96vw, 1720px)'
+                        },
+                        boxShadow: {
+                            'glacier': '0 2px 8px -2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.02)',
+                            'glacier-hover': '0 12px 28px -4px rgba(15, 23, 42, 0.08), 0 4px 8px rgba(15, 23, 42, 0.03)',
+                            'botanical': '0 2px 8px -2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.02)',
+                            'botanical-hover': '0 12px 28px -4px rgba(15, 23, 42, 0.08), 0 4px 8px rgba(15, 23, 42, 0.03)'
+                        }
+                    }
+                }
+            }
+        };
+    </script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <style>
+        /* ── Fluid Dynamic Typography & Viewport Scaling ── */
+        html {
+            font-size: 16px;
+            -webkit-text-size-adjust: 100%;
+        }
+        @media (min-width: 1280px) {
+            html {
+                font-size: 16.5px;
+            }
+        }
+        @media (min-width: 1536px) {
+            html {
+                font-size: 17.5px;
+            }
+        }
+        @media (min-width: 1920px) {
+            html {
+                font-size: 18.5px;
+            }
+        }
+        @media (min-width: 2560px) {
+            html {
+                font-size: 20px;
+            }
+        }
+
+        .max-w-container {
+            max-width: min(96vw, 1720px) !important;
+            width: 100%;
+        }
+
+        /* ── Editorial Tight Tracking Standards ── */
+        h1, h2, h3, .font-heading {
+            letter-spacing: -0.03em;
+        }
+        .meta-tag, .tech-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        /* ── Nordic Arctic Glacier Custom Utilities ── */
+        .text-primary {
+            color: #2563EB !important;
+        }
+        .bg-primary {
+            background-color: #2563EB !important;
+        }
+        .border-primary {
+            border-color: #2563EB !important;
+        }
+        .bg-primary-light {
+            background-color: #EFF6FF !important;
+        }
+
+        .eco-card {
+            background-color: #FFFFFF;
+            border: 1px solid #E2E8F0;
+            border-radius: 1.5rem;
+            box-shadow: 0 2px 8px -2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.02);
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .eco-card:hover {
+            border-color: #CBD5E1;
+            box-shadow: 0 12px 28px -4px rgba(15, 23, 42, 0.08), 0 4px 8px rgba(15, 23, 42, 0.03);
+        }
+
+        .btn-primary {
+            background-color: #2563EB;
+            color: #FFFFFF !important;
+            padding: 0.75rem 1.6rem;
+            border-radius: 9999px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+            min-height: 44px;
+            border: 1px solid transparent;
+        }
+        .btn-primary:hover {
+            background-color: #1D4ED8;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+            transform: translateY(-1px);
+        }
+        .btn-secondary {
+            background-color: #FFFFFF;
+            color: #0F172A;
+            border: 1.5px solid #CBD5E1;
+            padding: 0.75rem 1.6rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+            min-height: 44px;
+        }
+        .btn-secondary:hover {
+            border-color: #2563EB;
+            background-color: #EFF6FF;
+            color: #2563EB;
+            transform: translateY(-1px);
+        }
+        .btn-solar {
+            background-color: #F59E0B;
+            color: #FFFFFF;
+            padding: 0.75rem 1.6rem;
+            border-radius: 9999px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+            min-height: 44px;
+        }
+        .btn-solar:hover {
+            background-color: #D97706;
+            box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35);
+            transform: translateY(-1px);
+        }
+
+        /* ── Micro-Animations ── */
+        @keyframes fade-up {
+            from {
+                opacity: 0;
+                transform: translateY(14px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .animate-fade-up {
+            animation: fade-up 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+        .stagger-1 { animation-delay: 80ms; }
+        .stagger-2 { animation-delay: 160ms; }
+        .stagger-3 { animation-delay: 240ms; }
+        .stagger-4 { animation-delay: 320ms; }
+
+        @keyframes shimmer-move {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(200%); }
+        }
+        .progress-shimmer {
+            position: relative;
+            overflow: hidden;
+        }
+        .progress-shimmer::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.45), transparent);
+            animation: shimmer-move 2.2s infinite ease-in-out;
+            pointer-events-none;
+        }
+
+        @keyframes flame-pulse {
+            0%, 100% { transform: scale(1) rotate(0deg); filter: drop-shadow(0 0 2px rgba(245, 158, 11, 0.4)); }
+            50% { transform: scale(1.14) rotate(-3deg); filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.8)); }
+        }
+        .flame-flicker {
+            display: inline-block;
+            animation: flame-pulse 1.8s infinite ease-in-out;
+            transform-origin: bottom center;
+        }
+
+        @keyframes glacier-drift {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-48%, -52%) scale(1.08); }
+        }
+        .glacier-float {
+            animation: glacier-drift 16s infinite ease-in-out;
+        }
+
+        @keyframes subtle-pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.65; transform: scale(0.97); }
+        }
+        .pulse-subtle {
+            animation: subtle-pulse 2.4s infinite ease-in-out;
+        }
+
+        @keyframes spring-pop {
+            0% { transform: scale(0.8); opacity: 0; }
+            40% { transform: scale(1.22); }
+            70% { transform: scale(0.95); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .animate-pop {
+            animation: spring-pop 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes golden-glow-pulse {
+            0%, 100% {
+                box-shadow: 0 0 15px rgba(245, 158, 11, 0.2), 0 4px 16px rgba(0, 0, 0, 0.05);
+            }
+            50% {
+                box-shadow: 0 0 30px rgba(245, 158, 11, 0.45), 0 8px 24px rgba(245, 158, 11, 0.15);
+            }
+        }
+        .golden-glow-pulse {
+            animation: golden-glow-pulse 3s infinite ease-in-out;
+        }
+
+        /* ── Universal Scroll-Reveal Directions ── */
+        @media (prefers-reduced-motion: no-preference) {
+            .reveal-on-scroll {
+                opacity: 0;
+                transform: translateY(28px) scale(0.985);
+                transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+                will-change: opacity, transform;
+            }
+            .reveal-on-scroll.is-visible {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+
+            .reveal-left {
+                opacity: 0;
+                transform: translateX(-32px);
+                transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+                will-change: opacity, transform;
+            }
+            .reveal-left.is-visible {
+                opacity: 1;
+                transform: translateX(0);
+            }
+
+            .reveal-right {
+                opacity: 0;
+                transform: translateX(32px);
+                transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+                will-change: opacity, transform;
+            }
+            .reveal-right.is-visible {
+                opacity: 1;
+                transform: translateX(0);
+            }
+
+            .reveal-scale {
+                opacity: 0;
+                transform: scale(0.92);
+                transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+                will-change: opacity, transform;
+            }
+            .reveal-scale.is-visible {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* ── Accessibility: Reduced Motion Standards ── */
+        @media (prefers-reduced-motion: reduce) {
+            *, ::before, ::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+            .reveal-on-scroll, .reveal-left, .reveal-right, .reveal-scale {
+                opacity: 1 !important;
+                transform: none !important;
+                transition: none !important;
+            }
+        }
+
+        /* ── Mobile Input Zoom Prevention & Safe Area Standards ── */
+        @media (max-width: 768px) {
+            input, select, textarea {
+                font-size: 16px !important;
+            }
+        }
+        .safe-bottom-nav {
+            padding-bottom: max(0.65rem, env(safe-area-inset-bottom, 0.65rem));
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+    
+<!-- Interactive Confetti & Live Barcode Scanner Libraries -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+<script src="https://unpkg.com/html5-qrcode"></script>
+<style>
+    .bbox-rect {
+        position: absolute;
+        border: 2px solid #2563EB;
+        background: rgba(37, 99, 235, 0.12);
+        border-radius: 6px;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
+        z-index: 25;
+    }
+    .bbox-rect:hover, .bbox-rect.active-hover {
+        border-color: #0D9488;
+        background: rgba(13, 148, 136, 0.25);
+        box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.35);
+        transform: scale(1.02);
+    }
+    .bbox-tag {
+        position: absolute;
+        top: -24px;
+        left: 0;
+        background: #0F172A;
+        color: #FFFFFF;
+        font-size: 10px;
+        font-weight: 700;
+        padding: 2px 7px;
+        border-radius: 4px;
+        white-space: nowrap;
+        pointer-events: none;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    }
+    @keyframes laser-sweep {
+        0% { top: 0%; opacity: 0.8; }
+        50% { top: 98%; opacity: 1; }
+        100% { top: 0%; opacity: 0.8; }
+    }
+    .laser-beam {
+        animation: laser-sweep 2.2s infinite ease-in-out;
+    }
+</style>
+
+</head>
+<body class="bg-surface text-text-primary font-sans min-h-screen flex flex-col antialiased selection:bg-blue-100 selection:text-blue-950">
+
+<!-- Top Fixed Glacier Scroll Progress Bar -->
+<div id="scroll-progress-bar" class="fixed top-0 left-0 h-[3px] bg-gradient-to-r from-primary via-[#38BDF8] to-solar z-[60] w-0 transition-[width] duration-75 ease-out pointer-events-none"></div>
+
+<!-- Nordic Arctic Glacier Frosted Header -->
+<header id="main-header" class="sticky top-0 z-50 transition-all duration-300 bg-white/95 backdrop-blur-md border-b border-border-subtle h-20 flex items-center">
+    <div class="max-w-container mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 w-full flex items-center justify-between">
+        <!-- Brand Logo with Climate Intelligence Identity -->
+        <a href="/" class="flex items-center gap-3 hover:opacity-90 transition-opacity flex-shrink-0">
+            <img src="/static/img/logo-icon.svg" alt="BinSync Logo" class="w-9 h-9 rounded-xl shadow-sm">
+            <div class="flex flex-col">
+                <span class="text-xl font-black tracking-tight text-text-primary leading-none">Bin<span class="text-primary">Sync</span></span>
+                <span class="text-[9px] font-bold text-primary tracking-widest uppercase mt-0.5">CLIMATE INTELLIGENCE</span>
+            </div>
+        </a>
+
+        <!-- Desktop Navigation Tabs (Nordic Glacier Capsule Tabs) -->
+        <nav class="hidden md:flex items-center gap-1.5 text-sm font-semibold">
+            <a href="/" class="px-4 py-2 rounded-full transition-all text-text-secondary hover:text-text-primary hover:bg-surface-container">
+                Home
+            </a>
+            <a href="/classifier" class="px-4 py-2 rounded-full transition-all text-primary bg-primary-light font-bold flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-[18px]">photo_camera</span>
+                <span>Waste Sorter</span>
+            </a>
+            <a href="/rules" class="px-4 py-2 rounded-full transition-all text-text-secondary hover:text-text-primary hover:bg-surface-container">
+                Rules &amp; Map
+            </a>
+            <a href="/classifications" class="px-4 py-2 rounded-full transition-all text-text-secondary hover:text-text-primary hover:bg-surface-container">
+                Taxonomy
+            </a>
+            <a href="/leaderboard" class="px-4 py-2 rounded-full transition-all text-text-secondary hover:text-text-primary hover:bg-surface-container">
+                Leaderboard
+            </a>
+            
+            <a href="/dashboard" class="px-4 py-2 rounded-full transition-all text-text-secondary hover:text-text-primary hover:bg-surface-container">
+                Dashboard
+            </a>
+            
+        </nav>
+
+        <!-- Right Side: User Profile / Action -->
+        <div class="flex items-center gap-3">
+            
+            <a href="/dashboard" class="hidden sm:flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-surface-container border border-border-subtle hover:border-primary/40 transition">
+                <span class="w-6 h-6 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center">
+                    C
+                </span>
+                <span class="text-xs font-bold text-text-primary">Citizen_b361d</span>
+                <span id="nav-points-pill" class="text-xs font-mono font-bold text-primary bg-primary-light px-2.5 py-0.5 rounded-full">0 pts</span>
+            </a>
+            <a href="/logout" title="Log out" class="text-xs font-semibold text-text-muted hover:text-rose-600 px-2 py-1 transition">
+                Sign Out
+            </a>
+            
+
+            <!-- Mobile Hamburger Button -->
+            <button type="button" id="mobile-menu-btn" class="md:hidden text-text-secondary hover:text-text-primary p-2 focus:outline-none rounded-xl hover:bg-surface-container" aria-label="Toggle Menu">
+                <span class="material-symbols-outlined text-[24px]" id="mobile-menu-icon">menu</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Mobile Slide Drawer -->
+    <div id="mobile-menu" class="hidden md:hidden absolute top-20 left-0 right-0 bg-white border-b border-border-subtle shadow-xl px-5 py-4 space-y-2 z-50">
+        <div class="flex items-center gap-2.5 pb-3 mb-2 border-b border-border-subtle">
+            <img src="/static/img/logo-icon.svg" alt="BinSync" class="w-7 h-7 rounded-lg">
+            <span class="font-bold text-sm text-text-primary">BinSync Quick Navigation</span>
+        </div>
+        <a href="/" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-text-secondary hover:bg-surface-container">
+            Home
+        </a>
+        <a href="/classifier" class="block px-4 py-2.5 rounded-xl text-sm font-medium bg-primary-light text-primary font-bold">
+            Waste Sorter
+        </a>
+        <a href="/rules" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-text-secondary hover:bg-surface-container">
+            Rules &amp; Map
+        </a>
+        <a href="/classifications" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-text-secondary hover:bg-surface-container">
+            Taxonomy Directory
+        </a>
+        <a href="/leaderboard" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-text-secondary hover:bg-surface-container">
+            Community Leaderboard
+        </a>
+        
+        <a href="/dashboard" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-text-secondary hover:bg-surface-container">
+            My Dashboard (0 pts)
+        </a>
+        <a href="/logout" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-rose-600 hover:bg-rose-50">
+            Sign Out
+        </a>
+        
+    </div>
+</header>
+
+<!-- Main Body Slot -->
+<main class="flex-grow pb-24 md:pb-0">
+    
+<div class="max-w-container mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 py-8 md:py-14 space-y-8">
+
+    <!-- Guest Mode Frictionless Banner -->
+    
+    <div class="p-4 sm:p-5 rounded-2xl bg-primary-light border border-primary/20 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs sm:text-sm text-text-primary">
+        <div class="flex items-center gap-3">
+            <span class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-xs flex-shrink-0">
+                <span class="material-symbols-outlined text-[18px]">waving_hand</span>
+            </span>
+            <span>
+                <strong>Zero-Login Guest Mode:</strong> Your scans and points are actively accumulating in this session.
+            </span>
+        </div>
+        <a href="/login" class="font-bold text-primary hover:underline flex items-center gap-1 whitespace-nowrap">
+            Claim Citizen Profile &amp; Save Streak &rarr;
+        </a>
+    </div>
+    
+
+    <!-- Header & Mode Switcher -->
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-4 border-b border-border-subtle">
+        <div class="space-y-2">
+            <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-text-primary">
+                AI Waste Inspector
+            </h1>
+            <p class="text-sm sm:text-base lg:text-lg text-text-secondary max-w-3xl">
+                Decompose complex packaging into distinct physical layers, eliminate municipal contamination, and verify carbon diversion.
+            </p>
+        </div>
+
+        <!-- Mode Tabs & Voice Toggle -->
+        <div class="flex items-center gap-2.5 flex-wrap">
+            <div class="inline-flex p-1 bg-surface-container rounded-full border border-border-subtle text-xs sm:text-sm">
+                <button type="button" id="tab-visual-btn" class="px-3.5 sm:px-4 py-2 rounded-full font-bold bg-white text-primary shadow-sm transition">
+                    Photo &amp; Camera
+                </button>
+                <button type="button" id="tab-text-btn" class="px-3.5 sm:px-4 py-2 rounded-full font-semibold text-text-secondary hover:text-text-primary transition">
+                    Name / Barcode Search
+                </button>
+                <button type="button" id="tab-bin-audit-btn" class="px-3.5 sm:px-4 py-2 rounded-full font-semibold text-text-secondary hover:text-text-primary transition flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[16px] text-teal-600">inventory_2</span>
+                    <span>Bin Audit (Multi-Item)</span>
+                </button>
+            </div>
+
+            <!-- Hands-Free Voice Readout Toggle -->
+            <button type="button" id="voice-toggle-btn" class="px-4 py-2 rounded-full border border-border-subtle bg-white text-xs sm:text-sm font-semibold text-text-secondary hover:border-primary transition flex items-center gap-1.5" title="Read directives aloud (Hands-free kitchen mode)">
+                <span class="material-symbols-outlined text-[18px]" id="voice-icon">volume_off</span>
+                <span id="voice-label">Voice: Off</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- 1-Click Quick Samples Selector -->
+    <div class="p-5 bg-white border border-border-subtle rounded-2xl shadow-botanical">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3.5">
+            <span class="text-xs font-bold uppercase tracking-wider text-text-muted flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-[16px] text-solar">auto_awesome</span>
+                Instant One-Click Demo Samples
+            </span>
+            <span class="text-xs text-text-muted">Click any sample to test decomposition instantly</span>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <button type="button" onclick="loadSampleImage('/static/samples/chips-bag.jpg', 'chips-bag.jpg')" class="sample-btn text-left p-3 rounded-xl border border-border-subtle bg-surface hover:border-primary hover:bg-primary-light transition flex items-center gap-3 group">
+                <img src="/static/samples/chips-bag.jpg" alt="Chips Bag" class="w-11 h-11 object-cover rounded-lg border border-border-subtle flex-shrink-0">
+                <div class="truncate">
+                    <span class="block text-xs font-bold text-text-primary group-hover:text-primary truncate">Snack Wrapper</span>
+                    <span class="block text-[11px] text-solar-dark font-semibold">Composite Film</span>
+                </div>
+            </button>
+
+            <button type="button" onclick="loadSampleImage('/static/samples/sample-recyclable.jpg', 'sample-recyclable.jpg')" class="sample-btn text-left p-3 rounded-xl border border-border-subtle bg-surface hover:border-primary hover:bg-primary-light transition flex items-center gap-3 group">
+                <img src="/static/samples/sample-recyclable.jpg" alt="Recyclable" class="w-11 h-11 object-cover rounded-lg border border-border-subtle flex-shrink-0">
+                <div class="truncate">
+                    <span class="block text-xs font-bold text-text-primary group-hover:text-primary truncate">Beverage Pouch</span>
+                    <span class="block text-[11px] text-blue-700 font-semibold">Recyclable Pack</span>
+                </div>
+            </button>
+
+            <button type="button" onclick="loadSampleImage('/static/samples/food-compost.jpg', 'food-compost.jpg')" class="sample-btn text-left p-3 rounded-xl border border-border-subtle bg-surface hover:border-primary hover:bg-primary-light transition flex items-center gap-3 group">
+                <img src="/static/samples/food-compost.jpg" alt="Compost" class="w-11 h-11 object-cover rounded-lg border border-border-subtle flex-shrink-0">
+                <div class="truncate">
+                    <span class="block text-xs font-bold text-text-primary group-hover:text-primary truncate">Food Scraps</span>
+                    <span class="block text-[11px] text-teal-700 font-semibold">Organic Waste</span>
+                </div>
+            </button>
+
+            <button type="button" onclick="loadSampleImage('/static/samples/garbage-bag.jpg', 'garbage-bag.jpg')" class="sample-btn text-left p-3 rounded-xl border border-border-subtle bg-surface hover:border-primary hover:bg-primary-light transition flex items-center gap-3 group">
+                <img src="/static/samples/garbage-bag.jpg" alt="Trash Bag" class="w-11 h-11 object-cover rounded-lg border border-border-subtle flex-shrink-0">
+                <div class="truncate">
+                    <span class="block text-xs font-bold text-text-primary group-hover:text-primary truncate">Garbage Bag</span>
+                    <span class="block text-[11px] text-slate-700 font-semibold">Landfill Film</span>
+                </div>
+            </button>
+        </div>
+    </div>
+
+    <!-- Inspector Main Workstation -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        <!-- Left: Input Surface (7 cols) -->
+        <div class="lg:col-span-7 space-y-4">
+            
+            <!-- VIEW 1: Visual Image & Camera View -->
+            <div id="visual-input-view" class="space-y-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 min-h-[440px] sm:min-h-[480px] lg:min-h-[520px] xl:min-h-[580px]">
+                    
+                    <!-- 1. Drag & Drop Upload Zone -->
+                    <div id="drop-zone" class="bg-white border-2 border-dashed border-border-medium hover:border-primary rounded-2xl flex flex-col items-center justify-center p-8 text-center cursor-pointer transition relative overflow-hidden group shadow-botanical">
+                        <input type="file" id="file-input" accept="image/png, image/jpeg, image/webp" class="absolute inset-0 opacity-0 cursor-pointer z-20">
+                        
+                        <div id="upload-prompt" class="space-y-4">
+                            <div class="w-16 h-16 rounded-2xl bg-primary-light text-primary flex items-center justify-center mx-auto group-hover:scale-105 transition-transform">
+                                <span class="material-symbols-outlined text-[36px]">cloud_upload</span>
+                            </div>
+                            <div>
+                                <h3 class="text-base font-bold text-text-primary">Drag &amp; Drop Image Here</h3>
+                                <p class="text-xs sm:text-sm text-text-secondary mt-1">or click to browse from device</p>
+                            </div>
+                            <div class="inline-block px-3.5 py-1.5 bg-surface border border-border-subtle rounded-full text-xs text-text-muted font-medium">
+                                PNG, JPG, WEBP • Max 10MB
+                            </div>
+                        </div>
+
+                        <!-- Image Preview & AI Bounding Box Layer Container -->
+                        <div id="preview-wrapper" class="hidden absolute inset-0 w-full h-full p-2 bg-slate-900/5 z-10 rounded-2xl overflow-hidden flex items-center justify-center">
+                            <div id="preview-inner-box" class="relative max-w-full max-h-full flex items-center justify-center">
+                                <img id="image-preview" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3C/svg%3E" alt="Scan Preview" class="max-w-full max-h-full object-contain rounded-xl block shadow-sm">
+                                <div id="bbox-overlay" class="absolute inset-0 pointer-events-auto"></div>
+                                
+                                <!-- Optical Laser Scanner Sweep Bar -->
+                                <div id="scanner-laser" class="hidden absolute inset-0 pointer-events-none overflow-hidden rounded-xl z-20">
+                                    <div class="laser-beam absolute left-0 right-0 h-1 bg-gradient-to-r from-transparent via-primary to-transparent shadow-[0_0_20px_#2563EB]"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. Live Camera Viewfinder -->
+                    <div id="camera-section" class="bg-white border-2 border-dashed border-border-medium hover:border-primary rounded-2xl relative overflow-hidden flex flex-col items-center justify-center text-center p-6 shadow-botanical group transition">
+                        <video id="camera-video" autoplay playsinline muted class="hidden absolute inset-0 w-full h-full object-cover z-10"></video>
+                        
+                        <!-- Camera Viewfinder HUD Reticle Corner Brackets -->
+                        <div class="camera-reticle absolute top-4 left-4 w-6 h-6 border-t-2 border-l-2 border-sky-400/70 rounded-tl pointer-events-none z-20"></div>
+                        <div class="camera-reticle absolute top-4 right-4 w-6 h-6 border-t-2 border-r-2 border-sky-400/70 rounded-tr pointer-events-none z-20"></div>
+                        <div class="camera-reticle absolute bottom-16 left-4 w-6 h-6 border-b-2 border-l-2 border-sky-400/70 rounded-bl pointer-events-none z-20"></div>
+                        <div class="camera-reticle absolute bottom-16 right-4 w-6 h-6 border-b-2 border-r-2 border-sky-400/70 rounded-br pointer-events-none z-20"></div>
+
+                        <!-- Camera Shutter Flash Overlay -->
+                        <div id="shutter-flash" class="absolute inset-0 bg-white opacity-0 pointer-events-none transition-opacity duration-150 z-30"></div>
+
+                        <!-- Camera Standby Poster -->
+                        <div id="camera-poster" class="space-y-4">
+                            <div class="w-16 h-16 rounded-2xl bg-primary-light text-primary flex items-center justify-center mx-auto group-hover:scale-105 transition-transform">
+                                <span class="material-symbols-outlined text-[36px]">photo_camera</span>
+                            </div>
+                            <div>
+                                <h4 class="text-base font-bold text-text-primary">Direct Camera Feed</h4>
+                                <p class="text-xs sm:text-sm text-text-secondary max-w-xs mt-1">Point your phone or webcam at the item</p>
+                            </div>
+                        </div>
+
+                        <!-- Camera Floating Controls -->
+                        <div class="absolute bottom-4 left-4 right-4 z-20 flex justify-center items-center gap-2 flex-wrap">
+                            <button type="button" id="start-camera-btn" class="btn-primary py-2 px-4 text-xs flex items-center gap-1.5 shadow-md">
+                                <span class="material-symbols-outlined text-[18px]">videocam</span>
+                                <span>Open Camera</span>
+                            </button>
+
+                            <!-- Native Hardware Cam Fallback for Mobile Web -->
+                            <button type="button" id="native-cam-btn" onclick="document.getElementById('mobile-native-cam').click()" class="bg-white hover:bg-surface-container text-text-primary text-xs font-semibold py-2 px-3.5 rounded-full transition flex items-center gap-1.5 shadow-sm border border-border-medium">
+                                <span class="material-symbols-outlined text-[18px] text-teal-600">camera_alt</span>
+                                <span>Phone Shutter</span>
+                            </button>
+                            <input type="file" accept="image/*" capture="environment" id="mobile-native-cam" class="hidden">
+
+                            <!-- Flashlight / Torch Toggle -->
+                            <button type="button" id="torch-btn" onclick="toggleTorch()" class="hidden bg-white hover:bg-surface-container text-text-primary text-xs font-medium p-2 rounded-full transition flex items-center justify-center shadow-sm border border-border-medium" title="Toggle Flashlight Torch">
+                                <span class="material-symbols-outlined text-[18px] text-amber-500" id="torch-icon">flash_on</span>
+                            </button>
+
+                            <button type="button" id="switch-camera-btn" class="hidden bg-white hover:bg-surface-container text-text-primary text-xs font-medium px-3 py-2 rounded-full transition flex items-center gap-1 shadow-sm border border-border-medium">
+                                <span class="material-symbols-outlined text-[18px]">flip_camera_ios</span>
+                                <span>Flip</span>
+                            </button>
+
+                            <button type="button" id="capture-btn" class="hidden bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold px-5 py-2 rounded-full shadow-lg transition flex items-center gap-1.5">
+                                <span class="material-symbols-outlined text-[18px]">camera</span>
+                                <span>Snap Photo</span>
+                            </button>
+                        </div>
+
+                        <canvas id="camera-canvas" class="hidden"></canvas>
+                    </div>
+                </div>
+
+                <!-- Analysis Action Bar -->
+                <div class="flex gap-3">
+                    <button type="button" id="submit-btn" class="hidden flex-1 btn-primary py-3.5 px-6 font-bold shadow-md transition flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined text-[20px]">psychology</span>
+                        <span>Analyze Packaging Layers</span>
+                    </button>
+                    <button type="button" id="reset-btn" class="hidden btn-secondary py-3.5 px-5 font-medium transition flex items-center justify-center gap-1.5">
+                        <span class="material-symbols-outlined text-[18px]">refresh</span>
+                        <span>Reset</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- VIEW 2: Instant Text / Item Lookup Mode -->
+            <div id="text-input-view" class="hidden eco-card p-6 space-y-5">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div class="space-y-1">
+                        <h3 class="text-base font-bold text-text-primary">Instant Item &amp; Barcode Search</h3>
+                        <p class="text-xs text-text-secondary">Type packaging name or scan a product barcode to see composite layers.</p>
+                    </div>
+                    <button type="button" id="scan-barcode-btn" class="btn-solar py-2 px-3.5 text-xs flex items-center gap-1.5 shadow-sm self-start sm:self-auto">
+                        <span class="material-symbols-outlined text-[18px]">barcode_scanner</span>
+                        <span>Scan Barcode</span>
+                    </button>
+                </div>
+
+                <!-- Live Camera Barcode Viewfinder -->
+                <div id="barcode-reader-box" class="hidden p-4 bg-surface-container rounded-2xl border border-border-subtle space-y-3">
+                    <div class="flex items-center justify-between text-text-primary text-xs">
+                        <span class="font-bold flex items-center gap-1.5 text-primary">
+                            <span class="material-symbols-outlined text-[18px]">center_focus_strong</span>
+                            Point Camera Directly at UPC / EAN Barcode
+                        </span>
+                        <button type="button" id="close-barcode-btn" class="text-text-muted hover:text-text-primary p-1 rounded-lg">
+                            <span class="material-symbols-outlined text-[18px]">close</span>
+                        </button>
+                    </div>
+                    <div id="barcode-reader" class="w-full rounded-xl overflow-hidden bg-slate-900 aspect-video max-h-56"></div>
+                    <p class="text-[11px] text-text-muted text-center">Center barcode in camera viewfinder — automatically analyzes upon detection.</p>
+                </div>
+
+                <div class="flex gap-2">
+                    <div class="relative flex-1">
+                        <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-text-muted text-[20px]">search</span>
+                        <input type="text" id="text-query-input" list="packaging-suggestions" placeholder="e.g., Coffee cup, Pizza box, Tetra Pak, Milk carton…" class="w-full text-sm pl-12 pr-11 py-3 rounded-full border border-border-medium bg-surface focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition">
+                        <!-- Voice Dictation Mic Button -->
+                        <button type="button" id="voice-dictation-btn" title="Voice Search Dictation" class="absolute right-3.5 top-1/2 -translate-y-1/2 text-text-muted hover:text-primary transition p-1 rounded-full flex items-center justify-center">
+                            <span class="material-symbols-outlined text-[20px]" id="voice-dictation-icon">mic</span>
+                        </button>
+                    </div>
+                    <button type="button" id="text-search-btn" class="btn-primary py-3 px-6 text-xs font-bold whitespace-nowrap">
+                        Lookup
+                    </button>
+                </div>
+
+                <!-- Suggested Quick Search Chips -->
+                <div class="space-y-2 pt-1">
+                    <span class="text-[11px] font-bold text-text-muted uppercase tracking-wider block">Common Ambiguous Packaging:</span>
+                    <div class="flex flex-wrap gap-2">
+                        <button type="button" onclick="quickTextLookup('Coffee cup')" class="px-3 py-1 rounded-full text-xs font-medium bg-surface border border-border-subtle hover:border-primary hover:text-primary transition">☕ Paper Coffee Cup</button>
+                        <button type="button" onclick="quickTextLookup('Pizza box')" class="px-3 py-1 rounded-full text-xs font-medium bg-surface border border-border-subtle hover:border-primary hover:text-primary transition">🍕 Pizza Box</button>
+                        <button type="button" onclick="quickTextLookup('Milk carton')" class="px-3 py-1 rounded-full text-xs font-medium bg-surface border border-border-subtle hover:border-primary hover:text-primary transition">🥛 Milk Carton</button>
+                        <button type="button" onclick="quickTextLookup('Styrofoam')" class="px-3 py-1 rounded-full text-xs font-medium bg-surface border border-border-subtle hover:border-primary hover:text-primary transition">📦 Styrofoam Clamshell</button>
+                        <button type="button" onclick="quickTextLookup('Aluminum can')" class="px-3 py-1 rounded-full text-xs font-medium bg-surface border border-border-subtle hover:border-primary hover:text-primary transition">🥤 Soda Can</button>
+                        <button type="button" onclick="quickTextLookup('Bubble wrap')" class="px-3 py-1 rounded-full text-xs font-medium bg-surface border border-border-subtle hover:border-primary hover:text-primary transition">🫧 Bubble Wrap</button>
+                        <button type="button" onclick="quickTextLookup('Battery')" class="px-3 py-1 rounded-full text-xs font-medium bg-surface border border-border-subtle hover:border-primary hover:text-primary transition">🔋 AA Battery</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW 3: AI Bin Purity & Contamination Forensics (Multi-Item) -->
+            <div id="bin-audit-view" class="hidden space-y-4">
+                <div class="eco-card p-6 space-y-5">
+                    <div class="flex items-center justify-between pb-3 border-b border-border-subtle">
+                        <div>
+                            <h3 class="text-base font-bold text-text-primary flex items-center gap-2">
+                                <span class="material-symbols-outlined text-teal-600 text-[22px]">inventory_2</span>
+                                <span>Bin Purity &amp; Contamination Forensics</span>
+                            </h3>
+                            <p class="text-xs text-text-secondary mt-0.5">Photograph an entire waste cart or recycling bin with multiple mixed items before collection.</p>
+                        </div>
+                        <span class="text-[11px] font-bold text-teal-800 bg-teal-50 border border-teal-200 px-2.5 py-1 rounded-full">+25 Audit Pts</span>
+                    </div>
+
+                    <!-- Drop zone for bin -->
+                    <div id="bin-drop-zone" class="border-2 border-dashed border-border-medium hover:border-primary rounded-2xl p-6 text-center cursor-pointer transition relative bg-surface group">
+                        <input type="file" id="bin-file-input" accept="image/png, image/jpeg, image/webp" class="absolute inset-0 opacity-0 cursor-pointer z-20">
+                        <div id="bin-upload-prompt" class="space-y-3">
+                            <div class="w-14 h-14 rounded-2xl bg-teal-50 text-teal-600 flex items-center justify-center mx-auto group-hover:scale-105 transition-transform">
+                                <span class="material-symbols-outlined text-[32px]">delete_sweep</span>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-text-primary">Upload Multi-Item Waste Bin Photo</h4>
+                                <p class="text-xs text-text-muted mt-0.5">Capture open cart contents looking down inside</p>
+                            </div>
+                        </div>
+                        <img id="bin-image-preview" src="" alt="Bin preview" class="hidden max-h-56 mx-auto rounded-xl object-contain shadow-sm">
+                    </div>
+
+                    <div class="flex items-center justify-between gap-3">
+                        <button type="button" onclick="loadSampleBinImage()" class="text-xs font-semibold text-text-secondary hover:text-primary transition flex items-center gap-1">
+                            <span class="material-symbols-outlined text-[16px] text-solar">auto_awesome</span>
+                            <span>Load Sample Curbside Cart</span>
+                        </button>
+                        <div class="flex gap-2">
+                            <button type="button" id="bin-reset-btn" onclick="resetBinAudit()" class="hidden btn-secondary py-2 px-3 text-xs">Reset</button>
+                            <button type="button" id="bin-audit-submit-btn" onclick="executeBinAudit()" class="btn-primary py-2 px-5 text-xs font-bold flex items-center gap-1.5 shadow-sm">
+                                <span class="material-symbols-outlined text-[16px]">search_check</span>
+                                <span>Audit Bin Purity</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Bin Audit Loading Spinner -->
+                    <div id="bin-loading-spinner" class="hidden py-8 flex flex-col items-center justify-center text-center space-y-3">
+                        <div class="w-10 h-10 rounded-full border-4 border-primary border-t-transparent animate-spin"></div>
+                        <p class="text-xs font-semibold text-text-primary">Auditing container contents &amp; identifying contaminants...</p>
+                    </div>
+
+                    <!-- Bin Audit Results Display -->
+                    <div id="bin-audit-results" class="hidden space-y-4 pt-4 border-t border-border-subtle">
+                        <!-- Purity Score Header Strip -->
+                        <div class="p-4 rounded-xl bg-surface border border-border-subtle flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            <div class="flex items-center gap-3">
+                                <div id="bin-purity-ring" class="w-14 h-14 rounded-full flex items-center justify-center font-black text-base border-4 shadow-sm flex-shrink-0 bg-white">
+                                    <span id="bin-purity-score-pct">0%</span>
+                                </div>
+                                <div>
+                                    <div class="text-[11px] font-bold uppercase tracking-wider text-text-muted">Bin Purity Score</div>
+                                    <h4 id="bin-status-label" class="text-sm font-black text-text-primary">Status</h4>
+                                </div>
+                            </div>
+                            <div id="bin-status-badge" class="px-3 py-1 rounded-full text-xs font-bold border self-start sm:self-auto"></div>
+                        </div>
+
+                        <!-- Remediation Directives Banner -->
+                        <div id="bin-remediation-box" class="p-3.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 text-xs space-y-2">
+                            <div class="font-bold flex items-center gap-1.5 text-amber-800">
+                                <span class="material-symbols-outlined text-[18px]">announcement</span>
+                                <span>Pre-Collection Remediation Steps:</span>
+                            </div>
+                            <ul id="bin-remediation-list" class="space-y-1 list-disc pl-4 text-[11px] leading-relaxed"></ul>
+                        </div>
+
+                        <!-- Detected Items Grid (Contaminants vs Clean Stream) -->
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center text-xs font-bold text-text-primary">
+                                <span>Detected Items in Container (<span id="bin-item-count">0</span>)</span>
+                                <span class="text-[11px] text-text-muted">Inspect before morning truck arrives</span>
+                            </div>
+                            <div id="bin-items-container" class="space-y-2 max-h-60 overflow-y-auto pr-1"></div>
+                        </div>
+
+                        <!-- Action Button to Log Clean Items to Dashboard -->
+                        <button type="button" id="bin-log-clean-btn" onclick="logAuditCleanItems()" class="w-full btn-primary py-2.5 px-4 text-xs font-bold flex items-center justify-center gap-2 shadow-sm">
+                            <span class="material-symbols-outlined text-[18px]">cloud_upload</span>
+                            <span>Log All Clean Items to Dashboard (+Bonus Diversion)</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Keyboard Shortcuts & Quick Help -->
+            <div class="p-3 bg-surface rounded-xl border border-border-subtle flex items-center justify-between text-[11px] text-text-muted">
+                <span class="flex items-center gap-1.5 font-medium">
+                    <span class="material-symbols-outlined text-[16px] text-primary">keyboard</span>
+                    Keyboard Shortcuts:
+                </span>
+                <div class="flex items-center gap-3">
+                    <span><kbd class="px-1.5 py-0.5 bg-white border border-border-medium rounded text-[10px] font-mono">C</kbd> Camera</span>
+                    <span><kbd class="px-1.5 py-0.5 bg-white border border-border-medium rounded text-[10px] font-mono">U</kbd> Upload</span>
+                    <span><kbd class="px-1.5 py-0.5 bg-white border border-border-medium rounded text-[10px] font-mono">V</kbd> Voice</span>
+                    <span><kbd class="px-1.5 py-0.5 bg-white border border-border-medium rounded text-[10px] font-mono">R</kbd> Reset</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Right: Decomposition Results (5 cols) -->
+        <div class="lg:col-span-5 space-y-4">
+            <div class="eco-card p-6 sm:p-8 min-h-[480px] lg:min-h-[560px] xl:min-h-[620px] flex flex-col justify-between">
+                <div>
+                    <!-- Card Top Header -->
+                    <div class="flex items-center justify-between pb-4 border-b border-border-subtle mb-4">
+                        <div class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-primary text-[22px]">analytics</span>
+                            <h2 class="text-base font-bold text-text-primary">Disposal Diagnostics</h2>
+                        </div>
+                        <span id="diagnostic-status" class="text-xs font-medium text-text-muted">Awaiting Input</span>
+                    </div>
+
+                    <!-- 1. Loading Step Sequence -->
+                    <div id="loading-spinner" class="hidden py-14 flex flex-col items-center justify-center text-center space-y-4">
+                        <div class="w-12 h-12 rounded-full border-4 border-primary border-t-transparent animate-spin"></div>
+                        <div class="space-y-1">
+                            <p id="loading-stage-text" class="text-sm font-semibold text-text-primary">Scanning item geometry...</p>
+                            <p class="text-xs text-text-muted">Decomposing physical material layers...</p>
+                        </div>
+                    </div>
+
+                    <!-- 2. Error Message State -->
+                    <div id="error-container" class="hidden p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-center my-6 space-y-3">
+                        <div class="w-10 h-10 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center mx-auto">
+                            <span class="material-symbols-outlined">warning</span>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-bold">Analysis Blocked</h4>
+                            <p id="error-message" class="text-xs mt-1 text-rose-700"></p>
+                        </div>
+                        <button type="button" onclick="resetScanner()" class="inline-block bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold px-4 py-2 rounded-full transition">
+                            Scan Another Item
+                        </button>
+                    </div>
+
+                    <!-- 3. Dynamic Results Container -->
+                    <div id="results-wrapper">
+                        <!-- Result Summary Meta -->
+                        <div id="result-meta" class="hidden mb-4 p-4 rounded-xl bg-surface border border-border-subtle space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span id="result-category" class="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full"></span>
+                                <span id="result-points" class="text-xs font-bold text-primary bg-primary-light px-3 py-1 rounded-full"></span>
+                            </div>
+                            <div>
+                                <h3 id="result-item-name" class="text-lg font-bold text-text-primary"></h3>
+                                <p id="result-material" class="text-xs text-text-secondary"></p>
+                            </div>
+
+                            <!-- Brand & Recyclability Grade Badge + Scrap Value -->
+                            <div class="flex items-center justify-between flex-wrap gap-2 pt-2 border-t border-border-subtle text-xs">
+                                <div class="flex items-center gap-1.5">
+                                    <span class="text-text-muted">Brand:</span>
+                                    <span id="result-brand" class="font-bold text-text-primary">Generic / Unbranded</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span id="result-grade-badge" class="px-2.5 py-0.5 rounded-full font-bold text-[11px] font-mono border bg-emerald-50 text-emerald-800 border-emerald-300">Grade A</span>
+                                    <span id="result-scrap-value" class="text-emerald-700 font-mono font-bold text-[11px] bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-md">$0.02</span>
+                                </div>
+                            </div>
+
+                            <!-- AI Confidence Pill, Resin Code Stamp & User Verification Bar -->
+                            <div class="flex items-center justify-between flex-wrap gap-2 pt-2 border-t border-border-subtle text-xs">
+                                <div class="flex items-center gap-2 flex-wrap">
+                                    <span id="result-confidence-pill" class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-primary-light text-primary border border-primary/20">92% AI Confidence</span>
+                                    <span id="result-resin-stamp" class="px-2 py-0.5 rounded-md text-[11px] font-mono font-bold bg-slate-100 text-slate-800 border border-border-subtle">Resin: #1 PET</span>
+                                </div>
+                                <button type="button" id="btn-toggle-verify" onclick="toggleVerificationBar()" class="text-[11px] font-bold text-primary hover:underline flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-[14px]">edit_note</span>
+                                    <span>Verify / Correct Stamp (+10 Pts)</span>
+                                </button>
+                            </div>
+
+                            <!-- Inline Resin Verification Collapsible Bar -->
+                            <div id="resin-verification-bar" class="hidden p-3 rounded-xl bg-surface-container border border-border-subtle space-y-2">
+                                <div class="flex items-center justify-between text-[11px]">
+                                    <span class="font-bold text-text-primary">Select stamped resin code on packaging:</span>
+                                    <span class="text-primary font-bold">+10 Eco-Pts</span>
+                                </div>
+                                <div class="flex flex-wrap gap-1.5">
+                                    <button type="button" onclick="submitResinCorrection('#1 PET', 'Recyclable')" class="px-2.5 py-1 rounded-lg text-[11px] font-mono font-bold bg-white border border-border-medium hover:border-primary hover:text-primary transition">#1 PET</button>
+                                    <button type="button" onclick="submitResinCorrection('#2 HDPE', 'Recyclable')" class="px-2.5 py-1 rounded-lg text-[11px] font-mono font-bold bg-white border border-border-medium hover:border-primary hover:text-primary transition">#2 HDPE</button>
+                                    <button type="button" onclick="submitResinCorrection('#4 LDPE', 'Landfill')" class="px-2.5 py-1 rounded-lg text-[11px] font-mono font-bold bg-white border border-border-medium hover:border-primary hover:text-primary transition">#4 LDPE</button>
+                                    <button type="button" onclick="submitResinCorrection('#5 PP', 'Recyclable')" class="px-2.5 py-1 rounded-lg text-[11px] font-mono font-bold bg-white border border-border-medium hover:border-primary hover:text-primary transition">#5 PP</button>
+                                    <button type="button" onclick="submitResinCorrection('#6 PS', 'Landfill')" class="px-2.5 py-1 rounded-lg text-[11px] font-mono font-bold bg-white border border-border-medium hover:border-primary hover:text-primary transition">#6 PS</button>
+                                    <button type="button" onclick="submitResinCorrection('#7 OTHER', 'Landfill')" class="px-2.5 py-1 rounded-lg text-[11px] font-mono font-bold bg-white border border-border-medium hover:border-primary hover:text-primary transition">#7 OTHER</button>
+                                </div>
+                            </div>
+
+                            <!-- Hazmat Red Safety Alert Banner -->
+                            <div id="hazmat-safety-alert" class="hidden p-3.5 rounded-xl bg-rose-50 border-2 border-rose-300 text-rose-900 text-xs space-y-1.5 shadow-sm">
+                                <div class="font-black flex items-center gap-1.5 text-rose-700">
+                                    <span class="material-symbols-outlined text-[20px]">dangerous</span>
+                                    <span>CRITICAL SAFETY: DOMESTIC HAZMAT / E-WASTE STREAM</span>
+                                </div>
+                                <p class="text-[11px] leading-relaxed">
+                                    Banned from municipal curbside blue and black bins! Can cause mechanical compactor fires and toxic groundwater leaching. Must be dropped off at certified depots.
+                                </p>
+                                <a href="/rules?filter=E-Waste" class="inline-flex items-center gap-1 font-bold text-rose-700 hover:underline pt-1 text-[11px]">
+                                    <span class="material-symbols-outlined text-[14px]">near_me</span>
+                                    <span>Find Nearest Certified Hazardous &amp; Battery Drop-Off &rarr;</span>
+                                </a>
+                            </div>
+
+                            <!-- Repair Before E-Waste Card -->
+                            <div id="repair-ewaste-card" class="hidden p-3.5 rounded-xl bg-indigo-50 border border-indigo-200 text-indigo-900 text-xs space-y-2 shadow-sm">
+                                <div class="flex items-center justify-between">
+                                    <span class="font-bold flex items-center gap-1.5 text-indigo-800">
+                                        <span class="material-symbols-outlined text-[18px]">build</span>
+                                        <span>Repair &amp; Circular Refurbishability</span>
+                                    </span>
+                                    <span id="repairability-score-pill" class="px-2 py-0.5 rounded-full font-bold text-[10px] font-mono bg-indigo-100 text-indigo-800 border border-indigo-300">Repairability: 7/10</span>
+                                </div>
+                                <p id="repair-tip-text" class="text-[11px] leading-relaxed"></p>
+                                <div class="pt-1 flex items-center justify-between text-[11px]">
+                                    <span class="text-indigo-600">Right to Repair Initiative</span>
+                                    <a href="/rules?filter=E-Waste" class="font-bold text-indigo-700 hover:underline flex items-center gap-1">Locate E-Waste Depots &rarr;</a>
+                                </div>
+                            </div>
+
+                            <!-- 3-Stage Lifecycle Carbon Offset Bar -->
+                            <div id="lifecycle-co2-box" class="pt-2 border-t border-border-subtle space-y-1.5 text-xs">
+                                <div class="flex justify-between items-center text-[11px]">
+                                    <span class="font-semibold text-text-secondary flex items-center gap-1">
+                                        <span class="material-symbols-outlined text-[15px] text-teal-600">energy_savings_leaf</span>
+                                        <span>Lifecycle Carbon Dynamics</span>
+                                    </span>
+                                    <span id="result-co2" class="font-mono font-bold text-primary"></span>
+                                </div>
+                                <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden flex border border-border-subtle">
+                                    <div id="bar-manufacturing" title="Manufacturing Footprint" class="bg-rose-400 h-full transition-all duration-500" style="width: 45%;"></div>
+                                    <div id="bar-pulping" title="Pulping / Smelting Saved" class="bg-blue-500 h-full transition-all duration-500" style="width: 35%;"></div>
+                                    <div id="bar-methane" title="Landfill Methane Avoided" class="bg-teal-500 h-full transition-all duration-500" style="width: 20%;"></div>
+                                </div>
+                                <div class="flex justify-between items-center text-[10px] text-text-muted flex-wrap gap-1">
+                                    <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-rose-400 inline-block"></span> Manuf: <span id="txt-manufacturing" class="font-mono">0g</span></span>
+                                    <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-blue-500 inline-block"></span> Saved: <span id="txt-pulping" class="font-mono">0g</span></span>
+                                    <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-teal-500 inline-block"></span> Methane Avoided: <span id="txt-methane" class="font-mono">0g</span></span>
+                                </div>
+                            </div>
+
+                            <!-- Greener Swap Banner -->
+                            <div id="greener-swap-banner" class="hidden p-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 text-xs space-y-1">
+                                <div class="font-bold flex items-center gap-1.5 text-amber-800">
+                                    <span class="material-symbols-outlined text-[16px]">published_with_changes</span>
+                                    <span>Circular Greener Swap Recommendation:</span>
+                                </div>
+                                <p id="greener-swap-text" class="text-[11px] leading-relaxed text-amber-900"></p>
+                            </div>
+
+                            <!-- Upcycling & DIY Reuse Card (+30 Bonus Eco-Points) -->
+                            <div id="upcycling-card" class="hidden p-3.5 rounded-xl bg-primary-light/50 border border-primary/30 space-y-2.5">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-bold text-text-primary flex items-center gap-1.5">
+                                        <span class="material-symbols-outlined text-[18px] text-primary">handyman</span>
+                                        <span>Reuse Instead of Toss (+30 Bonus Pts)</span>
+                                    </span>
+                                    <span class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-solar text-white font-mono">+30 PTS</span>
+                                </div>
+                                <ul id="upcycling-ideas-list" class="space-y-1 text-xs text-text-secondary list-disc pl-4"></ul>
+                                <div class="pt-1">
+                                    <button type="button" id="claim-upcycle-btn" onclick="claimUpcycleBonus()" class="w-full btn-primary py-2 px-3 text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm">
+                                        <span class="material-symbols-outlined text-[16px]">workspace_premium</span>
+                                        <span id="claim-upcycle-btn-text">I Reused This Item (+30 Eco-Pts)</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Physical Separation Checklist & Progress Tracker -->
+                        <div id="separation-tracker" class="hidden mb-4 p-4 rounded-xl bg-surface border border-border-subtle space-y-2.5">
+                            <div class="flex items-center justify-between text-xs">
+                                <span class="font-bold text-text-primary flex items-center gap-1.5">
+                                    <span class="material-symbols-outlined text-[16px] text-primary">fact_check</span>
+                                    <span>Physical Layer Separation Progress</span>
+                                </span>
+                                <span id="separation-counter" class="font-mono font-bold text-primary text-[11px]">0 / 0 Layers (0%)</span>
+                            </div>
+                            <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden border border-border-subtle">
+                                <div id="separation-progress-bar" class="h-2 bg-primary rounded-full transition-all duration-300" style="width: 0%"></div>
+                            </div>
+                            <div id="separation-complete-banner" class="hidden p-2.5 rounded-lg bg-teal-50 border border-teal-200 text-teal-900 text-xs font-bold text-center flex items-center justify-center gap-1.5 shadow-sm">
+                                <span class="material-symbols-outlined text-[18px] text-teal-600">celebration</span>
+                                <span>All Layers Properly Separated! Landfill Contamination Prevented.</span>
+                            </div>
+                        </div>
+
+                        <!-- Component Layers List -->
+                        <div id="result-steps" class="space-y-3 max-h-[380px] overflow-y-auto pr-1">
+                            <!-- Default Empty State -->
+                            <div id="empty-state" class="py-16 text-center space-y-3 text-text-muted">
+                                <div class="w-14 h-14 rounded-2xl bg-surface border border-border-subtle flex items-center justify-center mx-auto text-text-muted">
+                                    <span class="material-symbols-outlined text-[28px]">splitscreen</span>
+                                </div>
+                                <div class="space-y-1">
+                                    <p class="text-sm font-medium text-text-secondary">No item selected</p>
+                                    <p class="text-xs max-w-xs mx-auto">Capture a photo, pick a demo sample, or search an item name on the left.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- "Ask BinSync" Contextual Follow-Up Micro-Chat -->
+                        <div id="followup-chat-box" class="hidden mt-4 pt-4 border-t border-border-subtle space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold text-text-primary flex items-center gap-1.5">
+                                    <span class="material-symbols-outlined text-primary text-[18px]">forum</span>
+                                    Ask BinSync about this item
+                                </span>
+                                <span class="text-[10px] uppercase font-bold text-text-muted">Municipal Advisory</span>
+                            </div>
+
+                            <!-- Quick Question Chips -->
+                            <div class="flex flex-wrap gap-1.5">
+                                <button type="button" onclick="askQuickFollowup('What if it is greasy or food-stained?')" class="px-2.5 py-1 rounded-full text-[11px] font-medium bg-surface border border-border-subtle hover:border-primary hover:text-primary transition">What if it's greasy?</button>
+                                <button type="button" onclick="askQuickFollowup('Can the cap or lid stay on?')" class="px-2.5 py-1 rounded-full text-[11px] font-medium bg-surface border border-border-subtle hover:border-primary hover:text-primary transition">Can the cap stay on?</button>
+                                <button type="button" onclick="askQuickFollowup('How clean does it need to be before binning?')" class="px-2.5 py-1 rounded-full text-[11px] font-medium bg-surface border border-border-subtle hover:border-primary hover:text-primary transition">How clean does it need to be?</button>
+                            </div>
+
+                            <!-- Conversation Thread -->
+                            <div id="followup-messages" class="space-y-2 max-h-48 overflow-y-auto text-xs pr-1"></div>
+
+                            <!-- Follow-up Question Input -->
+                            <form id="followup-form" onsubmit="handleFollowupSubmit(event)" class="flex gap-2">
+                                <input type="text" id="followup-input" placeholder="Ask a specific question (e.g. 'Can I leave the label on?')..." class="flex-1 text-xs px-3.5 py-2.5 rounded-xl border border-border-medium bg-surface focus:outline-none focus:border-primary">
+                                <button type="submit" id="followup-submit-btn" class="btn-primary px-4 py-2 text-xs font-bold flex items-center gap-1">
+                                    <span>Ask</span>
+                                    <span class="material-symbols-outlined text-[14px]">send</span>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer Tip -->
+                <div class="pt-4 border-t border-border-subtle text-[11px] text-text-muted flex items-center justify-between">
+                    <span class="flex items-center gap-1 text-primary font-medium">
+                        <span class="material-symbols-outlined text-[14px]">verified</span>
+                        Strict Contamination Guardrails
+                    </span>
+                    <a href="/rules" class="text-primary hover:underline font-semibold">Check bylaws &rarr;</a>
+                </div>
+            </div>
+
+            <!-- Session Batch Sort Tracker -->
+            <div id="session-batch-card" class="hidden eco-card p-4 space-y-3">
+                <div class="flex items-center justify-between pb-2 border-b border-border-subtle text-xs">
+                    <span class="font-bold text-text-primary flex items-center gap-1">
+                        <span class="material-symbols-outlined text-[16px] text-primary">checklist</span>
+                        Today's Sorting Session
+                    </span>
+                    <span id="session-count-badge" class="font-bold px-2 py-0.5 rounded-full bg-primary-light text-primary text-[10px]">0 items</span>
+                </div>
+                <div id="session-items-list" class="space-y-1.5 max-h-36 overflow-y-auto text-xs"></div>
+                <div class="pt-2 border-t border-border-subtle flex items-center justify-between text-xs">
+                    <span class="text-text-muted">Session CO₂ Diverted:</span>
+                    <span id="session-co2-total" class="font-mono font-bold text-primary">0.0g</span>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<!-- Floating Celebratory Toasts for Badges & Quests -->
+<div id="toast-notification-container" class="fixed bottom-6 right-6 z-[999] flex flex-col gap-3 pointer-events-none max-w-sm w-full px-4 sm:px-0"></div>
+
+</main>
+
+<!-- Global Autocomplete Datalist for Waste & Packaging Items -->
+<datalist id="packaging-suggestions">
+    <option value="Starbucks Hot Coffee Cup with Lid">
+    <option value="Delivery Corrugated Pizza Box">
+    <option value="Clear Plastic Water Bottle (PET #1)">
+    <option value="Multi-Layer Potato Chips Pouch (BOPP #7)">
+    <option value="Corrugated Shipping Box">
+    <option value="Aluminum Beverage Can">
+    <option value="Household AA / Lithium Battery">
+    <option value="Aseptic Gable-Top Milk Carton">
+    <option value="Glass Pickle Jar with Metal Lid">
+    <option value="Styrofoam Clamshell Container (PS #6)">
+    <option value="Air Cushion Bubble Wrap (LDPE #4)">
+    <option value="Organic Food Remnants & Produce Scraps">
+    <option value="HDPE Milk Jug with Cap">
+    <option value="Broken Smartphone / Cable E-Waste">
+    <option value="Aerosol Spray Can">
+</datalist>
+
+<!-- Nordic Arctic Glacier Obsidian & Ice Slate Footer -->
+<footer class="bg-[#0B1120] text-slate-400 border-t border-slate-800 mt-24 pt-16 pb-20 text-sm">
+    <div class="max-w-container mx-auto px-4 sm:px-8 lg:px-12 xl:px-16">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+            <!-- Brand Column -->
+            <div class="md:col-span-2 space-y-4">
+                <div class="flex items-center gap-3 font-bold text-xl">
+                    <img src="/static/img/logo-icon.svg" alt="BinSync Logo" class="w-8 h-8 rounded-xl shadow-sm">
+                    <span class="tracking-tight text-xl font-black text-white">Bin<span class="text-[#38BDF8]">Sync</span></span>
+                </div>
+                <p class="text-slate-400 text-sm max-w-md leading-relaxed">
+                    Precision computer vision engineered for composite packaging decomposition. Eliminating wishcycling through automated material layer separation and verifiable municipal diversion.
+                </p>
+                <div class="flex items-center gap-3 pt-2 text-xs">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-950/80 border border-blue-800/60 text-[#38BDF8] font-semibold text-xs">
+                        <span class="w-2 h-2 rounded-full bg-[#38BDF8] pulse-subtle"></span>
+                        Vision Inspection System Active
+                    </span>
+                    <span class="text-slate-500 text-xs">Verified Circular Infrastructure</span>
+                </div>
+            </div>
+
+            <!-- Core Modules -->
+            <div>
+                <h3 class="font-bold text-white uppercase tracking-widest text-[11px] mb-4">Core Modules</h3>
+                <ul class="space-y-2.5 text-sm text-slate-400">
+                    <li><a href="/classifier" class="hover:text-[#38BDF8] transition">Material Inspector</a></li>
+                    <li><a href="/rules" class="hover:text-[#38BDF8] transition">Drop-off Map &amp; Bylaws</a></li>
+                    <li><a href="/classifications" class="hover:text-[#38BDF8] transition">Material Taxonomy</a></li>
+                    <li><a href="/leaderboard" class="hover:text-[#38BDF8] transition">Community Leaderboard</a></li>
+                </ul>
+            </div>
+
+            <!-- Climate & Transparency -->
+            <div>
+                <h3 class="font-bold text-white uppercase tracking-widest text-[11px] mb-4">Climate &amp; Auditing</h3>
+                <ul class="space-y-2.5 text-sm text-slate-400">
+                    <li><a href="/rules#faq" class="hover:text-[#38BDF8] transition">Wishcycling Guide</a></li>
+                    <li><a href="/dashboard" class="hover:text-[#38BDF8] transition">CO₂ Diversion Audit</a></li>
+                    <li><a href="/login" class="hover:text-[#38BDF8] transition">Citizen Portal</a></li>
+                    <li><span class="text-slate-500">&copy; 2026 BinSync Inc.</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="border-t border-slate-800 pt-8 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-500 gap-4">
+            <p>Empowering eco-citizens and zero-waste cities with transparent, verifiable carbon diversion metrics.</p>
+            <div class="flex items-center gap-6">
+                <a href="/rules" class="hover:text-[#38BDF8] transition">Municipal Bylaws</a>
+                <a href="/classifications" class="hover:text-[#38BDF8] transition">Taxonomy API</a>
+                <span class="text-[#38BDF8] font-bold">Clean Planet First</span>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Mobile Bottom Navigation Bar (Light Arctic Glacier) -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-xl border-t border-border-subtle z-40 pt-2 safe-bottom-nav px-3 flex justify-around items-center shadow-lg">
+    <a href="/" class="min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-xs px-2 text-text-muted hover:text-text-primary">
+        <span class="material-symbols-outlined text-[22px]">home</span>
+        <span>Home</span>
+    </a>
+    <a href="/classifier" class="min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-xs px-2 text-primary font-bold">
+        <span class="material-symbols-outlined text-[22px]">center_focus_strong</span>
+        <span>Inspect</span>
+    </a>
+    <a href="/rules" class="min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-xs px-2 text-text-muted hover:text-text-primary">
+        <span class="material-symbols-outlined text-[22px]">map</span>
+        <span>Rules</span>
+    </a>
+    <a href="/leaderboard" class="min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-xs px-2 text-text-muted hover:text-text-primary">
+        <span class="material-symbols-outlined text-[22px]">leaderboard</span>
+        <span>Rank</span>
+    </a>
+    <a href="/dashboard" class="min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-xs px-2 text-text-muted hover:text-text-primary">
+        <span class="material-symbols-outlined text-[22px]">account_circle</span>
+        <span>Profile</span>
+    </a>
+</nav>
+
+<!-- Mobile Menu Toggle Script & Feedback + PWA -->
+<script>
+    // Universal Haptic & Audio Feedback Helper
+    window.triggerFeedback = function(type = 'success') {
+        try {
+            if ('vibrate' in navigator) {
+                if (type === 'success') navigator.vibrate([40, 30, 60]);
+                else if (type === 'error') navigator.vibrate([80, 50, 80]);
+                else navigator.vibrate(35);
+            }
+            const AudioCtx = window.AudioContext || window.webkitAudioContext;
+            if (AudioCtx) {
+                const ctx = new AudioCtx();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                const now = ctx.currentTime;
+                if (type === 'success') {
+                    osc.frequency.setValueAtTime(587.33, now); // D5
+                    osc.frequency.setValueAtTime(880, now + 0.09); // A5
+                    gain.gain.setValueAtTime(0.06, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.26);
+                    osc.start(now);
+                    osc.stop(now + 0.28);
+                } else if (type === 'error') {
+                    osc.frequency.setValueAtTime(329.63, now); // E4
+                    osc.frequency.setValueAtTime(220, now + 0.1); // A3
+                    gain.gain.setValueAtTime(0.08, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+                    osc.start(now);
+                    osc.stop(now + 0.28);
+                } else {
+                    osc.frequency.setValueAtTime(659.25, now); // E5
+                    gain.gain.setValueAtTime(0.04, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+                    osc.start(now);
+                    osc.stop(now + 0.14);
+                }
+            }
+        } catch(e) {}
+    };
+
+    const menuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuIcon = document.getElementById('mobile-menu-icon');
+
+    if (menuBtn && mobileMenu) {
+        menuBtn.addEventListener('click', () => {
+            const isHidden = mobileMenu.classList.contains('hidden');
+            if (isHidden) {
+                mobileMenu.classList.remove('hidden');
+                if (menuIcon) menuIcon.textContent = 'close';
+            } else {
+                mobileMenu.classList.add('hidden');
+                if (menuIcon) menuIcon.textContent = 'menu';
+            }
+        });
+    }
+
+    // Register PWA Service Worker for Offline Resilience
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js').catch(err => {
+                console.log('SW registration note:', err);
+            });
+        });
+    }
+
+    // ==========================================
+    // NORDIC GLACIER SCROLL ENGINE
+    // ==========================================
+    document.addEventListener('DOMContentLoaded', () => {
+        const progressBar = document.getElementById('scroll-progress-bar');
+        const mainHeader = document.getElementById('main-header');
+        const backToTopBtn = document.getElementById('back-to-top-btn');
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        // 1. Passive Scroll Handler (Progress Bar, Sticky Header Compact & Back-To-Top)
+        let ticking = false;
+        function onScroll() {
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    const scrollY = window.scrollY || window.pageYOffset;
+                    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+
+                    // Progress bar
+                    if (progressBar) {
+                        const progress = docHeight > 0 ? (scrollY / docHeight) * 100 : 0;
+                        progressBar.style.width = `${Math.min(100, Math.max(0, progress))}%`;
+                    }
+
+                    // Sticky header compact elevation
+                    if (mainHeader) {
+                        if (scrollY > 24) {
+                            mainHeader.classList.remove('h-20', 'bg-white/95');
+                            mainHeader.classList.add('h-16', 'bg-white/90', 'shadow-sm');
+                        } else {
+                            mainHeader.classList.remove('h-16', 'bg-white/90', 'shadow-sm');
+                            mainHeader.classList.add('h-20', 'bg-white/95');
+                        }
+                    }
+
+                    // Floating Back to Top Button
+                    if (backToTopBtn) {
+                        if (scrollY > 450) {
+                            backToTopBtn.classList.remove('opacity-0', 'translate-y-4', 'scale-90', 'pointer-events-none');
+                            backToTopBtn.classList.add('opacity-100', 'translate-y-0', 'scale-100', 'pointer-events-auto');
+                        } else {
+                            backToTopBtn.classList.add('opacity-0', 'translate-y-4', 'scale-90', 'pointer-events-none');
+                            backToTopBtn.classList.remove('opacity-100', 'translate-y-0', 'scale-100', 'pointer-events-auto');
+                        }
+                    }
+
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }
+
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+
+        if (backToTopBtn) {
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: prefersReducedMotion ? 'auto' : 'smooth'
+                });
+                if (window.triggerFeedback) window.triggerFeedback('tap');
+            });
+        }
+
+        // 2. Universal IntersectionObserver Scroll-Reveal Engine
+        if ('IntersectionObserver' in window && !prefersReducedMotion) {
+            const revealObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                root: null,
+                rootMargin: '0px 0px -40px 0px',
+                threshold: 0.1
+            });
+
+            window.observeScrollReveals = function(root = document) {
+                const candidates = root.querySelectorAll('.eco-card, section h1, section h2, .tax-card, .facility-card, tbody tr, .reveal-on-scroll, .reveal-left, .reveal-right, .reveal-scale');
+                const winH = window.innerHeight;
+
+                candidates.forEach((el) => {
+                    const rect = el.getBoundingClientRect();
+                    if (rect.top < winH - 20) {
+                        el.classList.add('is-visible');
+                        return;
+                    }
+
+                    if (!el.classList.contains('reveal-left') && 
+                        !el.classList.contains('reveal-right') && 
+                        !el.classList.contains('reveal-scale') && 
+                        !el.classList.contains('reveal-on-scroll')) {
+                        el.classList.add('reveal-on-scroll');
+                    }
+
+                    if (!el.style.transitionDelay) {
+                        const parent = el.parentElement;
+                        if (parent) {
+                            const siblings = Array.from(parent.children);
+                            const indexInRow = siblings.indexOf(el);
+                            if (indexInRow >= 0) {
+                                el.style.transitionDelay = `${(indexInRow % 4) * 90}ms`;
+                            }
+                        }
+                    }
+
+                    revealObserver.observe(el);
+                });
+            };
+
+            window.observeScrollReveals(document);
+        } else {
+            document.querySelectorAll('.reveal-on-scroll, .reveal-left, .reveal-right, .reveal-scale').forEach(el => {
+                el.classList.add('is-visible');
+            });
+            window.observeScrollReveals = function() {};
+        }
+    });
+</script>
+
+<!-- Floating Back to Top Button -->
+<button id="back-to-top-btn" type="button" aria-label="Back to top" class="fixed bottom-20 md:bottom-8 right-6 z-40 p-3 rounded-2xl bg-white hover:bg-surface-container text-primary border border-border-medium shadow-lg opacity-0 translate-y-4 scale-90 pointer-events-none transition-all duration-300 flex items-center justify-center group focus:outline-none focus:ring-2 focus:ring-primary/40">
+    <span class="material-symbols-outlined text-[22px] group-hover:-translate-y-0.5 transition-transform">arrow_upward</span>
+</button>
+
+
+<script>
+    let selectedFile = null;
+    let cameraStream = null;
+    let currentFacingMode = 'environment'; // Default to rear camera on mobile devices
+    let torchActive = false;
+    let voiceEnabled = false;
+    let sessionScans = [];
+
+    const fileInput = document.getElementById('file-input');
+    const uploadPrompt = document.getElementById('upload-prompt');
+    const previewWrapper = document.getElementById('preview-wrapper');
+    const previewInnerBox = document.getElementById('preview-inner-box');
+    const imagePreview = document.getElementById('image-preview');
+    const bboxOverlay = document.getElementById('bbox-overlay');
+    const submitBtn = document.getElementById('submit-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const loadingSpinner = document.getElementById('loading-spinner');
+    const loadingStageText = document.getElementById('loading-stage-text');
+    const diagnosticStatus = document.getElementById('diagnostic-status');
+    const errorContainer = document.getElementById('error-container');
+    const errorMessage = document.getElementById('error-message');
+    const resultMeta = document.getElementById('result-meta');
+    const resultCategory = document.getElementById('result-category');
+    const resultItemName = document.getElementById('result-item-name');
+    const resultMaterial = document.getElementById('result-material');
+    const resultPoints = document.getElementById('result-points');
+    const resultCo2 = document.getElementById('result-co2');
+    const resultSteps = document.getElementById('result-steps');
+    const emptyState = document.getElementById('empty-state');
+
+    // New AI Confidence, Resin Code & Hazmat Alert elements
+    const resultConfidencePill = document.getElementById('result-confidence-pill');
+    const resultResinStamp = document.getElementById('result-resin-stamp');
+    const resinVerificationBar = document.getElementById('resin-verification-bar');
+    const hazmatSafetyAlert = document.getElementById('hazmat-safety-alert');
+    const repairEwasteCard = document.getElementById('repair-ewaste-card');
+    const repairabilityScorePill = document.getElementById('repairability-score-pill');
+    const repairTipText = document.getElementById('repair-tip-text');
+
+    // Checklist & Micro-Chat elements
+    const separationTracker = document.getElementById('separation-tracker');
+    const separationCounter = document.getElementById('separation-counter');
+    const separationProgressBar = document.getElementById('separation-progress-bar');
+    const separationCompleteBanner = document.getElementById('separation-complete-banner');
+    const followupChatBox = document.getElementById('followup-chat-box');
+    const followupMessages = document.getElementById('followup-messages');
+    const followupInput = document.getElementById('followup-input');
+    const followupSubmitBtn = document.getElementById('followup-submit-btn');
+
+    // Barcode elements
+    const scanBarcodeBtn = document.getElementById('scan-barcode-btn');
+    const closeBarcodeBtn = document.getElementById('close-barcode-btn');
+    const barcodeReaderBox = document.getElementById('barcode-reader-box');
+    let html5QrScanner = null;
+    let currentAnalyzedData = null;
+
+    // Camera elements
+    const startCameraBtn = document.getElementById('start-camera-btn');
+    const switchCameraBtn = document.getElementById('switch-camera-btn');
+    const captureBtn = document.getElementById('capture-btn');
+    const cameraVideo = document.getElementById('camera-video');
+    const cameraCanvas = document.getElementById('camera-canvas');
+    const cameraPoster = document.getElementById('camera-poster');
+
+    // Mode elements
+    const tabVisualBtn = document.getElementById('tab-visual-btn');
+    const tabTextBtn = document.getElementById('tab-text-btn');
+    const tabBinAuditBtn = document.getElementById('tab-bin-audit-btn');
+    const visualInputView = document.getElementById('visual-input-view');
+    const textInputView = document.getElementById('text-input-view');
+    const binAuditView = document.getElementById('bin-audit-view');
+    const textQueryInput = document.getElementById('text-query-input');
+    const textSearchBtn = document.getElementById('text-search-btn');
+
+    // Voice toggle
+    const voiceToggleBtn = document.getElementById('voice-toggle-btn');
+    const voiceIcon = document.getElementById('voice-icon');
+    const voiceLabel = document.getElementById('voice-label');
+
+    // Session Tracker
+    const sessionBatchCard = document.getElementById('session-batch-card');
+    const sessionCountBadge = document.getElementById('session-count-badge');
+    const sessionItemsList = document.getElementById('session-items-list');
+    const sessionCo2Total = document.getElementById('session-co2-total');
+
+    // Tab Switching (3-Way: Visual, Text/Barcode, Multi-Item Bin Audit)
+    if (tabVisualBtn) {
+        tabVisualBtn.addEventListener('click', () => {
+            tabVisualBtn.className = "px-3.5 sm:px-4 py-2 rounded-full font-bold bg-white text-primary shadow-sm transition";
+            if (tabTextBtn) tabTextBtn.className = "px-3.5 sm:px-4 py-2 rounded-full font-semibold text-text-secondary hover:text-text-primary transition";
+            if (tabBinAuditBtn) tabBinAuditBtn.className = "px-3.5 sm:px-4 py-2 rounded-full font-semibold text-text-secondary hover:text-text-primary transition flex items-center gap-1.5";
+            if (visualInputView) visualInputView.classList.remove('hidden');
+            if (textInputView) textInputView.classList.add('hidden');
+            if (binAuditView) binAuditView.classList.add('hidden');
+        });
+    }
+
+    if (tabTextBtn) {
+        tabTextBtn.addEventListener('click', () => {
+            tabTextBtn.className = "px-3.5 sm:px-4 py-2 rounded-full font-bold bg-white text-primary shadow-sm transition";
+            if (tabVisualBtn) tabVisualBtn.className = "px-3.5 sm:px-4 py-2 rounded-full font-semibold text-text-secondary hover:text-text-primary transition";
+            if (tabBinAuditBtn) tabBinAuditBtn.className = "px-3.5 sm:px-4 py-2 rounded-full font-semibold text-text-secondary hover:text-text-primary transition flex items-center gap-1.5";
+            if (textInputView) textInputView.classList.remove('hidden');
+            if (visualInputView) visualInputView.classList.add('hidden');
+            if (binAuditView) binAuditView.classList.add('hidden');
+            stopCamera();
+            if (textQueryInput) textQueryInput.focus();
+        });
+    }
+
+    if (tabBinAuditBtn) {
+        tabBinAuditBtn.addEventListener('click', () => {
+            tabBinAuditBtn.className = "px-3.5 sm:px-4 py-2 rounded-full font-bold bg-white text-primary shadow-sm transition flex items-center gap-1.5";
+            if (tabVisualBtn) tabVisualBtn.className = "px-3.5 sm:px-4 py-2 rounded-full font-semibold text-text-secondary hover:text-text-primary transition";
+            if (tabTextBtn) tabTextBtn.className = "px-3.5 sm:px-4 py-2 rounded-full font-semibold text-text-secondary hover:text-text-primary transition";
+            if (binAuditView) binAuditView.classList.remove('hidden');
+            if (visualInputView) visualInputView.classList.add('hidden');
+            if (textInputView) textInputView.classList.add('hidden');
+            stopCamera();
+        });
+    }
+
+    // Voice Toggle Handler
+    if (voiceToggleBtn) {
+        voiceToggleBtn.addEventListener('click', () => {
+            voiceEnabled = !voiceEnabled;
+            if (voiceEnabled) {
+                voiceToggleBtn.className = "px-4 py-2 text-xs sm:text-sm rounded-full border border-primary bg-primary text-white font-bold transition flex items-center gap-1.5 shadow-sm";
+                if (voiceIcon) voiceIcon.textContent = "volume_up";
+                if (voiceLabel) voiceLabel.textContent = "Voice: On";
+                speakDirective("Voice directives active. I will read disposal steps aloud.");
+            } else {
+                voiceToggleBtn.className = "px-4 py-2 text-xs sm:text-sm rounded-full border border-border-subtle bg-white font-semibold text-text-secondary hover:border-primary transition flex items-center gap-1.5";
+                if (voiceIcon) voiceIcon.textContent = "volume_off";
+                if (voiceLabel) voiceLabel.textContent = "Voice: Off";
+                if (window.speechSynthesis) window.speechSynthesis.cancel();
+            }
+        });
+    }
+
+    function speakDirective(text) {
+        if (!voiceEnabled || !window.speechSynthesis) return;
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.rate = 1.0;
+        utterance.pitch = 1.0;
+        window.speechSynthesis.speak(utterance);
+    }
+
+    // Handle File Pick
+    if (fileInput) {
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files && e.target.files[0]) {
+                selectedFile = e.target.files[0];
+                showPreviewFromFile(selectedFile);
+            }
+        });
+    }
+
+    // Drag and Drop
+    const dropZone = document.getElementById('drop-zone');
+    if (dropZone) {
+        ['dragenter', 'dragover'].forEach(name => {
+            dropZone.addEventListener(name, (e) => {
+                e.preventDefault();
+                dropZone.classList.add('border-primary', 'bg-primary-light/30');
+            });
+        });
+        ['dragleave', 'drop'].forEach(name => {
+            dropZone.addEventListener(name, (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('border-primary', 'bg-primary-light/30');
+            });
+        });
+        dropZone.addEventListener('drop', (e) => {
+            if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+                selectedFile = e.dataTransfer.files[0];
+                showPreviewFromFile(selectedFile);
+            }
+        });
+    }
+
+    function showPreviewFromFile(file) {
+        stopCamera();
+        stopBarcodeScanner();
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            imagePreview.src = e.target.result;
+            imagePreview.classList.remove('hidden');
+            if (previewWrapper) previewWrapper.classList.remove('hidden');
+            uploadPrompt.classList.add('hidden');
+            submitBtn.classList.remove('hidden');
+            resetBtn.classList.remove('hidden');
+            diagnosticStatus.textContent = "Ready to analyze";
+            if (bboxOverlay) bboxOverlay.innerHTML = '';
+        };
+        reader.readAsDataURL(file);
+    }
+
+    // 1-Click Samples loader
+    async function loadSampleImage(url, filename) {
+        resetScanner();
+        try {
+            diagnosticStatus.textContent = "Loading sample...";
+            const response = await fetch(url);
+            const blob = await response.blob();
+            selectedFile = new File([blob], filename, { type: blob.type || 'image/jpeg' });
+            showPreviewFromFile(selectedFile);
+            analyzePackaging();
+        } catch (err) {
+            alert("Could not load sample file: " + err.message);
+        }
+    }
+
+    // Text & Barcode Lookup Handlers
+    async function quickTextLookup(query) {
+        if (textQueryInput) textQueryInput.value = query;
+        performTextLookup(query);
+    }
+
+    if (textSearchBtn && textQueryInput) {
+        textSearchBtn.addEventListener('click', () => {
+            const query = textQueryInput.value.trim();
+            if (query) performTextLookup(query);
+        });
+        textQueryInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const query = textQueryInput.value.trim();
+                if (query) performTextLookup(query);
+            }
+        });
+    }
+
+    async function performTextLookup(query) {
+        resetScanner();
+        stopBarcodeScanner();
+        diagnosticStatus.textContent = "Searching knowledge base & barcode database...";
+        loadingSpinner.classList.remove('hidden');
+        errorContainer.classList.add('hidden');
+        resultMeta.classList.add('hidden');
+        resultSteps.innerHTML = '';
+
+        try {
+            const response = await fetch(`/api/lookup?q=${encodeURIComponent(query)}`);
+            loadingSpinner.classList.add('hidden');
+            const data = await response.json();
+            if (data.error) {
+                diagnosticStatus.textContent = "Not found";
+                errorContainer.classList.remove('hidden');
+                errorMessage.textContent = data.error;
+                return;
+            }
+            diagnosticStatus.textContent = "Analysis Complete";
+            renderAnalysis(data);
+        } catch (err) {
+            loadingSpinner.classList.add('hidden');
+            diagnosticStatus.textContent = "Connection Error";
+            errorContainer.classList.remove('hidden');
+            errorMessage.textContent = "Failed to fetch lookup: " + err.message;
+        }
+    }
+
+    // Live HTML5 Barcode & UPC Camera Scanner
+    async function startBarcodeScanner() {
+        if (!window.Html5Qrcode) {
+            alert("Barcode scanner library is loading, please try again in a moment.");
+            return;
+        }
+        if (barcodeReaderBox) barcodeReaderBox.classList.remove('hidden');
+        try {
+            if (html5QrScanner) {
+                await html5QrScanner.stop().catch(() => {});
+            }
+            html5QrScanner = new Html5Qrcode("barcode-reader");
+            await html5QrScanner.start(
+                { facingMode: "environment" },
+                {
+                    fps: 10,
+                    qrbox: { width: 250, height: 150 }
+                },
+                (decodedText) => {
+                    stopBarcodeScanner();
+                    textQueryInput.value = decodedText;
+                    performTextLookup(decodedText);
+                },
+                () => {}
+            );
+        } catch (err) {
+            alert("Could not access camera for barcode scanning: " + err.message);
+            stopBarcodeScanner();
+        }
+    }
+
+    function stopBarcodeScanner() {
+        if (html5QrScanner) {
+            html5QrScanner.stop().catch(() => {}).then(() => {
+                try { html5QrScanner.clear(); } catch(e){}
+                html5QrScanner = null;
+            });
+        }
+        if (barcodeReaderBox) barcodeReaderBox.classList.add('hidden');
+    }
+
+    if (scanBarcodeBtn) {
+        scanBarcodeBtn.addEventListener('click', () => {
+            if (barcodeReaderBox && barcodeReaderBox.classList.contains('hidden')) {
+                startBarcodeScanner();
+            } else {
+                stopBarcodeScanner();
+            }
+        });
+    }
+    if (closeBarcodeBtn) {
+        closeBarcodeBtn.addEventListener('click', stopBarcodeScanner);
+    }
+
+    // Camera Handlers
+    async function startCamera(facingMode = 'environment') {
+        try {
+            if (cameraStream) {
+                cameraStream.getTracks().forEach(track => track.stop());
+            }
+            cameraStream = await navigator.mediaDevices.getUserMedia({
+                video: { facingMode: { ideal: facingMode }, width: { ideal: 1280 }, height: { ideal: 720 } },
+                audio: false
+            });
+            cameraVideo.srcObject = cameraStream;
+            cameraVideo.classList.remove('hidden');
+            cameraPoster.classList.add('hidden');
+            startCameraBtn.classList.add('hidden');
+            switchCameraBtn.classList.remove('hidden');
+            captureBtn.classList.remove('hidden');
+            
+            // Show torch button if supported
+            const track = cameraStream.getVideoTracks()[0];
+            const torchBtn = document.getElementById('torch-btn');
+            if (track && torchBtn && track.getCapabilities && track.getCapabilities().torch) {
+                torchBtn.classList.remove('hidden');
+            }
+
+            currentFacingMode = facingMode;
+        } catch (err) {
+            alert("Camera access denied or unavailable: " + err.message);
+        }
+    }
+
+    async function toggleTorch() {
+        if (!cameraStream) return;
+        const track = cameraStream.getVideoTracks()[0];
+        if (!track) return;
+        try {
+            const capabilities = track.getCapabilities ? track.getCapabilities() : {};
+            if (capabilities.torch) {
+                torchActive = !torchActive;
+                await track.applyConstraints({ advanced: [{ torch: torchActive }] });
+                const icon = document.getElementById('torch-icon');
+                if (icon) icon.textContent = torchActive ? 'flash_on' : 'flash_off';
+            } else {
+                alert("Flashlight/Torch is not supported on this camera device.");
+            }
+        } catch(e) {
+            console.log("Torch error:", e);
+        }
+    }
+
+    // Native Mobile Camera Hardware Input Fallback
+    const mobileNativeCam = document.getElementById('mobile-native-cam');
+    if (mobileNativeCam) {
+        mobileNativeCam.addEventListener('change', (e) => {
+            if (e.target.files && e.target.files[0]) {
+                selectedFile = e.target.files[0];
+                showPreviewFromFile(selectedFile);
+            }
+        });
+    }
+
+    function stopCamera() {
+        if (cameraStream) {
+            cameraStream.getTracks().forEach(track => track.stop());
+            cameraStream = null;
+        }
+        torchActive = false;
+        const torchBtn = document.getElementById('torch-btn');
+        if (torchBtn) torchBtn.classList.add('hidden');
+        cameraVideo.classList.add('hidden');
+        cameraPoster.classList.remove('hidden');
+        startCameraBtn.classList.remove('hidden');
+        switchCameraBtn.classList.add('hidden');
+        captureBtn.classList.add('hidden');
+    }
+
+    if (startCameraBtn) startCameraBtn.addEventListener('click', () => startCamera(currentFacingMode));
+    if (switchCameraBtn) switchCameraBtn.addEventListener('click', () => {
+        const nextMode = currentFacingMode === 'user' ? 'environment' : 'user';
+        startCamera(nextMode);
+    });
+
+    if (captureBtn) captureBtn.addEventListener('click', () => {
+        if (!cameraVideo.videoWidth) return;
+
+        // Visual Shutter Flash Effect (150ms)
+        const shutterFlash = document.getElementById('shutter-flash');
+        if (shutterFlash) {
+            shutterFlash.classList.remove('opacity-0');
+            shutterFlash.classList.add('opacity-90');
+            setTimeout(() => {
+                shutterFlash.classList.remove('opacity-90');
+                shutterFlash.classList.add('opacity-0');
+            }, 150);
+        }
+
+        cameraCanvas.width = cameraVideo.videoWidth;
+        cameraCanvas.height = cameraVideo.videoHeight;
+        const ctx = cameraCanvas.getContext('2d');
+        ctx.drawImage(cameraVideo, 0, 0);
+
+        cameraCanvas.toBlob((blob) => {
+            selectedFile = new File([blob], "camera-capture.jpg", { type: "image/jpeg" });
+            showPreviewFromFile(selectedFile);
+            if (window.triggerFeedback) window.triggerFeedback('tap');
+        }, "image/jpeg", 0.9);
+    });
+
+    // Client-side Canvas Image Compression Helper (Max 1024x1024, JPEG 0.82)
+    async function compressImageForUpload(file) {
+        return new Promise((resolve) => {
+            if (!file || !file.type || !file.type.startsWith('image/')) return resolve(file);
+            const img = new Image();
+            img.onload = () => {
+                let { width, height } = img;
+                const maxDim = 1024;
+                if (width > maxDim || height > maxDim) {
+                    if (width > height) {
+                        height = Math.round((height * maxDim) / width);
+                        width = maxDim;
+                    } else {
+                        width = Math.round((width * maxDim) / height);
+                        height = maxDim;
+                    }
+                }
+                const canvas = document.createElement('canvas');
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+                canvas.toBlob((blob) => {
+                    if (blob) {
+                        resolve(new File([blob], file.name.replace(/\.[^/.]+$/, "") + ".jpg", { type: "image/jpeg" }));
+                    } else {
+                        resolve(file);
+                    }
+                }, "image/jpeg", 0.82);
+            };
+            img.onerror = () => resolve(file);
+            img.src = URL.createObjectURL(file);
+        });
+    }
+
+    // Reset scanner
+    function resetScanner() {
+        selectedFile = null;
+        currentAnalyzedData = null;
+        fileInput.value = "";
+        imagePreview.src = "";
+        imagePreview.classList.add('hidden');
+        if (previewWrapper) previewWrapper.classList.add('hidden');
+        if (bboxOverlay) bboxOverlay.innerHTML = '';
+        uploadPrompt.classList.remove('hidden');
+        submitBtn.classList.add('hidden');
+        resetBtn.classList.add('hidden');
+        loadingSpinner.classList.add('hidden');
+        errorContainer.classList.add('hidden');
+        resultMeta.classList.add('hidden');
+        if (separationTracker) separationTracker.classList.add('hidden');
+        if (separationCompleteBanner) separationCompleteBanner.classList.add('hidden');
+        if (followupChatBox) followupChatBox.classList.add('hidden');
+        if (followupMessages) followupMessages.innerHTML = '';
+        diagnosticStatus.textContent = "Awaiting Input";
+        resultSteps.innerHTML = '';
+        if (emptyState) resultSteps.appendChild(emptyState);
+        stopBarcodeScanner();
+        const scannerLaser = document.getElementById('scanner-laser');
+        if (scannerLaser) scannerLaser.classList.add('hidden');
+    }
+
+    if (resetBtn) resetBtn.addEventListener('click', resetScanner);
+    if (submitBtn) submitBtn.addEventListener('click', analyzePackaging);
+
+    async function analyzePackaging() {
+        if (!selectedFile) return;
+
+        submitBtn.disabled = true;
+        resetBtn.disabled = true;
+        loadingSpinner.classList.remove('hidden');
+        errorContainer.classList.add('hidden');
+        resultMeta.classList.add('hidden');
+        resultSteps.innerHTML = '';
+        diagnosticStatus.textContent = "Analyzing optics...";
+
+        // Activate glowing vertical laser scanner sweep
+        const scannerLaser = document.getElementById('scanner-laser');
+        if (scannerLaser) scannerLaser.classList.remove('hidden');
+
+        const stages = [
+            "Decomposing physical material layers...",
+            "Checking local municipal disposal criteria...",
+            "Computing grams of CO₂ avoided..."
+        ];
+        let stageIdx = 0;
+        const stageInterval = setInterval(() => {
+            if (stageIdx < stages.length) {
+                loadingStageText.textContent = stages[stageIdx];
+                stageIdx++;
+            }
+        }, 1200);
+
+        const fileToUpload = await compressImageForUpload(selectedFile);
+        const formData = new FormData();
+        formData.append('file', fileToUpload);
+
+        try {
+            const response = await fetch('/api/classify', {
+                method: 'POST',
+                body: formData
+            });
+
+            clearInterval(stageInterval);
+            loadingSpinner.classList.add('hidden');
+            submitBtn.disabled = false;
+            resetBtn.disabled = false;
+            const scannerLaser = document.getElementById('scanner-laser');
+            if (scannerLaser) scannerLaser.classList.add('hidden');
+
+            const data = await response.json();
+
+            if (!response.ok || data.error) {
+                diagnosticStatus.textContent = "Error detected";
+                errorContainer.classList.remove('hidden');
+                errorMessage.textContent = data.error || "Unable to classify packaging safely. Please verify the photo shows household waste.";
+                return;
+            }
+
+            diagnosticStatus.textContent = "Analysis Complete";
+            renderAnalysis(data);
+
+        } catch (err) {
+            clearInterval(stageInterval);
+            loadingSpinner.classList.add('hidden');
+            submitBtn.disabled = false;
+            resetBtn.disabled = false;
+            const scannerLaser = document.getElementById('scanner-laser');
+            if (scannerLaser) scannerLaser.classList.add('hidden');
+            diagnosticStatus.textContent = "Connection Error";
+            errorContainer.classList.remove('hidden');
+            errorMessage.textContent = "Network request failed. Please check server connectivity and API key.";
+        }
+    }
+
+    function showCelebratoryToast(type, title, message, badgeText) {
+        const container = document.getElementById('toast-notification-container');
+        if (!container) return;
+
+        const toast = document.createElement('div');
+        toast.className = "pointer-events-auto bg-surface border-2 border-primary/30 p-4 rounded-2xl shadow-xl flex items-start gap-3.5 transform translate-y-4 opacity-0 transition-all duration-300 backdrop-blur-md bg-white/95";
+
+        let iconName = type === 'badge' ? 'workspace_premium' : 'military_tech';
+        let iconBg = type === 'badge' ? 'bg-solar-light text-solar-dark border-solar/30' : 'bg-primary-light text-primary border-primary/30';
+        let badgeColor = type === 'badge' ? 'bg-solar text-white' : 'bg-emerald-100 text-emerald-800 border border-emerald-300';
+
+        toast.innerHTML = `
+            <div class="w-10 h-10 rounded-xl border flex items-center justify-center flex-shrink-0 ${iconBg}">
+                <span class="material-symbols-outlined text-[22px]">${iconName}</span>
+            </div>
+            <div class="flex-1 min-w-0 space-y-0.5">
+                <div class="flex items-center justify-between gap-2">
+                    <span class="text-xs font-bold text-text-primary">${escapeHtml(title)}</span>
+                    <span class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full font-mono ${badgeColor}">${escapeHtml(badgeText)}</span>
+                </div>
+                <p class="text-xs text-text-secondary">${escapeHtml(message)}</p>
+            </div>
+            <button type="button" class="text-text-muted hover:text-text-primary p-0.5" onclick="this.parentElement.remove()">
+                <span class="material-symbols-outlined text-[16px]">close</span>
+            </button>
+        `;
+
+        container.appendChild(toast);
+
+        requestAnimationFrame(() => {
+            toast.classList.remove('translate-y-4', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+        });
+
+        if (typeof confetti === 'function') {
+            confetti({
+                particleCount: 35,
+                spread: 45,
+                origin: { x: 0.85, y: 0.85 }
+            });
+        }
+
+        setTimeout(() => {
+            toast.classList.add('opacity-0', 'translate-x-4');
+            setTimeout(() => toast.remove(), 350);
+        }, 5500);
+    }
+
+    function renderAnalysis(data) {
+        currentAnalyzedData = data;
+        resultMeta.classList.remove('hidden');
+        resultItemName.textContent = data.item_name || "Packaging Item";
+        resultMaterial.textContent = data.material || "Multi-Layer Composite";
+        resultPoints.textContent = `+${data.points_earned || 15} Eco-Points`;
+
+        // Points Pop Spring Pulse Animation
+        if (resultPoints) {
+            resultPoints.classList.remove('animate-pop');
+            void resultPoints.offsetWidth;
+            resultPoints.classList.add('animate-pop');
+        }
+        const navPointsPill = document.getElementById('nav-points-pill');
+        if (navPointsPill) {
+            navPointsPill.classList.remove('animate-pop');
+            void navPointsPill.offsetWidth;
+            navPointsPill.classList.add('animate-pop');
+        }
+
+        resultCo2.textContent = `${data.co2_saved_grams || 0}g CO₂ Offset`;
+
+        const category = data.category || "Landfill";
+        resultCategory.textContent = category;
+
+        // Stream Badges
+        if (category === "Hazmat") {
+            resultCategory.className = "text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-rose-100 text-rose-800 border border-rose-300";
+        } else if (category === "Recyclable") {
+            resultCategory.className = "text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-200";
+        } else if (category === "Compostable") {
+            resultCategory.className = "text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-teal-50 text-teal-800 border border-teal-200";
+        } else {
+            resultCategory.className = "text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-slate-100 text-slate-800 border border-slate-200";
+        }
+
+        // Hazmat Safety Banner & E-Waste Repairability Card
+        if (hazmatSafetyAlert) {
+            if (category === "Hazmat") {
+                hazmatSafetyAlert.classList.remove('hidden');
+            } else {
+                hazmatSafetyAlert.classList.add('hidden');
+            }
+        }
+
+        if (repairEwasteCard) {
+            if (data.is_electronic_or_appliance) {
+                repairEwasteCard.classList.remove('hidden');
+                if (repairabilityScorePill) {
+                    repairabilityScorePill.textContent = `Repairability: ${data.repairability_score || 7}/10`;
+                }
+                if (repairTipText) {
+                    repairTipText.textContent = data.repair_tip || "Check battery terminals and switch contacts before municipal e-waste recycling.";
+                }
+            } else {
+                repairEwasteCard.classList.add('hidden');
+            }
+        }
+
+        // AI Confidence Pill & Resin Code Stamp
+        const confPct = parseInt(data.confidence_pct || 92);
+        if (resultConfidencePill) {
+            resultConfidencePill.textContent = `${confPct}% AI Confidence`;
+            if (confPct < 80) {
+                resultConfidencePill.className = "px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-100 text-amber-800 border border-amber-300";
+                if (resinVerificationBar) resinVerificationBar.classList.remove('hidden');
+            } else {
+                resultConfidencePill.className = "px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-primary-light text-primary border border-primary/20";
+                if (resinVerificationBar) resinVerificationBar.classList.add('hidden');
+            }
+        }
+
+        if (resultResinStamp) {
+            resultResinStamp.textContent = `Resin: ${data.resin_code_detected || '#1 PET'}`;
+        }
+
+        // Brand & Recyclability Grade
+        const brandEl = document.getElementById('result-brand');
+        if (brandEl) brandEl.textContent = data.brand_name || "Generic / Unbranded";
+
+        const gradeEl = document.getElementById('result-grade-badge');
+        const rawGrade = (data.recyclability_grade || (category === "Recyclable" || category === "Compostable" ? "A" : "C")).toUpperCase();
+        if (gradeEl) {
+            gradeEl.textContent = `Grade ${rawGrade}`;
+            if (rawGrade.startsWith('A')) {
+                gradeEl.className = "px-2.5 py-0.5 rounded-full font-bold text-[11px] font-mono border bg-emerald-50 text-emerald-800 border-emerald-300";
+            } else if (rawGrade === 'B' || rawGrade === 'C') {
+                gradeEl.className = "px-2.5 py-0.5 rounded-full font-bold text-[11px] font-mono border bg-amber-50 text-amber-800 border-amber-300";
+            } else {
+                gradeEl.className = "px-2.5 py-0.5 rounded-full font-bold text-[11px] font-mono border bg-rose-50 text-rose-800 border-rose-300";
+            }
+        }
+
+        const scrapEl = document.getElementById('result-scrap-value');
+        if (scrapEl) {
+            const scrapUsd = parseFloat(data.scrap_value_usd || 0.02);
+            const scrapInr = Math.round(scrapUsd * 83.2);
+            scrapEl.textContent = `$${scrapUsd.toFixed(2)} (₹${scrapInr})`;
+        }
+
+        // 3-Stage Lifecycle Carbon Dynamics
+        const lc = data.lifecycle_co2 || {
+            manufacturing_g: Math.round((parseFloat(data.co2_saved_grams) || 30) * 1.3),
+            pulping_saved_g: Math.round((parseFloat(data.co2_saved_grams) || 30) * 0.7),
+            methane_avoided_g: Math.round((parseFloat(data.co2_saved_grams) || 30) * 0.3)
+        };
+        const mfg = parseFloat(lc.manufacturing_g || 0);
+        const pulping = parseFloat(lc.pulping_saved_g || 0);
+        const methane = parseFloat(lc.methane_avoided_g || 0);
+        const sumLc = Math.max(1, mfg + pulping + methane);
+
+        const barMfg = document.getElementById('bar-manufacturing');
+        const barPulp = document.getElementById('bar-pulping');
+        const barMeth = document.getElementById('bar-methane');
+        if (barMfg) barMfg.style.width = `${Math.round((mfg / sumLc) * 100)}%`;
+        if (barPulp) barPulp.style.width = `${Math.round((pulping / sumLc) * 100)}%`;
+        if (barMeth) barMeth.style.width = `${Math.round((methane / sumLc) * 100)}%`;
+
+        const txtMfg = document.getElementById('txt-manufacturing');
+        const txtPulp = document.getElementById('txt-pulping');
+        const txtMeth = document.getElementById('txt-methane');
+        if (txtMfg) txtMfg.textContent = `${mfg}g`;
+        if (txtPulp) txtPulp.textContent = `${pulping}g`;
+        if (txtMeth) txtMeth.textContent = `${methane}g`;
+
+        // Greener Swap Recommendation
+        const swapBanner = document.getElementById('greener-swap-banner');
+        const swapText = document.getElementById('greener-swap-text');
+        if (data.greener_swap && swapBanner && swapText) {
+            swapBanner.classList.remove('hidden');
+            swapText.textContent = data.greener_swap;
+        } else if (swapBanner) {
+            swapBanner.classList.add('hidden');
+        }
+
+        // Upcycling & Circular DIY Reuse Card
+        const upcycleCard = document.getElementById('upcycling-card');
+        const upcycleList = document.getElementById('upcycling-ideas-list');
+        const claimBtn = document.getElementById('claim-upcycle-btn');
+        const claimBtnText = document.getElementById('claim-upcycle-btn-text');
+        if (data.upcycle_ideas && data.upcycle_ideas.length > 0 && upcycleCard && upcycleList) {
+            upcycleCard.classList.remove('hidden');
+            upcycleList.innerHTML = '';
+            data.upcycle_ideas.forEach(idea => {
+                const li = document.createElement('li');
+                li.textContent = idea;
+                upcycleList.appendChild(li);
+            });
+            if (claimBtn) {
+                claimBtn.disabled = data.upcycle_claimed === true;
+                if (data.upcycle_claimed) {
+                    claimBtn.className = "w-full bg-slate-100 text-slate-500 py-2 px-3 text-xs font-bold rounded-full cursor-not-allowed border border-slate-200";
+                    if (claimBtnText) claimBtnText.textContent = "✓ Reused & Verified (+30 Pts Claimed)";
+                } else {
+                    claimBtn.className = "w-full btn-primary py-2 px-3 text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm";
+                    if (claimBtnText) claimBtnText.textContent = "I Reused This Item (+30 Eco-Pts)";
+                }
+            }
+        } else if (upcycleCard) {
+            upcycleCard.classList.add('hidden');
+        }
+
+        // Add to running Session Sort List (including scan_id for undo)
+        addSessionScan({
+            scan_id: data.scan_id,
+            name: data.item_name || "Packaging Item",
+            category: category,
+            co2: parseFloat(data.co2_saved_grams || 0)
+        });
+
+        // Trigger celebratory toast notifications for completed quests & unlocked badges
+        if (data.quests_completed && Array.isArray(data.quests_completed) && data.quests_completed.length > 0) {
+            data.quests_completed.forEach(q => {
+                showCelebratoryToast('quest', 'Daily Quest Completed!', q.title, `+${q.reward_pts} Eco-Pts`);
+            });
+        }
+        if (data.new_badges && Array.isArray(data.new_badges) && data.new_badges.length > 0) {
+            data.new_badges.forEach(b => {
+                showCelebratoryToast('badge', 'New Achievement Unlocked!', `"${b}" added to your profile!`, 'Earned');
+            });
+        }
+
+        // Mobile Auto-Scroll to Results (< 1024px)
+        if (window.innerWidth < 1024) {
+            const resultsWrapper = document.getElementById('results-wrapper');
+            if (resultsWrapper) {
+                setTimeout(() => {
+                    resultsWrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 150);
+            }
+        }
+
+        // Render Layers
+        const components = data.components || [];
+        if (components.length === 0) {
+            resultSteps.innerHTML = '<div class="p-4 bg-surface text-xs text-text-secondary rounded-xl text-center border border-border-subtle">No individual sub-layers identified. Dispose according to designated category.</div>';
+            if (separationTracker) separationTracker.classList.add('hidden');
+            if (followupChatBox) followupChatBox.classList.remove('hidden');
+            return;
+        }
+
+        resultSteps.innerHTML = '';
+
+        // Reset & show separation progress tracker
+        const totalLayers = components.length;
+        if (separationTracker) {
+            separationTracker.classList.remove('hidden');
+            separationCounter.textContent = `0 / ${totalLayers} Layers Separated (0%)`;
+            separationProgressBar.style.width = '0%';
+            if (separationCompleteBanner) separationCompleteBanner.classList.add('hidden');
+        }
+
+        // Render AI Bounding Box Overlays
+        if (bboxOverlay) {
+            bboxOverlay.innerHTML = '';
+            components.forEach((comp, idx) => {
+                if (comp.box_2d && Array.isArray(comp.box_2d) && comp.box_2d.length === 4) {
+                    const [ymin, xmin, ymax, xmax] = comp.box_2d;
+                    const top = (ymin / 10).toFixed(2);
+                    const left = (xmin / 10).toFixed(2);
+                    const height = ((ymax - ymin) / 10).toFixed(2);
+                    const width = ((xmax - xmin) / 10).toFixed(2);
+
+                    const boxEl = document.createElement('div');
+                    boxEl.className = 'bbox-rect';
+                    boxEl.id = `bbox-layer-${idx}`;
+                    boxEl.style.top = `${top}%`;
+                    boxEl.style.left = `${left}%`;
+                    boxEl.style.height = `${height}%`;
+                    boxEl.style.width = `${width}%`;
+
+                    const tag = document.createElement('div');
+                    tag.className = 'bbox-tag';
+                    tag.textContent = `${idx + 1}. ${comp.part}`;
+                    boxEl.appendChild(tag);
+
+                    // Two-way Hover: Hovering box highlights component card
+                    boxEl.addEventListener('mouseenter', () => {
+                        boxEl.classList.add('active-hover');
+                        const cardEl = document.getElementById(`layer-card-${idx}`);
+                        if (cardEl) {
+                            cardEl.classList.add('ring-2', 'ring-primary', 'bg-primary-light/40');
+                            cardEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                        }
+                    });
+                    boxEl.addEventListener('mouseleave', () => {
+                        boxEl.classList.remove('active-hover');
+                        const cardEl = document.getElementById(`layer-card-${idx}`);
+                        if (cardEl) {
+                            cardEl.classList.remove('ring-2', 'ring-primary', 'bg-primary-light/40');
+                        }
+                    });
+
+                    bboxOverlay.appendChild(boxEl);
+                }
+            });
+        }
+
+        let spokenDirectives = `${data.item_name}. Categorized as ${category}. `;
+
+        components.forEach((comp, idx) => {
+            const card = document.createElement('div');
+            card.id = `layer-card-${idx}`;
+            card.className = "layer-card animate-fade-up p-4 rounded-xl border border-border-subtle bg-white shadow-sm space-y-2.5 transition duration-200 hover:border-primary";
+            card.style.animationDelay = `${idx * 110}ms`;
+            card.style.animationFillMode = 'both';
+            
+            let destBadge = "bg-slate-100 text-slate-800 border-slate-200";
+            const destLower = (comp.destination || "").toLowerCase();
+            if (destLower.includes("blue") || destLower.includes("recycl")) {
+                destBadge = "bg-blue-50 text-blue-700 border-blue-200";
+            } else if (destLower.includes("compost") || destLower.includes("green") || destLower.includes("organic")) {
+                destBadge = "bg-teal-50 text-teal-800 border-teal-200";
+            } else if (destLower.includes("soft plastic") || destLower.includes("drop-off") || destLower.includes("store")) {
+                destBadge = "bg-amber-50 text-amber-800 border-amber-200";
+            }
+
+            spokenDirectives += `Layer ${idx + 1}: ${comp.part}. Action: ${comp.action}. `;
+
+            card.innerHTML = `
+                <div class="flex items-start justify-between gap-3">
+                    <div class="flex items-start gap-2.5">
+                        <input type="checkbox" id="check-layer-${idx}" data-idx="${idx}" class="layer-check mt-1 w-4 h-4 rounded text-primary border-border-medium focus:ring-primary cursor-pointer">
+                        <div>
+                            <div class="flex items-center gap-1.5">
+                                <span class="w-5 h-5 rounded-md bg-primary text-white text-[10px] font-bold flex items-center justify-center">${idx + 1}</span>
+                                <h4 class="layer-title text-xs font-bold text-text-primary">${escapeHtml(comp.part || 'Layer')}</h4>
+                            </div>
+                            <div class="text-[11px] text-text-secondary mt-1">
+                                <span class="font-semibold text-text-primary">Material:</span> ${escapeHtml(comp.material || 'Mixed')}
+                            </div>
+                        </div>
+                    </div>
+                    <span class="text-[10px] font-bold px-2 py-0.5 rounded-full border whitespace-nowrap ${destBadge}">${escapeHtml(comp.destination || 'Sort properly')}</span>
+                </div>
+                <div class="layer-action-box text-[11px] text-primary font-semibold pl-8 flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[14px]">arrow_right_alt</span>
+                    <span class="layer-action-text">${escapeHtml(comp.action || 'Dispose into designated stream')}</span>
+                </div>
+            `;
+
+            // Two-way Hover: Hovering card highlights bounding box on photo
+            card.addEventListener('mouseenter', () => {
+                const boxEl = document.getElementById(`bbox-layer-${idx}`);
+                if (boxEl) boxEl.classList.add('active-hover');
+            });
+            card.addEventListener('mouseleave', () => {
+                const boxEl = document.getElementById(`bbox-layer-${idx}`);
+                if (boxEl) boxEl.classList.remove('active-hover');
+            });
+
+            // Interactive checklist handler
+            const checkbox = card.querySelector('.layer-check');
+            const actionText = card.querySelector('.layer-action-text');
+            checkbox.addEventListener('change', () => {
+                if (checkbox.checked) {
+                    card.classList.add('bg-primary-light/40', 'border-primary/50');
+                    if (actionText) actionText.classList.add('line-through', 'text-text-muted');
+                } else {
+                    card.classList.remove('bg-primary-light/40', 'border-primary/50');
+                    if (actionText) actionText.classList.remove('line-through', 'text-text-muted');
+                }
+
+                // Increment progress bar
+                const allChecks = document.querySelectorAll('.layer-check');
+                const checkedCount = Array.from(allChecks).filter(c => c.checked).length;
+                const pct = Math.round((checkedCount / totalLayers) * 100);
+                
+                if (separationCounter) separationCounter.textContent = `${checkedCount} / ${totalLayers} Layers Separated (${pct}%)`;
+                if (separationProgressBar) separationProgressBar.style.width = `${pct}%`;
+
+                // 100% completion celebration
+                if (checkedCount === totalLayers && totalLayers > 0) {
+                    if (separationCompleteBanner) separationCompleteBanner.classList.remove('hidden');
+                    if (typeof confetti === 'function') {
+                        confetti({
+                            particleCount: 70,
+                            spread: 60,
+                            origin: { y: 0.7 }
+                        });
+                    }
+                    if (voiceEnabled) {
+                        speakDirective("All layers separated. Thank you for preventing municipal contamination.");
+                    }
+                } else {
+                    if (separationCompleteBanner) separationCompleteBanner.classList.add('hidden');
+                }
+            });
+
+            resultSteps.appendChild(card);
+        });
+
+        // Unhide Contextual Follow-up Micro-Chat
+        if (followupChatBox) {
+            followupChatBox.classList.remove('hidden');
+            if (followupMessages) followupMessages.innerHTML = '';
+        }
+
+        // Speak aloud if voice mode active
+        speakDirective(spokenDirectives);
+    }
+
+    // Follow-up Micro-chat Handlers
+    async function askQuickFollowup(question) {
+        if (!currentAnalyzedData) return;
+        if (followupInput) followupInput.value = question;
+        submitFollowupQuestion(question);
+    }
+
+    async function handleFollowupSubmit(e) {
+        e.preventDefault();
+        if (!currentAnalyzedData || !followupInput) return;
+        const q = followupInput.value.trim();
+        if (q) submitFollowupQuestion(q);
+    }
+
+    async function submitFollowupQuestion(question) {
+        if (!question || !currentAnalyzedData) return;
+
+        appendChatBubble('user', question);
+        if (followupInput) followupInput.value = '';
+        if (followupSubmitBtn) followupSubmitBtn.disabled = true;
+
+        const thinkingId = 'thinking-' + Date.now();
+        appendChatBubble('advisor', 'Consulting municipal sorting rules...', thinkingId);
+
+        try {
+            const resp = await fetch('/api/ask_followup', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    item_name: currentAnalyzedData.item_name || 'Packaging Item',
+                    material: currentAnalyzedData.material || 'Mixed Material',
+                    category: currentAnalyzedData.category || 'General Waste',
+                    components: currentAnalyzedData.components || [],
+                    question: question
+                })
+            });
+
+            const data = await resp.json();
+            const thinkingEl = document.getElementById(thinkingId);
+            if (thinkingEl) thinkingEl.remove();
+
+            if (data.answer) {
+                appendChatBubble('advisor', data.answer);
+                if (voiceEnabled) speakDirective(data.answer);
+            } else {
+                appendChatBubble('advisor', data.error || 'Unable to retrieve answer. Follow standard municipal curbside rules.');
+            }
+        } catch (err) {
+            const thinkingEl = document.getElementById(thinkingId);
+            if (thinkingEl) thinkingEl.remove();
+            appendChatBubble('advisor', 'Connection error. Please try asking again.');
+        } finally {
+            if (followupSubmitBtn) followupSubmitBtn.disabled = false;
+        }
+    }
+
+    function appendChatBubble(sender, text, id = null) {
+        if (!followupMessages) return;
+        const msg = document.createElement('div');
+        if (id) msg.id = id;
+        if (sender === 'user') {
+            msg.className = "flex justify-end";
+            msg.innerHTML = `<div class="bg-primary text-white text-[11px] font-medium px-3 py-1.5 rounded-xl rounded-tr-none max-w-[85%]">${escapeHtml(text)}</div>`;
+        } else {
+            msg.className = "flex justify-start";
+            msg.innerHTML = `<div class="bg-surface-container border border-border-subtle text-text-primary text-[11px] px-3 py-2 rounded-xl rounded-tl-none max-w-[90%] space-y-1"><span class="font-bold text-primary block text-[10px] uppercase">BinSync Advisor</span><p class="leading-relaxed">${escapeHtml(text)}</p></div>`;
+        }
+        followupMessages.appendChild(msg);
+        followupMessages.scrollTop = followupMessages.scrollHeight;
+    }
+
+    function addSessionScan(item) {
+        sessionScans.push(item);
+        if (sessionBatchCard) sessionBatchCard.classList.remove('hidden');
+        if (sessionCountBadge) sessionCountBadge.textContent = `${sessionScans.length} item${sessionScans.length > 1 ? 's' : ''}`;
+        
+        let totalCo2 = sessionScans.reduce((acc, curr) => acc + curr.co2, 0);
+        if (sessionCo2Total) sessionCo2Total.textContent = `${totalCo2.toFixed(1)}g`;
+
+        if (sessionItemsList) {
+            const row = document.createElement('div');
+            row.className = "session-row flex items-center justify-between py-1.5 border-b border-border-subtle/50 text-xs";
+            row.innerHTML = `
+                <div class="flex items-center gap-2 truncate max-w-[200px]">
+                    <span class="truncate font-medium text-text-primary">${escapeHtml(item.name)}</span>
+                    <span class="text-[10px] px-1.5 py-0.2 rounded font-semibold bg-surface-container text-text-muted">${escapeHtml(item.category)}</span>
+                </div>
+                <div class="flex items-center gap-2 flex-shrink-0">
+                    <span class="text-[11px] font-mono text-primary font-bold">+${item.co2.toFixed(1)}g</span>
+                    <button type="button" onclick="undoScan(${item.scan_id || 'null'}, this)" class="text-[11px] font-semibold text-rose-500 hover:text-rose-700 hover:underline flex items-center gap-0.5" title="Undo accidental scan">
+                        <span class="material-symbols-outlined text-[14px]">undo</span>
+                        <span>Undo</span>
+                    </button>
+                </div>
+            `;
+            sessionItemsList.prepend(row);
+        }
+    }
+
+    async function undoScan(scanId, btn) {
+        if (!scanId) {
+            if (btn && btn.closest('.session-row')) btn.closest('.session-row').remove();
+            return;
+        }
+        if (!confirm("Undo this scan? Points and CO2 metrics will be reversed.")) return;
+        try {
+            const resp = await fetch(`/api/scan/${scanId}`, { method: 'DELETE' });
+            const res = await resp.json();
+            if (res.status === 'success') {
+                if (btn && btn.closest('.session-row')) {
+                    btn.closest('.session-row').remove();
+                }
+                sessionScans = sessionScans.filter(s => s.scan_id !== scanId);
+                if (sessionCountBadge) sessionCountBadge.textContent = `${sessionScans.length} item${sessionScans.length > 1 ? 's' : ''}`;
+                let totalCo2 = sessionScans.reduce((acc, curr) => acc + curr.co2, 0);
+                if (sessionCo2Total) sessionCo2Total.textContent = `${totalCo2.toFixed(1)}g`;
+                if (window.triggerFeedback) window.triggerFeedback('error');
+                showCelebratoryToast('quest', 'Scan Reversed', 'Scan removed. Points and CO2 metrics adjusted.', 'Reversed');
+            } else {
+                alert(res.error || "Could not undo scan.");
+            }
+        } catch(e) {
+            alert("Error reversing scan: " + e.message);
+        }
+    }
+
+    // Toggle Resin Verification Bar
+    function toggleVerificationBar() {
+        if (!resinVerificationBar) return;
+        resinVerificationBar.classList.toggle('hidden');
+    }
+
+    // Submit Resin Verification Correction
+    async function submitResinCorrection(resinCode, correctedCategory) {
+        if (!currentAnalyzedData) return;
+        try {
+            const resp = await fetch('/api/verify_correction', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    original_item: currentAnalyzedData.item_name || 'Unknown Item',
+                    corrected_resin_code: resinCode,
+                    corrected_category: correctedCategory
+                })
+            });
+            const res = await resp.json();
+            if (res.status === 'success') {
+                if (resultResinStamp) resultResinStamp.textContent = `Resin: ${resinCode}`;
+                if (resultConfidencePill) {
+                    resultConfidencePill.textContent = "100% User Verified";
+                    resultConfidencePill.className = "px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300";
+                }
+                if (resinVerificationBar) resinVerificationBar.classList.add('hidden');
+                if (window.triggerFeedback) window.triggerFeedback('success');
+                showCelebratoryToast('quest', 'Resin Verified!', res.message || '+10 Eco-Pts awarded!', '+10 Pts');
+            }
+        } catch(e) {
+            alert("Verification error: " + e.message);
+        }
+    }
+
+    // Clipboard Paste Listener (Ctrl+V / Cmd+V)
+    window.addEventListener('paste', (e) => {
+        if (!e.clipboardData || !e.clipboardData.items) return;
+        const items = e.clipboardData.items;
+        for (let i = 0; i < items.length; i++) {
+            if (items[i].type.indexOf('image') !== -1) {
+                const blob = items[i].getAsFile();
+                if (blob) {
+                    selectedFile = new File([blob], "clipboard-image.png", { type: blob.type });
+                    if (tabVisualBtn) tabVisualBtn.click();
+                    showPreviewFromFile(selectedFile);
+                    if (window.triggerFeedback) window.triggerFeedback('tap');
+                    showCelebratoryToast('quest', 'Image Pasted!', 'Image loaded from clipboard. Click Analyze to proceed.', 'Ctrl+V');
+                    break;
+                }
+            }
+        }
+    });
+
+    // Voice Dictation Search Integration
+    const voiceDictationBtn = document.getElementById('voice-dictation-btn');
+    const voiceDictationIcon = document.getElementById('voice-dictation-icon');
+    let recognition = null;
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+        const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+        recognition = new SpeechRec();
+        recognition.continuous = false;
+        recognition.interimResults = false;
+        recognition.lang = 'en-US';
+
+        recognition.onstart = () => {
+            if (voiceDictationIcon) {
+                voiceDictationIcon.classList.add('text-rose-500', 'animate-pulse');
+            }
+        };
+        recognition.onend = () => {
+            if (voiceDictationIcon) {
+                voiceDictationIcon.classList.remove('text-rose-500', 'animate-pulse');
+            }
+        };
+        recognition.onresult = (event) => {
+            const transcript = event.results[0][0].transcript;
+            if (transcript && textQueryInput) {
+                textQueryInput.value = transcript;
+                performTextLookup(transcript);
+            }
+        };
+    }
+    if (voiceDictationBtn) {
+        voiceDictationBtn.addEventListener('click', () => {
+            if (!recognition) {
+                alert("Speech recognition is not supported in this browser. Please type packaging name.");
+                return;
+            }
+            try {
+                recognition.start();
+            } catch(e) {
+                recognition.stop();
+            }
+        });
+    }
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return String(str)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+    // Circular Upcycling Claim Bonus Handler
+    async function claimUpcycleBonus() {
+        if (!currentAnalyzedData || !currentAnalyzedData.scan_id) {
+            showCelebratoryToast('quest', 'Upcycle Recorded!', 'Creative reuse logged. +30 Eco-Pts credited to your session!', '+30 Pts');
+            const claimBtn = document.getElementById('claim-upcycle-btn');
+            const claimBtnText = document.getElementById('claim-upcycle-btn-text');
+            if (claimBtn) {
+                claimBtn.disabled = true;
+                claimBtn.className = "w-full bg-slate-100 text-slate-500 py-2 px-3 text-xs font-bold rounded-full cursor-not-allowed border border-slate-200";
+            }
+            if (claimBtnText) claimBtnText.textContent = "✓ Reused & Verified (+30 Pts Claimed)";
+            if (typeof confetti === 'function') confetti({ particleCount: 60, spread: 55, origin: { y: 0.7 } });
+            return;
+        }
+
+        const claimBtn = document.getElementById('claim-upcycle-btn');
+        const claimBtnText = document.getElementById('claim-upcycle-btn-text');
+        if (claimBtn) claimBtn.disabled = true;
+
+        try {
+            const resp = await fetch('/api/claim_upcycle', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ scan_id: currentAnalyzedData.scan_id })
+            });
+            const res = await resp.json();
+            if (res.success) {
+                if (typeof confetti === 'function') confetti({ particleCount: 75, spread: 60, origin: { y: 0.7 } });
+                showCelebratoryToast('badge', 'Upcycling Bonus Credited!', res.message || '+30 Eco-Pts added to profile!', '+30 Pts');
+                if (claimBtn) {
+                    claimBtn.className = "w-full bg-slate-100 text-slate-500 py-2 px-3 text-xs font-bold rounded-full cursor-not-allowed border border-slate-200";
+                }
+                if (claimBtnText) claimBtnText.textContent = "✓ Reused & Verified (+30 Pts Claimed)";
+                currentAnalyzedData.upcycle_claimed = true;
+            } else {
+                alert(res.error || "Could not claim upcycle points.");
+                if (claimBtn) claimBtn.disabled = false;
+            }
+        } catch (err) {
+            alert("Network error: " + err.message);
+            if (claimBtn) claimBtn.disabled = false;
+        }
+    }
+
+    // Bin Purity & Multi-Item Audit Handlers
+    let selectedBinFile = null;
+    let lastAuditData = null;
+
+    const binFileInput = document.getElementById('bin-file-input');
+    const binImagePreview = document.getElementById('bin-image-preview');
+    const binUploadPrompt = document.getElementById('bin-upload-prompt');
+    const binResetBtn = document.getElementById('bin-reset-btn');
+    const binLoadingSpinner = document.getElementById('bin-loading-spinner');
+    const binAuditResults = document.getElementById('bin-audit-results');
+
+    if (binFileInput) {
+        binFileInput.addEventListener('change', (e) => {
+            if (e.target.files && e.target.files[0]) {
+                selectedBinFile = e.target.files[0];
+                const reader = new FileReader();
+                reader.onload = (re) => {
+                    if (binImagePreview) {
+                        binImagePreview.src = re.target.result;
+                        binImagePreview.classList.remove('hidden');
+                    }
+                    if (binUploadPrompt) binUploadPrompt.classList.add('hidden');
+                    if (binResetBtn) binResetBtn.classList.remove('hidden');
+                };
+                reader.readAsDataURL(selectedBinFile);
+            }
+        });
+    }
+
+    function resetBinAudit() {
+        selectedBinFile = null;
+        lastAuditData = null;
+        if (binFileInput) binFileInput.value = '';
+        if (binImagePreview) {
+            binImagePreview.src = '';
+            binImagePreview.classList.add('hidden');
+        }
+        if (binUploadPrompt) binUploadPrompt.classList.remove('hidden');
+        if (binResetBtn) binResetBtn.classList.add('hidden');
+        if (binAuditResults) binAuditResults.classList.add('hidden');
+        if (binLoadingSpinner) binLoadingSpinner.classList.add('hidden');
+    }
+
+    function loadSampleBinImage() {
+        fetch('/static/samples/chips-bag.jpg')
+            .then(r => r.blob())
+            .then(blob => {
+                selectedBinFile = new File([blob], "curbside-mixed-cart.jpg", { type: "image/jpeg" });
+                if (binImagePreview) {
+                    binImagePreview.src = '/static/samples/chips-bag.jpg';
+                    binImagePreview.classList.remove('hidden');
+                }
+                if (binUploadPrompt) binUploadPrompt.classList.add('hidden');
+                if (binResetBtn) binResetBtn.classList.remove('hidden');
+            }).catch(() => {});
+    }
+
+    async function executeBinAudit() {
+        if (!selectedBinFile) {
+            loadSampleBinImage();
+            setTimeout(executeBinAudit, 200);
+            return;
+        }
+
+        if (binLoadingSpinner) binLoadingSpinner.classList.remove('hidden');
+        if (binAuditResults) binAuditResults.classList.add('hidden');
+
+        const formData = new FormData();
+        formData.append('file', selectedBinFile);
+
+        try {
+            const resp = await fetch('/api/audit_bin', {
+                method: 'POST',
+                body: formData
+            });
+            const data = await resp.json();
+            if (binLoadingSpinner) binLoadingSpinner.classList.add('hidden');
+
+            if (data.error) {
+                alert("Audit error: " + data.error);
+                return;
+            }
+
+            lastAuditData = data;
+            renderBinAudit(data);
+        } catch (err) {
+            if (binLoadingSpinner) binLoadingSpinner.classList.add('hidden');
+            alert("Network error: " + err.message);
+        }
+    }
+
+    function renderBinAudit(data) {
+        if (binAuditResults) binAuditResults.classList.remove('hidden');
+        const score = data.purity_score || 0;
+        const pctEl = document.getElementById('bin-purity-score-pct');
+        const ringEl = document.getElementById('bin-purity-ring');
+        const statusLabel = document.getElementById('bin-status-label');
+        const statusBadge = document.getElementById('bin-status-badge');
+
+        if (pctEl) pctEl.textContent = `${score}%`;
+        if (statusLabel) statusLabel.textContent = data.bin_status || 'Audited';
+
+        if (ringEl && statusBadge) {
+            if (score >= 85) {
+                ringEl.className = "w-14 h-14 rounded-full flex items-center justify-center font-black text-base border-4 border-emerald-500 text-emerald-700 bg-white shadow-sm";
+                statusBadge.className = "px-3 py-1 rounded-full text-xs font-bold border bg-emerald-50 text-emerald-800 border-emerald-200";
+                statusBadge.textContent = "Clean Stream Compliant";
+            } else if (score >= 60) {
+                ringEl.className = "w-14 h-14 rounded-full flex items-center justify-center font-black text-base border-4 border-amber-500 text-amber-700 bg-white shadow-sm";
+                statusBadge.className = "px-3 py-1 rounded-full text-xs font-bold border bg-amber-50 text-amber-800 border-amber-200";
+                statusBadge.textContent = "Moderate Contamination";
+            } else {
+                ringEl.className = "w-14 h-14 rounded-full flex items-center justify-center font-black text-base border-4 border-rose-500 text-rose-700 bg-white shadow-sm";
+                statusBadge.className = "px-3 py-1 rounded-full text-xs font-bold border bg-rose-50 text-rose-800 border-rose-200";
+                statusBadge.textContent = "Rejected / Contaminated";
+            }
+        }
+
+        // Remediation list
+        const remList = document.getElementById('bin-remediation-list');
+        if (remList) {
+            remList.innerHTML = '';
+            (data.remediation_summary || []).forEach(step => {
+                const li = document.createElement('li');
+                li.textContent = step;
+                remList.appendChild(li);
+            });
+        }
+
+        // Detected items
+        const itemsContainer = document.getElementById('bin-items-container');
+        const itemCountEl = document.getElementById('bin-item-count');
+        const items = data.items_detected || [];
+        if (itemCountEl) itemCountEl.textContent = items.length;
+
+        if (itemsContainer) {
+            itemsContainer.innerHTML = '';
+            items.forEach((item, idx) => {
+                const itemCard = document.createElement('div');
+                const isContam = item.is_contaminant;
+                const borderClass = isContam ? 'border-rose-200 bg-rose-50/50' : 'border-blue-200 bg-white';
+                const tagClass = isContam ? 'bg-rose-100 text-rose-800 border-rose-200' : 'bg-blue-100 text-blue-800 border-blue-200';
+                const tagText = isContam ? 'CONTAMINANT' : 'CLEAN STREAM';
+
+                itemCard.className = `p-3 rounded-xl border ${borderClass} flex items-start justify-between gap-3 text-xs`;
+                itemCard.innerHTML = `
+                    <div class="space-y-0.5">
+                        <div class="flex items-center gap-1.5">
+                            <span class="font-bold text-text-primary">${idx + 1}. ${escapeHtml(item.name)}</span>
+                            <span class="text-[9px] font-extrabold px-1.5 py-0.5 rounded border uppercase font-mono ${tagClass}">${tagText}</span>
+                        </div>
+                        <p class="text-[11px] text-text-secondary">${escapeHtml(item.action)}</p>
+                    </div>
+                    <span class="font-mono font-bold text-text-primary whitespace-nowrap text-[11px]">+${item.co2_g || 25}g</span>
+                `;
+                itemsContainer.appendChild(itemCard);
+            });
+        }
+
+        showCelebratoryToast('badge', 'Bin Forensics Complete!', `Purity score: ${score}%. +25 Eco-Pts awarded!`, '+25 Pts');
+        if (typeof confetti === 'function' && score >= 75) {
+            confetti({ particleCount: 50, spread: 50, origin: { y: 0.7 } });
+        }
+    }
+
+    async function logAuditCleanItems() {
+        if (!lastAuditData || !lastAuditData.items_detected) return;
+        const cleanItems = lastAuditData.items_detected.filter(it => !it.is_contaminant);
+        if (cleanItems.length === 0) {
+            alert("No compliant clean stream items to log in this container.");
+            return;
+        }
+
+        const btn = document.getElementById('bin-log-clean-btn');
+        if (btn) btn.disabled = true;
+
+        try {
+            const resp = await fetch('/api/log_audit_items', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ items: cleanItems })
+            });
+            const res = await resp.json();
+            if (res.success) {
+                showCelebratoryToast('quest', 'Clean Stream Logged!', `Successfully credited ${res.logged_count} items and +${res.points_awarded} Eco-Points to your dashboard!`, `+${res.points_awarded} Pts`);
+                if (typeof confetti === 'function') confetti({ particleCount: 80, spread: 65, origin: { y: 0.7 } });
+                if (btn) {
+                    btn.className = "w-full bg-slate-100 text-slate-500 py-2.5 px-4 text-xs font-bold rounded-full cursor-not-allowed border border-slate-200";
+                    btn.textContent = `✓ Logged ${res.logged_count} Verified Items to Dashboard`;
+                }
+            } else {
+                alert(res.error || "Could not log items.");
+                if (btn) btn.disabled = false;
+            }
+        } catch (err) {
+            alert("Network error: " + err.message);
+            if (btn) btn.disabled = false;
+        }
+    }
+
+    // Keyboard Shortcuts
+    window.addEventListener('keydown', (e) => {
+        if (['input', 'textarea'].includes(document.activeElement.tagName.toLowerCase())) return;
+        
+        if (e.key === 'c' || e.key === 'C') {
+            e.preventDefault();
+            tabVisualBtn.click();
+            startCameraBtn.click();
+        } else if (e.key === 'u' || e.key === 'U') {
+            e.preventDefault();
+            tabVisualBtn.click();
+            fileInput.click();
+        } else if (e.key === 'v' || e.key === 'V') {
+            e.preventDefault();
+            voiceToggleBtn.click();
+        } else if (e.key === 'r' || e.key === 'R') {
+            e.preventDefault();
+            resetScanner();
+        } else if (e.key === '/') {
+            e.preventDefault();
+            tabTextBtn.click();
+        }
+    });
+
+    // Auto-load sample or lookup query if passed in URL query param
+    function handleInitialUrlParams() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const sampleParam = urlParams.get('sample');
+        const lookupParam = urlParams.get('lookup') || urlParams.get('q');
+        
+        if (lookupParam) {
+            if (tabTextBtn) tabTextBtn.click();
+            if (textQueryInput) textQueryInput.value = lookupParam;
+            if (typeof performTextLookup === 'function') {
+                performTextLookup(lookupParam);
+            }
+        } else if (sampleParam) {
+            if (typeof loadSampleImage === 'function') {
+                loadSampleImage('/static/samples/' + sampleParam, sampleParam);
+            }
+        }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', handleInitialUrlParams);
+    } else {
+        handleInitialUrlParams();
+    }
+</script>
+
+</body>
+</html>

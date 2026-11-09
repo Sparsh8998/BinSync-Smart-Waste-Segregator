@@ -1,0 +1,1837 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="utf-8"/>
+    <script>
+        // Strictly light mode enforcement — remove any legacy dark theme traces
+        try {
+            document.documentElement.classList.remove('dark');
+            localStorage.removeItem('binsync_theme');
+        } catch(e) {}
+    </script>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Material Classifications &amp; Sorting Taxonomy — BinSync</title>
+    <link rel="icon" type="image/svg+xml" href="/static/img/logo-icon.svg">
+    <link rel="apple-touch-icon" href="/static/img/logo-icon.svg">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#2563EB">
+
+    <!-- Fonts: Plus Jakarta Sans, Inter, JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+
+    <!-- Tailwind CSS with Nordic Arctic Glacier Design Tokens -->
+    <script>
+        tailwind = {
+            config: {
+                theme: {
+                    extend: {
+                        colors: {
+                            primary: {
+                                DEFAULT: "#2563EB",   /* Electric Precision Cobalt */
+                                hover:   "#1D4ED8",   /* Deep Royal Cobalt */
+                                light:   "#EFF6FF",   /* Ice Blue Tint */
+                                container: "#0F172A", /* Obsidian Graphite */
+                                fixed:   "#38BDF8"    /* Glacier Sky */
+                            },
+                            solar: {
+                                DEFAULT: "#F59E0B",
+                                hover:   "#D97706",
+                                light:   "#FEF3C7",
+                                dark:    "#B45309"
+                            },
+                            surface: {
+                                DEFAULT: "#F8FAFC",   /* Glacier Ice-White Canvas */
+                                card:    "#FFFFFF",   /* Pristine Card White */
+                                container: "#F1F5F9", /* Ice Slate Inset */
+                                subtle:  "#E2E8F0"    /* Glacier Border Line */
+                            },
+                            text: {
+                                primary:   "#0F172A", /* Obsidian Slate — 15:1 contrast */
+                                secondary: "#334155", /* Cool Charcoal Slate */
+                                muted:     "#64748B"  /* Glacier Muted Slate */
+                            },
+                            border: {
+                                subtle: "#E2E8F0",   /* Glacier Border Line */
+                                medium: "#CBD5E1",   /* Slate Medium Input Border */
+                                hover:  "#2563EB"    /* Active Precision Cobalt */
+                            },
+                            bin: {
+                                recycle:        "#0284C7", /* Curbside Blue */
+                                recycleLight:   "#F0F9FF",
+                                recycleBorder:  "#BAE6FD",
+                                compost:        "#0D9488", /* Glacier Teal */
+                                compostLight:   "#F0FDFA",
+                                compostBorder:  "#99F6E4",
+                                landfill:       "#475569", /* Managed Slate */
+                                landfillLight:  "#F8FAFC",
+                                landfillBorder: "#E2E8F0",
+                                specialty:      "#D97706",
+                                specialtyLight: "#FFFBEB",
+                                specialtyBorder:"#FDE68A",
+                                hazmat:         "#DC2626", /* Hazmat Red */
+                                hazmatLight:    "#FEF2F2",
+                                hazmatBorder:   "#FECACA"
+                            }
+                        },
+                        fontFamily: {
+                            sans: ['Plus Jakarta Sans', 'Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+                            mono: ['JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace']
+                        },
+                        maxWidth: {
+                            container: 'min(96vw, 1720px)'
+                        },
+                        boxShadow: {
+                            'glacier': '0 2px 8px -2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.02)',
+                            'glacier-hover': '0 12px 28px -4px rgba(15, 23, 42, 0.08), 0 4px 8px rgba(15, 23, 42, 0.03)',
+                            'botanical': '0 2px 8px -2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.02)',
+                            'botanical-hover': '0 12px 28px -4px rgba(15, 23, 42, 0.08), 0 4px 8px rgba(15, 23, 42, 0.03)'
+                        }
+                    }
+                }
+            }
+        };
+    </script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <style>
+        /* ── Fluid Dynamic Typography & Viewport Scaling ── */
+        html {
+            font-size: 16px;
+            -webkit-text-size-adjust: 100%;
+        }
+        @media (min-width: 1280px) {
+            html {
+                font-size: 16.5px;
+            }
+        }
+        @media (min-width: 1536px) {
+            html {
+                font-size: 17.5px;
+            }
+        }
+        @media (min-width: 1920px) {
+            html {
+                font-size: 18.5px;
+            }
+        }
+        @media (min-width: 2560px) {
+            html {
+                font-size: 20px;
+            }
+        }
+
+        .max-w-container {
+            max-width: min(96vw, 1720px) !important;
+            width: 100%;
+        }
+
+        /* ── Editorial Tight Tracking Standards ── */
+        h1, h2, h3, .font-heading {
+            letter-spacing: -0.03em;
+        }
+        .meta-tag, .tech-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        /* ── Nordic Arctic Glacier Custom Utilities ── */
+        .text-primary {
+            color: #2563EB !important;
+        }
+        .bg-primary {
+            background-color: #2563EB !important;
+        }
+        .border-primary {
+            border-color: #2563EB !important;
+        }
+        .bg-primary-light {
+            background-color: #EFF6FF !important;
+        }
+
+        .eco-card {
+            background-color: #FFFFFF;
+            border: 1px solid #E2E8F0;
+            border-radius: 1.5rem;
+            box-shadow: 0 2px 8px -2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.02);
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .eco-card:hover {
+            border-color: #CBD5E1;
+            box-shadow: 0 12px 28px -4px rgba(15, 23, 42, 0.08), 0 4px 8px rgba(15, 23, 42, 0.03);
+        }
+
+        .btn-primary {
+            background-color: #2563EB;
+            color: #FFFFFF !important;
+            padding: 0.75rem 1.6rem;
+            border-radius: 9999px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+            min-height: 44px;
+            border: 1px solid transparent;
+        }
+        .btn-primary:hover {
+            background-color: #1D4ED8;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+            transform: translateY(-1px);
+        }
+        .btn-secondary {
+            background-color: #FFFFFF;
+            color: #0F172A;
+            border: 1.5px solid #CBD5E1;
+            padding: 0.75rem 1.6rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+            min-height: 44px;
+        }
+        .btn-secondary:hover {
+            border-color: #2563EB;
+            background-color: #EFF6FF;
+            color: #2563EB;
+            transform: translateY(-1px);
+        }
+        .btn-solar {
+            background-color: #F59E0B;
+            color: #FFFFFF;
+            padding: 0.75rem 1.6rem;
+            border-radius: 9999px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+            min-height: 44px;
+        }
+        .btn-solar:hover {
+            background-color: #D97706;
+            box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35);
+            transform: translateY(-1px);
+        }
+
+        /* ── Micro-Animations ── */
+        @keyframes fade-up {
+            from {
+                opacity: 0;
+                transform: translateY(14px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .animate-fade-up {
+            animation: fade-up 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+        .stagger-1 { animation-delay: 80ms; }
+        .stagger-2 { animation-delay: 160ms; }
+        .stagger-3 { animation-delay: 240ms; }
+        .stagger-4 { animation-delay: 320ms; }
+
+        @keyframes shimmer-move {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(200%); }
+        }
+        .progress-shimmer {
+            position: relative;
+            overflow: hidden;
+        }
+        .progress-shimmer::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.45), transparent);
+            animation: shimmer-move 2.2s infinite ease-in-out;
+            pointer-events-none;
+        }
+
+        @keyframes flame-pulse {
+            0%, 100% { transform: scale(1) rotate(0deg); filter: drop-shadow(0 0 2px rgba(245, 158, 11, 0.4)); }
+            50% { transform: scale(1.14) rotate(-3deg); filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.8)); }
+        }
+        .flame-flicker {
+            display: inline-block;
+            animation: flame-pulse 1.8s infinite ease-in-out;
+            transform-origin: bottom center;
+        }
+
+        @keyframes glacier-drift {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-48%, -52%) scale(1.08); }
+        }
+        .glacier-float {
+            animation: glacier-drift 16s infinite ease-in-out;
+        }
+
+        @keyframes subtle-pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.65; transform: scale(0.97); }
+        }
+        .pulse-subtle {
+            animation: subtle-pulse 2.4s infinite ease-in-out;
+        }
+
+        @keyframes spring-pop {
+            0% { transform: scale(0.8); opacity: 0; }
+            40% { transform: scale(1.22); }
+            70% { transform: scale(0.95); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .animate-pop {
+            animation: spring-pop 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes golden-glow-pulse {
+            0%, 100% {
+                box-shadow: 0 0 15px rgba(245, 158, 11, 0.2), 0 4px 16px rgba(0, 0, 0, 0.05);
+            }
+            50% {
+                box-shadow: 0 0 30px rgba(245, 158, 11, 0.45), 0 8px 24px rgba(245, 158, 11, 0.15);
+            }
+        }
+        .golden-glow-pulse {
+            animation: golden-glow-pulse 3s infinite ease-in-out;
+        }
+
+        /* ── Universal Scroll-Reveal Directions ── */
+        @media (prefers-reduced-motion: no-preference) {
+            .reveal-on-scroll {
+                opacity: 0;
+                transform: translateY(28px) scale(0.985);
+                transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+                will-change: opacity, transform;
+            }
+            .reveal-on-scroll.is-visible {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+
+            .reveal-left {
+                opacity: 0;
+                transform: translateX(-32px);
+                transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+                will-change: opacity, transform;
+            }
+            .reveal-left.is-visible {
+                opacity: 1;
+                transform: translateX(0);
+            }
+
+            .reveal-right {
+                opacity: 0;
+                transform: translateX(32px);
+                transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+                will-change: opacity, transform;
+            }
+            .reveal-right.is-visible {
+                opacity: 1;
+                transform: translateX(0);
+            }
+
+            .reveal-scale {
+                opacity: 0;
+                transform: scale(0.92);
+                transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+                will-change: opacity, transform;
+            }
+            .reveal-scale.is-visible {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* ── Accessibility: Reduced Motion Standards ── */
+        @media (prefers-reduced-motion: reduce) {
+            *, ::before, ::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+            .reveal-on-scroll, .reveal-left, .reveal-right, .reveal-scale {
+                opacity: 1 !important;
+                transform: none !important;
+                transition: none !important;
+            }
+        }
+
+        /* ── Mobile Input Zoom Prevention & Safe Area Standards ── */
+        @media (max-width: 768px) {
+            input, select, textarea {
+                font-size: 16px !important;
+            }
+        }
+        .safe-bottom-nav {
+            padding-bottom: max(0.65rem, env(safe-area-inset-bottom, 0.65rem));
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+    
+</head>
+<body class="bg-surface text-text-primary font-sans min-h-screen flex flex-col antialiased selection:bg-blue-100 selection:text-blue-950">
+
+<!-- Top Fixed Glacier Scroll Progress Bar -->
+<div id="scroll-progress-bar" class="fixed top-0 left-0 h-[3px] bg-gradient-to-r from-primary via-[#38BDF8] to-solar z-[60] w-0 transition-[width] duration-75 ease-out pointer-events-none"></div>
+
+<!-- Nordic Arctic Glacier Frosted Header -->
+<header id="main-header" class="sticky top-0 z-50 transition-all duration-300 bg-white/95 backdrop-blur-md border-b border-border-subtle h-20 flex items-center">
+    <div class="max-w-container mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 w-full flex items-center justify-between">
+        <!-- Brand Logo with Climate Intelligence Identity -->
+        <a href="/" class="flex items-center gap-3 hover:opacity-90 transition-opacity flex-shrink-0">
+            <img src="/static/img/logo-icon.svg" alt="BinSync Logo" class="w-9 h-9 rounded-xl shadow-sm">
+            <div class="flex flex-col">
+                <span class="text-xl font-black tracking-tight text-text-primary leading-none">Bin<span class="text-primary">Sync</span></span>
+                <span class="text-[9px] font-bold text-primary tracking-widest uppercase mt-0.5">CLIMATE INTELLIGENCE</span>
+            </div>
+        </a>
+
+        <!-- Desktop Navigation Tabs (Nordic Glacier Capsule Tabs) -->
+        <nav class="hidden md:flex items-center gap-1.5 text-sm font-semibold">
+            <a href="/" class="px-4 py-2 rounded-full transition-all text-text-secondary hover:text-text-primary hover:bg-surface-container">
+                Home
+            </a>
+            <a href="/classifier" class="px-4 py-2 rounded-full transition-all text-text-secondary hover:text-text-primary hover:bg-surface-container flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-[18px]">photo_camera</span>
+                <span>Waste Sorter</span>
+            </a>
+            <a href="/rules" class="px-4 py-2 rounded-full transition-all text-text-secondary hover:text-text-primary hover:bg-surface-container">
+                Rules &amp; Map
+            </a>
+            <a href="/classifications" class="px-4 py-2 rounded-full transition-all text-primary bg-primary-light font-bold">
+                Taxonomy
+            </a>
+            <a href="/leaderboard" class="px-4 py-2 rounded-full transition-all text-text-secondary hover:text-text-primary hover:bg-surface-container">
+                Leaderboard
+            </a>
+            
+            <a href="/dashboard" class="px-4 py-2 rounded-full transition-all text-text-secondary hover:text-text-primary hover:bg-surface-container">
+                Dashboard
+            </a>
+            
+        </nav>
+
+        <!-- Right Side: User Profile / Action -->
+        <div class="flex items-center gap-3">
+            
+            <a href="/dashboard" class="hidden sm:flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-surface-container border border-border-subtle hover:border-primary/40 transition">
+                <span class="w-6 h-6 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center">
+                    C
+                </span>
+                <span class="text-xs font-bold text-text-primary">Citizen_b361d</span>
+                <span id="nav-points-pill" class="text-xs font-mono font-bold text-primary bg-primary-light px-2.5 py-0.5 rounded-full">0 pts</span>
+            </a>
+            <a href="/logout" title="Log out" class="text-xs font-semibold text-text-muted hover:text-rose-600 px-2 py-1 transition">
+                Sign Out
+            </a>
+            
+
+            <!-- Mobile Hamburger Button -->
+            <button type="button" id="mobile-menu-btn" class="md:hidden text-text-secondary hover:text-text-primary p-2 focus:outline-none rounded-xl hover:bg-surface-container" aria-label="Toggle Menu">
+                <span class="material-symbols-outlined text-[24px]" id="mobile-menu-icon">menu</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Mobile Slide Drawer -->
+    <div id="mobile-menu" class="hidden md:hidden absolute top-20 left-0 right-0 bg-white border-b border-border-subtle shadow-xl px-5 py-4 space-y-2 z-50">
+        <div class="flex items-center gap-2.5 pb-3 mb-2 border-b border-border-subtle">
+            <img src="/static/img/logo-icon.svg" alt="BinSync" class="w-7 h-7 rounded-lg">
+            <span class="font-bold text-sm text-text-primary">BinSync Quick Navigation</span>
+        </div>
+        <a href="/" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-text-secondary hover:bg-surface-container">
+            Home
+        </a>
+        <a href="/classifier" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-text-secondary hover:bg-surface-container">
+            Waste Sorter
+        </a>
+        <a href="/rules" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-text-secondary hover:bg-surface-container">
+            Rules &amp; Map
+        </a>
+        <a href="/classifications" class="block px-4 py-2.5 rounded-xl text-sm font-medium bg-primary-light text-primary font-bold">
+            Taxonomy Directory
+        </a>
+        <a href="/leaderboard" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-text-secondary hover:bg-surface-container">
+            Community Leaderboard
+        </a>
+        
+        <a href="/dashboard" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-text-secondary hover:bg-surface-container">
+            My Dashboard (0 pts)
+        </a>
+        <a href="/logout" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-rose-600 hover:bg-rose-50">
+            Sign Out
+        </a>
+        
+    </div>
+</header>
+
+<!-- Main Body Slot -->
+<main class="flex-grow pb-24 md:pb-0">
+    
+<div class="max-w-container mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 py-10 md:py-16 space-y-12">
+
+    <!-- Header (No Eyebrows/Kickers per craft floor) -->
+    <div class="space-y-3">
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-text-primary leading-tight">
+            Material Taxonomy &amp; Recycling Wizard
+        </h1>
+        <p class="text-base sm:text-lg lg:text-xl text-text-secondary max-w-3xl">
+            Verified recovery rules for polymer resins, composite packaging laminates, organic biomass, and contamination risk factors across municipal recovery facilities.
+        </p>
+    </div>
+
+    <!-- Interactive 3-Step Decision Wizard Card -->
+    <div class="eco-card p-6 sm:p-9 space-y-6 border-primary/20 bg-gradient-to-br from-white via-surface to-primary-light/30">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-border-subtle">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-xl bg-primary-light text-primary flex items-center justify-center font-bold">
+                    <span class="material-symbols-outlined text-[26px]">troubleshoot</span>
+                </div>
+                <div>
+                    <h2 class="text-base sm:text-xl font-bold text-text-primary">"Can I Recycle This?" 3-Step Diagnostic Wizard</h2>
+                    <p class="text-xs sm:text-sm text-text-muted">Interactive quick check for confusing items before throwing them away</p>
+                </div>
+            </div>
+            <button type="button" id="wizard-reset-btn" class="btn-secondary py-2 px-4 text-xs font-bold self-start sm:self-auto flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-[16px]">restart_alt</span>
+                <span>Reset Wizard</span>
+            </button>
+        </div>
+
+        <!-- 3 Step Selectors Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            
+            <!-- Step 1: Packaging Format -->
+            <div class="space-y-2">
+                <label class="block text-xs sm:text-sm font-bold text-text-primary">
+                    1. Packaging Physical Form
+                </label>
+                <select id="wiz-form" class="w-full text-xs sm:text-sm p-3.5 rounded-xl border border-border-medium bg-white focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20">
+                    <option value="rigid-bottle">Rigid Bottle / Tub / Jug</option>
+                    <option value="crinkly-film">Thin Crinkly Film / Foil Wrapper</option>
+                    <option value="cardboard-box">Cardboard Box / Clean Paper</option>
+                    <option value="cup-carton">Coffee Cup / Liquid Carton</option>
+                    <option value="foam">Foam / Styrofoam Block or Tray</option>
+                    <option value="metal-can">Metal Can / Aluminum Tray</option>
+                    <option value="battery">Household Battery / Electronics</option>
+                </select>
+            </div>
+
+            <!-- Step 2: Cleanliness State -->
+            <div class="space-y-2">
+                <label class="block text-xs sm:text-sm font-bold text-text-primary">
+                    2. Cleanliness &amp; Contamination
+                </label>
+                <select id="wiz-clean" class="w-full text-xs sm:text-sm p-3.5 rounded-xl border border-border-medium bg-white focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20">
+                    <option value="clean-dry">Completely Clean &amp; Dry</option>
+                    <option value="light-rinse">Light residue (Rinsed out)</option>
+                    <option value="greasy-oily">Heavily soaked with oil / grease</option>
+                    <option value="full-liquid">Contains leftover liquid / food</option>
+                </select>
+            </div>
+
+            <!-- Step 3: Material or Resin -->
+            <div class="space-y-2">
+                <label class="block text-xs sm:text-sm font-bold text-text-primary">
+                    3. Stamped Code / Composition
+                </label>
+                <select id="wiz-code" class="w-full text-xs sm:text-sm p-3.5 rounded-xl border border-border-medium bg-white focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20">
+                    <option value="code-1-2">#1 PET or #2 HDPE (Clear or Opaque)</option>
+                    <option value="code-5">#5 PP (Polypropylene tub/cup)</option>
+                    <option value="code-foil">Shiny Foil / Metalized plastic lining</option>
+                    <option value="code-foam">#6 PS / Expanded Polystyrene</option>
+                    <option value="code-unknown">No code or #7 OTHER / Multi-layer</option>
+                </select>
+            </div>
+
+        </div>
+
+        <!-- Dynamic Verdict Result Box -->
+        <div id="wizard-verdict" class="p-6 sm:p-7 rounded-2xl bg-surface-container border border-border-subtle space-y-4 transition">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div class="flex items-center gap-3.5">
+                    <span id="verdict-icon" class="w-10 h-10 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center font-bold material-symbols-outlined text-[24px]">recycling</span>
+                    <div>
+                        <div class="text-[11px] font-bold text-text-muted uppercase tracking-wider">Computed Destination:</div>
+                        <h3 id="verdict-title" class="text-base sm:text-xl font-bold text-text-primary">Curbside Blue Recycling Bin</h3>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span id="verdict-badge" class="text-xs sm:text-sm font-bold px-4 py-1.5 rounded-full bg-blue-50 text-blue-800 border border-blue-200">
+                        100% Curbside Eligible
+                    </span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-border-subtle text-xs sm:text-sm">
+                <div>
+                    <span class="text-text-muted font-medium">Preparation Step:</span>
+                    <p id="verdict-prep" class="font-bold text-text-primary mt-1">Empty liquids, give a quick 2-second rinse, screw cap loosely back on.</p>
+                </div>
+                <div>
+                    <span class="text-text-muted font-medium">Contamination Danger:</span>
+                    <p id="verdict-risk" class="font-bold text-teal-700 mt-1">Very Low risk — highly demanded clean stream commodity.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 60-Second "Beat Wishcycling" Sorting Arcade Mini-Game -->
+    <div id="arcade-container" class="eco-card p-6 sm:p-9 space-y-6 border-2 border-primary/20 bg-gradient-to-br from-white via-surface to-primary-light/20 relative overflow-hidden shadow-botanical">
+        <!-- Ambient decorative background circles -->
+        <div class="absolute -right-16 -top-16 w-64 h-64 rounded-full bg-primary/5 blur-2xl pointer-events-none"></div>
+        <div class="absolute -left-16 -bottom-16 w-64 h-64 rounded-full bg-solar/5 blur-2xl pointer-events-none"></div>
+
+        <!-- Arcade Header & Live Status Bar -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-border-subtle relative z-10">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-2xl bg-primary text-white flex items-center justify-center font-bold shadow-sm">
+                    <span class="material-symbols-outlined text-[26px] text-white">sports_esports</span>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h2 class="text-lg sm:text-xl font-black text-text-primary">"Beat Wishcycling" Sorting Arcade</h2>
+                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-solar-light text-solar-dark border border-solar/20 uppercase tracking-wider">60-Sec Challenge</span>
+                    </div>
+                    <p class="text-xs sm:text-sm text-text-muted mt-0.5">Test your reflexes against real municipal contamination rules. Sort before the timer expires!</p>
+                </div>
+            </div>
+
+            <!-- Arcade Scoreboard Pills -->
+            <div class="flex items-center gap-2.5 flex-wrap self-start sm:self-auto font-mono text-xs">
+                <div class="px-3.5 py-1.5 rounded-full bg-primary text-white font-bold flex items-center gap-1.5 shadow-sm">
+                    <span class="material-symbols-outlined text-white text-[16px]">timer</span>
+                    <span id="arcade-timer">60s</span>
+                </div>
+                <div class="px-3.5 py-1.5 rounded-full bg-primary text-white font-bold flex items-center gap-1.5 shadow-sm">
+                    <span class="material-symbols-outlined text-[16px]">stars</span>
+                    <span id="arcade-score">0 Pts</span>
+                </div>
+                <div class="px-3 py-1.5 rounded-full bg-surface-container border border-border-subtle font-bold text-text-secondary">
+                    <span id="arcade-streak">Streak: 0 (1x)</span>
+                </div>
+                <div class="px-3 py-1.5 rounded-full bg-surface-container border border-border-subtle text-text-muted font-semibold">
+                    <span id="arcade-best">Best: 0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Bar for Timer -->
+        <div class="w-full bg-slate-200 rounded-full h-1.5 overflow-hidden">
+            <div id="arcade-timer-bar" class="h-1.5 bg-solar rounded-full transition-all duration-300" style="width: 100%;"></div>
+        </div>
+
+        <!-- Main Arcade Arena Card -->
+        <div id="arcade-arena" class="relative z-10 space-y-6">
+            
+            <!-- START SCREEN (Before Game Begins) -->
+            <div id="arcade-start-screen" class="py-10 text-center space-y-4">
+                <div class="w-16 h-16 rounded-2xl bg-primary-light text-primary flex items-center justify-center mx-auto shadow-sm">
+                    <span class="material-symbols-outlined text-[36px]">delete_sweep</span>
+                </div>
+                <div class="max-w-md mx-auto space-y-1.5">
+                    <h3 class="text-xl font-bold text-text-primary">Can you spot municipal wishcycling?</h3>
+                    <p class="text-xs sm:text-sm text-text-secondary leading-relaxed">
+                        Every day, millions toss coffee cups, greasy pizza boxes, and plastic grocery bags into blue bins thinking they're helping—shutting down sorting facilities. Can you achieve zero contamination?
+                    </p>
+                </div>
+                <button type="button" id="start-arcade-btn" class="btn-primary py-3 px-8 text-sm font-bold shadow-lg hover:scale-105 transition-all inline-flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[20px]">play_arrow</span>
+                    <span>Start 60-Second Challenge</span>
+                </button>
+            </div>
+
+            <!-- ACTIVE GAMEPLAY SCREEN (Hidden until started) -->
+            <div id="arcade-play-screen" class="hidden space-y-6">
+                <!-- Current Item Prompt -->
+                <div id="arcade-item-card" class="p-6 sm:p-8 rounded-2xl bg-surface border-2 border-border-medium flex flex-col sm:flex-row items-center gap-6 shadow-sm transition-all duration-200">
+                    <div id="arcade-item-icon" class="text-5xl sm:text-6xl flex-shrink-0 select-none">🍕</div>
+                    <div class="text-center sm:text-left space-y-1 flex-1">
+                        <span id="arcade-item-tag" class="text-[10px] uppercase font-bold text-text-muted tracking-wider">Household Waste Item</span>
+                        <h3 id="arcade-item-name" class="text-xl sm:text-2xl font-black text-text-primary">Greasy Pizza Box Base</h3>
+                        <p id="arcade-item-desc" class="text-xs sm:text-sm text-text-secondary">Corrugated cardboard saturated with heavy cheese and pizza oil residue.</p>
+                    </div>
+                </div>
+
+                <!-- Instant Contamination / Success Feedback Banner -->
+                <div id="arcade-feedback-banner" class="hidden p-3.5 rounded-xl border text-xs font-semibold flex items-center gap-2.5 transition-all">
+                    <span id="arcade-feedback-icon" class="material-symbols-outlined text-[20px] flex-shrink-0"></span>
+                    <span id="arcade-feedback-text" class="flex-1"></span>
+                </div>
+
+                <!-- 4 Bin Action Buttons (Responsive Grid, 1-4 keys supported) -->
+                <div>
+                    <div class="flex items-center justify-between text-xs text-text-muted mb-2 font-medium">
+                        <span>Select correct municipal stream (or press keyboard 1–4):</span>
+                        <span class="font-mono text-[11px]">Keyboard: 1, 2, 3, 4</span>
+                    </div>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        <button type="button" id="bin-blue" onclick="handleArcadeSort('blue')" class="arcade-bin-btn text-left p-4 rounded-xl border-2 border-blue-200 bg-blue-50/60 hover:bg-blue-100/80 hover:border-blue-400 transition flex flex-col justify-between min-h-[96px] group">
+                            <div class="flex items-center justify-between w-full">
+                                <span class="material-symbols-outlined text-blue-600 text-[22px]">recycling</span>
+                                <span class="text-[10px] font-mono font-bold bg-white text-blue-800 px-1.5 py-0.5 rounded border border-blue-200">Key 1</span>
+                            </div>
+                            <div>
+                                <span class="block text-xs font-bold text-blue-950 group-hover:text-blue-700">Curbside Blue</span>
+                                <span class="block text-[10px] text-blue-800/80 font-medium">Clean paper, bottles, cans</span>
+                            </div>
+                        </button>
+
+                        <button type="button" id="bin-compost" onclick="handleArcadeSort('compost')" class="arcade-bin-btn text-left p-4 rounded-xl border-2 border-teal-200 bg-teal-50/60 hover:bg-teal-100/80 hover:border-teal-400 transition flex flex-col justify-between min-h-[96px] group">
+                            <div class="flex items-center justify-between w-full">
+                                <span class="material-symbols-outlined text-teal-700 text-[22px]">compost</span>
+                                <span class="text-[10px] font-mono font-bold bg-white text-teal-800 px-1.5 py-0.5 rounded border border-teal-200">Key 2</span>
+                            </div>
+                            <div>
+                                <span class="block text-xs font-bold text-teal-950 group-hover:text-teal-700">Organics / Compost</span>
+                                <span class="block text-[10px] text-teal-800/80 font-medium">Greasy paper, food scraps</span>
+                            </div>
+                        </button>
+
+                        <button type="button" onclick="handleArcadeSort('depot')" class="arcade-bin-btn text-left p-4 rounded-xl border-2 border-amber-200 bg-amber-50/60 hover:bg-amber-100/80 hover:border-amber-400 transition flex flex-col justify-between min-h-[96px] group">
+                            <div class="flex items-center justify-between w-full">
+                                <span class="material-symbols-outlined text-amber-700 text-[22px]">store</span>
+                                <span class="text-[10px] font-mono font-bold bg-white text-amber-800 px-1.5 py-0.5 rounded border border-amber-200">Key 3</span>
+                            </div>
+                            <div>
+                                <span class="block text-xs font-bold text-amber-950 group-hover:text-amber-700">Store / Depot</span>
+                                <span class="block text-[10px] text-amber-800/80 font-medium">Soft films, batteries, e-waste</span>
+                            </div>
+                        </button>
+
+                        <button type="button" onclick="handleArcadeSort('landfill')" class="arcade-bin-btn text-left p-4 rounded-xl border-2 border-slate-200 bg-slate-100/60 hover:bg-slate-200/80 hover:border-slate-400 transition flex flex-col justify-between min-h-[96px] group">
+                            <div class="flex items-center justify-between w-full">
+                                <span class="material-symbols-outlined text-slate-700 text-[22px]">delete</span>
+                                <span class="text-[10px] font-mono font-bold bg-white text-slate-800 px-1.5 py-0.5 rounded border border-slate-200">Key 4</span>
+                            </div>
+                            <div>
+                                <span class="block text-xs font-bold text-slate-950 group-hover:text-slate-700">Landfill Trash</span>
+                                <span class="block text-[10px] text-slate-700 font-medium">Coffee cups, foam, chips</span>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GAME OVER SUMMARY SCREEN (Hidden until finished) -->
+            <div id="arcade-over-screen" class="hidden py-8 text-center space-y-5">
+                <div class="w-16 h-16 rounded-2xl bg-solar-light text-solar-dark flex items-center justify-center mx-auto shadow-sm">
+                    <span class="material-symbols-outlined text-[36px]">military_tech</span>
+                </div>
+                <div class="space-y-1">
+                    <h3 class="text-2xl font-black text-text-primary">Round Complete!</h3>
+                    <p class="text-xs sm:text-sm text-text-secondary" id="arcade-summary-sub">Great job testing your municipal sorting knowledge.</p>
+                </div>
+
+                <div class="max-w-md mx-auto grid grid-cols-3 gap-3">
+                    <div class="p-3 rounded-xl bg-surface border border-border-subtle">
+                        <span class="text-[10px] font-bold text-text-muted uppercase">Final Score</span>
+                        <div class="text-xl sm:text-2xl font-black text-primary font-mono" id="arcade-final-score">0</div>
+                    </div>
+                    <div class="p-3 rounded-xl bg-surface border border-border-subtle">
+                        <span class="text-[10px] font-bold text-text-muted uppercase">Correct Sorts</span>
+                        <div class="text-xl sm:text-2xl font-black text-teal-700 font-mono" id="arcade-correct-count">0</div>
+                    </div>
+                    <div class="p-3 rounded-xl bg-surface border border-border-subtle">
+                        <span class="text-[10px] font-bold text-text-muted uppercase">Wishcycles</span>
+                        <div class="text-xl sm:text-2xl font-black text-rose-600 font-mono" id="arcade-error-count">0</div>
+                    </div>
+                </div>
+
+                <div class="pt-2">
+                    <button type="button" onclick="startArcadeGame()" class="btn-primary py-3 px-7 text-xs sm:text-sm font-bold shadow-md inline-flex items-center gap-2">
+                        <span class="material-symbols-outlined text-[18px]">replay</span>
+                        <span>Play Again</span>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="eco-card p-6 space-y-4">
+        <div class="relative">
+            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-text-muted text-[22px]">search</span>
+            <input type="text" id="taxonomy-search" list="packaging-suggestions" placeholder="Search by polymer name, packaging type, or resin code (#1, #2, #5, BOPP, Carton)…" class="w-full text-sm pl-12 pr-4 py-3.5 rounded-full border border-border-medium focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition bg-surface placeholder:text-text-muted">
+        </div>
+
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div class="flex flex-wrap items-center gap-2" id="category-filters">
+                <button type="button" data-cat="all" class="cat-pill px-4 py-1.5 rounded-full text-xs font-bold bg-primary text-white transition">All Materials</button>
+                <button type="button" data-cat="Recyclable" class="cat-pill px-4 py-1.5 rounded-full text-xs font-semibold bg-surface text-text-secondary border border-border-subtle hover:border-primary transition">Curbside Blue</button>
+                <button type="button" data-cat="Drop-off" class="cat-pill px-4 py-1.5 rounded-full text-xs font-semibold bg-surface text-text-secondary border border-border-subtle hover:border-primary transition">Depot Drop-off</button>
+                <button type="button" data-cat="Compostable" class="cat-pill px-4 py-1.5 rounded-full text-xs font-semibold bg-surface text-text-secondary border border-border-subtle hover:border-primary transition">Organics</button>
+                <button type="button" data-cat="Landfill" class="cat-pill px-4 py-1.5 rounded-full text-xs font-semibold bg-surface text-text-secondary border border-border-subtle hover:border-primary transition">Landfill Safe</button>
+            </div>
+            <span id="tax-count" class="text-xs text-text-muted font-medium">Showing 12 Materials</span>
+        </div>
+
+        <!-- Quick Keyword Chips -->
+        <div class="pt-2 border-t border-border-subtle flex flex-wrap items-center gap-1.5">
+            <span class="text-[11px] font-semibold text-text-muted">Popular Inquiries:</span>
+            <button type="button" class="quick-tax-btn text-[11px] font-medium px-2.5 py-0.5 rounded bg-surface-container hover:bg-primary-light hover:text-primary transition" data-query="coffee cup">Coffee Cup</button>
+            <button type="button" class="quick-tax-btn text-[11px] font-medium px-2.5 py-0.5 rounded bg-surface-container hover:bg-primary-light hover:text-primary transition" data-query="pizza box">Pizza Box</button>
+            <button type="button" class="quick-tax-btn text-[11px] font-medium px-2.5 py-0.5 rounded bg-surface-container hover:bg-primary-light hover:text-primary transition" data-query="styrofoam">Styrofoam</button>
+            <button type="button" class="quick-tax-btn text-[11px] font-medium px-2.5 py-0.5 rounded bg-surface-container hover:bg-primary-light hover:text-primary transition" data-query="tetra pak">Tetra Pak Carton</button>
+            <button type="button" class="quick-tax-btn text-[11px] font-medium px-2.5 py-0.5 rounded bg-surface-container hover:bg-primary-light hover:text-primary transition" data-query="battery">Batteries</button>
+            <button type="button" class="quick-tax-btn text-[11px] font-medium px-2.5 py-0.5 rounded bg-surface-container hover:bg-primary-light hover:text-primary transition" data-query="bubble wrap">Bubble Wrap</button>
+        </div>
+    </div>
+
+    <!-- Taxonomy Cards Grid (12 Items) -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="taxonomy-grid">
+        
+        <!-- 1. PET Bottles -->
+        <div class="tax-card eco-card p-5 space-y-3 transition hover:border-primary" data-cat="Recyclable" data-keywords="pet soda bottle plastic water beverage clear resin 1">
+            <div class="flex items-start justify-between">
+                <div>
+                    <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">Pure Polymer</span>
+                    <h3 class="text-sm font-bold text-text-primary mt-2">PET Soda &amp; Water Bottles</h3>
+                </div>
+                <span class="text-xs font-mono font-bold text-blue-700">#1 PET</span>
+            </div>
+            <p class="text-xs text-text-secondary leading-relaxed">
+                Polyethylene Terephthalate rigid clear container. Highest market commodity value. Caps can remain loosely threaded.
+            </p>
+            <div class="pt-3 border-t border-border-subtle text-xs space-y-1.5">
+                <div class="flex justify-between items-center">
+                    <span class="text-text-muted">Target Destination:</span>
+                    <span class="font-bold text-blue-800 bg-blue-50 px-2 py-0.5 rounded-md">Curbside Blue Bin</span>
+                </div>
+                <div class="flex justify-between items-center text-[11px] text-text-muted">
+                    <span>Preparation:</span>
+                    <span class="font-semibold text-text-primary">Empty liquids &amp; flatten</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. HDPE Milk Jugs -->
+        <div class="tax-card eco-card p-5 space-y-3 transition hover:border-primary" data-cat="Recyclable" data-keywords="hdpe milk jug detergent shampoo bottle opaque resin 2">
+            <div class="flex items-start justify-between">
+                <div>
+                    <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">Pure Polymer</span>
+                    <h3 class="text-sm font-bold text-text-primary mt-2">HDPE Milk Jugs &amp; Bottles</h3>
+                </div>
+                <span class="text-xs font-mono font-bold text-blue-700">#2 HDPE</span>
+            </div>
+            <p class="text-xs text-text-secondary leading-relaxed">
+                High-Density Polyethylene translucent or opaque colored container. Easily remelted into drainage pipes and park benches.
+            </p>
+            <div class="pt-3 border-t border-border-subtle text-xs space-y-1.5">
+                <div class="flex justify-between items-center">
+                    <span class="text-text-muted">Target Destination:</span>
+                    <span class="font-bold text-blue-800 bg-blue-50 px-2 py-0.5 rounded-md">Curbside Blue Bin</span>
+                </div>
+                <div class="flex justify-between items-center text-[11px] text-text-muted">
+                    <span>Preparation:</span>
+                    <span class="font-semibold text-text-primary">Quick rinse, discard pump springs</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. PP Food Tubs -->
+        <div class="tax-card eco-card p-5 space-y-3 transition hover:border-primary" data-cat="Recyclable" data-keywords="polypropylene yogurt tub butter container takeout resin 5 pp">
+            <div class="flex items-start justify-between">
+                <div>
+                    <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">Rigid Polymer</span>
+                    <h3 class="text-sm font-bold text-text-primary mt-2">Polypropylene Food Containers</h3>
+                </div>
+                <span class="text-xs font-mono font-bold text-blue-700">#5 PP</span>
+            </div>
+            <p class="text-xs text-text-secondary leading-relaxed">
+                Yogurt cups, butter tubs, and takeout containers. Widely accepted in modern optical MRFs.
+            </p>
+            <div class="pt-3 border-t border-border-subtle text-xs space-y-1.5">
+                <div class="flex justify-between items-center">
+                    <span class="text-text-muted">Target Destination:</span>
+                    <span class="font-bold text-blue-800 bg-blue-50 px-2 py-0.5 rounded-md">Curbside Blue Bin</span>
+                </div>
+                <div class="flex justify-between items-center text-[11px] text-text-muted">
+                    <span>Preparation:</span>
+                    <span class="font-semibold text-text-primary">Scrape food remnants clean</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. LDPE Soft Film & Bubble Wrap -->
+        <div class="tax-card eco-card p-5 space-y-3 transition hover:border-primary" data-cat="Drop-off" data-keywords="soft plastic bubble wrap grocery bag stretch film ldpe pe-ld resin 4">
+            <div class="flex items-start justify-between">
+                <div>
+                    <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-800 border border-amber-200">Flexible Film</span>
+                    <h3 class="text-sm font-bold text-text-primary mt-2">LDPE Film &amp; Bubble Wrap</h3>
+                </div>
+                <span class="text-xs font-mono font-bold text-solar-dark">#4 LDPE</span>
+            </div>
+            <p class="text-xs text-text-secondary leading-relaxed">
+                Clean grocery sacks, bubble wrap, and package cushioning. Banned from curbside bins because it tangles sorting rollers.
+            </p>
+            <div class="pt-3 border-t border-border-subtle text-xs space-y-1.5">
+                <div class="flex justify-between items-center">
+                    <span class="text-text-muted">Target Destination:</span>
+                    <span class="font-bold text-amber-800 bg-amber-50 px-2 py-0.5 rounded-md">Storefront Soft Plastics</span>
+                </div>
+                <div class="flex justify-between items-center text-[11px] text-text-muted">
+                    <span>Crucial:</span>
+                    <span class="font-bold text-rose-600">Never put loose in blue bin</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. Laminated Snack Pouch -->
+        <div class="tax-card eco-card p-5 space-y-3 transition hover:border-primary" data-cat="Drop-off" data-keywords="snack wrapper potato chips foil metalized polymer laminate bopp al">
+            <div class="flex items-start justify-between">
+                <div>
+                    <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-800 border border-amber-200">Composite Pouch</span>
+                    <h3 class="text-sm font-bold text-text-primary mt-2">Laminated Snack Wrapper</h3>
+                </div>
+                <span class="text-xs font-mono font-bold text-solar-dark">BOPP/AL</span>
+            </div>
+            <p class="text-xs text-text-secondary leading-relaxed">
+                Metallized polypropylene heat-bonded to aluminum vapor barrier. Cannot be pulped with standard plastic bottles.
+            </p>
+            <div class="pt-3 border-t border-border-subtle text-xs space-y-1.5">
+                <div class="flex justify-between items-center">
+                    <span class="text-text-muted">Target Destination:</span>
+                    <span class="font-bold text-amber-800 bg-amber-50 px-2 py-0.5 rounded-md">Specialized Drop Depot</span>
+                </div>
+                <div class="flex justify-between items-center text-[11px] text-text-muted">
+                    <span>Contamination Risk:</span>
+                    <span class="font-bold text-rose-600">High (Jams MRF Belts)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 6. Tetra Pak / Beverage Cartons -->
+        <div class="tax-card eco-card p-5 space-y-3 transition hover:border-primary" data-cat="Recyclable" data-keywords="tetra pak aseptic milk carton juice box multi-layer paperboard">
+            <div class="flex items-start justify-between">
+                <div>
+                    <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">Aseptic Carton</span>
+                    <h3 class="text-sm font-bold text-text-primary mt-2">Tetra Pak Beverage Cartons</h3>
+                </div>
+                <span class="text-xs font-mono font-bold text-blue-700">CARTON/AL</span>
+            </div>
+            <p class="text-xs text-text-secondary leading-relaxed">
+                Multi-layer virgin paperboard layered with micro-thin polyethylene and aluminum. Hydrapulpable into tissue paper.
+            </p>
+            <div class="pt-3 border-t border-border-subtle text-xs space-y-1.5">
+                <div class="flex justify-between items-center">
+                    <span class="text-text-muted">Target Destination:</span>
+                    <span class="font-bold text-blue-800 bg-blue-50 px-2 py-0.5 rounded-md">Curbside Blue Bin</span>
+                </div>
+                <div class="flex justify-between items-center text-[11px] text-text-muted">
+                    <span>Preparation:</span>
+                    <span class="font-semibold text-text-primary">Empty, do not flatten</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 7. Corrugated Shipping Box -->
+        <div class="tax-card eco-card p-5 space-y-3 transition hover:border-primary" data-cat="Recyclable" data-keywords="cardboard shipping box amazon carton brown paper corrugated">
+            <div class="flex items-start justify-between">
+                <div>
+                    <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">Pure Fiber</span>
+                    <h3 class="text-sm font-bold text-text-primary mt-2">Clean Corrugated Cardboard</h3>
+                </div>
+                <span class="text-xs font-mono font-bold text-blue-700">PAP 20</span>
+            </div>
+            <p class="text-xs text-text-secondary leading-relaxed">
+                Clean shipping cartons and dry boxes. Recyclable up to 7 times before wood fibers become too short.
+            </p>
+            <div class="pt-3 border-t border-border-subtle text-xs space-y-1.5">
+                <div class="flex justify-between items-center">
+                    <span class="text-text-muted">Target Destination:</span>
+                    <span class="font-bold text-blue-800 bg-blue-50 px-2 py-0.5 rounded-md">Curbside Blue Bin</span>
+                </div>
+                <div class="flex justify-between items-center text-[11px] text-text-muted">
+                    <span>Preparation:</span>
+                    <span class="font-semibold text-text-primary">Flatten box, peel heavy plastic tape</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 8. Greasy Pizza Box Base -->
+        <div class="tax-card eco-card p-5 space-y-3 transition hover:border-primary" data-cat="Landfill" data-keywords="greasy pizza box oil soaked liner cheese paper cardboard">
+            <div class="flex items-start justify-between">
+                <div>
+                    <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-800 border border-slate-200">Contaminated Fiber</span>
+                    <h3 class="text-sm font-bold text-text-primary mt-2">Grease-Saturated Pizza Base</h3>
+                </div>
+                <span class="text-xs font-mono font-bold text-slate-700">FIBER</span>
+            </div>
+            <p class="text-xs text-text-secondary leading-relaxed">
+                Cardboard absorbed with grease and cheese remnants. Grease repels water during pulping and ruins entire batches.
+            </p>
+            <div class="pt-3 border-t border-border-subtle text-xs space-y-1.5">
+                <div class="flex justify-between items-center">
+                    <span class="text-text-muted">Target Destination:</span>
+                    <span class="font-bold text-slate-800 bg-slate-100 px-2 py-0.5 rounded-md">Landfill / Organics (if local)</span>
+                </div>
+                <div class="flex justify-between items-center text-[11px] text-text-muted">
+                    <span>Pro Tip:</span>
+                    <span class="font-semibold text-text-primary">Tear off clean lid for blue bin</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 9. Disposable Hot Coffee Cup -->
+        <div class="tax-card eco-card p-5 space-y-3 transition hover:border-primary" data-cat="Landfill" data-keywords="paper coffee cup starbucks hot drink polyethylene liner">
+            <div class="flex items-start justify-between">
+                <div>
+                    <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-800 border border-amber-200">Plastic-Lined Fiber</span>
+                    <h3 class="text-sm font-bold text-text-primary mt-2">Disposable Hot Coffee Cup</h3>
+                </div>
+                <span class="text-xs font-mono font-bold text-solar-dark">PAPER/PE</span>
+            </div>
+            <p class="text-xs text-text-secondary leading-relaxed">
+                Paper cup lined internally with a 5% polyethylene plastic coat. Banned from blue bins in most cities due to lining separation costs.
+            </p>
+            <div class="pt-3 border-t border-border-subtle text-xs space-y-1.5">
+                <div class="flex justify-between items-center">
+                    <span class="text-text-muted">Target Destination:</span>
+                    <span class="font-bold text-slate-800 bg-slate-100 px-2 py-0.5 rounded-md">Landfill (Lid to Blue Bin)</span>
+                </div>
+                <div class="flex justify-between items-center text-[11px] text-text-muted">
+                    <span>Common Mistake:</span>
+                    <span class="font-bold text-rose-600">Top 3 Wishcycling Contaminant</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 10. Polystyrene Styrofoam (#6) -->
+        <div class="tax-card eco-card p-5 space-y-3 transition hover:border-primary" data-cat="Landfill" data-keywords="styrofoam eps expanded polystyrene takeout cup packaging peanut #6 ps">
+            <div class="flex items-start justify-between">
+                <div>
+                    <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-rose-50 text-rose-800 border border-rose-200">Brittle Foam</span>
+                    <h3 class="text-sm font-bold text-text-primary mt-2">Expanded Polystyrene (Styrofoam)</h3>
+                </div>
+                <span class="text-xs font-mono font-bold text-rose-700">#6 PS</span>
+            </div>
+            <p class="text-xs text-text-secondary leading-relaxed">
+                98% air volume, shatters easily in transit and contaminates paper streams with static foam beads. Banned from curbside bins.
+            </p>
+            <div class="pt-3 border-t border-border-subtle text-xs space-y-1.5">
+                <div class="flex justify-between items-center">
+                    <span class="text-text-muted">Target Destination:</span>
+                    <span class="font-bold text-slate-800 bg-slate-100 px-2 py-0.5 rounded-md">Landfill / EPS Drop Depot</span>
+                </div>
+                <div class="flex justify-between items-center text-[11px] text-text-muted">
+                    <span>Alternative:</span>
+                    <span class="font-semibold text-text-primary">Reuse packaging peanuts</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 11. Aluminum Cans & Trays -->
+        <div class="tax-card eco-card p-5 space-y-3 transition hover:border-primary" data-cat="Recyclable" data-keywords="aluminum can soda beverage foil tray tin metal infinitely recyclable">
+            <div class="flex items-start justify-between">
+                <div>
+                    <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">Infinite Metal</span>
+                    <h3 class="text-sm font-bold text-text-primary mt-2">Aluminum Beverage Cans &amp; Foil</h3>
+                </div>
+                <span class="text-xs font-mono font-bold text-blue-700">ALU 41</span>
+            </div>
+            <p class="text-xs text-text-secondary leading-relaxed">
+                Infinitely recyclable metal. Uses 95% less energy to remelt than extracting bauxite ore. Clean foil can be balled together.
+            </p>
+            <div class="pt-3 border-t border-border-subtle text-xs space-y-1.5">
+                <div class="flex justify-between items-center">
+                    <span class="text-text-muted">Target Destination:</span>
+                    <span class="font-bold text-blue-800 bg-blue-50 px-2 py-0.5 rounded-md">Curbside Blue Bin</span>
+                </div>
+                <div class="flex justify-between items-center text-[11px] text-text-muted">
+                    <span>Pro Tip:</span>
+                    <span class="font-semibold text-text-primary">Ball foil into at least 2-inch sphere</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 12. Household Batteries & E-Waste -->
+        <div class="tax-card eco-card p-5 space-y-3 transition hover:border-primary" data-cat="Drop-off" data-keywords="battery lithium alkaline aa aaa ewaste fire hazard electronics">
+            <div class="flex items-start justify-between">
+                <div>
+                    <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-rose-50 text-rose-800 border border-rose-200">Fire Hazard</span>
+                    <h3 class="text-sm font-bold text-text-primary mt-2">Household Batteries (Li-ion &amp; AA)</h3>
+                </div>
+                <span class="text-xs font-mono font-bold text-rose-700">HAZMAT</span>
+            </div>
+            <p class="text-xs text-text-secondary leading-relaxed">
+                Lithium-ion and alkaline batteries can ignite garbage trucks and sorting equipment if crushed. Never dispose in household bins.
+            </p>
+            <div class="pt-3 border-t border-border-subtle text-xs space-y-1.5">
+                <div class="flex justify-between items-center">
+                    <span class="text-text-muted">Target Destination:</span>
+                    <span class="font-bold text-rose-800 bg-rose-50 px-2 py-0.5 rounded-md">Designated Battery Depot</span>
+                </div>
+                <div class="flex justify-between items-center text-[11px] text-text-muted">
+                    <span>Safety Step:</span>
+                    <span class="font-bold text-rose-600">Tape terminal ends with clear tape</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</main>
+
+<!-- Global Autocomplete Datalist for Waste & Packaging Items -->
+<datalist id="packaging-suggestions">
+    <option value="Starbucks Hot Coffee Cup with Lid">
+    <option value="Delivery Corrugated Pizza Box">
+    <option value="Clear Plastic Water Bottle (PET #1)">
+    <option value="Multi-Layer Potato Chips Pouch (BOPP #7)">
+    <option value="Corrugated Shipping Box">
+    <option value="Aluminum Beverage Can">
+    <option value="Household AA / Lithium Battery">
+    <option value="Aseptic Gable-Top Milk Carton">
+    <option value="Glass Pickle Jar with Metal Lid">
+    <option value="Styrofoam Clamshell Container (PS #6)">
+    <option value="Air Cushion Bubble Wrap (LDPE #4)">
+    <option value="Organic Food Remnants & Produce Scraps">
+    <option value="HDPE Milk Jug with Cap">
+    <option value="Broken Smartphone / Cable E-Waste">
+    <option value="Aerosol Spray Can">
+</datalist>
+
+<!-- Nordic Arctic Glacier Obsidian & Ice Slate Footer -->
+<footer class="bg-[#0B1120] text-slate-400 border-t border-slate-800 mt-24 pt-16 pb-20 text-sm">
+    <div class="max-w-container mx-auto px-4 sm:px-8 lg:px-12 xl:px-16">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+            <!-- Brand Column -->
+            <div class="md:col-span-2 space-y-4">
+                <div class="flex items-center gap-3 font-bold text-xl">
+                    <img src="/static/img/logo-icon.svg" alt="BinSync Logo" class="w-8 h-8 rounded-xl shadow-sm">
+                    <span class="tracking-tight text-xl font-black text-white">Bin<span class="text-[#38BDF8]">Sync</span></span>
+                </div>
+                <p class="text-slate-400 text-sm max-w-md leading-relaxed">
+                    Precision computer vision engineered for composite packaging decomposition. Eliminating wishcycling through automated material layer separation and verifiable municipal diversion.
+                </p>
+                <div class="flex items-center gap-3 pt-2 text-xs">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-950/80 border border-blue-800/60 text-[#38BDF8] font-semibold text-xs">
+                        <span class="w-2 h-2 rounded-full bg-[#38BDF8] pulse-subtle"></span>
+                        Vision Inspection System Active
+                    </span>
+                    <span class="text-slate-500 text-xs">Verified Circular Infrastructure</span>
+                </div>
+            </div>
+
+            <!-- Core Modules -->
+            <div>
+                <h3 class="font-bold text-white uppercase tracking-widest text-[11px] mb-4">Core Modules</h3>
+                <ul class="space-y-2.5 text-sm text-slate-400">
+                    <li><a href="/classifier" class="hover:text-[#38BDF8] transition">Material Inspector</a></li>
+                    <li><a href="/rules" class="hover:text-[#38BDF8] transition">Drop-off Map &amp; Bylaws</a></li>
+                    <li><a href="/classifications" class="hover:text-[#38BDF8] transition">Material Taxonomy</a></li>
+                    <li><a href="/leaderboard" class="hover:text-[#38BDF8] transition">Community Leaderboard</a></li>
+                </ul>
+            </div>
+
+            <!-- Climate & Transparency -->
+            <div>
+                <h3 class="font-bold text-white uppercase tracking-widest text-[11px] mb-4">Climate &amp; Auditing</h3>
+                <ul class="space-y-2.5 text-sm text-slate-400">
+                    <li><a href="/rules#faq" class="hover:text-[#38BDF8] transition">Wishcycling Guide</a></li>
+                    <li><a href="/dashboard" class="hover:text-[#38BDF8] transition">CO₂ Diversion Audit</a></li>
+                    <li><a href="/login" class="hover:text-[#38BDF8] transition">Citizen Portal</a></li>
+                    <li><span class="text-slate-500">&copy; 2026 BinSync Inc.</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="border-t border-slate-800 pt-8 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-500 gap-4">
+            <p>Empowering eco-citizens and zero-waste cities with transparent, verifiable carbon diversion metrics.</p>
+            <div class="flex items-center gap-6">
+                <a href="/rules" class="hover:text-[#38BDF8] transition">Municipal Bylaws</a>
+                <a href="/classifications" class="hover:text-[#38BDF8] transition">Taxonomy API</a>
+                <span class="text-[#38BDF8] font-bold">Clean Planet First</span>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Mobile Bottom Navigation Bar (Light Arctic Glacier) -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-xl border-t border-border-subtle z-40 pt-2 safe-bottom-nav px-3 flex justify-around items-center shadow-lg">
+    <a href="/" class="min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-xs px-2 text-text-muted hover:text-text-primary">
+        <span class="material-symbols-outlined text-[22px]">home</span>
+        <span>Home</span>
+    </a>
+    <a href="/classifier" class="min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-xs px-2 text-text-muted hover:text-text-primary">
+        <span class="material-symbols-outlined text-[22px]">center_focus_strong</span>
+        <span>Inspect</span>
+    </a>
+    <a href="/rules" class="min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-xs px-2 text-text-muted hover:text-text-primary">
+        <span class="material-symbols-outlined text-[22px]">map</span>
+        <span>Rules</span>
+    </a>
+    <a href="/leaderboard" class="min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-xs px-2 text-text-muted hover:text-text-primary">
+        <span class="material-symbols-outlined text-[22px]">leaderboard</span>
+        <span>Rank</span>
+    </a>
+    <a href="/dashboard" class="min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-xs px-2 text-text-muted hover:text-text-primary">
+        <span class="material-symbols-outlined text-[22px]">account_circle</span>
+        <span>Profile</span>
+    </a>
+</nav>
+
+<!-- Mobile Menu Toggle Script & Feedback + PWA -->
+<script>
+    // Universal Haptic & Audio Feedback Helper
+    window.triggerFeedback = function(type = 'success') {
+        try {
+            if ('vibrate' in navigator) {
+                if (type === 'success') navigator.vibrate([40, 30, 60]);
+                else if (type === 'error') navigator.vibrate([80, 50, 80]);
+                else navigator.vibrate(35);
+            }
+            const AudioCtx = window.AudioContext || window.webkitAudioContext;
+            if (AudioCtx) {
+                const ctx = new AudioCtx();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                const now = ctx.currentTime;
+                if (type === 'success') {
+                    osc.frequency.setValueAtTime(587.33, now); // D5
+                    osc.frequency.setValueAtTime(880, now + 0.09); // A5
+                    gain.gain.setValueAtTime(0.06, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.26);
+                    osc.start(now);
+                    osc.stop(now + 0.28);
+                } else if (type === 'error') {
+                    osc.frequency.setValueAtTime(329.63, now); // E4
+                    osc.frequency.setValueAtTime(220, now + 0.1); // A3
+                    gain.gain.setValueAtTime(0.08, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+                    osc.start(now);
+                    osc.stop(now + 0.28);
+                } else {
+                    osc.frequency.setValueAtTime(659.25, now); // E5
+                    gain.gain.setValueAtTime(0.04, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+                    osc.start(now);
+                    osc.stop(now + 0.14);
+                }
+            }
+        } catch(e) {}
+    };
+
+    const menuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuIcon = document.getElementById('mobile-menu-icon');
+
+    if (menuBtn && mobileMenu) {
+        menuBtn.addEventListener('click', () => {
+            const isHidden = mobileMenu.classList.contains('hidden');
+            if (isHidden) {
+                mobileMenu.classList.remove('hidden');
+                if (menuIcon) menuIcon.textContent = 'close';
+            } else {
+                mobileMenu.classList.add('hidden');
+                if (menuIcon) menuIcon.textContent = 'menu';
+            }
+        });
+    }
+
+    // Register PWA Service Worker for Offline Resilience
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js').catch(err => {
+                console.log('SW registration note:', err);
+            });
+        });
+    }
+
+    // ==========================================
+    // NORDIC GLACIER SCROLL ENGINE
+    // ==========================================
+    document.addEventListener('DOMContentLoaded', () => {
+        const progressBar = document.getElementById('scroll-progress-bar');
+        const mainHeader = document.getElementById('main-header');
+        const backToTopBtn = document.getElementById('back-to-top-btn');
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        // 1. Passive Scroll Handler (Progress Bar, Sticky Header Compact & Back-To-Top)
+        let ticking = false;
+        function onScroll() {
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    const scrollY = window.scrollY || window.pageYOffset;
+                    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+
+                    // Progress bar
+                    if (progressBar) {
+                        const progress = docHeight > 0 ? (scrollY / docHeight) * 100 : 0;
+                        progressBar.style.width = `${Math.min(100, Math.max(0, progress))}%`;
+                    }
+
+                    // Sticky header compact elevation
+                    if (mainHeader) {
+                        if (scrollY > 24) {
+                            mainHeader.classList.remove('h-20', 'bg-white/95');
+                            mainHeader.classList.add('h-16', 'bg-white/90', 'shadow-sm');
+                        } else {
+                            mainHeader.classList.remove('h-16', 'bg-white/90', 'shadow-sm');
+                            mainHeader.classList.add('h-20', 'bg-white/95');
+                        }
+                    }
+
+                    // Floating Back to Top Button
+                    if (backToTopBtn) {
+                        if (scrollY > 450) {
+                            backToTopBtn.classList.remove('opacity-0', 'translate-y-4', 'scale-90', 'pointer-events-none');
+                            backToTopBtn.classList.add('opacity-100', 'translate-y-0', 'scale-100', 'pointer-events-auto');
+                        } else {
+                            backToTopBtn.classList.add('opacity-0', 'translate-y-4', 'scale-90', 'pointer-events-none');
+                            backToTopBtn.classList.remove('opacity-100', 'translate-y-0', 'scale-100', 'pointer-events-auto');
+                        }
+                    }
+
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }
+
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+
+        if (backToTopBtn) {
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: prefersReducedMotion ? 'auto' : 'smooth'
+                });
+                if (window.triggerFeedback) window.triggerFeedback('tap');
+            });
+        }
+
+        // 2. Universal IntersectionObserver Scroll-Reveal Engine
+        if ('IntersectionObserver' in window && !prefersReducedMotion) {
+            const revealObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                root: null,
+                rootMargin: '0px 0px -40px 0px',
+                threshold: 0.1
+            });
+
+            window.observeScrollReveals = function(root = document) {
+                const candidates = root.querySelectorAll('.eco-card, section h1, section h2, .tax-card, .facility-card, tbody tr, .reveal-on-scroll, .reveal-left, .reveal-right, .reveal-scale');
+                const winH = window.innerHeight;
+
+                candidates.forEach((el) => {
+                    const rect = el.getBoundingClientRect();
+                    if (rect.top < winH - 20) {
+                        el.classList.add('is-visible');
+                        return;
+                    }
+
+                    if (!el.classList.contains('reveal-left') && 
+                        !el.classList.contains('reveal-right') && 
+                        !el.classList.contains('reveal-scale') && 
+                        !el.classList.contains('reveal-on-scroll')) {
+                        el.classList.add('reveal-on-scroll');
+                    }
+
+                    if (!el.style.transitionDelay) {
+                        const parent = el.parentElement;
+                        if (parent) {
+                            const siblings = Array.from(parent.children);
+                            const indexInRow = siblings.indexOf(el);
+                            if (indexInRow >= 0) {
+                                el.style.transitionDelay = `${(indexInRow % 4) * 90}ms`;
+                            }
+                        }
+                    }
+
+                    revealObserver.observe(el);
+                });
+            };
+
+            window.observeScrollReveals(document);
+        } else {
+            document.querySelectorAll('.reveal-on-scroll, .reveal-left, .reveal-right, .reveal-scale').forEach(el => {
+                el.classList.add('is-visible');
+            });
+            window.observeScrollReveals = function() {};
+        }
+    });
+</script>
+
+<!-- Floating Back to Top Button -->
+<button id="back-to-top-btn" type="button" aria-label="Back to top" class="fixed bottom-20 md:bottom-8 right-6 z-40 p-3 rounded-2xl bg-white hover:bg-surface-container text-primary border border-border-medium shadow-lg opacity-0 translate-y-4 scale-90 pointer-events-none transition-all duration-300 flex items-center justify-center group focus:outline-none focus:ring-2 focus:ring-primary/40">
+    <span class="material-symbols-outlined text-[22px] group-hover:-translate-y-0.5 transition-transform">arrow_upward</span>
+</button>
+
+
+<script>
+    // Taxonomy Search & Filtering
+    const searchInput = document.getElementById('taxonomy-search');
+    const filterButtons = document.querySelectorAll('.cat-pill');
+    const taxCards = document.querySelectorAll('.tax-card');
+    const taxCount = document.getElementById('tax-count');
+    const quickTaxBtns = document.querySelectorAll('.quick-tax-btn');
+
+    let currentCat = 'all';
+    let currentQuery = '';
+
+    function filterGrid() {
+        let visibleCount = 0;
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        taxCards.forEach(card => {
+            const cardCat = card.dataset.cat;
+            const keywords = (card.dataset.keywords + ' ' + card.innerText).toLowerCase();
+            
+            const matchesCat = (currentCat === 'all' || cardCat === currentCat);
+            const matchesQuery = (!currentQuery || keywords.includes(currentQuery));
+
+            if (matchesCat && matchesQuery) {
+                card.classList.remove('hidden');
+                if (!prefersReducedMotion) {
+                    card.classList.remove('is-visible');
+                    card.style.transitionDelay = `${(visibleCount % 4) * 80}ms`;
+                    // Trigger reflow for smooth re-cascading transition
+                    void card.offsetWidth;
+                    card.classList.add('reveal-on-scroll', 'is-visible');
+                } else {
+                    card.classList.add('is-visible');
+                }
+                visibleCount++;
+            } else {
+                card.classList.add('hidden');
+                card.classList.remove('is-visible');
+            }
+        });
+
+        if (taxCount) {
+            taxCount.textContent = `Showing ${visibleCount} of ${taxCards.length} Materials`;
+        }
+    }
+
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            currentQuery = e.target.value.trim().toLowerCase();
+            filterGrid();
+        });
+    }
+
+    quickTaxBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const q = btn.dataset.query;
+            if (searchInput) searchInput.value = q;
+            currentQuery = q.toLowerCase();
+            filterGrid();
+        });
+    });
+
+    filterButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            filterButtons.forEach(b => {
+                b.className = "cat-pill px-4 py-1.5 rounded-full text-xs font-semibold bg-surface text-text-secondary border border-border-subtle hover:border-primary transition";
+            });
+            btn.className = "cat-pill px-4 py-1.5 rounded-full text-xs font-bold bg-primary text-white transition";
+            currentCat = btn.dataset.cat;
+            filterGrid();
+        });
+    });
+
+    // 3-Step Decision Wizard Engine
+    const wizForm = document.getElementById('wiz-form');
+    const wizClean = document.getElementById('wiz-clean');
+    const wizCode = document.getElementById('wiz-code');
+    const wizReset = document.getElementById('wizard-reset-btn');
+
+    const wizardVerdict = document.getElementById('wizard-verdict');
+    const verdictIcon = document.getElementById('verdict-icon');
+    const verdictTitle = document.getElementById('verdict-title');
+    const verdictBadge = document.getElementById('verdict-badge');
+    const verdictPrep = document.getElementById('verdict-prep');
+    const verdictRisk = document.getElementById('verdict-risk');
+
+    function calculateVerdict(shouldAnimate = true) {
+        if (shouldAnimate && wizardVerdict && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            wizardVerdict.classList.add('scale-[1.01]', 'ring-2', 'ring-primary/40');
+            setTimeout(() => {
+                wizardVerdict.classList.remove('scale-[1.01]', 'ring-2', 'ring-primary/40');
+            }, 250);
+        }
+
+        const form = wizForm ? wizForm.value : 'rigid-bottle';
+        const clean = wizClean ? wizClean.value : 'clean-dry';
+        const code = wizCode ? wizCode.value : 'code-1-2';
+
+        // Battery / electronics check first
+        if (form === 'battery') {
+            verdictIcon.className = "w-8 h-8 rounded-lg bg-rose-100 text-rose-700 flex items-center justify-center font-bold material-symbols-outlined text-[20px]";
+            verdictIcon.textContent = "warning";
+            verdictTitle.textContent = "Designated E-Waste / Battery Drop-off Depot";
+            verdictBadge.className = "text-xs font-bold px-3 py-1 rounded-full bg-rose-50 text-rose-800 border border-rose-200";
+            verdictBadge.textContent = "Severe Fire Hazard in Curbside";
+            verdictPrep.textContent = "Tape terminal contact points with clear electrical/scotch tape. Take to depot or hardware store drop bin.";
+            verdictRisk.className = "font-bold text-rose-600 mt-0.5";
+            verdictRisk.textContent = "CRITICAL: Crushing batteries in trucks causes recycling facility fires!";
+            return;
+        }
+
+        // Heavy grease contamination check
+        if (clean === 'greasy-oily') {
+            verdictIcon.className = "w-8 h-8 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center font-bold material-symbols-outlined text-[20px]";
+            verdictIcon.textContent = "delete";
+            verdictTitle.textContent = "Landfill Bin (or Municipal Organics if approved)";
+            verdictBadge.className = "text-xs font-bold px-3 py-1 rounded-full bg-slate-100 text-slate-800 border border-slate-300";
+            verdictBadge.textContent = "Curbside Contaminant";
+            verdictPrep.textContent = "Grease cannot be washed out of cardboard fiber or paper. Dispose safely to prevent contaminating clean recyclables.";
+            verdictRisk.className = "font-bold text-rose-600 mt-0.5";
+            verdictRisk.textContent = "High Risk: Oils ruin chemical pulping vats at paper mills.";
+            return;
+        }
+
+        // Full liquid check
+        if (clean === 'full-liquid') {
+            verdictIcon.className = "w-8 h-8 rounded-lg bg-amber-100 text-amber-800 flex items-center justify-center font-bold material-symbols-outlined text-[20px]";
+            verdictIcon.textContent = "water_drop";
+            verdictTitle.textContent = "Empty Liquids First -> Curbside Blue Bin";
+            verdictBadge.className = "text-xs font-bold px-3 py-1 rounded-full bg-amber-50 text-amber-800 border border-amber-200";
+            verdictBadge.textContent = "Empty Before Sorting";
+            verdictPrep.textContent = "Pour out all liquids down the sink, give a fast rinse, and keep the container loose in the blue bin.";
+            verdictRisk.className = "font-bold text-solar-dark mt-0.5";
+            verdictRisk.textContent = "Medium Risk: Wet containers soak and ruin adjacent dry paper.";
+            return;
+        }
+
+        // Thin crinkly film check
+        if (form === 'crinkly-film' || code === 'code-foil') {
+            verdictIcon.className = "w-8 h-8 rounded-lg bg-amber-100 text-amber-800 flex items-center justify-center font-bold material-symbols-outlined text-[20px]";
+            verdictIcon.textContent = "shopping_bag";
+            verdictTitle.textContent = "Storefront Soft-Plastics Take-Back Bin";
+            verdictBadge.className = "text-xs font-bold px-3 py-1 rounded-full bg-amber-50 text-amber-800 border border-amber-200";
+            verdictBadge.textContent = "Drop-off Only";
+            verdictPrep.textContent = "Ensure film is dry and free of crumbs. Collect inside a single plastic bag and return to supermarket collection bin.";
+            verdictRisk.className = "font-bold text-solar-dark mt-0.5";
+            verdictRisk.textContent = "High Risk in Curbside: Thin films wrap around rotating sorters.";
+            return;
+        }
+
+        // Styrofoam check
+        if (form === 'foam' || code === 'code-foam') {
+            verdictIcon.className = "w-8 h-8 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center font-bold material-symbols-outlined text-[20px]";
+            verdictIcon.textContent = "delete";
+            verdictTitle.textContent = "Landfill Waste (or Specialist EPS Depot)";
+            verdictBadge.className = "text-xs font-bold px-3 py-1 rounded-full bg-slate-100 text-slate-700 border border-slate-300";
+            verdictBadge.textContent = "Not Curbside Recyclable";
+            verdictPrep.textContent = "Break down into trash bag to avoid lightweight beads blowing away into waterways.";
+            verdictRisk.className = "font-bold text-rose-600 mt-0.5";
+            verdictRisk.textContent = "High Risk: Static foam beads stick to paper and ruin recycling bales.";
+            return;
+        }
+
+        // Coffee cup check
+        if (form === 'cup-carton' && code !== 'code-1-2') {
+            verdictIcon.className = "w-8 h-8 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center font-bold material-symbols-outlined text-[20px]";
+            verdictIcon.textContent = "coffee";
+            verdictTitle.textContent = "Cup to Landfill • Lid to Blue Bin";
+            verdictBadge.className = "text-xs font-bold px-3 py-1 rounded-full bg-slate-100 text-slate-700 border border-slate-300";
+            verdictBadge.textContent = "Split Stream Required";
+            verdictPrep.textContent = "Detach the rigid plastic lid (#5 or #6) for the blue bin. The cup body has bonded plastic liner and goes to landfill.";
+            verdictRisk.className = "font-bold text-rose-600 mt-0.5";
+            verdictRisk.textContent = "Frequent Wishcycling Item: 95% of cities cannot pulp hot coffee cups.";
+            return;
+        }
+
+        // Default: Curbside Blue Bin
+        verdictIcon.className = "w-8 h-8 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center font-bold material-symbols-outlined text-[20px]";
+        verdictIcon.textContent = "recycling";
+        verdictTitle.textContent = "Curbside Blue Recycling Bin";
+        verdictBadge.className = "text-xs font-bold px-3 py-1 rounded-full bg-blue-50 text-blue-800 border border-blue-200";
+        verdictBadge.textContent = "100% Curbside Eligible";
+        verdictPrep.textContent = "Empty liquids, give a quick 2-second rinse, replace caps loosely, and keep loose (never in plastic trash bags).";
+        verdictRisk.className = "font-bold text-teal-700 mt-0.5";
+        verdictRisk.textContent = "Very Low risk — highly demanded clean stream circular commodity.";
+    }
+
+    [wizForm, wizClean, wizCode].forEach(sel => {
+        if (sel) sel.addEventListener('change', () => calculateVerdict(true));
+    });
+
+    if (wizReset) {
+        wizReset.addEventListener('click', () => {
+            if (wizForm) wizForm.value = 'rigid-bottle';
+            if (wizClean) wizClean.value = 'clean-dry';
+            if (wizCode) wizCode.value = 'code-1-2';
+            calculateVerdict(true);
+        });
+    }
+
+    calculateVerdict(false);
+
+    // ==========================================
+    // 60-SECOND "BEAT WISHCYCLING" ARCADE GAME
+    // ==========================================
+    const ARCADE_ITEMS = [
+        {
+            name: "Greasy Pizza Box Base",
+            icon: "🍕",
+            desc: "Cardboard base soaked with melted cheese and food oils.",
+            target: "compost",
+            reason: "Food oils saturate paper fibers and prevent them from bonding in water hydropulpers. Compost it instead!"
+        },
+        {
+            name: "Single-Use Hot Coffee Cup",
+            icon: "☕",
+            desc: "Paperboard hot cup with bonded inner polyethylene lining.",
+            target: "landfill",
+            reason: "Hot coffee cups have an invisible plastic coating that standard paper mills cannot separate—it clogs pulpers!"
+        },
+        {
+            name: "Crinkly Potato Chip Bag",
+            icon: "🥔",
+            desc: "Multi-layer metallized polypropylene film (BOPP & aluminum).",
+            target: "landfill",
+            reason: "Composite plastic-metal foils cannot be melted or mechanically sorted at curbside MRFs."
+        },
+        {
+            name: "Rinsed Clear PET Water Bottle",
+            icon: "🧴",
+            desc: "Rigid plastic bottle stamped with resin code #1.",
+            target: "blue",
+            reason: "PET #1 is 100% circular and one of the highest value recyclable commodities. Keep loose!"
+        },
+        {
+            name: "Loose Plastic Grocery Bag",
+            icon: "🛍️",
+            desc: "Stretchy low-density polyethylene (#4 LDPE) grocery film.",
+            target: "depot",
+            reason: "Plastic bags wrap around spinning optical sorters at 1,000 RPM, forcing MRF emergency shutdowns. Return to grocery stores!"
+        },
+        {
+            name: "AA / AAA Lithium Battery",
+            icon: "🔋",
+            desc: "Reactive chemical battery cell with metal terminals.",
+            target: "depot",
+            reason: "CRITICAL FIRE HAZARD: Compactor trucks crush lithium cells, igniting massive municipal garbage fires. Must use a depot!"
+        },
+        {
+            name: "Clean Aluminum Foil Ball",
+            icon: "🌯",
+            desc: "Foil scrunch larger than a golf ball, free of food chunks.",
+            target: "blue",
+            reason: "Aluminum is infinitely circular with 95% energy savings. Scrunch into a fist-sized ball so sorters detect it."
+        },
+        {
+            name: "Expanded Polystyrene Foam Clamshell",
+            icon: "🥡",
+            desc: "Styrofoam food takeout clamshell (#6 PS).",
+            target: "landfill",
+            reason: "Styrofoam crumbles into billions of static micro-beads that blow everywhere and contaminate clean paper bales."
+        },
+        {
+            name: "Broken Wine Glass / Tumbler",
+            icon: "🍷",
+            desc: "Broken drinkware crystal with high lead / borosilicate content.",
+            target: "landfill",
+            reason: "Drinkware glass melts at a higher temperature than bottle glass, creating un-melted stones in new glass bottles."
+        },
+        {
+            name: "Banana Peel & Apple Cores",
+            icon: "🍌",
+            desc: "Raw kitchen produce leftovers and organic biomass.",
+            target: "compost",
+            reason: "Composting diverts organic material from anaerobic landfill decay, slashing potent methane emissions."
+        },
+        {
+            name: "Shredded Paper inside Paper Bag",
+            icon: "📄",
+            desc: "Cut paper strip confetti from confidential documents.",
+            target: "compost",
+            reason: "Shredded paper fibers are too short to recycle and act like dust in MRF screens—feed it to compost worms!"
+        },
+        {
+            name: "Gable-Top Liquid Milk Carton",
+            icon: "🥛",
+            desc: "Poly-coated liquid food paperboard with plastic spout.",
+            target: "blue",
+            reason: "Modern carton hydropulpers separate the high-grade bleached paper fibers from the outer poly-coating."
+        }
+    ];
+
+    let arcadeScore = 0;
+    let arcadeStreak = 0;
+    let arcadeTimeLeft = 60;
+    let arcadeTimerId = null;
+    let arcadeCurrentItem = null;
+    let arcadeCorrectCount = 0;
+    let arcadeErrorCount = 0;
+    let arcadeActive = false;
+
+    const startArcadeBtn = document.getElementById('start-arcade-btn');
+    const arcadeStartScreen = document.getElementById('arcade-start-screen');
+    const arcadePlayScreen = document.getElementById('arcade-play-screen');
+    const arcadeOverScreen = document.getElementById('arcade-over-screen');
+    const arcadeTimer = document.getElementById('arcade-timer');
+    const arcadeTimerBar = document.getElementById('arcade-timer-bar');
+    const arcadeScoreEl = document.getElementById('arcade-score');
+    const arcadeStreakEl = document.getElementById('arcade-streak');
+    const arcadeBestEl = document.getElementById('arcade-best');
+    const arcadeItemIcon = document.getElementById('arcade-item-icon');
+    const arcadeItemName = document.getElementById('arcade-item-name');
+    const arcadeItemDesc = document.getElementById('arcade-item-desc');
+    const arcadeFeedbackBanner = document.getElementById('arcade-feedback-banner');
+    const arcadeFeedbackIcon = document.getElementById('arcade-feedback-icon');
+    const arcadeFeedbackText = document.getElementById('arcade-feedback-text');
+
+    const savedBest = localStorage.getItem('binsync_arcade_best') || 0;
+    if (arcadeBestEl) arcadeBestEl.textContent = `Best: ${savedBest}`;
+
+    if (startArcadeBtn) {
+        startArcadeBtn.addEventListener('click', startArcadeGame);
+    }
+
+    function startArcadeGame() {
+        arcadeScore = 0;
+        arcadeStreak = 0;
+        arcadeTimeLeft = 60;
+        arcadeCorrectCount = 0;
+        arcadeErrorCount = 0;
+        arcadeActive = true;
+
+        arcadeScoreEl.textContent = "0 Pts";
+        arcadeStreakEl.textContent = "Streak: 0 (1x)";
+        arcadeTimer.textContent = "60s";
+        arcadeTimerBar.style.width = "100%";
+        arcadeTimerBar.className = "h-1.5 bg-solar rounded-full transition-all duration-300";
+
+        arcadeStartScreen.classList.add('hidden');
+        arcadeOverScreen.classList.add('hidden');
+        arcadePlayScreen.classList.remove('hidden');
+        if (arcadeFeedbackBanner) arcadeFeedbackBanner.classList.add('hidden');
+
+        nextArcadeItem();
+
+        if (arcadeTimerId) clearInterval(arcadeTimerId);
+        arcadeTimerId = setInterval(() => {
+            arcadeTimeLeft--;
+            arcadeTimer.textContent = `${arcadeTimeLeft}s`;
+            const pct = Math.max(0, (arcadeTimeLeft / 60) * 100);
+            arcadeTimerBar.style.width = `${pct}%`;
+
+            if (arcadeTimeLeft <= 15) {
+                arcadeTimerBar.className = "h-1.5 bg-rose-500 rounded-full transition-all duration-300 animate-pulse";
+            }
+
+            if (arcadeTimeLeft <= 0) {
+                endArcadeGame();
+            }
+        }, 1000);
+    }
+
+    function nextArcadeItem() {
+        const randomIndex = Math.floor(Math.random() * ARCADE_ITEMS.length);
+        arcadeCurrentItem = ARCADE_ITEMS[randomIndex];
+
+        arcadeItemIcon.textContent = arcadeCurrentItem.icon;
+        arcadeItemName.textContent = arcadeCurrentItem.name;
+        arcadeItemDesc.textContent = arcadeCurrentItem.desc;
+    }
+
+    window.handleArcadeSort = function(selectedBin) {
+        if (!arcadeActive || !arcadeCurrentItem) return;
+
+        const isCorrect = (selectedBin === arcadeCurrentItem.target);
+
+        if (isCorrect) {
+            arcadeStreak++;
+            arcadeCorrectCount++;
+            const multiplier = Math.min(4, 1 + Math.floor(arcadeStreak / 3));
+            const pointsGained = 50 * multiplier;
+            arcadeScore += pointsGained;
+
+            arcadeScoreEl.textContent = `${arcadeScore} Pts`;
+            arcadeStreakEl.textContent = `Streak: ${arcadeStreak} (${multiplier}x)`;
+
+            showArcadeFeedback(true, `+${pointsGained} Pts! Correct: ${arcadeCurrentItem.reason}`);
+        } else {
+            arcadeStreak = 0;
+            arcadeErrorCount++;
+            arcadeStreakEl.textContent = `Streak: 0 (1x)`;
+
+            showArcadeFeedback(false, `CONTAMINATION ALERT! Wishcycling detected. ${arcadeCurrentItem.reason}`);
+        }
+
+        nextArcadeItem();
+    };
+
+    function showArcadeFeedback(isCorrect, message) {
+        if (!arcadeFeedbackBanner) return;
+        arcadeFeedbackBanner.classList.remove('hidden');
+        if (isCorrect) {
+            arcadeFeedbackBanner.className = "p-3 rounded-xl border border-teal-200 bg-teal-50 text-teal-800 text-xs font-semibold flex items-center gap-2.5 transition-all";
+            arcadeFeedbackIcon.textContent = "check_circle";
+            arcadeFeedbackIcon.className = "material-symbols-outlined text-[20px] text-teal-600 flex-shrink-0";
+        } else {
+            arcadeFeedbackBanner.className = "p-3 rounded-xl border border-rose-300 bg-rose-50 text-rose-800 text-xs font-semibold flex items-center gap-2.5 transition-all";
+            arcadeFeedbackIcon.textContent = "warning";
+            arcadeFeedbackIcon.className = "material-symbols-outlined text-[20px] text-rose-600 flex-shrink-0";
+        }
+        arcadeFeedbackText.textContent = message;
+    }
+
+    function endArcadeGame() {
+        arcadeActive = false;
+        if (arcadeTimerId) clearInterval(arcadeTimerId);
+
+        arcadePlayScreen.classList.add('hidden');
+        arcadeOverScreen.classList.remove('hidden');
+
+        document.getElementById('arcade-final-score').textContent = `${arcadeScore} Pts`;
+        document.getElementById('arcade-correct-count').textContent = arcadeCorrectCount;
+        document.getElementById('arcade-error-count').textContent = arcadeErrorCount;
+
+        const best = parseInt(localStorage.getItem('binsync_arcade_best') || 0);
+        if (arcadeScore > best) {
+            localStorage.setItem('binsync_arcade_best', arcadeScore);
+            if (arcadeBestEl) arcadeBestEl.textContent = `Best: ${arcadeScore}`;
+            document.getElementById('arcade-summary-sub').textContent = "NEW ALL-TIME RECORD! You are an official Master of Municipal Separation.";
+        } else {
+            document.getElementById('arcade-summary-sub').textContent = "Great job testing your sorting instincts against contamination rules.";
+        }
+    }
+
+    // Keyboard 1, 2, 3, 4 Shortcuts
+    window.addEventListener('keydown', (e) => {
+        if (!arcadeActive) return;
+        if (['input', 'textarea', 'select'].includes(document.activeElement.tagName.toLowerCase())) return;
+        
+        if (e.key === '1') handleArcadeSort('blue');
+        else if (e.key === '2') handleArcadeSort('compost');
+        else if (e.key === '3') handleArcadeSort('depot');
+        else if (e.key === '4') handleArcadeSort('landfill');
+    });
+</script>
+
+</body>
+</html>

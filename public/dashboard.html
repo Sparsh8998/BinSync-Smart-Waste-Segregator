@@ -1,0 +1,2649 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="utf-8"/>
+    <script>
+        // Strictly light mode enforcement — remove any legacy dark theme traces
+        try {
+            document.documentElement.classList.remove('dark');
+            localStorage.removeItem('binsync_theme');
+        } catch(e) {}
+    </script>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Impact Dashboard — BinSync</title>
+    <link rel="icon" type="image/svg+xml" href="/static/img/logo-icon.svg">
+    <link rel="apple-touch-icon" href="/static/img/logo-icon.svg">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#2563EB">
+
+    <!-- Fonts: Plus Jakarta Sans, Inter, JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+
+    <!-- Tailwind CSS with Nordic Arctic Glacier Design Tokens -->
+    <script>
+        tailwind = {
+            config: {
+                theme: {
+                    extend: {
+                        colors: {
+                            primary: {
+                                DEFAULT: "#2563EB",   /* Electric Precision Cobalt */
+                                hover:   "#1D4ED8",   /* Deep Royal Cobalt */
+                                light:   "#EFF6FF",   /* Ice Blue Tint */
+                                container: "#0F172A", /* Obsidian Graphite */
+                                fixed:   "#38BDF8"    /* Glacier Sky */
+                            },
+                            solar: {
+                                DEFAULT: "#F59E0B",
+                                hover:   "#D97706",
+                                light:   "#FEF3C7",
+                                dark:    "#B45309"
+                            },
+                            surface: {
+                                DEFAULT: "#F8FAFC",   /* Glacier Ice-White Canvas */
+                                card:    "#FFFFFF",   /* Pristine Card White */
+                                container: "#F1F5F9", /* Ice Slate Inset */
+                                subtle:  "#E2E8F0"    /* Glacier Border Line */
+                            },
+                            text: {
+                                primary:   "#0F172A", /* Obsidian Slate — 15:1 contrast */
+                                secondary: "#334155", /* Cool Charcoal Slate */
+                                muted:     "#64748B"  /* Glacier Muted Slate */
+                            },
+                            border: {
+                                subtle: "#E2E8F0",   /* Glacier Border Line */
+                                medium: "#CBD5E1",   /* Slate Medium Input Border */
+                                hover:  "#2563EB"    /* Active Precision Cobalt */
+                            },
+                            bin: {
+                                recycle:        "#0284C7", /* Curbside Blue */
+                                recycleLight:   "#F0F9FF",
+                                recycleBorder:  "#BAE6FD",
+                                compost:        "#0D9488", /* Glacier Teal */
+                                compostLight:   "#F0FDFA",
+                                compostBorder:  "#99F6E4",
+                                landfill:       "#475569", /* Managed Slate */
+                                landfillLight:  "#F8FAFC",
+                                landfillBorder: "#E2E8F0",
+                                specialty:      "#D97706",
+                                specialtyLight: "#FFFBEB",
+                                specialtyBorder:"#FDE68A",
+                                hazmat:         "#DC2626", /* Hazmat Red */
+                                hazmatLight:    "#FEF2F2",
+                                hazmatBorder:   "#FECACA"
+                            }
+                        },
+                        fontFamily: {
+                            sans: ['Plus Jakarta Sans', 'Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+                            mono: ['JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace']
+                        },
+                        maxWidth: {
+                            container: 'min(96vw, 1720px)'
+                        },
+                        boxShadow: {
+                            'glacier': '0 2px 8px -2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.02)',
+                            'glacier-hover': '0 12px 28px -4px rgba(15, 23, 42, 0.08), 0 4px 8px rgba(15, 23, 42, 0.03)',
+                            'botanical': '0 2px 8px -2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.02)',
+                            'botanical-hover': '0 12px 28px -4px rgba(15, 23, 42, 0.08), 0 4px 8px rgba(15, 23, 42, 0.03)'
+                        }
+                    }
+                }
+            }
+        };
+    </script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <style>
+        /* ── Fluid Dynamic Typography & Viewport Scaling ── */
+        html {
+            font-size: 16px;
+            -webkit-text-size-adjust: 100%;
+        }
+        @media (min-width: 1280px) {
+            html {
+                font-size: 16.5px;
+            }
+        }
+        @media (min-width: 1536px) {
+            html {
+                font-size: 17.5px;
+            }
+        }
+        @media (min-width: 1920px) {
+            html {
+                font-size: 18.5px;
+            }
+        }
+        @media (min-width: 2560px) {
+            html {
+                font-size: 20px;
+            }
+        }
+
+        .max-w-container {
+            max-width: min(96vw, 1720px) !important;
+            width: 100%;
+        }
+
+        /* ── Editorial Tight Tracking Standards ── */
+        h1, h2, h3, .font-heading {
+            letter-spacing: -0.03em;
+        }
+        .meta-tag, .tech-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        /* ── Nordic Arctic Glacier Custom Utilities ── */
+        .text-primary {
+            color: #2563EB !important;
+        }
+        .bg-primary {
+            background-color: #2563EB !important;
+        }
+        .border-primary {
+            border-color: #2563EB !important;
+        }
+        .bg-primary-light {
+            background-color: #EFF6FF !important;
+        }
+
+        .eco-card {
+            background-color: #FFFFFF;
+            border: 1px solid #E2E8F0;
+            border-radius: 1.5rem;
+            box-shadow: 0 2px 8px -2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.02);
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .eco-card:hover {
+            border-color: #CBD5E1;
+            box-shadow: 0 12px 28px -4px rgba(15, 23, 42, 0.08), 0 4px 8px rgba(15, 23, 42, 0.03);
+        }
+
+        .btn-primary {
+            background-color: #2563EB;
+            color: #FFFFFF !important;
+            padding: 0.75rem 1.6rem;
+            border-radius: 9999px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+            min-height: 44px;
+            border: 1px solid transparent;
+        }
+        .btn-primary:hover {
+            background-color: #1D4ED8;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+            transform: translateY(-1px);
+        }
+        .btn-secondary {
+            background-color: #FFFFFF;
+            color: #0F172A;
+            border: 1.5px solid #CBD5E1;
+            padding: 0.75rem 1.6rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+            min-height: 44px;
+        }
+        .btn-secondary:hover {
+            border-color: #2563EB;
+            background-color: #EFF6FF;
+            color: #2563EB;
+            transform: translateY(-1px);
+        }
+        .btn-solar {
+            background-color: #F59E0B;
+            color: #FFFFFF;
+            padding: 0.75rem 1.6rem;
+            border-radius: 9999px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+            min-height: 44px;
+        }
+        .btn-solar:hover {
+            background-color: #D97706;
+            box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35);
+            transform: translateY(-1px);
+        }
+
+        /* ── Micro-Animations ── */
+        @keyframes fade-up {
+            from {
+                opacity: 0;
+                transform: translateY(14px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .animate-fade-up {
+            animation: fade-up 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+        .stagger-1 { animation-delay: 80ms; }
+        .stagger-2 { animation-delay: 160ms; }
+        .stagger-3 { animation-delay: 240ms; }
+        .stagger-4 { animation-delay: 320ms; }
+
+        @keyframes shimmer-move {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(200%); }
+        }
+        .progress-shimmer {
+            position: relative;
+            overflow: hidden;
+        }
+        .progress-shimmer::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.45), transparent);
+            animation: shimmer-move 2.2s infinite ease-in-out;
+            pointer-events-none;
+        }
+
+        @keyframes flame-pulse {
+            0%, 100% { transform: scale(1) rotate(0deg); filter: drop-shadow(0 0 2px rgba(245, 158, 11, 0.4)); }
+            50% { transform: scale(1.14) rotate(-3deg); filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.8)); }
+        }
+        .flame-flicker {
+            display: inline-block;
+            animation: flame-pulse 1.8s infinite ease-in-out;
+            transform-origin: bottom center;
+        }
+
+        @keyframes glacier-drift {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-48%, -52%) scale(1.08); }
+        }
+        .glacier-float {
+            animation: glacier-drift 16s infinite ease-in-out;
+        }
+
+        @keyframes subtle-pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.65; transform: scale(0.97); }
+        }
+        .pulse-subtle {
+            animation: subtle-pulse 2.4s infinite ease-in-out;
+        }
+
+        @keyframes spring-pop {
+            0% { transform: scale(0.8); opacity: 0; }
+            40% { transform: scale(1.22); }
+            70% { transform: scale(0.95); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .animate-pop {
+            animation: spring-pop 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes golden-glow-pulse {
+            0%, 100% {
+                box-shadow: 0 0 15px rgba(245, 158, 11, 0.2), 0 4px 16px rgba(0, 0, 0, 0.05);
+            }
+            50% {
+                box-shadow: 0 0 30px rgba(245, 158, 11, 0.45), 0 8px 24px rgba(245, 158, 11, 0.15);
+            }
+        }
+        .golden-glow-pulse {
+            animation: golden-glow-pulse 3s infinite ease-in-out;
+        }
+
+        /* ── Universal Scroll-Reveal Directions ── */
+        @media (prefers-reduced-motion: no-preference) {
+            .reveal-on-scroll {
+                opacity: 0;
+                transform: translateY(28px) scale(0.985);
+                transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+                will-change: opacity, transform;
+            }
+            .reveal-on-scroll.is-visible {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+
+            .reveal-left {
+                opacity: 0;
+                transform: translateX(-32px);
+                transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+                will-change: opacity, transform;
+            }
+            .reveal-left.is-visible {
+                opacity: 1;
+                transform: translateX(0);
+            }
+
+            .reveal-right {
+                opacity: 0;
+                transform: translateX(32px);
+                transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+                will-change: opacity, transform;
+            }
+            .reveal-right.is-visible {
+                opacity: 1;
+                transform: translateX(0);
+            }
+
+            .reveal-scale {
+                opacity: 0;
+                transform: scale(0.92);
+                transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+                will-change: opacity, transform;
+            }
+            .reveal-scale.is-visible {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* ── Accessibility: Reduced Motion Standards ── */
+        @media (prefers-reduced-motion: reduce) {
+            *, ::before, ::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+            .reveal-on-scroll, .reveal-left, .reveal-right, .reveal-scale {
+                opacity: 1 !important;
+                transform: none !important;
+                transition: none !important;
+            }
+        }
+
+        /* ── Mobile Input Zoom Prevention & Safe Area Standards ── */
+        @media (max-width: 768px) {
+            input, select, textarea {
+                font-size: 16px !important;
+            }
+        }
+        .safe-bottom-nav {
+            padding-bottom: max(0.65rem, env(safe-area-inset-bottom, 0.65rem));
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+    
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+    @media print {
+        body * {
+            visibility: hidden !important;
+        }
+        #kitchen-fridge-sheet, #kitchen-fridge-sheet * {
+            visibility: visible !important;
+        }
+        #kitchen-fridge-sheet {
+            position: absolute !important;
+            left: 0 !important;
+            top: 0 !important;
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 24px !important;
+            background: white !important;
+            color: #0F172A !important;
+            border: none !important;
+            box-shadow: none !important;
+        }
+        .no-print {
+            display: none !important;
+        }
+    }
+</style>
+
+</head>
+<body class="bg-surface text-text-primary font-sans min-h-screen flex flex-col antialiased selection:bg-blue-100 selection:text-blue-950">
+
+<!-- Top Fixed Glacier Scroll Progress Bar -->
+<div id="scroll-progress-bar" class="fixed top-0 left-0 h-[3px] bg-gradient-to-r from-primary via-[#38BDF8] to-solar z-[60] w-0 transition-[width] duration-75 ease-out pointer-events-none"></div>
+
+<!-- Nordic Arctic Glacier Frosted Header -->
+<header id="main-header" class="sticky top-0 z-50 transition-all duration-300 bg-white/95 backdrop-blur-md border-b border-border-subtle h-20 flex items-center">
+    <div class="max-w-container mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 w-full flex items-center justify-between">
+        <!-- Brand Logo with Climate Intelligence Identity -->
+        <a href="/" class="flex items-center gap-3 hover:opacity-90 transition-opacity flex-shrink-0">
+            <img src="/static/img/logo-icon.svg" alt="BinSync Logo" class="w-9 h-9 rounded-xl shadow-sm">
+            <div class="flex flex-col">
+                <span class="text-xl font-black tracking-tight text-text-primary leading-none">Bin<span class="text-primary">Sync</span></span>
+                <span class="text-[9px] font-bold text-primary tracking-widest uppercase mt-0.5">CLIMATE INTELLIGENCE</span>
+            </div>
+        </a>
+
+        <!-- Desktop Navigation Tabs (Nordic Glacier Capsule Tabs) -->
+        <nav class="hidden md:flex items-center gap-1.5 text-sm font-semibold">
+            <a href="/" class="px-4 py-2 rounded-full transition-all text-text-secondary hover:text-text-primary hover:bg-surface-container">
+                Home
+            </a>
+            <a href="/classifier" class="px-4 py-2 rounded-full transition-all text-text-secondary hover:text-text-primary hover:bg-surface-container flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-[18px]">photo_camera</span>
+                <span>Waste Sorter</span>
+            </a>
+            <a href="/rules" class="px-4 py-2 rounded-full transition-all text-text-secondary hover:text-text-primary hover:bg-surface-container">
+                Rules &amp; Map
+            </a>
+            <a href="/classifications" class="px-4 py-2 rounded-full transition-all text-text-secondary hover:text-text-primary hover:bg-surface-container">
+                Taxonomy
+            </a>
+            <a href="/leaderboard" class="px-4 py-2 rounded-full transition-all text-text-secondary hover:text-text-primary hover:bg-surface-container">
+                Leaderboard
+            </a>
+            
+            <a href="/dashboard" class="px-4 py-2 rounded-full transition-all text-primary bg-primary-light font-bold">
+                Dashboard
+            </a>
+            
+        </nav>
+
+        <!-- Right Side: User Profile / Action -->
+        <div class="flex items-center gap-3">
+            
+            <a href="/dashboard" class="hidden sm:flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-surface-container border border-border-subtle hover:border-primary/40 transition">
+                <span class="w-6 h-6 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center">
+                    C
+                </span>
+                <span class="text-xs font-bold text-text-primary">Citizen_b361d</span>
+                <span id="nav-points-pill" class="text-xs font-mono font-bold text-primary bg-primary-light px-2.5 py-0.5 rounded-full">0 pts</span>
+            </a>
+            <a href="/logout" title="Log out" class="text-xs font-semibold text-text-muted hover:text-rose-600 px-2 py-1 transition">
+                Sign Out
+            </a>
+            
+
+            <!-- Mobile Hamburger Button -->
+            <button type="button" id="mobile-menu-btn" class="md:hidden text-text-secondary hover:text-text-primary p-2 focus:outline-none rounded-xl hover:bg-surface-container" aria-label="Toggle Menu">
+                <span class="material-symbols-outlined text-[24px]" id="mobile-menu-icon">menu</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Mobile Slide Drawer -->
+    <div id="mobile-menu" class="hidden md:hidden absolute top-20 left-0 right-0 bg-white border-b border-border-subtle shadow-xl px-5 py-4 space-y-2 z-50">
+        <div class="flex items-center gap-2.5 pb-3 mb-2 border-b border-border-subtle">
+            <img src="/static/img/logo-icon.svg" alt="BinSync" class="w-7 h-7 rounded-lg">
+            <span class="font-bold text-sm text-text-primary">BinSync Quick Navigation</span>
+        </div>
+        <a href="/" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-text-secondary hover:bg-surface-container">
+            Home
+        </a>
+        <a href="/classifier" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-text-secondary hover:bg-surface-container">
+            Waste Sorter
+        </a>
+        <a href="/rules" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-text-secondary hover:bg-surface-container">
+            Rules &amp; Map
+        </a>
+        <a href="/classifications" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-text-secondary hover:bg-surface-container">
+            Taxonomy Directory
+        </a>
+        <a href="/leaderboard" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-text-secondary hover:bg-surface-container">
+            Community Leaderboard
+        </a>
+        
+        <a href="/dashboard" class="block px-4 py-2.5 rounded-xl text-sm font-medium bg-primary-light text-primary font-bold">
+            My Dashboard (0 pts)
+        </a>
+        <a href="/logout" class="block px-4 py-2.5 rounded-xl text-sm font-medium text-rose-600 hover:bg-rose-50">
+            Sign Out
+        </a>
+        
+    </div>
+</header>
+
+<!-- Main Body Slot -->
+<main class="flex-grow pb-24 md:pb-0">
+    
+<div class="max-w-container mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 py-10 md:py-16 space-y-10">
+
+    <!-- Guest Session Warning & Claim CTA -->
+    
+    <div class="p-4 sm:p-5 rounded-2xl bg-primary-light border border-primary/20 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs sm:text-sm text-text-primary">
+        <div class="flex items-center gap-3">
+            <span class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-xs flex-shrink-0">
+                <span class="material-symbols-outlined text-[18px]">person</span>
+            </span>
+            <span>
+                <strong>Temporary Guest Session (Citizen_b361d):</strong> Your scans, streaks, and eco-points are tracked in this browser.
+            </span>
+        </div>
+        <a href="/login" class="btn-primary py-2 px-5 text-xs sm:text-sm font-bold shadow-none whitespace-nowrap">
+            Set Permanent Username &rarr;
+        </a>
+    </div>
+    
+
+    <!-- User Profile Hero Card -->
+    <div class="eco-card p-6 sm:p-10">
+        <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+            <!-- Identity -->
+            <div class="flex items-center gap-6">
+                <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-primary text-white flex items-center justify-center font-black text-3xl sm:text-4xl shadow-md flex-shrink-0">
+                    C
+                </div>
+                <div>
+                    <div class="flex items-center gap-3 flex-wrap">
+                        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black text-text-primary">Citizen_b361d</h1>
+                        <span class="text-xs sm:text-sm font-bold text-primary bg-primary-light px-3.5 py-1 rounded-full uppercase tracking-wider">Seedling</span>
+                    </div>
+                    <div class="flex items-center gap-2 mt-2 flex-wrap">
+                        <span class="text-xs text-text-muted font-mono">Citizen ID: SYNC-0356</span>
+                        <span class="text-text-muted text-xs">·</span>
+                        <div class="relative inline-flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-teal-600 text-[16px]">groups</span>
+                            <select id="user-hub-selector" onchange="updateCitizenHub(this.value)" class="text-xs font-bold text-teal-900 bg-teal-50 border border-teal-200 rounded-full px-2.5 py-0.5 focus:outline-none focus:ring-2 focus:ring-teal-500/20 cursor-pointer">
+                                
+                                <option value="Global Network" selected>Global Network</option>
+                                
+                                <option value="University Campus" >University Campus</option>
+                                
+                                <option value="Green Tech Park" >Green Tech Park</option>
+                                
+                                <option value="Downtown Metro" >Downtown Metro</option>
+                                
+                                <option value="Eco Neighborhood" >Eco Neighborhood</option>
+                                
+                            </select>
+                            <span id="hub-saved-badge" class="hidden text-[10px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">Saved</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Stats Pills & Export Action -->
+            <div class="flex flex-wrap items-center gap-3.5">
+                <div class="px-6 py-3.5 rounded-2xl bg-surface border border-border-subtle text-center min-w-[95px]">
+                    <span class="block text-[11px] font-bold text-text-muted uppercase tracking-widest mb-0.5">Scans</span>
+                    <span class="text-2xl font-black text-text-primary font-mono">0</span>
+                </div>
+                <div class="px-6 py-3.5 rounded-2xl bg-surface border border-border-subtle text-center min-w-[95px]">
+                    <span class="block text-[11px] font-bold text-text-muted uppercase tracking-widest mb-0.5">Streak</span>
+                    <span class="text-2xl font-black text-solar-dark font-mono flex items-center justify-center gap-1">
+                        <span class="material-symbols-outlined text-[20px] text-solar flame-flicker">local_fire_department</span>
+                        0d
+                    </span>
+                </div>
+                <div class="px-6 py-3.5 rounded-2xl bg-primary text-white text-center shadow-sm min-w-[95px]">
+                    <span class="block text-[11px] font-bold text-[#93C5FD] uppercase tracking-widest mb-0.5">Points</span>
+                    <span class="text-2xl font-black font-mono">0</span>
+                </div>
+                <a href="/api/export_scans" title="Download verified CSV audit" class="p-3.5 rounded-2xl bg-surface border border-border-medium hover:border-primary text-text-secondary hover:text-primary transition flex items-center justify-center">
+                    <span class="material-symbols-outlined text-[22px]">download</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Level Progress Bar -->
+        <div class="mt-7 pt-6 border-t border-border-subtle space-y-2">
+            <div class="flex justify-between items-center text-xs">
+                <span class="font-semibold text-text-secondary">Progress to next tier: <strong class="text-text-primary">Seedling</strong></span>
+                <span class="text-text-muted font-mono font-medium">0 / 100 pts</span>
+            </div>
+            <div class="w-full h-2.5 rounded-full bg-surface border border-border-subtle overflow-hidden relative">
+                <div id="user-level-bar" class="h-full bg-primary rounded-full progress-shimmer transition-all duration-1000 ease-out" style="width: 0%;" data-target-width="0.0%;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-7 items-start">
+
+        <!-- Left Col: Stats + Daily Quests + Simulator + Badges -->
+        <div class="lg:col-span-7 space-y-6">
+
+            <!-- Bento Impact Stats (Tangible Equivalencies) -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div class="eco-card p-5">
+                    <div class="w-9 h-9 rounded-xl bg-primary-light text-primary flex items-center justify-center mb-3">
+                        <span class="material-symbols-outlined text-[20px]">co2</span>
+                    </div>
+                    <div class="text-2xl font-black text-text-primary font-mono">0.0g</div>
+                    <p class="text-xs text-text-secondary mt-0.5">Total CO₂ Diverted</p>
+                </div>
+                <div class="eco-card p-5">
+                    <div class="w-9 h-9 rounded-xl bg-solar-light text-solar-dark flex items-center justify-center mb-3">
+                        <span class="material-symbols-outlined text-[20px]">battery_charging_full</span>
+                    </div>
+                    <div class="text-2xl font-black text-text-primary font-mono">0</div>
+                    <p class="text-xs text-text-secondary mt-0.5">Smartphone Recharges</p>
+                </div>
+                <div class="eco-card p-5">
+                    <div class="w-9 h-9 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center mb-3">
+                        <span class="material-symbols-outlined text-[20px]">electric_car</span>
+                    </div>
+                    <div class="text-2xl font-black text-text-primary font-mono">0.0<span class="text-sm font-normal text-text-muted ml-1">mi</span></div>
+                    <p class="text-xs text-text-secondary mt-0.5">EV Miles Offset</p>
+                </div>
+            </div>
+
+            <!-- Daily Climate Quests Widget -->
+            <div class="eco-card p-6 space-y-4">
+                <div class="flex items-center justify-between pb-3 border-b border-border-subtle">
+                    <h2 class="text-sm font-bold text-text-primary flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-[18px] text-solar">target</span>
+                        Today's Citizen Quests
+                    </h2>
+                    <span class="text-[11px] font-semibold text-primary bg-primary-light px-2.5 py-0.5 rounded-full">Resets Midnight</span>
+                </div>
+                <div class="space-y-3">
+                    
+                    <div class="p-3.5 rounded-xl border bg-surface border-border-subtle flex items-center justify-between gap-3 transition">
+                        <div class="flex items-center gap-3">
+                            <span class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold bg-white text-text-muted border border-border-medium">
+                                
+                                1
+                                
+                            </span>
+                            <div>
+                                <h4 class="text-xs font-bold text-text-primary ">Daily Citizen Scan</h4>
+                                <p class="text-[11px] text-text-secondary">Inspect at least 1 packaging item today</p>
+                            </div>
+                        </div>
+                        <span class="text-[11px] font-bold font-mono px-2 py-0.5 rounded-md bg-solar-light text-solar-dark">
+                            +10 Eco-Pts
+                        </span>
+                    </div>
+                    
+                    <div class="p-3.5 rounded-xl border bg-surface border-border-subtle flex items-center justify-between gap-3 transition">
+                        <div class="flex items-center gap-3">
+                            <span class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold bg-white text-text-muted border border-border-medium">
+                                
+                                2
+                                
+                            </span>
+                            <div>
+                                <h4 class="text-xs font-bold text-text-primary ">Clean Stream Defender</h4>
+                                <p class="text-[11px] text-text-secondary">Divert an item into recycling or compost</p>
+                            </div>
+                        </div>
+                        <span class="text-[11px] font-bold font-mono px-2 py-0.5 rounded-md bg-solar-light text-solar-dark">
+                            +15 Eco-Pts
+                        </span>
+                    </div>
+                    
+                    <div class="p-3.5 rounded-xl border bg-surface border-border-subtle flex items-center justify-between gap-3 transition">
+                        <div class="flex items-center gap-3">
+                            <span class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold bg-white text-text-muted border border-border-medium">
+                                
+                                3
+                                
+                            </span>
+                            <div>
+                                <h4 class="text-xs font-bold text-text-primary ">Streak Master Keeper</h4>
+                                <p class="text-[11px] text-text-secondary">Maintain an active sorting streak of 2+ days</p>
+                            </div>
+                        </div>
+                        <span class="text-[11px] font-bold font-mono px-2 py-0.5 rounded-md bg-solar-light text-solar-dark">
+                            +25 Eco-Pts
+                        </span>
+                    </div>
+                    
+                </div>
+            </div>
+
+            <!-- Virtual Household Dry-Waste Stash & Doorstep Pickup -->
+            <div class="eco-card p-6 space-y-5">
+                <div class="flex items-center justify-between pb-3 border-b border-border-subtle">
+                    <div>
+                        <h2 class="text-sm font-bold text-text-primary flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-[18px] text-teal-600">recycling</span>
+                            <span>Virtual Household Dry-Waste Stash</span>
+                        </h2>
+                        <p class="text-xs text-text-muted mt-0.5">Audited recyclable stream accumulation ready for circular commodity pickup</p>
+                    </div>
+                    <span class="text-xs font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full font-mono">
+                        $0.00 (₹0)
+                    </span>
+                </div>
+
+                <!-- Stash Progress toward 1,000g threshold -->
+                <div class="space-y-2">
+                    <div class="flex justify-between items-center text-xs">
+                        <span class="font-semibold text-text-secondary">Pickup Goal (1,000g Threshold):</span>
+                        <span class="font-mono font-bold text-primary">0g / 1,000g (0%)</span>
+                    </div>
+                    <div class="w-full h-3 rounded-full bg-surface border border-border-subtle overflow-hidden">
+                        <div class="h-full bg-gradient-to-r from-blue-500 to-teal-500 rounded-full transition-all duration-700" style="width: 0%;"></div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1">
+                    <div class="text-xs text-text-secondary">
+                        <span class="font-semibold text-text-primary">Doorstep Collection Status:</span>
+                        
+                        <span class="text-amber-700 font-medium ml-1">1000g remaining until free pickup</span>
+                        
+                    </div>
+                    <button type="button" onclick="openPickupModal()" class="btn-primary py-2 px-4 text-xs font-bold flex items-center justify-center gap-1.5 whitespace-nowrap shadow-sm">
+                        <span class="material-symbols-outlined text-[16px]">local_shipping</span>
+                        <span>Schedule Doorstep Pickup (+50 Pts)</span>
+                    </button>
+                </div>
+
+                <!-- Scheduled Pickups History -->
+                
+            </div>
+
+            <!-- Interactive Household Carbon Projection Simulator -->
+            <div class="eco-card p-6 space-y-5">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="text-sm font-bold text-text-primary flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-[18px] text-primary">analytics</span>
+                            Household Diversion Projection Calculator
+                        </h2>
+                        <p class="text-xs text-text-muted mt-0.5">Estimate your cumulative annual footprint impact</p>
+                    </div>
+                    <span id="slider-items-label" class="text-xs font-bold text-primary font-mono bg-primary-light px-2.5 py-1 rounded-full">4 items/day</span>
+                </div>
+
+                <div class="space-y-2">
+                    <input type="range" id="divert-slider" min="1" max="25" value="4" class="w-full h-2 bg-surface-container rounded-lg appearance-none cursor-pointer accent-primary">
+                    <div class="flex justify-between text-[10px] text-text-muted font-mono">
+                        <span>1 item/day</span>
+                        <span>10 items/day</span>
+                        <span>25 items/day</span>
+                    </div>
+                </div>
+
+                <!-- Simulation Output Grid -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
+                    <div class="p-3 bg-surface rounded-xl border border-border-subtle text-center space-y-1">
+                        <span class="text-[10px] font-bold text-text-muted uppercase">Annual CO₂</span>
+                        <div id="sim-co2" class="text-base font-black text-primary font-mono">51.1 kg</div>
+                    </div>
+                    <div class="p-3 bg-surface rounded-xl border border-border-subtle text-center space-y-1">
+                        <span class="text-[10px] font-bold text-text-muted uppercase">Phone Charges</span>
+                        <div id="sim-phones" class="text-base font-black text-text-primary font-mono">6,216</div>
+                    </div>
+                    <div class="p-3 bg-surface rounded-xl border border-border-subtle text-center space-y-1">
+                        <span class="text-[10px] font-bold text-text-muted uppercase">EV Miles</span>
+                        <div id="sim-ev" class="text-base font-black text-text-primary font-mono">340 mi</div>
+                    </div>
+                    <div class="p-3 bg-surface rounded-xl border border-border-subtle text-center space-y-1">
+                        <span class="text-[10px] font-bold text-text-muted uppercase">Ocean Bottles</span>
+                        <div id="sim-bottles" class="text-base font-black text-teal-700 font-mono">1,460</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 30-Day Sorting Consistency Activity Heatmap -->
+            <div class="eco-card p-6 space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-border-subtle">
+                    <div>
+                        <h2 class="text-sm font-bold text-text-primary flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-[18px] text-primary">calendar_month</span>
+                            30-Day Sorting Consistency
+                        </h2>
+                        <p class="text-xs text-text-muted mt-0.5">Daily municipal packaging scans &amp; streak progress</p>
+                    </div>
+                    <div>
+                        
+                        <span class="text-[11px] font-semibold text-text-muted bg-surface-container border border-border-subtle px-2.5 py-1 rounded-full flex items-center gap-1">
+                            <span class="material-symbols-outlined text-[15px] text-text-muted">shield</span>
+                            <span>Next Shield: 5d</span>
+                        </span>
+                        
+                    </div>
+                </div>
+
+                <!-- Heatmap Grid -->
+                <div class="grid grid-cols-6 sm:grid-cols-10 gap-2" id="heatmap-grid">
+                    
+                    <div class="group relative flex flex-col items-center justify-center p-2 rounded-xl text-center transition-transform hover:scale-110 cursor-pointer border border-border-subtle/50 bg-surface-container text-text-muted/60">
+                        <span class="text-[10px] font-mono leading-none">11</span>
+                        <span class="text-[9px] opacity-75 font-mono leading-none mt-0.5">0</span>
+                        
+                        <!-- Tooltip -->
+                        <div class="absolute bottom-full mb-1.5 left-1/2 -translate-x-1/2 hidden group-hover:block z-30 whitespace-nowrap bg-[#0F172A] text-white text-[10px] font-semibold px-2.5 py-1 rounded-lg shadow-lg pointer-events-none">
+                            Oct 11: 0 items sorted
+                        </div>
+                    </div>
+                    
+                    <div class="group relative flex flex-col items-center justify-center p-2 rounded-xl text-center transition-transform hover:scale-110 cursor-pointer border border-border-subtle/50 bg-surface-container text-text-muted/60">
+                        <span class="text-[10px] font-mono leading-none">12</span>
+                        <span class="text-[9px] opacity-75 font-mono leading-none mt-0.5">0</span>
+                        
+                        <!-- Tooltip -->
+                        <div class="absolute bottom-full mb-1.5 left-1/2 -translate-x-1/2 hidden group-hover:block z-30 whitespace-nowrap bg-[#0F172A] text-white text-[10px] font-semibold px-2.5 py-1 rounded-lg shadow-lg pointer-events-none">
+                            Oct 12: 0 items sorted
+                        </div>
+                    </div>
+                    
+                    <div class="group relative flex flex-col items-center justify-center p-2 rounded-xl text-center transition-transform hover:scale-110 cursor-pointer border border-border-subtle/50 bg-surface-container text-text-muted/60">
+                        <span class="text-[10px] font-mono leading-none">13</span>
+                        <span class="text-[9px] opacity-75 font-mono leading-none mt-0.5">0</span>
+                        
+                        <!-- Tooltip -->
+                        <div class="absolute bottom-full mb-1.5 left-1/2 -translate-x-1/2 hidden group-hover:block z-30 whitespace-nowrap bg-[#0F172A] text-white text-[10px] font-semibold px-2.5 py-1 rounded-lg shadow-lg pointer-events-none">
+                            Oct 13: 0 items sorted
+                        </div>
+                    </div>
+                    
+                    <div class="group relative flex flex-col items-center justify-center p-2 rounded-xl text-center transition-transform hover:scale-110 cursor-pointer border border-border-subtle/50 bg-surface-container text-text-muted/60">
+                        <span class="text-[10px] font-mono leading-none">14</span>
+                        <span class="text-[9px] opacity-75 font-mono leading-none mt-0.5">0</span>
+                        
+                        <!-- Tooltip -->
+                        <div class="absolute bottom-full mb-1.5 left-1/2 -translate-x-1/2 hidden group-hover:block z-30 whitespace-nowrap bg-[#0F172A] text-white text-[10px] font-semibold px-2.5 py-1 rounded-lg shadow-lg pointer-events-none">
+                            Oct 14: 0 items sorted
+                        </div>
+                    </div>
+                    
+                    <div class="group relative flex flex-col items-center justify-center p-2 rounded-xl text-center transition-transform hover:scale-110 cursor-pointer border border-border-subtle/50 bg-surface-container text-text-muted/60">
+                        <span class="text-[10px] font-mono leading-none">15</span>
+                        <span class="text-[9px] opacity-75 font-mono leading-none mt-0.5">0</span>
+                        
+                        <!-- Tooltip -->
+                        <div class="absolute bottom-full mb-1.5 left-1/2 -translate-x-1/2 hidden group-hover:block z-30 whitespace-nowrap bg-[#0F172A] text-white text-[10px] font-semibold px-2.5 py-1 rounded-lg shadow-lg pointer-events-none">
+                            Oct 15: 0 items sorted
+                        </div>
+                    </div>
+                    
+                    <div class="group relative flex flex-col items-center justify-center p-2 rounded-xl text-center transition-transform hover:scale-110 cursor-pointer border border-border-subtle/50 bg-surface-container text-text-muted/60">
+                        <span class="text-[10px] font-mono leading-none">16</span>
+                        <span class="text-[9px] opacity-75 font-mono leading-none mt-0.5">0</span>
+                        
+                        <!-- Tooltip -->
+                        <div class="absolute bottom-full mb-1.5 left-1/2 -translate-x-1/2 hidden group-hover:block z-30 whitespace-nowrap bg-[#0F172A] text-white text-[10px] font-semibold px-2.5 py-1 rounded-lg shadow-lg pointer-events-none">
+                            Oct 16: 0 items sorted
+                        </div>
+                    </div>
+                    
+                    <div class="group relative flex flex-col items-center justify-center p-2 rounded-xl text-center transition-transform hover:scale-110 cursor-pointer border border-border-subtle/50 bg-surface-container text-text-muted/60">
+                        <span class="text-[10px] font-mono leading-none">17</span>
+                        <span class="text-[9px] opacity-75 font-mono leading-none mt-0.5">0</span>
+                        
+                        <!-- Tooltip -->
+                        <div class="absolute bottom-full mb-1.5 left-1/2 -translate-x-1/2 hidden group-hover:block z-30 whitespace-nowrap bg-[#0F172A] text-white text-[10px] font-semibold px-2.5 py-1 rounded-lg shadow-lg pointer-events-none">
+                            Oct 17: 0 items sorted
+                        </div>
+                    </div>
+                    
+                    <div class="group relative flex flex-col items-center justify-center p-2 rounded-xl text-center transition-transform hover:scale-110 cursor-pointer border border-border-subtle/50 bg-surface-container text-text-muted/60">
+                        <span class="text-[10px] font-mono leading-none">18</span>
+                        <span class="text-[9px] opacity-75 font-mono leading-none mt-0.5">0</span>
+                        
+                        <!-- Tooltip -->
+                        <div class="absolute bottom-full mb-1.5 left-1/2 -translate-x-1/2 hidden group-hover:block z-30 whitespace-nowrap bg-[#0F172A] text-white text-[10px] font-semibold px-2.5 py-1 rounded-lg shadow-lg pointer-events-none">
+                            Oct 18: 0 items sorted
+                        </div>
+                    </div>
+                    
+                    <div class="group relative flex flex-col items-center justify-center p-2 rounded-xl text-center transition-transform hover:scale-110 cursor-pointer border border-border-subtle/50 bg-surface-container text-text-muted/60">
+                        <span class="text-[10px] font-mono leading-none">19</span>
+                        <span class="text-[9px] opacity-75 font-mono leading-none mt-0.5">0</span>
+                        
+                        <!-- Tooltip -->
+                        <div class="absolute bottom-full mb-1.5 left-1/2 -translate-x-1/2 hidden group-hover:block z-30 whitespace-nowrap bg-[#0F172A] text-white text-[10px] font-semibold px-2.5 py-1 rounded-lg shadow-lg pointer-events-none">
+                            Oct 19: 0 items sorted
+                        </div>
+                    </div>
+                    
+                    <div class="group relative flex flex-col items-center justify-center p-2 rounded-xl text-center transition-transform hover:scale-110 cursor-pointer border border-border-subtle/50 bg-surface-container text-text-muted/60">
+                        <span class="text-[10px] font-mono leading-none">20</span>
+                        <span class="text-[9px] opacity-75 font-mono leading-none mt-0.5">0</span>
+                        
+                        <!-- Tooltip -->
+                        <div class="absolute bottom-full mb-1.5 left-1/2 -translate-x-1/2 hidden group-hover:block z-30 whitespace-nowrap bg-[#0F172A] text-white text-[10px] font-semibold px-2.5 py-1 rounded-lg shadow-lg pointer-events-none">
+                            Oct 20: 0 items sorted
+                        </div>
+                    </div>
+                    
+                    <div class="group relative flex flex-col items-center justify-center p-2 rounded-xl text-center transition-transform hover:scale-110 cursor-pointer border border-border-subtle/50 bg-surface-container text-text-muted/60">
+                        <span class="text-[10px] font-mono leading-none">21</span>
+                        <span class="text-[9px] opacity-75 font-mono leading-none mt-0.5">0</span>
+                        
+                        <!-- Tooltip -->
+                        <div class="absolute bottom-full mb-1.5 left-1/2 -translate-x-1/2 hidden group-hover:block z-30 whitespace-nowrap bg-[#0F172A] text-white text-[10px] font-semibold px-2.5 py-1 rounded-lg shadow-lg pointer-events-none">
+                            Oct 21: 0 items sorted
+                        </div>
+                    </div>
+                    
+                    <div class="group relative flex flex-col items-center justify-center p-2 rounded-xl text-center transition-transform hover:scale-110 cursor-pointer border border-border-subtle/50 bg-surface-container text-text-muted/60">
+                        <span class="text-[10px] font-mono leading-none">22</span>
+                        <span class="text-[9px] opacity-75 font-mono leading-none mt-0.5">0</span>
+                        
+                        <!-- Tooltip -->
+                        <div class="absolute bottom-full mb-1.5 left-1/2 -translate-x-1/2 hidden group-hover:block z-30 whitespace-nowrap bg-[#0F172A] text-white text-[10px] font-semibold px-2.5 py-1 rounded-lg shadow-lg pointer-events-none">
+                            Oct 22: 0 items sorted
+                        </div>
+                    </div>
+                    
+                    <div class="group relative flex flex-col items-center justify-center p-2 rounded-xl text-center transition-transform hover:scale-110 cursor-pointer border border-border-subtle/50 bg-surface-container text-text-muted/60">
+                        <span class="text-[10px] font-mono leading-none">23</span>
+                        <span class="text-[9px] opacity-75 font-mono leading-none mt-0.5">0</span>
+                        
+                        <!-- Tooltip -->
+                        <div class="absolute bottom-full mb-1.5 left-1/2 -translate-x-1/2 hidden group-hover:block z-30 whitespace-nowrap bg-[#0F172A] text-white text-[10px] font-semibold px-2.5 py-1 rounded-lg shadow-lg pointer-events-none">
+                            Oct 23: 0 items sorted
+                        </div>
+                    </div>
+                    
+                    <div class="group relative flex flex-col items-center justify-center p-2 rounded-xl text-center transition-transform hover:scale-110 cursor-pointer border border-border-subtle/50 bg-surface-container text-text-muted/60">
+                        <span class="text-[10px] font-mono leading-none">24</span>
+                        <span class="text-[9px] opacity-75 font-mono leading-none mt-0.5">0</span>
+                        
+                        <!-- Tooltip -->
+                        <div class="absolute bottom-full mb-1.5 left-1/2 -translate-x-1/2 hidden group-hover:block z-30 whitespace-nowrap bg-[#0F172A] text-white text-[10px] font-semibold px-2.5 py-1 rounded-lg shadow-lg pointer-events-none">
+                            Oct 24: 0 items sorted
+                        </div>
+                    </div>
+                    
+                    <div class="group relative flex flex-col items-center justify-center p-2 rounded-xl text-center transition-transform hover:scale-110 cursor-pointer border border-border-subtle/50 bg-surface-container text-text-muted/60">
+                        <span class="text-[10px] font-mono leading-none">25</span>
+                        <span class="text-[9px] opacity-75 font-mono leading-none mt-0.5">0</span>
+                        
+                        <!-- Tooltip -->
+                        <div class="absolute bottom-full mb-1.5 left-1/2 -translate-x-1/2 hidden group-hover:block z-30 whitespace-nowrap bg-[#0F172A] text-white text-[10px] font-semibold px-2.5 py-1 rounded-lg shadow-lg pointer-events-none">
+                            Oct 25: 0 items sorted
+                        </div>
+                    </div>
+                    
+                    <div class="group relative flex flex-col items-center justify-center p-2 rounded-xl text-center transition-transform hover:scale-110 cursor-pointer border border-border-subtle/50 bg-surface-container text-text-muted/60">
+                        <span class="text-[10px] font-mono leading-none">26</span>
+                        <span class="text-[9px] opacity-75 font-mono leading-none mt-0.5">0</span>
+                        
+                        <!-- Tooltip -->
+                        <div class="absolute bottom-full mb-1.5 left-1/2 -translate-x-1/2 hidden group-hover:block z-30 whitespace-nowrap bg-[#0F172A] text-white text-[10px] font-semibold px-2.5 py-1 rounded-lg shadow-lg pointer-events-none">
+                            Oct 26: 0 items sorted
+                        </div>
+                    </div>
+                    
+                    <div class="group relative flex flex-col items-center justify-center p-2 rounded-xl text-center transition-transform hover:scale-110 cursor-pointer border border-border-subtle/50 bg-surface-container text-text-muted/60">
+                        <span class="text-[10px] font-mono leading-none">27</span>
+                        <span class="text-[9px] opacity-75 font-mono leading-none mt-0.5">0</span>
+                        
+                        <!-- Tooltip -->
+                        <div class="absolute bottom-full mb-1.5 left-1/2 -translate-x-1/2 hidden group-hover:block z-30 whitespace-nowrap bg-[#0F172A] text-white text-[10px] font-semibold px-2.5 py-1 rounded-lg shadow-lg pointer-events-none">
+                            Oct 27: 0 items sorted
+                        </div>
+                    </div>
+                    
+                    <div class="group relative flex flex-col items-center justify-center p-2 rounded-xl text-center transition-transform hover:scale-110 cursor-pointer border border-border-subtle/50 bg-surface-container text-text-muted/60">
+                        <span class="text-[10px] font-mono leading-none">28</span>
+                        <span class="text-[9px] opacity-75 font-mono leading-none mt-0.5">0</span>
+                        
+                        <!-- Tooltip -->
+                        <div class="absolute bottom-full mb-1.5 left-1/2 -translate-x-1/2 hidden group-hover:block z-30 whitespace-nowrap bg-[#0F172A] text-white text-[10px] font-semibold px-2.5 py-1 rounded-lg shadow-lg pointer-events-none">
+                            Oct 28: 0 items sorted
+                        </div>
+                    </div>
+                    
+                    <div class="group relative flex flex-col items-center justify-center p-2 rounded-xl text-center transition-transform hover:scale-110 cursor-pointer border border-border-subtle/50 bg-surface-container text-text-muted/60">
+                        <span class="text-[10px] font-mono leading-none">29</span>
+                        <span class="text-[9px] opacity-75 font-mono leading-none mt-0.5">0</span>
+                        
+                        <!-- Tooltip -->
+                        <div class="absolute bottom-full mb-1.5 left-1/2 -translate-x-1/2 hidden group-hover:block z-30 whitespace-nowrap bg-[#0F172A] text-white text-[10px] font-semibold px-2.5 py-1 rounded-lg shadow-lg pointer-events-none">
+                            Oct 29: 0 items sorted
+                        </div>
+                    </div>
+                    
+                    <div class="group relative flex flex-col items-center justify-center p-2 rounded-xl text-center transition-transform hover:scale-110 cursor-pointer border border-border-subtle/50 bg-surface-container text-text-muted/60">
+                        <span class="text-[10px] font-mono leading-none">30</span>
+                        <span class="text-[9px] opacity-75 font-mono leading-none mt-0.5">0</span>
+                        
+                        <!-- Tooltip -->
+                        <div class="absolute bottom-full mb-1.5 left-1/2 -translate-x-1/2 hidden group-hover:block z-30 whitespace-nowrap bg-[#0F172A] text-white text-[10px] font-semibold px-2.5 py-1 rounded-lg shadow-lg pointer-events-none">
+                            Oct 30: 0 items sorted
+                        </div>
+                    </div>
+                    
+                    <div class="group relative flex flex-col items-center justify-center p-2 rounded-xl text-center transition-transform hover:scale-110 cursor-pointer border border-border-subtle/50 bg-surface-container text-text-muted/60">
+                        <span class="text-[10px] font-mono leading-none">31</span>
+                        <span class="text-[9px] opacity-75 font-mono leading-none mt-0.5">0</span>
+                        
+                        <!-- Tooltip -->
+                        <div class="absolute bottom-full mb-1.5 left-1/2 -translate-x-1/2 hidden group-hover:block z-30 whitespace-nowrap bg-[#0F172A] text-white text-[10px] font-semibold px-2.5 py-1 rounded-lg shadow-lg pointer-events-none">
+                            Oct 31: 0 items sorted
+                        </div>
+                    </div>
+                    
+                    <div class="group relative flex flex-col items-center justify-center p-2 rounded-xl text-center transition-transform hover:scale-110 cursor-pointer border border-border-subtle/50 bg-surface-container text-text-muted/60">
+                        <span class="text-[10px] font-mono leading-none">01</span>
+                        <span class="text-[9px] opacity-75 font-mono leading-none mt-0.5">0</span>
+                        
+                        <!-- Tooltip -->
+                        <div class="absolute bottom-full mb-1.5 left-1/2 -translate-x-1/2 hidden group-hover:block z-30 whitespace-nowrap bg-[#0F172A] text-white text-[10px] font-semibold px-2.5 py-1 rounded-lg shadow-lg pointer-events-none">
+                            Nov 01: 0 items sorted
+                        </div>
+                    </div>
+                    
+                    <div class="group relative flex flex-col items-center justify-center p-2 rounded-xl text-center transition-transform hover:scale-110 cursor-pointer border border-border-subtle/50 bg-surface-container text-text-muted/60">
+                        <span class="text-[10px] font-mono leading-none">02</span>
+                        <span class="text-[9px] opacity-75 font-mono leading-none mt-0.5">0</span>
+                        
+                        <!-- Tooltip -->
+                        <div class="absolute bottom-full mb-1.5 left-1/2 -translate-x-1/2 hidden group-hover:block z-30 whitespace-nowrap bg-[#0F172A] text-white text-[10px] font-semibold px-2.5 py-1 rounded-lg shadow-lg pointer-events-none">
+                            Nov 02: 0 items sorted
+                        </div>
+                    </div>
+                    
+                    <div class="group relative flex flex-col items-center justify-center p-2 rounded-xl text-center transition-transform hover:scale-110 cursor-pointer border border-border-subtle/50 bg-surface-container text-text-muted/60">
+                        <span class="text-[10px] font-mono leading-none">03</span>
+                        <span class="text-[9px] opacity-75 font-mono leading-none mt-0.5">0</span>
+                        
+                        <!-- Tooltip -->
+                        <div class="absolute bottom-full mb-1.5 left-1/2 -translate-x-1/2 hidden group-hover:block z-30 whitespace-nowrap bg-[#0F172A] text-white text-[10px] font-semibold px-2.5 py-1 rounded-lg shadow-lg pointer-events-none">
+                            Nov 03: 0 items sorted
+                        </div>
+                    </div>
+                    
+                    <div class="group relative flex flex-col items-center justify-center p-2 rounded-xl text-center transition-transform hover:scale-110 cursor-pointer border border-border-subtle/50 bg-surface-container text-text-muted/60">
+                        <span class="text-[10px] font-mono leading-none">04</span>
+                        <span class="text-[9px] opacity-75 font-mono leading-none mt-0.5">0</span>
+                        
+                        <!-- Tooltip -->
+                        <div class="absolute bottom-full mb-1.5 left-1/2 -translate-x-1/2 hidden group-hover:block z-30 whitespace-nowrap bg-[#0F172A] text-white text-[10px] font-semibold px-2.5 py-1 rounded-lg shadow-lg pointer-events-none">
+                            Nov 04: 0 items sorted
+                        </div>
+                    </div>
+                    
+                    <div class="group relative flex flex-col items-center justify-center p-2 rounded-xl text-center transition-transform hover:scale-110 cursor-pointer border border-border-subtle/50 bg-surface-container text-text-muted/60">
+                        <span class="text-[10px] font-mono leading-none">05</span>
+                        <span class="text-[9px] opacity-75 font-mono leading-none mt-0.5">0</span>
+                        
+                        <!-- Tooltip -->
+                        <div class="absolute bottom-full mb-1.5 left-1/2 -translate-x-1/2 hidden group-hover:block z-30 whitespace-nowrap bg-[#0F172A] text-white text-[10px] font-semibold px-2.5 py-1 rounded-lg shadow-lg pointer-events-none">
+                            Nov 05: 0 items sorted
+                        </div>
+                    </div>
+                    
+                    <div class="group relative flex flex-col items-center justify-center p-2 rounded-xl text-center transition-transform hover:scale-110 cursor-pointer border border-border-subtle/50 bg-surface-container text-text-muted/60">
+                        <span class="text-[10px] font-mono leading-none">06</span>
+                        <span class="text-[9px] opacity-75 font-mono leading-none mt-0.5">0</span>
+                        
+                        <!-- Tooltip -->
+                        <div class="absolute bottom-full mb-1.5 left-1/2 -translate-x-1/2 hidden group-hover:block z-30 whitespace-nowrap bg-[#0F172A] text-white text-[10px] font-semibold px-2.5 py-1 rounded-lg shadow-lg pointer-events-none">
+                            Nov 06: 0 items sorted
+                        </div>
+                    </div>
+                    
+                    <div class="group relative flex flex-col items-center justify-center p-2 rounded-xl text-center transition-transform hover:scale-110 cursor-pointer border border-border-subtle/50 bg-surface-container text-text-muted/60">
+                        <span class="text-[10px] font-mono leading-none">07</span>
+                        <span class="text-[9px] opacity-75 font-mono leading-none mt-0.5">0</span>
+                        
+                        <!-- Tooltip -->
+                        <div class="absolute bottom-full mb-1.5 left-1/2 -translate-x-1/2 hidden group-hover:block z-30 whitespace-nowrap bg-[#0F172A] text-white text-[10px] font-semibold px-2.5 py-1 rounded-lg shadow-lg pointer-events-none">
+                            Nov 07: 0 items sorted
+                        </div>
+                    </div>
+                    
+                    <div class="group relative flex flex-col items-center justify-center p-2 rounded-xl text-center transition-transform hover:scale-110 cursor-pointer border border-border-subtle/50 bg-surface-container text-text-muted/60">
+                        <span class="text-[10px] font-mono leading-none">08</span>
+                        <span class="text-[9px] opacity-75 font-mono leading-none mt-0.5">0</span>
+                        
+                        <!-- Tooltip -->
+                        <div class="absolute bottom-full mb-1.5 left-1/2 -translate-x-1/2 hidden group-hover:block z-30 whitespace-nowrap bg-[#0F172A] text-white text-[10px] font-semibold px-2.5 py-1 rounded-lg shadow-lg pointer-events-none">
+                            Nov 08: 0 items sorted
+                        </div>
+                    </div>
+                    
+                    <div class="group relative flex flex-col items-center justify-center p-2 rounded-xl text-center transition-transform hover:scale-110 cursor-pointer border border-border-subtle/50 bg-surface-container text-text-muted/60">
+                        <span class="text-[10px] font-mono leading-none">09</span>
+                        <span class="text-[9px] opacity-75 font-mono leading-none mt-0.5">0</span>
+                        
+                        <!-- Tooltip -->
+                        <div class="absolute bottom-full mb-1.5 left-1/2 -translate-x-1/2 hidden group-hover:block z-30 whitespace-nowrap bg-[#0F172A] text-white text-[10px] font-semibold px-2.5 py-1 rounded-lg shadow-lg pointer-events-none">
+                            Nov 09: 0 items sorted
+                        </div>
+                    </div>
+                    
+                </div>
+
+                <!-- Heatmap Legend -->
+                <div class="flex items-center justify-between pt-2 text-[11px] text-text-muted">
+                    <span>Earn +1 Shield every 5 consecutive days</span>
+                    <div class="flex items-center gap-1.5">
+                        <span>Less</span>
+                        <span class="w-3 h-3 rounded bg-surface-container border border-border-subtle inline-block" title="0 scans"></span>
+                        <span class="w-3 h-3 rounded bg-blue-200 inline-block" title="1 scan"></span>
+                        <span class="w-3 h-3 rounded bg-blue-400 inline-block" title="2-3 scans"></span>
+                        <span class="w-3 h-3 rounded bg-primary inline-block" title="4+ scans"></span>
+                        <span>More</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Waste Stream Distribution & Chart.js Analytics -->
+            <div class="eco-card p-6 space-y-4">
+                <div class="flex items-center justify-between pb-3 border-b border-border-subtle">
+                    <h2 class="text-sm font-bold text-text-primary flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-[18px] text-primary">donut_small</span>
+                        Waste Stream Breakdown
+                    </h2>
+                    <span class="text-xs text-text-muted font-mono">0 items sorted</span>
+                </div>
+
+                <!-- 3 Summary Stat Pills -->
+                <div class="grid grid-cols-3 gap-3" id="waste-stream-pills">
+                    <div class="p-3.5 rounded-2xl bg-blue-50/70 border border-blue-200/80 space-y-1 text-center">
+                        <div class="text-[10px] font-bold text-blue-800 uppercase tracking-widest">Recyclable</div>
+                        <div class="stream-counter text-2xl font-black text-blue-900 font-mono" data-target="0">0</div>
+                        <div class="text-[11px] text-blue-700">Blue Stream</div>
+                    </div>
+                    <div class="p-3.5 rounded-2xl bg-teal-50/70 border border-teal-200/80 space-y-1 text-center">
+                        <div class="text-[10px] font-bold text-teal-800 uppercase tracking-widest">Compost</div>
+                        <div class="stream-counter text-2xl font-black text-teal-900 font-mono" data-target="0">0</div>
+                        <div class="text-[11px] text-teal-700">Nutrient Cycle</div>
+                    </div>
+                    <div class="p-3.5 rounded-2xl bg-slate-100/80 border border-slate-200 space-y-1 text-center">
+                        <div class="text-[10px] font-bold text-slate-700 uppercase tracking-widest">Landfill</div>
+                        <div class="stream-counter text-2xl font-black text-slate-900 font-mono" data-target="0">0</div>
+                        <div class="text-[11px] text-slate-600">Safely Managed</div>
+                    </div>
+                </div>
+
+                <!-- Interactive Chart.js Visualizations (Doughnut + 7-Day Trend) -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-3 border-t border-border-subtle">
+                    <div class="p-3 bg-surface rounded-2xl border border-border-subtle flex flex-col items-center">
+                        <span class="text-[11px] font-bold text-text-primary self-start mb-2 flex items-center gap-1">
+                            <span class="material-symbols-outlined text-primary text-[15px]">pie_chart</span>
+                            Stream Share
+                        </span>
+                        <div class="relative w-full max-w-[190px] h-[180px] flex items-center justify-center">
+                            <canvas id="streamShareChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="p-3 bg-surface rounded-2xl border border-border-subtle flex flex-col">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-[11px] font-bold text-text-primary flex items-center gap-1">
+                                <span class="material-symbols-outlined text-teal-600 text-[15px]">trending_up</span>
+                                7-Day CO₂ Diversion
+                            </span>
+                            <span class="text-[10px] font-mono font-bold text-primary">Grams CO₂</span>
+                        </div>
+                        <div class="relative w-full h-[180px]">
+                            <canvas id="co2TrendChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Locked vs. Unlocked Achievement Badges Gallery with Progress Bars -->
+            <div class="eco-card p-6 space-y-4">
+                <div class="flex items-center justify-between pb-3 border-b border-border-subtle">
+                    <div>
+                        <h2 class="text-sm font-bold text-text-primary flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-[18px] text-solar">workspace_premium</span>
+                            Citizen Achievements Gallery
+                        </h2>
+                        <p class="text-xs text-text-muted mt-0.5">Verified sorting badges &amp; milestone progression</p>
+                    </div>
+                    <span class="text-xs font-mono font-bold text-primary bg-primary-light px-2.5 py-1 rounded-full">
+                        1 / 9 Unlocked
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                    
+                    <div class="badge-card reveal-on-scroll p-4 rounded-2xl border transition-all duration-200 bg-white border-primary/30 shadow-sm hover:border-primary flex items-start gap-3.5" style="transition-delay: 0ms;">
+                        <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5 bg-solar-light text-solar-dark border border-solar/30 shadow-sm">
+                            
+                            <span class="material-symbols-outlined text-[22px]">travel_explore</span>
+                            
+                        </div>
+
+                        <div class="flex-1 min-w-0 space-y-1">
+                            <div class="flex items-center justify-between gap-2">
+                                <h4 class="text-xs font-bold text-text-primary truncate">First Explorer</h4>
+                                
+                                <span class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-solar-light text-solar-dark border border-solar/30">Unlocked</span>
+                                
+                            </div>
+                            <p class="text-[11px] text-text-secondary leading-snug">Joined the verified citizen circular network</p>
+
+                            <!-- Progress Bar & Target -->
+                            <div class="pt-1.5 space-y-1">
+                                <div class="w-full h-1.5 rounded-full bg-slate-200 overflow-hidden">
+                                    <div class="h-full bg-solar rounded-full transition-all duration-500" style="width: 100%;"></div>
+                                </div>
+                                <div class="flex justify-between items-center text-[10px] font-mono text-text-muted">
+                                    <span>Target</span>
+                                    <span>Completed</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="badge-card reveal-on-scroll p-4 rounded-2xl border transition-all duration-200 bg-surface-container/60 border-border-medium/60 opacity-70 flex items-start gap-3.5" style="transition-delay: 80ms;">
+                        <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5 bg-slate-200 text-slate-500 border border-slate-300">
+                            
+                            <span class="material-symbols-outlined text-[20px]">lock</span>
+                            
+                        </div>
+
+                        <div class="flex-1 min-w-0 space-y-1">
+                            <div class="flex items-center justify-between gap-2">
+                                <h4 class="text-xs font-bold text-text-primary truncate">First Sort</h4>
+                                
+                                <span class="text-[10px] font-mono text-text-muted">0%</span>
+                                
+                            </div>
+                            <p class="text-[11px] text-text-secondary leading-snug">Sort your first packaging item properly</p>
+
+                            <!-- Progress Bar & Target -->
+                            <div class="pt-1.5 space-y-1">
+                                <div class="w-full h-1.5 rounded-full bg-slate-200 overflow-hidden">
+                                    <div class="h-full bg-primary/70 rounded-full transition-all duration-500" style="width: 0%;"></div>
+                                </div>
+                                <div class="flex justify-between items-center text-[10px] font-mono text-text-muted">
+                                    <span>Target</span>
+                                    <span>0 / 1 item</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="badge-card reveal-on-scroll p-4 rounded-2xl border transition-all duration-200 bg-surface-container/60 border-border-medium/60 opacity-70 flex items-start gap-3.5" style="transition-delay: 160ms;">
+                        <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5 bg-slate-200 text-slate-500 border border-slate-300">
+                            
+                            <span class="material-symbols-outlined text-[20px]">lock</span>
+                            
+                        </div>
+
+                        <div class="flex-1 min-w-0 space-y-1">
+                            <div class="flex items-center justify-between gap-2">
+                                <h4 class="text-xs font-bold text-text-primary truncate">Waste Detective</h4>
+                                
+                                <span class="text-[10px] font-mono text-text-muted">0%</span>
+                                
+                            </div>
+                            <p class="text-[11px] text-text-secondary leading-snug">Decompose 3 complex packaging items</p>
+
+                            <!-- Progress Bar & Target -->
+                            <div class="pt-1.5 space-y-1">
+                                <div class="w-full h-1.5 rounded-full bg-slate-200 overflow-hidden">
+                                    <div class="h-full bg-primary/70 rounded-full transition-all duration-500" style="width: 0%;"></div>
+                                </div>
+                                <div class="flex justify-between items-center text-[10px] font-mono text-text-muted">
+                                    <span>Target</span>
+                                    <span>0 / 3 items</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="badge-card reveal-on-scroll p-4 rounded-2xl border transition-all duration-200 bg-surface-container/60 border-border-medium/60 opacity-70 flex items-start gap-3.5" style="transition-delay: 240ms;">
+                        <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5 bg-slate-200 text-slate-500 border border-slate-300">
+                            
+                            <span class="material-symbols-outlined text-[20px]">lock</span>
+                            
+                        </div>
+
+                        <div class="flex-1 min-w-0 space-y-1">
+                            <div class="flex items-center justify-between gap-2">
+                                <h4 class="text-xs font-bold text-text-primary truncate">Recycling Champion</h4>
+                                
+                                <span class="text-[10px] font-mono text-text-muted">0%</span>
+                                
+                            </div>
+                            <p class="text-[11px] text-text-secondary leading-snug">Divert 5 verified items from landfill</p>
+
+                            <!-- Progress Bar & Target -->
+                            <div class="pt-1.5 space-y-1">
+                                <div class="w-full h-1.5 rounded-full bg-slate-200 overflow-hidden">
+                                    <div class="h-full bg-primary/70 rounded-full transition-all duration-500" style="width: 0%;"></div>
+                                </div>
+                                <div class="flex justify-between items-center text-[10px] font-mono text-text-muted">
+                                    <span>Target</span>
+                                    <span>0 / 5 items</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="badge-card reveal-on-scroll p-4 rounded-2xl border transition-all duration-200 bg-surface-container/60 border-border-medium/60 opacity-70 flex items-start gap-3.5" style="transition-delay: 0ms;">
+                        <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5 bg-slate-200 text-slate-500 border border-slate-300">
+                            
+                            <span class="material-symbols-outlined text-[20px]">lock</span>
+                            
+                        </div>
+
+                        <div class="flex-1 min-w-0 space-y-1">
+                            <div class="flex items-center justify-between gap-2">
+                                <h4 class="text-xs font-bold text-text-primary truncate">Zero Waste Pioneer</h4>
+                                
+                                <span class="text-[10px] font-mono text-text-muted">0%</span>
+                                
+                            </div>
+                            <p class="text-[11px] text-text-secondary leading-snug">Log 10 audited circular separations</p>
+
+                            <!-- Progress Bar & Target -->
+                            <div class="pt-1.5 space-y-1">
+                                <div class="w-full h-1.5 rounded-full bg-slate-200 overflow-hidden">
+                                    <div class="h-full bg-primary/70 rounded-full transition-all duration-500" style="width: 0%;"></div>
+                                </div>
+                                <div class="flex justify-between items-center text-[10px] font-mono text-text-muted">
+                                    <span>Target</span>
+                                    <span>0 / 10 items</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="badge-card reveal-on-scroll p-4 rounded-2xl border transition-all duration-200 bg-surface-container/60 border-border-medium/60 opacity-70 flex items-start gap-3.5" style="transition-delay: 80ms;">
+                        <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5 bg-slate-200 text-slate-500 border border-slate-300">
+                            
+                            <span class="material-symbols-outlined text-[20px]">lock</span>
+                            
+                        </div>
+
+                        <div class="flex-1 min-w-0 space-y-1">
+                            <div class="flex items-center justify-between gap-2">
+                                <h4 class="text-xs font-bold text-text-primary truncate">Planet Guardian</h4>
+                                
+                                <span class="text-[10px] font-mono text-text-muted">0%</span>
+                                
+                            </div>
+                            <p class="text-[11px] text-text-secondary leading-snug">Achieve 25 verified municipal sort actions</p>
+
+                            <!-- Progress Bar & Target -->
+                            <div class="pt-1.5 space-y-1">
+                                <div class="w-full h-1.5 rounded-full bg-slate-200 overflow-hidden">
+                                    <div class="h-full bg-primary/70 rounded-full transition-all duration-500" style="width: 0%;"></div>
+                                </div>
+                                <div class="flex justify-between items-center text-[10px] font-mono text-text-muted">
+                                    <span>Target</span>
+                                    <span>0 / 25 items</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="badge-card reveal-on-scroll p-4 rounded-2xl border transition-all duration-200 bg-surface-container/60 border-border-medium/60 opacity-70 flex items-start gap-3.5" style="transition-delay: 160ms;">
+                        <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5 bg-slate-200 text-slate-500 border border-slate-300">
+                            
+                            <span class="material-symbols-outlined text-[20px]">lock</span>
+                            
+                        </div>
+
+                        <div class="flex-1 min-w-0 space-y-1">
+                            <div class="flex items-center justify-between gap-2">
+                                <h4 class="text-xs font-bold text-text-primary truncate">Streak Master</h4>
+                                
+                                <span class="text-[10px] font-mono text-text-muted">0%</span>
+                                
+                            </div>
+                            <p class="text-[11px] text-text-secondary leading-snug">Maintain a 3-day consecutive sorting streak</p>
+
+                            <!-- Progress Bar & Target -->
+                            <div class="pt-1.5 space-y-1">
+                                <div class="w-full h-1.5 rounded-full bg-slate-200 overflow-hidden">
+                                    <div class="h-full bg-primary/70 rounded-full transition-all duration-500" style="width: 0%;"></div>
+                                </div>
+                                <div class="flex justify-between items-center text-[10px] font-mono text-text-muted">
+                                    <span>Target</span>
+                                    <span>0 / 3 days</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="badge-card reveal-on-scroll p-4 rounded-2xl border transition-all duration-200 bg-surface-container/60 border-border-medium/60 opacity-70 flex items-start gap-3.5" style="transition-delay: 240ms;">
+                        <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5 bg-slate-200 text-slate-500 border border-slate-300">
+                            
+                            <span class="material-symbols-outlined text-[20px]">lock</span>
+                            
+                        </div>
+
+                        <div class="flex-1 min-w-0 space-y-1">
+                            <div class="flex items-center justify-between gap-2">
+                                <h4 class="text-xs font-bold text-text-primary truncate">Climate Hero</h4>
+                                
+                                <span class="text-[10px] font-mono text-text-muted">0%</span>
+                                
+                            </div>
+                            <p class="text-[11px] text-text-secondary leading-snug">Offset 500g of verified lifecycle carbon</p>
+
+                            <!-- Progress Bar & Target -->
+                            <div class="pt-1.5 space-y-1">
+                                <div class="w-full h-1.5 rounded-full bg-slate-200 overflow-hidden">
+                                    <div class="h-full bg-primary/70 rounded-full transition-all duration-500" style="width: 0%;"></div>
+                                </div>
+                                <div class="flex justify-between items-center text-[10px] font-mono text-text-muted">
+                                    <span>Target</span>
+                                    <span>0 / 500g CO₂</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="badge-card reveal-on-scroll p-4 rounded-2xl border transition-all duration-200 bg-surface-container/60 border-border-medium/60 opacity-70 flex items-start gap-3.5" style="transition-delay: 0ms;">
+                        <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5 bg-slate-200 text-slate-500 border border-slate-300">
+                            
+                            <span class="material-symbols-outlined text-[20px]">lock</span>
+                            
+                        </div>
+
+                        <div class="flex-1 min-w-0 space-y-1">
+                            <div class="flex items-center justify-between gap-2">
+                                <h4 class="text-xs font-bold text-text-primary truncate">Circular Upcycler</h4>
+                                
+                                <span class="text-[10px] font-mono text-text-muted">0%</span>
+                                
+                            </div>
+                            <p class="text-[11px] text-text-secondary leading-snug">Repurpose packaging into creative DIY circular reuse</p>
+
+                            <!-- Progress Bar & Target -->
+                            <div class="pt-1.5 space-y-1">
+                                <div class="w-full h-1.5 rounded-full bg-slate-200 overflow-hidden">
+                                    <div class="h-full bg-primary/70 rounded-full transition-all duration-500" style="width: 0%;"></div>
+                                </div>
+                                <div class="flex justify-between items-center text-[10px] font-mono text-text-muted">
+                                    <span>Target</span>
+                                    <span>0 / 1 upcycles</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Col: Filterable Activity & Audit Certificate -->
+        <div class="lg:col-span-5 space-y-6">
+            
+            <div class="eco-card p-6 space-y-4">
+                <!-- Activity Header -->
+                <div class="flex items-center justify-between pb-3 border-b border-border-subtle">
+                    <h2 class="text-sm font-bold text-text-primary flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-[18px] text-primary">history</span>
+                        Recent Activity
+                    </h2>
+                    <a href="/classifier" class="text-xs font-bold text-primary hover:underline flex items-center gap-0.5">
+                        <span class="material-symbols-outlined text-[16px]">add</span> New Scan
+                    </a>
+                </div>
+
+                <!-- Instant Filter Controls -->
+                <div class="space-y-2">
+                    <div class="relative">
+                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-muted text-[16px]">search</span>
+                        <input type="text" id="scan-search-input" placeholder="Search past items…" class="w-full text-xs pl-8 pr-3 py-2 rounded-xl border border-border-subtle bg-surface focus:outline-none focus:border-primary transition">
+                    </div>
+
+                    <div class="flex gap-1.5" id="scan-stream-filters">
+                        <button type="button" data-stream="all" class="scan-filter-btn px-2.5 py-1 rounded-full text-[11px] font-bold bg-primary text-white">All</button>
+                        <button type="button" data-stream="Recyclable" class="scan-filter-btn px-2.5 py-1 rounded-full text-[11px] font-medium bg-surface text-text-secondary border border-border-subtle hover:border-primary">Recyclable</button>
+                        <button type="button" data-stream="Compostable" class="scan-filter-btn px-2.5 py-1 rounded-full text-[11px] font-medium bg-surface text-text-secondary border border-border-subtle hover:border-primary">Compost</button>
+                        <button type="button" data-stream="Landfill" class="scan-filter-btn px-2.5 py-1 rounded-full text-[11px] font-medium bg-surface text-text-secondary border border-border-subtle hover:border-primary">Landfill</button>
+                    </div>
+                </div>
+
+                <!-- Scan Items Accordion List -->
+                
+                <div class="py-16 text-center space-y-4">
+                    <div class="w-14 h-14 rounded-2xl bg-surface flex items-center justify-center mx-auto border border-border-subtle text-text-muted">
+                        <span class="material-symbols-outlined text-[28px]">qr_code_scanner</span>
+                    </div>
+                    <div class="space-y-1">
+                        <p class="text-sm font-bold text-text-secondary">No scans yet</p>
+                        <p class="text-xs text-text-muted max-w-[220px] mx-auto">Inspect your first packaging item to begin tracking your carbon diversion.</p>
+                    </div>
+                    <a href="/classifier" class="btn-primary py-2.5 px-5 text-xs">
+                        Scan First Item
+                    </a>
+                </div>
+                
+
+                <!-- Export & Print Actions -->
+                <div class="pt-4 border-t border-border-subtle flex flex-wrap items-center justify-between gap-2 text-xs">
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <a href="/api/export_scans" class="font-bold text-primary hover:underline flex items-center gap-1">
+                            <span class="material-symbols-outlined text-[16px]">file_download</span>
+                            <span>Export CSV</span>
+                        </a>
+                        <button type="button" onclick="openShareImpactModal()" class="font-bold text-teal-700 bg-teal-50 border border-teal-200 hover:bg-teal-100 px-3 py-1.5 rounded-full transition flex items-center gap-1">
+                            <span class="material-symbols-outlined text-[15px]">share</span>
+                            <span>Share Impact</span>
+                        </button>
+                        <button type="button" onclick="openKitchenGuideModal()" class="font-bold text-primary bg-primary-light border border-primary/20 hover:bg-primary-light/80 px-3 py-1.5 rounded-full transition flex items-center gap-1">
+                            <span class="material-symbols-outlined text-[15px]">kitchen</span>
+                            <span>Print Kitchen Guide</span>
+                        </button>
+                    </div>
+                    <button type="button" onclick="window.print()" class="text-text-secondary hover:text-text-primary flex items-center gap-1 font-medium">
+                        <span class="material-symbols-outlined text-[16px]">print</span>
+                        <span>Print Certificate</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Certified Diversion Certificate Card -->
+            <div class="eco-card p-6 border-2 border-primary/20 space-y-4 bg-gradient-to-br from-white via-surface to-primary-light/20">
+                <div class="flex items-center justify-between">
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-primary bg-primary-light px-2.5 py-0.5 rounded-full">Official Verification</span>
+                    <span class="text-[10px] font-mono text-text-muted">ID: SYNC-0356</span>
+                </div>
+                <div>
+                    <h3 class="text-sm font-bold text-text-primary">Verified Citizen Climate Ledger</h3>
+                    <p class="text-xs text-text-secondary mt-1">This citizen profile is verified active in the zero-waste municipal diversion protocol.</p>
+                </div>
+                <div class="pt-3 border-t border-border-subtle flex justify-between items-center text-xs">
+                    <span class="font-medium text-text-secondary">Community Ranking:</span>
+                    <a href="/leaderboard" class="text-primary hover:underline font-bold flex items-center gap-0.5">
+                        View Leaderboard &rarr;
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+</main>
+
+<!-- Global Autocomplete Datalist for Waste & Packaging Items -->
+<datalist id="packaging-suggestions">
+    <option value="Starbucks Hot Coffee Cup with Lid">
+    <option value="Delivery Corrugated Pizza Box">
+    <option value="Clear Plastic Water Bottle (PET #1)">
+    <option value="Multi-Layer Potato Chips Pouch (BOPP #7)">
+    <option value="Corrugated Shipping Box">
+    <option value="Aluminum Beverage Can">
+    <option value="Household AA / Lithium Battery">
+    <option value="Aseptic Gable-Top Milk Carton">
+    <option value="Glass Pickle Jar with Metal Lid">
+    <option value="Styrofoam Clamshell Container (PS #6)">
+    <option value="Air Cushion Bubble Wrap (LDPE #4)">
+    <option value="Organic Food Remnants & Produce Scraps">
+    <option value="HDPE Milk Jug with Cap">
+    <option value="Broken Smartphone / Cable E-Waste">
+    <option value="Aerosol Spray Can">
+</datalist>
+
+<!-- Nordic Arctic Glacier Obsidian & Ice Slate Footer -->
+<footer class="bg-[#0B1120] text-slate-400 border-t border-slate-800 mt-24 pt-16 pb-20 text-sm">
+    <div class="max-w-container mx-auto px-4 sm:px-8 lg:px-12 xl:px-16">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+            <!-- Brand Column -->
+            <div class="md:col-span-2 space-y-4">
+                <div class="flex items-center gap-3 font-bold text-xl">
+                    <img src="/static/img/logo-icon.svg" alt="BinSync Logo" class="w-8 h-8 rounded-xl shadow-sm">
+                    <span class="tracking-tight text-xl font-black text-white">Bin<span class="text-[#38BDF8]">Sync</span></span>
+                </div>
+                <p class="text-slate-400 text-sm max-w-md leading-relaxed">
+                    Precision computer vision engineered for composite packaging decomposition. Eliminating wishcycling through automated material layer separation and verifiable municipal diversion.
+                </p>
+                <div class="flex items-center gap-3 pt-2 text-xs">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-950/80 border border-blue-800/60 text-[#38BDF8] font-semibold text-xs">
+                        <span class="w-2 h-2 rounded-full bg-[#38BDF8] pulse-subtle"></span>
+                        Vision Inspection System Active
+                    </span>
+                    <span class="text-slate-500 text-xs">Verified Circular Infrastructure</span>
+                </div>
+            </div>
+
+            <!-- Core Modules -->
+            <div>
+                <h3 class="font-bold text-white uppercase tracking-widest text-[11px] mb-4">Core Modules</h3>
+                <ul class="space-y-2.5 text-sm text-slate-400">
+                    <li><a href="/classifier" class="hover:text-[#38BDF8] transition">Material Inspector</a></li>
+                    <li><a href="/rules" class="hover:text-[#38BDF8] transition">Drop-off Map &amp; Bylaws</a></li>
+                    <li><a href="/classifications" class="hover:text-[#38BDF8] transition">Material Taxonomy</a></li>
+                    <li><a href="/leaderboard" class="hover:text-[#38BDF8] transition">Community Leaderboard</a></li>
+                </ul>
+            </div>
+
+            <!-- Climate & Transparency -->
+            <div>
+                <h3 class="font-bold text-white uppercase tracking-widest text-[11px] mb-4">Climate &amp; Auditing</h3>
+                <ul class="space-y-2.5 text-sm text-slate-400">
+                    <li><a href="/rules#faq" class="hover:text-[#38BDF8] transition">Wishcycling Guide</a></li>
+                    <li><a href="/dashboard" class="hover:text-[#38BDF8] transition">CO₂ Diversion Audit</a></li>
+                    <li><a href="/login" class="hover:text-[#38BDF8] transition">Citizen Portal</a></li>
+                    <li><span class="text-slate-500">&copy; 2026 BinSync Inc.</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="border-t border-slate-800 pt-8 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-500 gap-4">
+            <p>Empowering eco-citizens and zero-waste cities with transparent, verifiable carbon diversion metrics.</p>
+            <div class="flex items-center gap-6">
+                <a href="/rules" class="hover:text-[#38BDF8] transition">Municipal Bylaws</a>
+                <a href="/classifications" class="hover:text-[#38BDF8] transition">Taxonomy API</a>
+                <span class="text-[#38BDF8] font-bold">Clean Planet First</span>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Mobile Bottom Navigation Bar (Light Arctic Glacier) -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-xl border-t border-border-subtle z-40 pt-2 safe-bottom-nav px-3 flex justify-around items-center shadow-lg">
+    <a href="/" class="min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-xs px-2 text-text-muted hover:text-text-primary">
+        <span class="material-symbols-outlined text-[22px]">home</span>
+        <span>Home</span>
+    </a>
+    <a href="/classifier" class="min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-xs px-2 text-text-muted hover:text-text-primary">
+        <span class="material-symbols-outlined text-[22px]">center_focus_strong</span>
+        <span>Inspect</span>
+    </a>
+    <a href="/rules" class="min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-xs px-2 text-text-muted hover:text-text-primary">
+        <span class="material-symbols-outlined text-[22px]">map</span>
+        <span>Rules</span>
+    </a>
+    <a href="/leaderboard" class="min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-xs px-2 text-text-muted hover:text-text-primary">
+        <span class="material-symbols-outlined text-[22px]">leaderboard</span>
+        <span>Rank</span>
+    </a>
+    <a href="/dashboard" class="min-h-[44px] flex flex-col items-center justify-center gap-0.5 text-xs px-2 text-primary font-bold">
+        <span class="material-symbols-outlined text-[22px]">account_circle</span>
+        <span>Profile</span>
+    </a>
+</nav>
+
+<!-- Mobile Menu Toggle Script & Feedback + PWA -->
+<script>
+    // Universal Haptic & Audio Feedback Helper
+    window.triggerFeedback = function(type = 'success') {
+        try {
+            if ('vibrate' in navigator) {
+                if (type === 'success') navigator.vibrate([40, 30, 60]);
+                else if (type === 'error') navigator.vibrate([80, 50, 80]);
+                else navigator.vibrate(35);
+            }
+            const AudioCtx = window.AudioContext || window.webkitAudioContext;
+            if (AudioCtx) {
+                const ctx = new AudioCtx();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                const now = ctx.currentTime;
+                if (type === 'success') {
+                    osc.frequency.setValueAtTime(587.33, now); // D5
+                    osc.frequency.setValueAtTime(880, now + 0.09); // A5
+                    gain.gain.setValueAtTime(0.06, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.26);
+                    osc.start(now);
+                    osc.stop(now + 0.28);
+                } else if (type === 'error') {
+                    osc.frequency.setValueAtTime(329.63, now); // E4
+                    osc.frequency.setValueAtTime(220, now + 0.1); // A3
+                    gain.gain.setValueAtTime(0.08, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+                    osc.start(now);
+                    osc.stop(now + 0.28);
+                } else {
+                    osc.frequency.setValueAtTime(659.25, now); // E5
+                    gain.gain.setValueAtTime(0.04, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+                    osc.start(now);
+                    osc.stop(now + 0.14);
+                }
+            }
+        } catch(e) {}
+    };
+
+    const menuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuIcon = document.getElementById('mobile-menu-icon');
+
+    if (menuBtn && mobileMenu) {
+        menuBtn.addEventListener('click', () => {
+            const isHidden = mobileMenu.classList.contains('hidden');
+            if (isHidden) {
+                mobileMenu.classList.remove('hidden');
+                if (menuIcon) menuIcon.textContent = 'close';
+            } else {
+                mobileMenu.classList.add('hidden');
+                if (menuIcon) menuIcon.textContent = 'menu';
+            }
+        });
+    }
+
+    // Register PWA Service Worker for Offline Resilience
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js').catch(err => {
+                console.log('SW registration note:', err);
+            });
+        });
+    }
+
+    // ==========================================
+    // NORDIC GLACIER SCROLL ENGINE
+    // ==========================================
+    document.addEventListener('DOMContentLoaded', () => {
+        const progressBar = document.getElementById('scroll-progress-bar');
+        const mainHeader = document.getElementById('main-header');
+        const backToTopBtn = document.getElementById('back-to-top-btn');
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        // 1. Passive Scroll Handler (Progress Bar, Sticky Header Compact & Back-To-Top)
+        let ticking = false;
+        function onScroll() {
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    const scrollY = window.scrollY || window.pageYOffset;
+                    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+
+                    // Progress bar
+                    if (progressBar) {
+                        const progress = docHeight > 0 ? (scrollY / docHeight) * 100 : 0;
+                        progressBar.style.width = `${Math.min(100, Math.max(0, progress))}%`;
+                    }
+
+                    // Sticky header compact elevation
+                    if (mainHeader) {
+                        if (scrollY > 24) {
+                            mainHeader.classList.remove('h-20', 'bg-white/95');
+                            mainHeader.classList.add('h-16', 'bg-white/90', 'shadow-sm');
+                        } else {
+                            mainHeader.classList.remove('h-16', 'bg-white/90', 'shadow-sm');
+                            mainHeader.classList.add('h-20', 'bg-white/95');
+                        }
+                    }
+
+                    // Floating Back to Top Button
+                    if (backToTopBtn) {
+                        if (scrollY > 450) {
+                            backToTopBtn.classList.remove('opacity-0', 'translate-y-4', 'scale-90', 'pointer-events-none');
+                            backToTopBtn.classList.add('opacity-100', 'translate-y-0', 'scale-100', 'pointer-events-auto');
+                        } else {
+                            backToTopBtn.classList.add('opacity-0', 'translate-y-4', 'scale-90', 'pointer-events-none');
+                            backToTopBtn.classList.remove('opacity-100', 'translate-y-0', 'scale-100', 'pointer-events-auto');
+                        }
+                    }
+
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }
+
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+
+        if (backToTopBtn) {
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: prefersReducedMotion ? 'auto' : 'smooth'
+                });
+                if (window.triggerFeedback) window.triggerFeedback('tap');
+            });
+        }
+
+        // 2. Universal IntersectionObserver Scroll-Reveal Engine
+        if ('IntersectionObserver' in window && !prefersReducedMotion) {
+            const revealObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                root: null,
+                rootMargin: '0px 0px -40px 0px',
+                threshold: 0.1
+            });
+
+            window.observeScrollReveals = function(root = document) {
+                const candidates = root.querySelectorAll('.eco-card, section h1, section h2, .tax-card, .facility-card, tbody tr, .reveal-on-scroll, .reveal-left, .reveal-right, .reveal-scale');
+                const winH = window.innerHeight;
+
+                candidates.forEach((el) => {
+                    const rect = el.getBoundingClientRect();
+                    if (rect.top < winH - 20) {
+                        el.classList.add('is-visible');
+                        return;
+                    }
+
+                    if (!el.classList.contains('reveal-left') && 
+                        !el.classList.contains('reveal-right') && 
+                        !el.classList.contains('reveal-scale') && 
+                        !el.classList.contains('reveal-on-scroll')) {
+                        el.classList.add('reveal-on-scroll');
+                    }
+
+                    if (!el.style.transitionDelay) {
+                        const parent = el.parentElement;
+                        if (parent) {
+                            const siblings = Array.from(parent.children);
+                            const indexInRow = siblings.indexOf(el);
+                            if (indexInRow >= 0) {
+                                el.style.transitionDelay = `${(indexInRow % 4) * 90}ms`;
+                            }
+                        }
+                    }
+
+                    revealObserver.observe(el);
+                });
+            };
+
+            window.observeScrollReveals(document);
+        } else {
+            document.querySelectorAll('.reveal-on-scroll, .reveal-left, .reveal-right, .reveal-scale').forEach(el => {
+                el.classList.add('is-visible');
+            });
+            window.observeScrollReveals = function() {};
+        }
+    });
+</script>
+
+<!-- Floating Back to Top Button -->
+<button id="back-to-top-btn" type="button" aria-label="Back to top" class="fixed bottom-20 md:bottom-8 right-6 z-40 p-3 rounded-2xl bg-white hover:bg-surface-container text-primary border border-border-medium shadow-lg opacity-0 translate-y-4 scale-90 pointer-events-none transition-all duration-300 flex items-center justify-center group focus:outline-none focus:ring-2 focus:ring-primary/40">
+    <span class="material-symbols-outlined text-[22px] group-hover:-translate-y-0.5 transition-transform">arrow_upward</span>
+</button>
+
+
+<script>
+    // Scroll-Triggered Level Progress Bar & Waste Stream Breakdown Counters
+    document.addEventListener('DOMContentLoaded', () => {
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const levelBar = document.getElementById('user-level-bar');
+        const streamPills = document.getElementById('waste-stream-pills');
+        const streamCounters = document.querySelectorAll('.stream-counter');
+
+        function fillLevelBar() {
+            if (levelBar) {
+                const targetWidth = levelBar.getAttribute('data-target-width') || '0%';
+                if (prefersReducedMotion) {
+                    levelBar.style.width = targetWidth;
+                } else {
+                    requestAnimationFrame(() => {
+                        setTimeout(() => {
+                            levelBar.style.width = targetWidth;
+                        }, 120);
+                    });
+                }
+            }
+        }
+
+        function animateStreamCounters() {
+            streamCounters.forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-target')) || 0;
+                if (prefersReducedMotion || target === 0) {
+                    counter.textContent = target.toLocaleString();
+                    return;
+                }
+                const duration = 1200;
+                const startTime = performance.now();
+                function step(currentTime) {
+                    const elapsed = currentTime - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const ease = 1 - Math.pow(1 - progress, 3);
+                    counter.textContent = Math.round(target * ease).toLocaleString();
+                    if (progress < 1) {
+                        requestAnimationFrame(step);
+                    } else {
+                        counter.textContent = target.toLocaleString();
+                    }
+                }
+                requestAnimationFrame(step);
+            });
+        }
+
+        if ('IntersectionObserver' in window) {
+            // Level Bar Observer
+            if (levelBar) {
+                const levelObserver = new IntersectionObserver((entries, obs) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            fillLevelBar();
+                            obs.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.2 });
+                levelObserver.observe(levelBar);
+            }
+
+            // Waste Stream Observer
+            if (streamPills) {
+                const streamObserver = new IntersectionObserver((entries, obs) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            animateStreamCounters();
+                            obs.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.25 });
+                streamObserver.observe(streamPills);
+            }
+        } else {
+            fillLevelBar();
+            animateStreamCounters();
+        }
+    });
+
+    // Carbon Projection Simulator with 200ms tweening
+    const slider = document.getElementById('divert-slider');
+    const itemsLabel = document.getElementById('slider-items-label');
+    const simCo2 = document.getElementById('sim-co2');
+    const simPhones = document.getElementById('sim-phones');
+    const simEv = document.getElementById('sim-ev');
+    const simBottles = document.getElementById('sim-bottles');
+
+    let currentAnimId = null;
+    let simState = {
+        co2: 51.1,
+        phones: 6216,
+        ev: 340,
+        bottles: 1460
+    };
+
+    function tweenSimulator(targetState) {
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            if (simCo2) simCo2.textContent = `${targetState.co2.toFixed(1)} kg`;
+            if (simPhones) simPhones.textContent = Math.round(targetState.phones).toLocaleString();
+            if (simEv) simEv.textContent = `${Math.round(targetState.ev).toLocaleString()} mi`;
+            if (simBottles) simBottles.textContent = Math.round(targetState.bottles).toLocaleString();
+            simState = { ...targetState };
+            return;
+        }
+
+        if (currentAnimId) cancelAnimationFrame(currentAnimId);
+        const startState = { ...simState };
+        const startTime = performance.now();
+        const duration = 200;
+
+        function frame(time) {
+            const elapsed = time - startTime;
+            const t = Math.min(elapsed / duration, 1);
+            const ease = 1 - Math.pow(1 - t, 2);
+
+            const co2 = startState.co2 + (targetState.co2 - startState.co2) * ease;
+            const phones = startState.phones + (targetState.phones - startState.phones) * ease;
+            const ev = startState.ev + (targetState.ev - startState.ev) * ease;
+            const bottles = startState.bottles + (targetState.bottles - startState.bottles) * ease;
+
+            if (simCo2) simCo2.textContent = `${co2.toFixed(1)} kg`;
+            if (simPhones) simPhones.textContent = Math.round(phones).toLocaleString();
+            if (simEv) simEv.textContent = `${Math.round(ev).toLocaleString()} mi`;
+            if (simBottles) simBottles.textContent = Math.round(bottles).toLocaleString();
+
+            if (t < 1) {
+                currentAnimId = requestAnimationFrame(frame);
+            } else {
+                simState = { ...targetState };
+            }
+        }
+        currentAnimId = requestAnimationFrame(frame);
+    }
+
+    if (slider) {
+        slider.addEventListener('input', (e) => {
+            const count = parseInt(e.target.value);
+            if (itemsLabel) itemsLabel.textContent = `${count} item${count > 1 ? 's' : ''}/day`;
+            
+            // Average grams per packaging item = 35g CO2 avoided
+            const annualGrams = count * 35.0 * 365;
+            const targetCo2 = annualGrams / 1000.0;
+            const targetPhones = annualGrams / 8.22;
+            const targetEv = annualGrams / 150.0;
+            const targetBottles = count * 365;
+
+            tweenSimulator({
+                co2: targetCo2,
+                phones: targetPhones,
+                ev: targetEv,
+                bottles: targetBottles
+            });
+        });
+    }
+
+    // Recent Scans Live Search & Filter
+    const searchInput = document.getElementById('scan-search-input');
+    const filterButtons = document.querySelectorAll('.scan-filter-btn');
+    const scanCards = document.querySelectorAll('.scan-item-card');
+
+    let currentStream = 'all';
+    let currentQuery = '';
+
+    function filterScans() {
+        scanCards.forEach(card => {
+            const cat = card.dataset.category;
+            const name = card.dataset.name;
+            const matchesStream = (currentStream === 'all' || cat === currentStream);
+            const matchesQuery = (!currentQuery || name.includes(currentQuery));
+
+            if (matchesStream && matchesQuery) {
+                card.classList.remove('hidden');
+            } else {
+                card.classList.add('hidden');
+            }
+        });
+    }
+
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            currentQuery = e.target.value.trim().toLowerCase();
+            filterScans();
+        });
+    }
+
+    filterButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            filterButtons.forEach(b => {
+                b.className = "scan-filter-btn px-2.5 py-1 rounded-full text-[11px] font-medium bg-surface text-text-secondary border border-border-subtle hover:border-primary";
+            });
+            btn.className = "scan-filter-btn px-2.5 py-1 rounded-full text-[11px] font-bold bg-primary text-white";
+            currentStream = btn.dataset.stream;
+            filterScans();
+        });
+    });
+
+    // Chart.js: Stream Share Doughnut Chart
+    const streamCanvas = document.getElementById('streamShareChart');
+    if (streamCanvas && typeof Chart !== 'undefined') {
+        const recyclableCount = 0;
+        const compostCount = 0;
+        const landfillCount = 0;
+        const total = recyclableCount + compostCount + landfillCount;
+        const hasData = total > 0;
+
+        new Chart(streamCanvas, {
+            type: 'doughnut',
+            data: {
+                labels: ['Recyclable', 'Compostable', 'Landfill'],
+                datasets: [{
+                    data: hasData ? [recyclableCount, compostCount, landfillCount] : [1, 0, 0],
+                    backgroundColor: hasData ? ['#0284C7', '#0D9488', '#475569'] : ['#E2E8F0', '#E2E8F0', '#E2E8F0'],
+                    borderWidth: 2,
+                    borderColor: '#FFFFFF',
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '70%',
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        enabled: hasData,
+                        callbacks: {
+                            label: function(context) {
+                                const val = context.raw || 0;
+                                const pct = total > 0 ? Math.round((val / total) * 100) : 0;
+                                return ` ${context.label}: ${val} items (${pct}%)`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // Chart.js: 7-Day Carbon Diversion Trend Bar/Line Chart
+    const co2Canvas = document.getElementById('co2TrendChart');
+    if (co2Canvas && typeof Chart !== 'undefined') {
+        const seriesData = [{"co2_grams": 0, "count": 0, "date_label": "Tue", "full_date": "Nov 03"}, {"co2_grams": 0, "count": 0, "date_label": "Wed", "full_date": "Nov 04"}, {"co2_grams": 0, "count": 0, "date_label": "Thu", "full_date": "Nov 05"}, {"co2_grams": 0, "count": 0, "date_label": "Fri", "full_date": "Nov 06"}, {"co2_grams": 0, "count": 0, "date_label": "Sat", "full_date": "Nov 07"}, {"co2_grams": 0, "count": 0, "date_label": "Sun", "full_date": "Nov 08"}, {"co2_grams": 0, "count": 0, "date_label": "Mon", "full_date": "Nov 09"}];
+        const labels = seriesData.map(d => d.date_label);
+        const co2Values = seriesData.map(d => d.co2_grams);
+
+        new Chart(co2Canvas, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'CO₂ Diverted (g)',
+                    data: co2Values,
+                    backgroundColor: '#2563EB',
+                    borderRadius: 6,
+                    borderSkipped: false,
+                    maxBarThickness: 28
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            title: function(items) {
+                                const idx = items[0].dataIndex;
+                                return seriesData[idx].full_date;
+                            },
+                            label: function(context) {
+                                const idx = context.dataIndex;
+                                return ` CO₂ Diverted: ${context.raw}g (${seriesData[idx].count} items)`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: { display: false },
+                        ticks: { font: { size: 10, family: 'Geist, Inter, sans-serif' }, color: '#64748B' }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: '#F1F5F9' },
+                        ticks: { font: { size: 10, family: 'monospace' }, color: '#64748B', precision: 0 }
+                    }
+                }
+            }
+        });
+    }
+
+    // Hub Switching Handler
+    async function updateCitizenHub(newHub) {
+        const badge = document.getElementById('hub-saved-badge');
+        try {
+            const res = await fetch('/api/update_hub', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ community_hub: newHub })
+            });
+            const data = await res.json();
+            if (data.success && badge) {
+                badge.classList.remove('hidden');
+                setTimeout(() => badge.classList.add('hidden'), 2500);
+            }
+        } catch (e) {
+            console.warn("Failed to update hub:", e);
+        }
+    }
+
+    // Doorstep Pickup Modal Handlers
+    function openPickupModal() {
+        const modal = document.getElementById('pickupModal');
+        const dateInput = document.getElementById('pickupDateInput');
+        if (dateInput && !dateInput.value) {
+            const tom = new Date();
+            tom.setDate(tom.getDate() + 2);
+            dateInput.value = tom.toISOString().split('T')[0];
+        }
+        if (modal) modal.classList.remove('hidden');
+    }
+
+    function closePickupModal() {
+        const modal = document.getElementById('pickupModal');
+        if (modal) modal.classList.add('hidden');
+    }
+
+    async function handlePickupSubmit(e) {
+        e.preventDefault();
+        const address = document.getElementById('pickupAddressInput').value;
+        const date = document.getElementById('pickupDateInput').value;
+        const btn = document.getElementById('submitPickupBtn');
+        if (btn) btn.disabled = true;
+
+        try {
+            const resp = await fetch('/api/schedule_pickup', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    address: address,
+                    date: date,
+                    weight_g: 0.0,
+                    value_usd: 0.0
+                })
+            });
+            const data = await resp.json();
+            if (data.success) {
+                closePickupModal();
+                alert(data.message || "Pickup scheduled! +50 Eco-Points added to your profile.");
+                window.location.reload();
+            } else {
+                alert(data.error || "Could not schedule pickup.");
+                if (btn) btn.disabled = false;
+            }
+        } catch (err) {
+            alert("Error: " + err.message);
+            if (btn) btn.disabled = false;
+        }
+    }
+
+    // EPR Social Impact Card Modal Handlers
+    function openShareImpactModal() {
+        const modal = document.getElementById('shareImpactModal');
+        if (modal) modal.classList.remove('hidden');
+        renderShareImpactCanvas();
+    }
+
+    function closeShareImpactModal() {
+        const modal = document.getElementById('shareImpactModal');
+        if (modal) modal.classList.add('hidden');
+    }
+
+    function renderShareImpactCanvas() {
+        const canvas = document.getElementById('shareImpactCanvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const width = 600;
+        const height = 380;
+
+        // Background Gradient (Nordic Glacier Midnight)
+        const bgGrad = ctx.createLinearGradient(0, 0, width, height);
+        bgGrad.addColorStop(0, '#0F172A');
+        bgGrad.addColorStop(0.6, '#1E293B');
+        bgGrad.addColorStop(1, '#0B1120');
+        ctx.fillStyle = bgGrad;
+        ctx.fillRect(0, 0, width, height);
+
+        // Accent top bar
+        const barGrad = ctx.createLinearGradient(0, 0, width, 0);
+        barGrad.addColorStop(0, '#2563EB');
+        barGrad.addColorStop(0.5, '#0D9488');
+        barGrad.addColorStop(1, '#F59E0B');
+        ctx.fillStyle = barGrad;
+        ctx.fillRect(0, 0, width, 6);
+
+        // Header Brand
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = 'bold 22px Geist, Inter, sans-serif';
+        ctx.fillText('BinSync', 40, 48);
+
+        ctx.fillStyle = '#93C5FD';
+        ctx.font = 'bold 11px Geist, Inter, sans-serif';
+        ctx.fillText('CLIMATE INTELLIGENCE LEDGER', 40, 68);
+
+        // Verified Badge
+        ctx.fillStyle = 'rgba(13, 148, 136, 0.2)';
+        ctx.strokeStyle = '#0D9488';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.roundRect(width - 170, 32, 130, 28, 14);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = '#2DD4BF';
+        ctx.font = 'bold 10px Geist, Inter, sans-serif';
+        ctx.fillText('✓ EPR VERIFIED', width - 150, 50);
+
+        // Citizen Name & Level
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = 'bold 28px Geist, Inter, sans-serif';
+        ctx.fillText('Citizen_b361d', 40, 125);
+
+        ctx.fillStyle = '#94A3B8';
+        ctx.font = '13px Geist, Inter, sans-serif';
+        ctx.fillText('Citizen ID: SYNC-0356 · Global Network · Seedling', 40, 150);
+
+        // 3 Stat Boxes
+        const statBoxes = [
+            { label: 'CO₂ DIVERTED', val: '0.0g' },
+            { label: 'ITEMS SORTED', val: '0' },
+            { label: 'ECO-POINTS', val: '0' }
+        ];
+
+        statBoxes.forEach((box, i) => {
+            const x = 40 + i * 175;
+            const y = 180;
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+            ctx.beginPath();
+            ctx.roundRect(x, y, 160, 85, 12);
+            ctx.fill();
+            ctx.stroke();
+
+            ctx.fillStyle = '#94A3B8';
+            ctx.font = 'bold 10px monospace';
+            ctx.fillText(box.label, x + 16, y + 28);
+
+            ctx.fillStyle = '#F8FAFC';
+            ctx.font = 'bold 24px monospace';
+            ctx.fillText(box.val, x + 16, y + 62);
+        });
+
+        // EPR Cryptographic Hash strip
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.8)';
+        ctx.strokeStyle = 'rgba(51, 65, 85, 0.8)';
+        ctx.beginPath();
+        ctx.roundRect(40, 290, width - 80, 50, 10);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = '#64748B';
+        ctx.font = '10px monospace';
+        ctx.fillText('AUDIT HASH: EPR-7A9B3E2F8C1D0462  |  CIRCULARITY PROTOCOL 2.0', 56, 312);
+
+        ctx.fillStyle = '#38BDF8';
+        ctx.font = 'bold 11px monospace';
+        ctx.fillText('ZERO-WASTE MUNICIPAL LANDFILL DIVERSION ACCREDITATION', 56, 328);
+    }
+
+    function downloadImpactCard() {
+        const canvas = document.getElementById('shareImpactCanvas');
+        if (!canvas) return;
+        const link = document.createElement('a');
+        link.download = `BinSync_Impact_Citizen_b361d.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+    }
+
+    // Kitchen Fridge Guide Modal Handlers
+    function openKitchenGuideModal() {
+        const modal = document.getElementById('kitchenGuideModal');
+        if (modal) modal.classList.remove('hidden');
+    }
+
+    function closeKitchenGuideModal() {
+        const modal = document.getElementById('kitchenGuideModal');
+        if (modal) modal.classList.add('hidden');
+    }
+
+    function printKitchenGuide() {
+        window.print();
+    }
+
+    // Delete Accidental Scan Handler
+    async function deleteScan(scanId, btn) {
+        if (!scanId) return;
+        if (!confirm("Delete this scan? Earned points and carbon offset will be reversed.")) return;
+        
+        try {
+            const resp = await fetch(`/api/scan/${scanId}`, { method: 'DELETE' });
+            const res = await resp.json();
+            if (res.status === 'success') {
+                const card = btn.closest('.scan-item-card');
+                if (card) card.remove();
+                if (window.triggerFeedback) window.triggerFeedback('error');
+                window.location.reload();
+            } else {
+                alert(res.error || "Could not delete scan record.");
+            }
+        } catch(e) {
+            alert("Delete failed: " + e.message);
+        }
+    }
+</script>
+
+<!-- Doorstep Pickup Scheduling Modal -->
+<div id="pickupModal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 space-y-5 border border-border-subtle shadow-2xl relative">
+        <div class="flex items-center justify-between pb-3 border-b border-border-subtle">
+            <div class="flex items-center gap-2">
+                <div class="w-9 h-9 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center font-bold">
+                    <span class="material-symbols-outlined text-[20px]">local_shipping</span>
+                </div>
+                <div>
+                    <h3 class="text-base font-bold text-text-primary">Doorstep Stash Pickup</h3>
+                    <span class="text-[11px] text-text-muted">Direct Circular Stream Handover (+50 Pts)</span>
+                </div>
+            </div>
+            <button type="button" onclick="closePickupModal()" class="text-text-muted hover:text-text-primary p-1">
+                <span class="material-symbols-outlined text-[20px]">close</span>
+            </button>
+        </div>
+
+        <form id="pickupForm" onsubmit="handlePickupSubmit(event)" class="space-y-4 text-xs">
+            <div>
+                <label class="block font-bold text-text-primary mb-1">Pickup Address / Doorstep Location</label>
+                <input type="text" id="pickupAddressInput" required placeholder="e.g. 742 Evergreen Terrace, Apt 4B" class="w-full text-xs px-3.5 py-2.5 rounded-xl border border-border-medium bg-surface focus:outline-none focus:border-primary">
+            </div>
+
+            <div>
+                <label class="block font-bold text-text-primary mb-1">Preferred Collection Date</label>
+                <input type="date" id="pickupDateInput" required class="w-full text-xs px-3.5 py-2.5 rounded-xl border border-border-medium bg-surface focus:outline-none focus:border-primary">
+            </div>
+
+            <div class="p-3 bg-surface rounded-xl border border-border-subtle flex justify-between items-center text-xs">
+                <div>
+                    <span class="text-text-muted block">Estimated Dry Stash:</span>
+                    <strong class="text-text-primary">0 grams</strong>
+                </div>
+                <div class="text-right">
+                    <span class="text-text-muted block">Recovery Scrap Value:</span>
+                    <strong class="text-emerald-700">$0.00 (₹0)</strong>
+                </div>
+            </div>
+
+            <div class="pt-2 flex gap-3">
+                <button type="button" onclick="closePickupModal()" class="flex-1 btn-secondary py-2.5 text-xs font-bold">Cancel</button>
+                <button type="submit" id="submitPickupBtn" class="flex-1 btn-primary py-2.5 text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm">
+                    <span class="material-symbols-outlined text-[16px]">check_circle</span>
+                    <span>Confirm Pickup (+50 Pts)</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Social Impact Card Share Modal -->
+<div id="shareImpactModal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 space-y-4 border border-border-subtle shadow-2xl relative">
+        <div class="flex items-center justify-between pb-2 border-b border-border-subtle">
+            <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary text-[22px]">verified</span>
+                <h3 class="text-base font-bold text-text-primary">EPR Verified Social Impact Card</h3>
+            </div>
+            <button type="button" onclick="closeShareImpactModal()" class="text-text-muted hover:text-text-primary p-1">
+                <span class="material-symbols-outlined text-[20px]">close</span>
+            </button>
+        </div>
+
+        <div class="flex justify-center overflow-hidden rounded-2xl border border-border-subtle shadow-md">
+            <canvas id="shareImpactCanvas" width="600" height="380" class="w-full h-auto rounded-2xl max-w-[500px]"></canvas>
+        </div>
+
+        <div class="flex items-center justify-between gap-3 pt-2">
+            <span class="text-[11px] text-text-muted">Cryptographically audited zero-waste credential</span>
+            <button type="button" onclick="downloadImpactCard()" class="btn-primary py-2.5 px-5 text-xs font-bold flex items-center gap-1.5 shadow-sm">
+                <span class="material-symbols-outlined text-[16px]">download</span>
+                <span>Download PNG Card</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Kitchen Fridge Bin Guide Modal -->
+<div id="kitchenGuideModal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 space-y-5 border border-border-subtle shadow-2xl relative max-h-[90vh] overflow-y-auto">
+        <div class="flex items-center justify-between pb-3 border-b border-border-subtle no-print">
+            <div class="flex items-center gap-2">
+                <div class="w-9 h-9 rounded-xl bg-primary-light text-primary flex items-center justify-center font-bold">
+                    <span class="material-symbols-outlined text-[20px]">kitchen</span>
+                </div>
+                <div>
+                    <h3 class="text-base font-bold text-text-primary">Kitchen Fridge Sorting Cheat Sheet</h3>
+                    <span class="text-[11px] text-text-muted">Customized for your household's frequent packaging</span>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <button type="button" onclick="printKitchenGuide()" class="btn-primary py-1.5 px-3.5 text-xs font-bold flex items-center gap-1.5 shadow-sm">
+                    <span class="material-symbols-outlined text-[16px]">print</span>
+                    <span>Print Sheet</span>
+                </button>
+                <button type="button" onclick="closeKitchenGuideModal()" class="text-text-muted hover:text-text-primary p-1">
+                    <span class="material-symbols-outlined text-[20px]">close</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- The Printable Fridge Guide Container -->
+        <div id="kitchen-fridge-sheet" class="space-y-5 bg-white text-slate-900 p-6 rounded-2xl border-2 border-slate-200">
+            <!-- Header Strip -->
+            <div class="flex items-center justify-between border-b-2 border-slate-800 pb-4">
+                <div class="flex items-center gap-3">
+                    <img src="/static/img/logo-icon.svg" alt="BinSync" class="w-10 h-10 rounded-xl shadow-sm">
+                    <div>
+                        <h2 class="text-xl font-black text-slate-900 tracking-tight">BinSync Kitchen Sorting Guide</h2>
+                        <p class="text-xs text-slate-600 font-semibold">Household of Citizen_b361d · Global Network</p>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <span class="text-[10px] font-mono font-bold uppercase tracking-wider bg-slate-100 text-slate-800 px-2.5 py-1 rounded-md border border-slate-300">FRIDGE CHEAT SHEET</span>
+                    <p class="text-[10px] text-slate-500 mt-1 font-mono">Verified Zero-Waste</p>
+                </div>
+            </div>
+
+            <!-- Standard 4-Stream Bin Legend -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+                <div class="p-3 rounded-xl bg-blue-50 border-2 border-blue-400 space-y-1">
+                    <strong class="text-blue-900 font-bold block text-xs flex items-center gap-1">
+                        <span class="w-3 h-3 rounded-full bg-blue-600 inline-block"></span> Blue Bin
+                    </strong>
+                    <span class="text-[10px] text-blue-800 font-semibold block">RECYCLABLES</span>
+                    <p class="text-[10px] text-slate-600 leading-tight">Clean &amp; dry bottles #1/#2/#5, cans, dry cardboard boxes.</p>
+                </div>
+                <div class="p-3 rounded-xl bg-teal-50 border-2 border-teal-400 space-y-1">
+                    <strong class="text-teal-900 font-bold block text-xs flex items-center gap-1">
+                        <span class="w-3 h-3 rounded-full bg-teal-600 inline-block"></span> Green Bin
+                    </strong>
+                    <span class="text-[10px] text-teal-800 font-semibold block">ORGANICS</span>
+                    <p class="text-[10px] text-slate-600 leading-tight">Food scraps, greasy pizza box bottoms, coffee grounds.</p>
+                </div>
+                <div class="p-3 rounded-xl bg-slate-100 border-2 border-slate-400 space-y-1">
+                    <strong class="text-slate-900 font-bold block text-xs flex items-center gap-1">
+                        <span class="w-3 h-3 rounded-full bg-slate-700 inline-block"></span> Black Bin
+                    </strong>
+                    <span class="text-[10px] text-slate-700 font-semibold block">LANDFILL</span>
+                    <p class="text-[10px] text-slate-600 leading-tight">Soiled wraps, metallized chip bags, plastic utensils.</p>
+                </div>
+                <div class="p-3 rounded-xl bg-rose-50 border-2 border-rose-400 space-y-1">
+                    <strong class="text-rose-900 font-bold block text-xs flex items-center gap-1">
+                        <span class="w-3 h-3 rounded-full bg-rose-600 inline-block"></span> Red / Depot
+                    </strong>
+                    <span class="text-[10px] text-rose-800 font-semibold block">HAZMAT / E-WASTE</span>
+                    <p class="text-[10px] text-slate-600 leading-tight">Batteries, cables, electronics, light bulbs. Never curb.</p>
+                </div>
+            </div>
+
+            <!-- Household Top Frequent Items Table -->
+            <div class="space-y-2">
+                <div class="flex items-center justify-between text-xs font-bold text-slate-800 border-b pb-1">
+                    <span>Your Frequent Household Items &amp; Actions</span>
+                    <span class="text-[10px] text-slate-500 font-normal">Based on verified scans</span>
+                </div>
+                <table class="w-full text-left text-xs border-collapse">
+                    <thead>
+                        <tr class="border-b text-[10px] uppercase tracking-wider text-slate-500">
+                            <th class="py-1.5">Item Name</th>
+                            <th class="py-1.5">Material</th>
+                            <th class="py-1.5">Stream</th>
+                            <th class="py-1.5">Prep Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        
+                        
+                        <tr>
+                            <td class="py-2 font-bold text-slate-900">Clear PET Water/Soda Bottle</td>
+                            <td class="py-2 text-slate-600 text-[11px]">#1 PET Plastic</td>
+                            <td class="py-2">
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-blue-800">
+                                    Recyclable
+                                </span>
+                            </td>
+                            <td class="py-2 text-[11px] text-slate-700 font-medium">Empty liquids, screw cap loosely on</td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="py-2 font-bold text-slate-900">Delivery Pizza Box</td>
+                            <td class="py-2 text-slate-600 text-[11px]">Corrugated Cardboard</td>
+                            <td class="py-2">
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-teal-100 text-teal-800">
+                                    Compostable
+                                </span>
+                            </td>
+                            <td class="py-2 text-[11px] text-slate-700 font-medium">Tear away greasy base to compost; recycle dry lid</td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="py-2 font-bold text-slate-900">Aluminum Beverage Can</td>
+                            <td class="py-2 text-slate-600 text-[11px]">Pure Aluminum 3004</td>
+                            <td class="py-2">
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-blue-800">
+                                    Recyclable
+                                </span>
+                            </td>
+                            <td class="py-2 text-[11px] text-slate-700 font-medium">Rinse empty, keep stay-tab attached</td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="py-2 font-bold text-slate-900">Single-Use Coffee Cup</td>
+                            <td class="py-2 text-slate-600 text-[11px]">Poly-Bonded Paperboard</td>
+                            <td class="py-2">
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-200 text-slate-800">
+                                    Landfill
+                                </span>
+                            </td>
+                            <td class="py-2 text-[11px] text-slate-700 font-medium">Cup into trash; recycle sleeve and lid</td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="py-2 font-bold text-slate-900">Flexible Snack / Chip Bag</td>
+                            <td class="py-2 text-slate-600 text-[11px]">Metallized Foil Film</td>
+                            <td class="py-2">
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-200 text-slate-800">
+                                    Landfill
+                                </span>
+                            </td>
+                            <td class="py-2 text-[11px] text-slate-700 font-medium">Trash or store collection drop-off</td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="py-2 font-bold text-slate-900">Milk &amp; Juice Carton</td>
+                            <td class="py-2 text-slate-600 text-[11px]">Aseptic Paperboard</td>
+                            <td class="py-2">
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-blue-800">
+                                    Recyclable
+                                </span>
+                            </td>
+                            <td class="py-2 text-[11px] text-slate-700 font-medium">Rinse empty, flatten and leave loose</td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="py-2 font-bold text-slate-900">Household AA/AAA Batteries</td>
+                            <td class="py-2 text-slate-600 text-[11px]">Alkaline / Heavy Metal</td>
+                            <td class="py-2">
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-rose-100 text-rose-800">
+                                    Hazmat
+                                </span>
+                            </td>
+                            <td class="py-2 text-[11px] text-slate-700 font-medium">Tape terminals; drop at certified e-waste bin</td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="py-2 font-bold text-slate-900">Glass Food &amp; Sauce Jar</td>
+                            <td class="py-2 text-slate-600 text-[11px]">Flint Glass</td>
+                            <td class="py-2">
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-blue-800">
+                                    Recyclable
+                                </span>
+                            </td>
+                            <td class="py-2 text-[11px] text-slate-700 font-medium">Rinse clean, recycle metal lid loosely</td>
+                        </tr>
+                        
+                        
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Footer Notes & QR Code -->
+            <div class="pt-3 border-t-2 border-slate-200 flex items-center justify-between text-[10px] text-slate-500">
+                <div>
+                    <span class="font-bold text-slate-700">Golden Rule:</span> When in doubt, check BinSync or keep fiber dry.
+                    <p>Contamination ruins entire truckloads of recyclable paper.</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="font-mono font-bold text-slate-800">binsync.local</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
