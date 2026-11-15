@@ -1,0 +1,30 @@
+# Ignore all documentation, design notes, and markdown files
+*.md
+DESIGN.md
+PRODUCT.md
+README.md
+
+# Ignore heavy media, databases, and build artifacts
+raw images/
+envirotech.db
+*.db
+*.sqlite
+netlify/
+public/
+dist/
+build/
+
+# Ignore python environments and caches
+.venv/
+__pycache__/
+.impeccable/
+.vscode/
+
+# Ignore deployment configs and test scripts (if you only want pure run files)
+netlify.toml
+render.yaml
+vercel.json
+Procfile
+_redirects
+test_suite.py
+freeze_site.py
