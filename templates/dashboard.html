@@ -52,7 +52,7 @@
     {% endif %}
 
     <!-- User Profile Hero Card -->
-    <div class="eco-card p-6 sm:p-10">
+    <div class="taste-card p-6 sm:p-10">
         <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
             <!-- Identity -->
             <div class="flex items-center gap-6">
@@ -123,21 +123,21 @@
 
             <!-- Bento Impact Stats (Tangible Equivalencies) -->
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div class="eco-card p-5">
+                <div class="taste-card p-5">
                     <div class="w-9 h-9 rounded-xl bg-primary-light text-primary flex items-center justify-center mb-3">
                         <span class="material-symbols-outlined text-[20px]">co2</span>
                     </div>
                     <div class="text-2xl font-semibold text-text-primary font-mono tabular-nums">{{ "%.1f"|format(user.total_co2_saved) }}g</div>
                     <p class="text-xs text-text-secondary mt-0.5">Total CO₂ Diverted</p>
                 </div>
-                <div class="eco-card p-5">
+                <div class="taste-card p-5">
                     <div class="w-9 h-9 rounded-xl bg-solar-light text-solar-dark flex items-center justify-center mb-3">
                         <span class="material-symbols-outlined text-[20px]">battery_charging_full</span>
                     </div>
                     <div class="text-2xl font-semibold text-text-primary font-mono tabular-nums">{{ smartphone_charges }}</div>
                     <p class="text-xs text-text-secondary mt-0.5">Smartphone Recharges</p>
                 </div>
-                <div class="eco-card p-5">
+                <div class="taste-card p-5">
                     <div class="w-9 h-9 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center mb-3">
                         <span class="material-symbols-outlined text-[20px]">electric_car</span>
                     </div>
@@ -147,7 +147,7 @@
             </div>
 
             <!-- Daily Climate Quests Widget -->
-            <div class="eco-card p-6 space-y-4">
+            <div class="taste-card p-6 space-y-4">
                 <div class="flex items-center justify-between pb-3 border-b border-border-subtle">
                     <h2 class="text-sm font-bold text-text-primary flex items-center gap-1.5">
                         <span class="material-symbols-outlined text-[18px] text-solar">target</span>
@@ -180,7 +180,7 @@
             </div>
 
             <!-- Virtual Household Dry-Waste Stash & Doorstep Pickup -->
-            <div class="eco-card p-6 space-y-5">
+            <div class="taste-card p-6 space-y-5">
                 <div class="flex items-center justify-between pb-3 border-b border-border-subtle">
                     <div>
                         <h2 class="text-sm font-bold text-text-primary flex items-center gap-1.5">
@@ -245,7 +245,7 @@
             </div>
 
             <!-- Interactive Household Carbon Projection Simulator -->
-            <div class="eco-card p-6 space-y-5">
+            <div class="taste-card p-6 space-y-5">
                 <div class="flex items-center justify-between">
                     <div>
                         <h2 class="text-sm font-bold text-text-primary flex items-center gap-1.5">
@@ -288,7 +288,7 @@
             </div>
 
             <!-- 30-Day Sorting Consistency Activity Heatmap -->
-            <div class="eco-card p-6 space-y-4">
+            <div class="taste-card p-6 space-y-4">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-border-subtle">
                     <div>
                         <h2 class="text-sm font-bold text-text-primary flex items-center gap-1.5">
@@ -342,7 +342,7 @@
             </div>
 
             <!-- Waste Stream Distribution & Chart.js Analytics -->
-            <div class="eco-card p-6 space-y-4">
+            <div class="taste-card p-6 space-y-4">
                 <div class="flex items-center justify-between pb-3 border-b border-border-subtle">
                     <h2 class="text-sm font-bold text-text-primary flex items-center gap-1.5">
                         <span class="material-symbols-outlined text-[18px] text-primary">donut_small</span>
@@ -398,7 +398,7 @@
             </div>
 
             <!-- Locked vs. Unlocked Achievement Badges Gallery with Progress Bars -->
-            <div class="eco-card p-6 space-y-4">
+            <div class="taste-card p-6 space-y-4">
                 <div class="flex items-center justify-between pb-3 border-b border-border-subtle">
                     <div>
                         <h2 class="text-sm font-bold text-text-primary flex items-center gap-1.5">
@@ -454,7 +454,7 @@
         <!-- Right Col: Filterable Activity & Audit Certificate -->
         <div class="lg:col-span-5 space-y-6">
             
-            <div class="eco-card p-6 space-y-4">
+            <div class="taste-card p-6 space-y-4">
                 <!-- Activity Header -->
                 <div class="flex items-center justify-between pb-3 border-b border-border-subtle">
                     <h2 class="text-sm font-bold text-text-primary flex items-center gap-1.5">
@@ -565,7 +565,7 @@
             </div>
 
             <!-- Certified Diversion Certificate Card -->
-            <div class="eco-card p-6 border-2 border-primary/20 space-y-4 bg-gradient-to-br from-white via-surface to-primary-light/20">
+            <div class="taste-card p-6 border-2 border-primary/20 space-y-4 bg-gradient-to-br from-white via-surface to-primary-light/20">
                 <div class="flex items-center justify-between">
                     <span class="text-xs font-semibold text-primary bg-primary-light px-2.5 py-0.5 rounded-md">Official Verification</span>
                     <span class="text-[10px] font-mono text-text-muted">ID: SYNC-{{ "%04d"|format(user.id) }}</span>

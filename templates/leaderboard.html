@@ -47,7 +47,7 @@
             </p>
         </div>
         {% if user %}
-        <div class="flex items-center gap-3 eco-card px-5 py-4">
+        <div class="flex items-center gap-3 taste-card px-5 py-4">
             <div class="w-10 h-10 rounded-2xl bg-primary text-white text-base font-bold flex items-center justify-center shadow-sm">
                 {{ user.username[0]|upper }}
             </div>
@@ -80,7 +80,7 @@
             {% for event in active_campaigns %}
             {% set pct = (event.current_co2_grams / event.target_co2_grams * 100)|round|int if event.target_co2_grams > 0 else 0 %}
             {% set pct_clamped = 100 if pct > 100 else pct %}
-            <div class="eco-card p-6 space-y-4 bg-gradient-to-br from-white via-surface to-primary-light/10 border {% if user and user.active_event_code == event.code %}border-primary{% else %}border-border-subtle{% endif %}">
+            <div class="taste-card p-6 space-y-4 bg-gradient-to-br from-white via-surface to-primary-light/10 border {% if user and user.active_event_code == event.code %}border-primary{% else %}border-border-subtle{% endif %}">
                 <div class="flex items-start justify-between gap-3">
                     <div class="space-y-1">
                         <div class="flex items-center gap-2">
@@ -134,7 +134,7 @@
 
     <!-- City Pulse Waste Telemetry Strip -->
     {% if city_pulse %}
-    <div class="eco-card p-6 sm:p-8 bg-gradient-to-r from-surface via-surface to-primary-light/10 border border-primary/20">
+    <div class="taste-card p-6 sm:p-8 bg-gradient-to-r from-surface via-surface to-primary-light/10 border border-primary/20">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6">
             <div>
                 <div class="flex items-center gap-2">
@@ -217,7 +217,7 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3.5">
             {% for hub in hub_leaderboard %}
-            <a href="{{ url_for('leaderboard', hub=hub.name) }}" class="eco-card p-4 transition hover:border-primary block group {% if selected_hub == hub.name %}border-2 border-primary bg-primary-light/20 shadow-sm{% endif %}">
+            <a href="{{ url_for('leaderboard', hub=hub.name) }}" class="taste-card p-4 transition hover:border-primary block group {% if selected_hub == hub.name %}border-2 border-primary bg-primary-light/20 shadow-sm{% endif %}">
                 <div class="flex items-center justify-between">
                     <span class="text-[10px] font-mono font-bold {% if loop.index == 1 %}text-solar-dark bg-solar-light px-2 py-0.5 rounded-full{% else %}text-text-muted{% endif %}">
                         #{{ loop.index }} Hub
@@ -255,7 +255,7 @@
     <div id="top3-podium" class="grid grid-cols-1 md:grid-cols-3 gap-5 pt-2">
 
         <!-- 2nd Place -->
-        <div id="podium-rank-2" class="eco-card p-6 flex flex-col items-center text-center order-2 md:order-1 md:mt-8">
+        <div id="podium-rank-2" class="taste-card p-6 flex flex-col items-center text-center order-2 md:order-1 md:mt-8">
             <div class="w-12 h-12 rounded-xl bg-slate-100 flex items-center justify-center font-mono font-bold text-lg text-slate-700 mb-3 border border-slate-200">2</div>
             <div class="text-[11px] font-semibold text-slate-500 mb-1">Rank #2</div>
             <h3 class="text-lg font-semibold text-text-primary">{{ top_users[1].username }}</h3>
@@ -267,7 +267,7 @@
         </div>
 
         <!-- 1st Place (Champion) -->
-        <div id="podium-rank-1" class="eco-card border-2 border-primary/30 p-6 flex flex-col items-center text-center order-1 md:order-2 relative overflow-hidden shadow-sm">
+        <div id="podium-rank-1" class="taste-card border-2 border-primary/30 p-6 flex flex-col items-center text-center order-1 md:order-2 relative overflow-hidden shadow-sm">
             <div class="w-14 h-14 rounded-xl bg-primary-light flex items-center justify-center font-mono font-bold text-xl text-primary mb-3 border border-primary/20 shadow-sm relative z-10">1</div>
             <div class="relative z-10 space-y-1">
                 <span class="text-[11px] font-semibold text-primary bg-primary-light px-2.5 py-0.5 rounded-md inline-block border border-primary/20">Top Contributor</span>
@@ -281,7 +281,7 @@
         </div>
 
         <!-- 3rd Place -->
-        <div id="podium-rank-3" class="eco-card p-6 flex flex-col items-center text-center order-3 md:mt-14">
+        <div id="podium-rank-3" class="taste-card p-6 flex flex-col items-center text-center order-3 md:mt-14">
             <div class="w-12 h-12 rounded-xl bg-amber-50 flex items-center justify-center font-mono font-bold text-lg text-amber-800 mb-3 border border-amber-200">3</div>
             <div class="text-[11px] font-semibold text-amber-800 mb-1">Rank #3</div>
             <h3 class="text-lg font-semibold text-text-primary">{{ top_users[2].username }}</h3>
@@ -296,7 +296,7 @@
     {% endif %}
 
     <!-- Full Rankings Table -->
-    <div class="eco-card overflow-hidden">
+    <div class="taste-card overflow-hidden">
         <div class="px-6 py-5 border-b border-border-subtle flex justify-between items-center">
             <h2 class="text-sm font-bold text-text-primary flex items-center gap-2">
                 <span class="material-symbols-outlined text-primary text-[20px]">military_tech</span>
@@ -380,7 +380,7 @@
 
     <!-- Brand Circularity & Extended Producer Responsibility (EPR) Index -->
     {% if brand_rankings %}
-    <div class="eco-card overflow-hidden">
+    <div class="taste-card overflow-hidden">
         <div class="px-6 py-5 border-b border-border-subtle flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
                 <h2 class="text-lg sm:text-xl font-semibold text-text-primary flex items-center gap-2">
@@ -479,7 +479,7 @@
     {% endif %}
 
     <!-- CTA Strip -->
-    <div class="bg-primary rounded-3xl p-8 sm:p-10 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-botanical">
+    <div class="bg-primary rounded-3xl p-8 sm:p-10 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-sm">
         <div class="text-white space-y-1 text-center sm:text-left">
             <h3 class="text-xl sm:text-2xl font-semibold">Ready to climb the citizen ranks?</h3>
             <p class="text-[#DBEAFE] text-sm">Every verified scan earns eco-points and prevents municipal landfill contamination.</p>
