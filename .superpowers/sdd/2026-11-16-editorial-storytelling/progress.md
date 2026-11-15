@@ -8,4 +8,4 @@ Pre-flight: no shared interfaces conflicts detected. All routes and templates ex
 - Task 3: complete (commit 0128683, tests: python test_suite.py -> 19/19 OK)
 - Task 4: complete (commit 9fb5316, tests: python test_suite.py -> 19/19 OK)
 - Task 5: complete (commit 8f1ab87, tests: python test_suite.py -> 19/19 OK)
-- Task 6: Static Site Compilation, PWA Service Worker Verification & Final Deployment (`freeze_site.py`, `public/`)
+- Task 6: complete (commit 3f6cfeb, tests: python test_suite.py -> 19/19 OK, git push origin main -> deployed)
