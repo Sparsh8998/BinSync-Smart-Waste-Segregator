@@ -56,25 +56,25 @@
         <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
             <!-- Identity -->
             <div class="flex items-center gap-6">
-                <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-primary text-white flex items-center justify-center font-black text-3xl sm:text-4xl shadow-md flex-shrink-0">
+                <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-primary text-white flex items-center justify-center font-bold text-3xl sm:text-4xl shadow-md flex-shrink-0">
                     {{ user.username[0]|upper }}
                 </div>
                 <div>
                     <div class="flex items-center gap-3 flex-wrap">
-                        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black text-text-primary">{{ user.username }}</h1>
-                        <span class="text-xs sm:text-sm font-bold text-primary bg-primary-light px-3.5 py-1 rounded-full uppercase tracking-wider">{{ user.level_info.title }}</span>
+                        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-text-primary">{{ user.username }}</h1>
+                        <span class="text-xs sm:text-sm font-semibold text-primary bg-primary-light px-3 py-0.5 rounded-md border border-primary/20">{{ user.level_info.title }}</span>
                     </div>
                     <div class="flex items-center gap-2 mt-2 flex-wrap">
                         <span class="text-xs text-text-muted font-mono">Citizen ID: SYNC-{{ "%04d"|format(user.id) }}</span>
                         <span class="text-text-muted text-xs">·</span>
                         <div class="relative inline-flex items-center gap-1.5">
                             <span class="material-symbols-outlined text-teal-600 text-[16px]">groups</span>
-                            <select id="user-hub-selector" onchange="updateCitizenHub(this.value)" class="text-xs font-bold text-teal-900 bg-teal-50 border border-teal-200 rounded-full px-2.5 py-0.5 focus:outline-none focus:ring-2 focus:ring-teal-500/20 cursor-pointer">
+                            <select id="user-hub-selector" onchange="updateCitizenHub(this.value)" class="text-xs font-semibold text-teal-900 bg-teal-50 border border-teal-200 rounded-lg px-2.5 py-0.5 focus:outline-none focus:ring-1 focus:ring-teal-500 cursor-pointer">
                                 {% for hub in community_hubs %}
                                 <option value="{{ hub }}" {% if user.community_hub == hub %}selected{% endif %}>{{ hub }}</option>
                                 {% endfor %}
                             </select>
-                            <span id="hub-saved-badge" class="hidden text-[10px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">Saved</span>
+                            <span id="hub-saved-badge" class="hidden text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">Saved</span>
                         </div>
                     </div>
                 </div>
@@ -82,20 +82,20 @@
 
             <!-- Quick Stats Pills & Export Action -->
             <div class="flex flex-wrap items-center gap-3.5">
-                <div class="px-6 py-3.5 rounded-2xl bg-surface border border-border-subtle text-center min-w-[95px]">
-                    <span class="block text-[11px] font-bold text-text-muted uppercase tracking-widest mb-0.5">Scans</span>
-                    <span class="text-2xl font-black text-text-primary font-mono">{{ user.total_recycled }}</span>
+                <div class="px-5 py-3 rounded-xl bg-surface border border-border-subtle text-center min-w-[90px]">
+                    <span class="block text-xs font-medium text-text-muted mb-0.5">Scans</span>
+                    <span class="text-2xl font-semibold text-text-primary font-mono tabular-nums">{{ user.total_recycled }}</span>
                 </div>
-                <div class="px-6 py-3.5 rounded-2xl bg-surface border border-border-subtle text-center min-w-[95px]">
-                    <span class="block text-[11px] font-bold text-text-muted uppercase tracking-widest mb-0.5">Streak</span>
-                    <span class="text-2xl font-black text-solar-dark font-mono flex items-center justify-center gap-1">
-                        <span class="material-symbols-outlined text-[20px] text-solar flame-flicker">local_fire_department</span>
+                <div class="px-5 py-3 rounded-xl bg-surface border border-border-subtle text-center min-w-[90px]">
+                    <span class="block text-xs font-medium text-text-muted mb-0.5">Streak</span>
+                    <span class="text-2xl font-semibold text-solar-dark font-mono tabular-nums flex items-center justify-center gap-1">
+                        <span class="material-symbols-outlined text-[18px] text-solar">local_fire_department</span>
                         {{ user.current_streak }}d
                     </span>
                 </div>
-                <div class="px-6 py-3.5 rounded-2xl bg-primary text-white text-center shadow-sm min-w-[95px]">
-                    <span class="block text-[11px] font-bold text-[#93C5FD] uppercase tracking-widest mb-0.5">Points</span>
-                    <span class="text-2xl font-black font-mono">{{ user.points }}</span>
+                <div class="px-5 py-3 rounded-xl bg-primary text-white text-center shadow-sm min-w-[90px]">
+                    <span class="block text-xs font-medium text-blue-100 mb-0.5">Points</span>
+                    <span class="text-2xl font-semibold font-mono tabular-nums">{{ user.points }}</span>
                 </div>
                 <a href="{{ url_for('export_scans') }}" title="Download verified CSV audit" class="p-3.5 rounded-2xl bg-surface border border-border-medium hover:border-primary text-text-secondary hover:text-primary transition flex items-center justify-center">
                     <span class="material-symbols-outlined text-[22px]">download</span>
@@ -127,21 +127,21 @@
                     <div class="w-9 h-9 rounded-xl bg-primary-light text-primary flex items-center justify-center mb-3">
                         <span class="material-symbols-outlined text-[20px]">co2</span>
                     </div>
-                    <div class="text-2xl font-black text-text-primary font-mono">{{ "%.1f"|format(user.total_co2_saved) }}g</div>
+                    <div class="text-2xl font-semibold text-text-primary font-mono tabular-nums">{{ "%.1f"|format(user.total_co2_saved) }}g</div>
                     <p class="text-xs text-text-secondary mt-0.5">Total CO₂ Diverted</p>
                 </div>
                 <div class="eco-card p-5">
                     <div class="w-9 h-9 rounded-xl bg-solar-light text-solar-dark flex items-center justify-center mb-3">
                         <span class="material-symbols-outlined text-[20px]">battery_charging_full</span>
                     </div>
-                    <div class="text-2xl font-black text-text-primary font-mono">{{ smartphone_charges }}</div>
+                    <div class="text-2xl font-semibold text-text-primary font-mono tabular-nums">{{ smartphone_charges }}</div>
                     <p class="text-xs text-text-secondary mt-0.5">Smartphone Recharges</p>
                 </div>
                 <div class="eco-card p-5">
                     <div class="w-9 h-9 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center mb-3">
                         <span class="material-symbols-outlined text-[20px]">electric_car</span>
                     </div>
-                    <div class="text-2xl font-black text-text-primary font-mono">{{ ev_miles }}<span class="text-sm font-normal text-text-muted ml-1">mi</span></div>
+                    <div class="text-2xl font-semibold text-text-primary font-mono tabular-nums">{{ ev_miles }}<span class="text-sm font-normal text-text-muted ml-1">mi</span></div>
                     <p class="text-xs text-text-secondary mt-0.5">EV Miles Offset</p>
                 </div>
             </div>
@@ -223,7 +223,7 @@
                 <!-- Scheduled Pickups History -->
                 {% if pickup_requests %}
                 <div class="pt-3 border-t border-border-subtle space-y-2">
-                    <span class="text-[11px] font-bold uppercase tracking-wider text-text-muted block">Scheduled Doorstep Collections</span>
+                    <span class="text-xs font-medium text-text-muted block">Scheduled Doorstep Collections</span>
                     <div class="space-y-1.5 max-h-40 overflow-y-auto pr-1">
                         {% for p in pickup_requests %}
                         <div class="p-2.5 rounded-lg bg-surface border border-border-subtle flex items-center justify-between text-xs">
@@ -269,20 +269,20 @@
                 <!-- Simulation Output Grid -->
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
                     <div class="p-3 bg-surface rounded-xl border border-border-subtle text-center space-y-1">
-                        <span class="text-[10px] font-bold text-text-muted uppercase">Annual CO₂</span>
-                        <div id="sim-co2" class="text-base font-black text-primary font-mono">51.1 kg</div>
+                        <span class="text-xs font-medium text-text-muted">Annual CO₂</span>
+                        <div id="sim-co2" class="text-base font-semibold text-primary font-mono tabular-nums">51.1 kg</div>
                     </div>
                     <div class="p-3 bg-surface rounded-xl border border-border-subtle text-center space-y-1">
-                        <span class="text-[10px] font-bold text-text-muted uppercase">Phone Charges</span>
-                        <div id="sim-phones" class="text-base font-black text-text-primary font-mono">6,216</div>
+                        <span class="text-xs font-medium text-text-muted">Phone Charges</span>
+                        <div id="sim-phones" class="text-base font-semibold text-text-primary font-mono tabular-nums">6,216</div>
                     </div>
                     <div class="p-3 bg-surface rounded-xl border border-border-subtle text-center space-y-1">
-                        <span class="text-[10px] font-bold text-text-muted uppercase">EV Miles</span>
-                        <div id="sim-ev" class="text-base font-black text-text-primary font-mono">340 mi</div>
+                        <span class="text-xs font-medium text-text-muted">EV Miles</span>
+                        <div id="sim-ev" class="text-base font-semibold text-text-primary font-mono tabular-nums">340 mi</div>
                     </div>
                     <div class="p-3 bg-surface rounded-xl border border-border-subtle text-center space-y-1">
-                        <span class="text-[10px] font-bold text-text-muted uppercase">Ocean Bottles</span>
-                        <div id="sim-bottles" class="text-base font-black text-teal-700 font-mono">1,460</div>
+                        <span class="text-xs font-medium text-text-muted">Ocean Bottles</span>
+                        <div id="sim-bottles" class="text-base font-semibold text-teal-700 font-mono tabular-nums">1,460</div>
                     </div>
                 </div>
             </div>
@@ -315,7 +315,7 @@
                 <!-- Heatmap Grid -->
                 <div class="grid grid-cols-6 sm:grid-cols-10 gap-2" id="heatmap-grid">
                     {% for day in heatmap_days %}
-                    <div class="group relative flex flex-col items-center justify-center p-2 rounded-xl text-center transition-transform hover:scale-110 cursor-pointer border border-border-subtle/50 {% if day.level == 0 %}bg-surface-container text-text-muted/60{% elif day.level == 1 %}bg-blue-200 text-blue-900 font-bold{% elif day.level == 2 %}bg-blue-400 text-white font-bold{% else %}bg-primary text-white font-black shadow-sm{% endif %}">
+                    <div class="group relative flex flex-col items-center justify-center p-2 rounded-xl text-center transition-transform hover:scale-110 cursor-pointer border border-border-subtle/50 {% if day.level == 0 %}bg-surface-container text-text-muted/60{% elif day.level == 1 %}bg-blue-200 text-blue-900 font-bold{% elif day.level == 2 %}bg-blue-400 text-white font-bold{% else %}bg-primary text-white font-bold shadow-sm{% endif %}">
                         <span class="text-[10px] font-mono leading-none">{{ day.date[-2:] }}</span>
                         <span class="text-[9px] opacity-75 font-mono leading-none mt-0.5">{{ day.count }}</span>
                         
@@ -353,19 +353,19 @@
 
                 <!-- 3 Summary Stat Pills -->
                 <div class="grid grid-cols-3 gap-3" id="waste-stream-pills">
-                    <div class="p-3.5 rounded-2xl bg-blue-50/70 border border-blue-200/80 space-y-1 text-center">
-                        <div class="text-[10px] font-bold text-blue-800 uppercase tracking-widest">Recyclable</div>
-                        <div class="stream-counter text-2xl font-black text-blue-900 font-mono" data-target="{{ category_counts.Recyclable }}">0</div>
+                    <div class="p-3.5 rounded-xl bg-blue-50/70 border border-blue-200/80 space-y-1 text-center">
+                        <div class="text-xs font-semibold text-blue-800">Recyclable</div>
+                        <div class="stream-counter text-2xl font-semibold text-blue-900 font-mono tabular-nums" data-target="{{ category_counts.Recyclable }}">0</div>
                         <div class="text-[11px] text-blue-700">Blue Stream</div>
                     </div>
-                    <div class="p-3.5 rounded-2xl bg-teal-50/70 border border-teal-200/80 space-y-1 text-center">
-                        <div class="text-[10px] font-bold text-teal-800 uppercase tracking-widest">Compost</div>
-                        <div class="stream-counter text-2xl font-black text-teal-900 font-mono" data-target="{{ category_counts.Compostable }}">0</div>
+                    <div class="p-3.5 rounded-xl bg-teal-50/70 border border-teal-200/80 space-y-1 text-center">
+                        <div class="text-xs font-semibold text-teal-800">Compost</div>
+                        <div class="stream-counter text-2xl font-semibold text-teal-900 font-mono tabular-nums" data-target="{{ category_counts.Compostable }}">0</div>
                         <div class="text-[11px] text-teal-700">Nutrient Cycle</div>
                     </div>
-                    <div class="p-3.5 rounded-2xl bg-slate-100/80 border border-slate-200 space-y-1 text-center">
-                        <div class="text-[10px] font-bold text-slate-700 uppercase tracking-widest">Landfill</div>
-                        <div class="stream-counter text-2xl font-black text-slate-900 font-mono" data-target="{{ category_counts.Landfill }}">0</div>
+                    <div class="p-3.5 rounded-xl bg-slate-100/80 border border-slate-200 space-y-1 text-center">
+                        <div class="text-xs font-semibold text-slate-700">Landfill</div>
+                        <div class="stream-counter text-2xl font-semibold text-slate-900 font-mono tabular-nums" data-target="{{ category_counts.Landfill }}">0</div>
                         <div class="text-[11px] text-slate-600">Safely Managed</div>
                     </div>
                 </div>
@@ -427,7 +427,7 @@
                             <div class="flex items-center justify-between gap-2">
                                 <h4 class="text-xs font-bold text-text-primary truncate">{{ badge.name }}</h4>
                                 {% if badge.unlocked %}
-                                <span class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-solar-light text-solar-dark border border-solar/30">Unlocked</span>
+                                <span class="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-solar-light text-solar-dark border border-solar/30">Unlocked</span>
                                 {% else %}
                                 <span class="text-[10px] font-mono text-text-muted">{{ badge.progress }}%</span>
                                 {% endif %}
@@ -506,7 +506,7 @@
                             <p class="text-[11px] text-text-secondary"><span class="font-semibold text-text-primary">Material:</span> {{ scan.material }}</p>
                             {% if scan.parsed_components %}
                             <div class="space-y-1">
-                                <span class="text-[10px] font-bold uppercase tracking-widest text-text-muted block">Directives</span>
+                                <span class="text-xs font-medium text-text-muted block">Directives</span>
                                 {% for comp in scan.parsed_components %}
                                 <div class="text-[11px] bg-white p-2 rounded-lg border border-border-subtle flex justify-between items-center gap-2">
                                     <div class="min-w-0">
@@ -567,7 +567,7 @@
             <!-- Certified Diversion Certificate Card -->
             <div class="eco-card p-6 border-2 border-primary/20 space-y-4 bg-gradient-to-br from-white via-surface to-primary-light/20">
                 <div class="flex items-center justify-between">
-                    <span class="text-[10px] font-bold uppercase tracking-widest text-primary bg-primary-light px-2.5 py-0.5 rounded-full">Official Verification</span>
+                    <span class="text-xs font-semibold text-primary bg-primary-light px-2.5 py-0.5 rounded-md">Official Verification</span>
                     <span class="text-[10px] font-mono text-text-muted">ID: SYNC-{{ "%04d"|format(user.id) }}</span>
                 </div>
                 <div>
@@ -1004,7 +1004,7 @@
 
         ctx.fillStyle = '#2DD4BF';
         ctx.font = 'bold 10px Geist, Inter, sans-serif';
-        ctx.fillText('✓ EPR VERIFIED', width - 150, 50);
+        ctx.fillText('EPR VERIFIED', width - 146, 50);
 
         // Citizen Name & Level
         ctx.fillStyle = '#FFFFFF';
@@ -1213,12 +1213,12 @@
                 <div class="flex items-center gap-3">
                     <img src="{{ url_for('static', filename='img/logo-icon.svg') }}" alt="BinSync" class="w-10 h-10 rounded-xl shadow-sm">
                     <div>
-                        <h2 class="text-xl font-black text-slate-900 tracking-tight">BinSync Kitchen Sorting Guide</h2>
+                        <h2 class="text-xl font-bold text-slate-900 tracking-tight">BinSync Kitchen Sorting Guide</h2>
                         <p class="text-xs text-slate-600 font-semibold">Household of {{ user.username }} · {{ user.community_hub }}</p>
                     </div>
                 </div>
                 <div class="text-right">
-                    <span class="text-[10px] font-mono font-bold uppercase tracking-wider bg-slate-100 text-slate-800 px-2.5 py-1 rounded-md border border-slate-300">FRIDGE CHEAT SHEET</span>
+                    <span class="text-xs font-mono font-medium bg-slate-100 text-slate-800 px-2.5 py-1 rounded-md border border-slate-300">FRIDGE CHEAT SHEET</span>
                     <p class="text-[10px] text-slate-500 mt-1 font-mono">Verified Zero-Waste</p>
                 </div>
             </div>
@@ -1263,7 +1263,7 @@
                 </div>
                 <table class="w-full text-left text-xs border-collapse">
                     <thead>
-                        <tr class="border-b text-[10px] uppercase tracking-wider text-slate-500">
+                        <tr class="border-b text-xs font-medium text-slate-500">
                             <th class="py-1.5">Item Name</th>
                             <th class="py-1.5">Material</th>
                             <th class="py-1.5">Stream</th>

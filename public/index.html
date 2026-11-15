@@ -552,7 +552,7 @@
             <!-- Tangible Impact Live Counters Strip -->
             <div class="mt-12 w-full max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
                 <div class="eco-card p-6 text-center border-border-subtle">
-                    <div class="counter-ticker text-3xl sm:text-4xl font-semibold text-primary tracking-tight font-mono tabular-nums" data-count-target="14,427">
+                    <div class="counter-ticker text-3xl sm:text-4xl font-semibold text-primary tracking-tight font-mono tabular-nums" data-count-target="14,435">
                         0
                     </div>
                     <div class="text-xs font-semibold text-text-secondary mt-1.5">
@@ -592,9 +592,9 @@
                 
                 <!-- Left: Educational Breakdown -->
                 <div class="lg:col-span-6 space-y-7">
-                    <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-text-primary leading-tight">
+                    <h2 class="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-text-primary leading-tight">
                         Wishcycling ruins circular recycling.<br/>
-                        <span class="text-[#2563EB]">Here is what happens when you decompose.</span>
+                        <span class="text-primary">Here is what happens when you decompose.</span>
                     </h2>
                     
                     <p class="text-base sm:text-lg lg:text-xl text-text-secondary leading-relaxed">
@@ -647,7 +647,7 @@
                         <div class="flex items-center justify-between pb-4 border-b border-border-subtle">
                             <div class="flex items-center gap-2.5">
                                 <span class="w-3 h-3 rounded-full bg-blue-500 animate-pulse"></span>
-                                <span class="text-xs sm:text-sm font-bold text-text-primary uppercase tracking-wider">Decomposition Schema</span>
+                                <span class="text-xs sm:text-sm font-semibold text-text-primary">Decomposition Schema</span>
                             </div>
                             <div class="flex items-center gap-2">
                                 <span class="hidden sm:inline-flex items-center gap-1 text-[11px] font-semibold text-text-muted group-hover/schema:text-primary transition">
@@ -724,8 +724,8 @@
     <section class="py-20 md:py-28">
         <div class="max-w-container mx-auto px-4 sm:px-6">
             <div class="text-center max-w-2xl mx-auto mb-16 space-y-3">
-                <h2 class="text-3xl sm:text-4xl font-black tracking-tight text-text-primary">
-                    Engineered to <span class="text-[#2563EB]">eliminate wishcycling</span> at every step
+                <h2 class="text-3xl sm:text-4xl font-semibold tracking-tight text-text-primary">
+                    Engineered to <span class="text-primary">eliminate wishcycling</span> at every step
                 </h2>
                 <p class="text-sm sm:text-base text-text-secondary leading-relaxed">
                     Wishcycling is tossing ambiguous items into the blue bin hoping they get recycled. BinSync gives you clear, verified answers before the bin closes.
@@ -787,30 +787,26 @@
         </div>
     </section>
 
-    <!-- Call to Action Section (Cobalt Climate Hero Banner) -->
-    <section class="py-20 md:py-28">
+    <!-- Call to Action Section -->
+    <section class="py-16 md:py-24">
         <div class="max-w-container mx-auto px-4 sm:px-6">
-            <div id="cta-banner" class="reveal-scale bg-gradient-to-br from-[#1D4ED8] via-[#2563EB] to-[#1E40AF] text-white rounded-3xl p-8 sm:p-14 lg:p-16 relative overflow-hidden shadow-2xl">
-                <!-- Ambient blue background glow with parallax -->
-                <div id="cta-glow-right" class="absolute -right-20 -bottom-20 w-96 h-96 rounded-full bg-white opacity-10 blur-3xl pointer-events-none transition-transform duration-300"></div>
-                <div id="cta-glow-left" class="absolute -left-20 -top-20 w-80 h-80 rounded-full bg-[#38BDF8] opacity-25 blur-3xl pointer-events-none transition-transform duration-300"></div>
-
-                <div class="max-w-2xl relative z-10 space-y-6">
-                    <h2 class="text-3xl sm:text-5xl font-black tracking-tight text-white leading-tight">
+            <div id="cta-banner" class="bg-primary text-white rounded-2xl p-8 sm:p-12 lg:p-14 relative overflow-hidden shadow-sm">
+                <div class="max-w-2xl relative z-10 space-y-5">
+                    <h2 class="text-3xl sm:text-4xl font-semibold tracking-tight text-white leading-tight">
                         Scan your first packaging item right now.
                     </h2>
 
-                    <p class="text-blue-100 text-base sm:text-lg leading-relaxed">
+                    <p class="text-blue-100 text-base leading-relaxed font-normal">
                         No sign-up or app download required to test. Use your camera, upload a photo, or click any sample to see real-time decomposition.
                     </p>
 
-                    <div class="pt-2 flex flex-col sm:flex-row gap-4">
-                        <a href="/classifier" class="bg-white hover:bg-blue-50 font-black py-3.5 px-8 rounded-full text-base shadow-lg flex items-center justify-center gap-2.5 transition hover:-translate-y-0.5 group" style="color: #2563EB !important;">
-                            <span class="material-symbols-outlined text-[20px]" style="color: #2563EB !important;">photo_camera</span>
-                            <span class="font-black text-[#2563EB]" style="color: #2563EB !important;">Launch AI Inspector Free</span>
+                    <div class="pt-2 flex flex-col sm:flex-row gap-3">
+                        <a href="/classifier" class="bg-white hover:bg-blue-50 text-primary font-semibold py-3 px-6 rounded-xl text-sm shadow-sm flex items-center justify-center gap-2 transition-colors">
+                            <span class="material-symbols-outlined text-[18px]">photo_camera</span>
+                            <span>Launch Waste Inspector</span>
                         </a>
-                        <a href="/classifications" class="btn-secondary bg-transparent text-white border-2 border-white/80 hover:bg-white hover:text-[#2563EB] py-3.5 px-8 text-base font-bold flex items-center justify-center gap-2 transition">
-                            <span class="font-bold">Explore Material Taxonomy</span>
+                        <a href="/classifications" class="bg-primary-hover hover:bg-blue-800 text-white border border-white/20 py-3 px-6 rounded-xl text-sm font-semibold flex items-center justify-center gap-2 transition-colors">
+                            <span>Explore Material Taxonomy</span>
                             <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
                         </a>
                     </div>
@@ -849,16 +845,16 @@
             <!-- Brand Column -->
             <div class="md:col-span-2 space-y-4">
                 <div class="flex items-center gap-3 font-bold text-xl">
-                    <img src="/static/img/logo-icon.svg" alt="BinSync Logo" class="w-8 h-8 rounded-xl shadow-sm">
-                    <span class="tracking-tight text-xl font-black text-white">Bin<span class="text-[#38BDF8]">Sync</span></span>
+                    <img src="/static/img/logo-icon.svg" alt="BinSync Logo" class="w-8 h-8 rounded-lg shadow-sm">
+                    <span class="tracking-tight text-xl font-bold text-white">Bin<span class="text-[#38BDF8]">Sync</span></span>
                 </div>
-                <p class="text-slate-400 text-sm max-w-md leading-relaxed">
-                    Precision computer vision engineered for composite packaging decomposition. Eliminating wishcycling through automated material layer separation and verifiable municipal diversion.
+                <p class="text-slate-400 text-sm max-w-md leading-relaxed font-normal">
+                    Precision packaging decomposition and verified municipal diversion intelligence. Transforming confusing packaging into circular resources.
                 </p>
                 <div class="flex items-center gap-3 pt-2 text-xs">
-                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-950/80 border border-blue-800/60 text-[#38BDF8] font-semibold text-xs">
-                        <span class="w-2 h-2 rounded-full bg-[#38BDF8] pulse-subtle"></span>
-                        Vision Inspection System Active
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-blue-950/80 border border-blue-800/60 text-[#38BDF8] font-medium text-xs">
+                        <span class="w-2 h-2 rounded-full bg-[#38BDF8]"></span>
+                        Vision Inspection Active
                     </span>
                     <span class="text-slate-500 text-xs">Verified Circular Infrastructure</span>
                 </div>
@@ -866,18 +862,18 @@
 
             <!-- Core Modules -->
             <div>
-                <h3 class="font-bold text-white uppercase tracking-widest text-[11px] mb-4">Core Modules</h3>
+                <h3 class="font-semibold text-slate-300 text-xs mb-4">Core Modules</h3>
                 <ul class="space-y-2.5 text-sm text-slate-400">
-                    <li><a href="/classifier" class="hover:text-[#38BDF8] transition">Material Inspector</a></li>
-                    <li><a href="/rules" class="hover:text-[#38BDF8] transition">Drop-off Map &amp; Bylaws</a></li>
-                    <li><a href="/classifications" class="hover:text-[#38BDF8] transition">Material Taxonomy</a></li>
-                    <li><a href="/leaderboard" class="hover:text-[#38BDF8] transition">Community Leaderboard</a></li>
+                    <li><a href="/classifier" class="hover:text-[#38BDF8] transition-colors">Material Inspector</a></li>
+                    <li><a href="/rules" class="hover:text-[#38BDF8] transition-colors">Drop-off Map &amp; Bylaws</a></li>
+                    <li><a href="/classifications" class="hover:text-[#38BDF8] transition-colors">Material Taxonomy</a></li>
+                    <li><a href="/leaderboard" class="hover:text-[#38BDF8] transition-colors">Community Leaderboard</a></li>
                 </ul>
             </div>
 
             <!-- Climate & Transparency -->
             <div>
-                <h3 class="font-bold text-white uppercase tracking-widest text-[11px] mb-4">Climate &amp; Auditing</h3>
+                <h3 class="font-semibold text-slate-300 text-xs mb-4">Climate &amp; Auditing</h3>
                 <ul class="space-y-2.5 text-sm text-slate-400">
                     <li><a href="/rules#faq" class="hover:text-[#38BDF8] transition">Wishcycling Guide</a></li>
                     <li><a href="/dashboard" class="hover:text-[#38BDF8] transition">CO₂ Diversion Audit</a></li>

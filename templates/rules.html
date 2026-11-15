@@ -56,12 +56,12 @@
 
     <!-- Header & GPS Status Bar -->
     <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-4 border-b border-border-subtle">
-        <div class="space-y-2">
-            <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-text-primary leading-tight">
+        <div class="space-y-1.5">
+            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-text-primary">
                 Regional Rules &amp; Drop-off Map
             </h1>
-            <p class="text-sm sm:text-base lg:text-lg text-text-secondary max-w-3xl">
-                Real-time municipal routing connected to your device's GPS location. Find specialized depots for soft plastics, lithium batteries, e-waste, and organics.
+            <p class="text-sm sm:text-base text-text-secondary max-w-2xl">
+                Municipal routing connected to your device's location. Find specialized depots for soft plastics, lithium batteries, e-waste, and organics.
             </p>
         </div>
 
@@ -208,12 +208,12 @@
 
                     <!-- Material Criteria Checklist -->
                     <div class="p-3 rounded-xl bg-surface border border-border-subtle space-y-2">
-                        <span class="font-bold text-text-primary block text-[11px] uppercase tracking-wider">Curbside Acceptance Criteria:</span>
-                        <div class="grid grid-cols-2 gap-2 text-[11px]" id="bylaw-criteria-grid">
-                            <div class="flex items-center gap-1.5"><span id="badge-pp5" class="w-4 h-4 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-[10px]">✓</span> <span>PP #5 Plastic</span></div>
-                            <div class="flex items-center gap-1.5"><span id="badge-ps6" class="w-4 h-4 rounded-full bg-rose-100 text-rose-800 flex items-center justify-center font-bold text-[10px]">✕</span> <span>PS #6 Foam</span></div>
-                            <div class="flex items-center gap-1.5"><span id="badge-cups" class="w-4 h-4 rounded-full bg-rose-100 text-rose-800 flex items-center justify-center font-bold text-[10px]">✕</span> <span>Coffee Cups</span></div>
-                            <div class="flex items-center gap-1.5"><span id="badge-compost" class="w-4 h-4 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-[10px]">✓</span> <span>Organics Mandate</span></div>
+                        <span class="font-semibold text-text-primary block text-xs">Curbside Acceptance Criteria:</span>
+                        <div class="grid grid-cols-2 gap-2 text-xs" id="bylaw-criteria-grid">
+                            <div class="flex items-center gap-1.5"><span id="badge-pp5" class="w-4 h-4 rounded-md bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-[11px]"><span class="material-symbols-outlined text-[13px]">check</span></span> <span>PP #5 Plastic</span></div>
+                            <div class="flex items-center gap-1.5"><span id="badge-ps6" class="w-4 h-4 rounded-md bg-rose-100 text-rose-800 flex items-center justify-center font-bold text-[11px]"><span class="material-symbols-outlined text-[13px]">close</span></span> <span>PS #6 Foam</span></div>
+                            <div class="flex items-center gap-1.5"><span id="badge-cups" class="w-4 h-4 rounded-md bg-rose-100 text-rose-800 flex items-center justify-center font-bold text-[11px]"><span class="material-symbols-outlined text-[13px]">close</span></span> <span>Coffee Cups</span></div>
+                            <div class="flex items-center gap-1.5"><span id="badge-compost" class="w-4 h-4 rounded-md bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-[11px]"><span class="material-symbols-outlined text-[13px]">check</span></span> <span>Organics Mandate</span></div>
                         </div>
                     </div>
 
@@ -284,11 +284,11 @@
                     </div>
                     <div>
                         <div class="flex items-center gap-2">
-                            <span class="text-[11px] font-bold px-2.5 py-0.5 rounded bg-primary text-white uppercase tracking-wider">Closest Drop Depot</span>
-                            <span id="spotlight-open-badge" class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-teal-50 text-teal-700 border border-teal-200">Open Now</span>
+                            <span class="text-[11px] font-semibold px-2 py-0.5 rounded-md bg-primary text-white">Closest Drop Depot</span>
+                            <span id="spotlight-open-badge" class="text-[11px] font-semibold px-2 py-0.5 rounded-md bg-teal-50 text-teal-700 border border-teal-200">Open Now</span>
                         </div>
-                        <h3 id="spotlight-name" class="text-base sm:text-lg font-bold text-text-primary mt-1">CleanFilm Soft Plastics Depot</h3>
-                        <p id="spotlight-desc" class="text-xs sm:text-sm text-text-secondary mt-0.5">
+                        <h3 id="spotlight-name" class="text-base font-semibold text-text-primary mt-1">CleanFilm Soft Plastics Depot</h3>
+                        <p id="spotlight-desc" class="text-xs text-text-secondary mt-0.5">
                             Takes clean bubble wrap, stretch bags, and flexible pouches.
                         </p>
                     </div>
@@ -296,7 +296,7 @@
 
                 <div class="flex items-center gap-4 self-end sm:self-center">
                     <div class="text-right">
-                        <span id="spotlight-distance" class="text-xl sm:text-2xl font-black text-primary font-mono block">--</span>
+                        <span id="spotlight-distance" class="text-xl sm:text-2xl font-semibold text-primary font-mono tabular-nums block">--</span>
                         <span id="spotlight-time" class="text-xs text-text-muted font-medium">Calculating…</span>
                     </div>
                     <a id="spotlight-nav-btn" href="#" target="_blank" rel="noopener noreferrer" class="btn-primary py-3 px-5 text-xs sm:text-sm font-bold flex items-center gap-2 shadow-sm">
@@ -335,7 +335,7 @@
                         <span class="material-symbols-outlined text-solar text-[20px]">add_location_alt</span>
                         Submit Local Drop-Off Pin
                     </h3>
-                    <span class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">+20 Eco-Pts</span>
+                    <span class="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-800 border border-emerald-300">+20 Eco-Pts</span>
                 </div>
                 <p class="text-xs text-text-muted mt-1">Share a store drop bin, organics depot, or e-waste station with your community.</p>
             </div>
@@ -851,7 +851,7 @@
                 .addTo(leafletMapInstance);
         }
 
-        userLocationMarker.bindPopup(`<div class="text-xs font-bold text-text-primary">📍 Your Location<br><span class="text-text-muted font-normal">${activeCityName}</span></div>`);
+        userLocationMarker.bindPopup(`<div class="text-xs font-semibold text-text-primary">Your Location<br><span class="text-text-muted font-normal">${activeCityName}</span></div>`);
 
         // Update or create User Accuracy Circle
         if (userAccuracyMeters) {
@@ -880,17 +880,17 @@
             const matchesOpen = !openNowToggle || !openNowToggle.checked || fac.isOpen;
             if (!matchesStream || !matchesRadius || !matchesOpen) return;
 
-            let iconLetter = "♻";
-            if (fac.isCommunity) iconLetter = "📍";
-            else if (fac.type === "Soft Plastics") iconLetter = "🛍";
-            else if (fac.type === "E-Waste") iconLetter = "🔋";
-            else if (fac.type === "Compost") iconLetter = "🌱";
-            else if (fac.type === "Hazmat") iconLetter = "⚠️";
-            else if (fac.type === "Textiles") iconLetter = "👕";
+            let iconSymbol = "recycling";
+            if (fac.isCommunity) iconSymbol = "location_on";
+            else if (fac.type === "Soft Plastics") iconSymbol = "shopping_bag";
+            else if (fac.type === "E-Waste") iconSymbol = "battery_charging_full";
+            else if (fac.type === "Compost") iconSymbol = "compost";
+            else if (fac.type === "Hazmat") iconSymbol = "warning";
+            else if (fac.type === "Textiles") iconSymbol = "checkroom";
 
             const depotIcon = L.divIcon({
                 className: 'custom-depot-icon',
-                html: `<div class="depot-marker-pin" style="background-color: ${fac.color};">${iconLetter}</div>`,
+                html: `<div class="depot-marker-pin" style="background-color: ${fac.color};"><span class="material-symbols-outlined text-[18px] text-white leading-none">${iconSymbol}</span></div>`,
                 iconSize: [34, 34],
                 iconAnchor: [17, 17],
                 popupAnchor: [0, -18]
@@ -901,8 +901,8 @@
                 : `<span class="text-[10px] font-bold px-2 py-0.5 rounded ${fac.isOpen ? 'bg-teal-50 text-teal-800' : 'bg-slate-100 text-slate-700'}">${fac.isOpen ? 'Open Now' : 'Closed'}</span>`;
 
             const upvoteHtml = fac.isCommunity
-                ? `<button type="button" onclick="upvoteCommunityDepot(${fac.depotId}, event)" class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-teal-50 hover:bg-teal-100 text-teal-800 text-[11px] font-bold border border-teal-200">
-                    👍 <span id="popup-upvotes-${fac.depotId}">${fac.upvotes}</span>
+                ? `<button type="button" onclick="upvoteCommunityDepot(${fac.depotId}, event)" class="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-teal-50 hover:bg-teal-100 text-teal-800 text-[11px] font-semibold border border-teal-200">
+                    <span class="material-symbols-outlined text-[13px]">thumb_up</span> <span id="popup-upvotes-${fac.depotId}">${fac.upvotes}</span>
                    </button>`
                 : '';
 
@@ -984,20 +984,20 @@
                 }
 
                 if (badgePP5) {
-                    badgePP5.textContent = bylaws.accepts_pp_5 ? '✓' : '✕';
-                    badgePP5.className = bylaws.accepts_pp_5 ? 'w-4 h-4 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-[10px]' : 'w-4 h-4 rounded-full bg-rose-100 text-rose-800 flex items-center justify-center font-bold text-[10px]';
+                    badgePP5.innerHTML = bylaws.accepts_pp_5 ? '<span class="material-symbols-outlined text-[13px]">check</span>' : '<span class="material-symbols-outlined text-[13px]">close</span>';
+                    badgePP5.className = bylaws.accepts_pp_5 ? 'w-4 h-4 rounded-md bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-[11px]' : 'w-4 h-4 rounded-md bg-rose-100 text-rose-800 flex items-center justify-center font-bold text-[11px]';
                 }
                 if (badgePS6) {
-                    badgePS6.textContent = bylaws.accepts_ps_6 ? '✓' : '✕';
-                    badgePS6.className = bylaws.accepts_ps_6 ? 'w-4 h-4 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-[10px]' : 'w-4 h-4 rounded-full bg-rose-100 text-rose-800 flex items-center justify-center font-bold text-[10px]';
+                    badgePS6.innerHTML = bylaws.accepts_ps_6 ? '<span class="material-symbols-outlined text-[13px]">check</span>' : '<span class="material-symbols-outlined text-[13px]">close</span>';
+                    badgePS6.className = bylaws.accepts_ps_6 ? 'w-4 h-4 rounded-md bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-[11px]' : 'w-4 h-4 rounded-md bg-rose-100 text-rose-800 flex items-center justify-center font-bold text-[11px]';
                 }
                 if (badgeCups) {
-                    badgeCups.textContent = bylaws.accepts_coffee_cups ? '✓' : '✕';
-                    badgeCups.className = bylaws.accepts_coffee_cups ? 'w-4 h-4 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-[10px]' : 'w-4 h-4 rounded-full bg-rose-100 text-rose-800 flex items-center justify-center font-bold text-[10px]';
+                    badgeCups.innerHTML = bylaws.accepts_coffee_cups ? '<span class="material-symbols-outlined text-[13px]">check</span>' : '<span class="material-symbols-outlined text-[13px]">close</span>';
+                    badgeCups.className = bylaws.accepts_coffee_cups ? 'w-4 h-4 rounded-md bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-[11px]' : 'w-4 h-4 rounded-md bg-rose-100 text-rose-800 flex items-center justify-center font-bold text-[11px]';
                 }
                 if (badgeCompost) {
-                    badgeCompost.textContent = bylaws.compost_mandatory ? '✓' : '—';
-                    badgeCompost.className = bylaws.compost_mandatory ? 'w-4 h-4 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-[10px]' : 'w-4 h-4 rounded-full bg-slate-100 text-slate-700 flex items-center justify-center font-bold text-[10px]';
+                    badgeCompost.innerHTML = bylaws.compost_mandatory ? '<span class="material-symbols-outlined text-[13px]">check</span>' : '<span class="text-[12px] font-bold">—</span>';
+                    badgeCompost.className = bylaws.compost_mandatory ? 'w-4 h-4 rounded-md bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-[11px]' : 'w-4 h-4 rounded-md bg-slate-100 text-slate-700 flex items-center justify-center font-bold text-[11px]';
                 }
 
                 if (scheduleList) {
@@ -1032,7 +1032,7 @@
                 bannerCitySub.textContent = `Displaying facilities calculated by real geographic distance from your position (${lat.toFixed(3)}, ${lon.toFixed(3)}).`;
                 mapLabel.textContent = `Region: ${activeCityName}`;
                 if (userLocationMarker) {
-                    userLocationMarker.bindPopup(`<div class="text-xs font-bold text-text-primary">📍 Your Location<br><span class="text-text-muted font-normal">${activeCityName}</span></div>`);
+                    userLocationMarker.bindPopup(`<div class="text-xs font-semibold text-text-primary">Your Location<br><span class="text-text-muted font-normal">${activeCityName}</span></div>`);
                 }
                 fetchBylaws(activeCityName);
             }
@@ -1285,7 +1285,7 @@
                 }
 
                 closeDepotModal();
-                alert(`🎉 Community Drop-Off Verified! You earned +${data.points_earned || 20} Eco-Points for crowd-mapping local recycling resources.`);
+                alert(`Community Drop-Off Verified! You earned +${data.points_earned || 20} Eco-Points for crowd-mapping local recycling resources.`);
             } catch (err) {
                 console.error("Depot submission error:", err);
                 depotFormError.textContent = "Network error. Please try again.";

@@ -397,7 +397,7 @@
                 <span class="w-6 h-6 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center">
                     C
                 </span>
-                <span class="hidden sm:inline text-xs font-bold text-text-primary">Citizen_2fffd</span>
+                <span class="hidden sm:inline text-xs font-bold text-text-primary">Citizen_b03c1</span>
                 <span id="nav-points-pill" class="text-xs font-mono font-semibold text-primary bg-primary-light px-2 py-0.5 rounded-md">0 pts</span>
             </a>
             <a href="/logout" title="Log out" class="hidden sm:inline text-xs font-semibold text-text-muted hover:text-rose-600 px-2 py-1 transition">
@@ -458,7 +458,7 @@
 
     <!-- Header (No Eyebrows/Kickers per craft floor) -->
     <div class="space-y-3">
-        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-text-primary leading-tight">
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-text-primary">
             Material Taxonomy &amp; Recycling Wizard
         </h1>
         <p class="text-base sm:text-lg lg:text-xl text-text-secondary max-w-3xl">
@@ -538,7 +538,7 @@
                 <div class="flex items-center gap-3.5">
                     <span id="verdict-icon" class="w-10 h-10 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center font-bold material-symbols-outlined text-[24px]">recycling</span>
                     <div>
-                        <div class="text-[11px] font-bold text-text-muted uppercase tracking-wider">Computed Destination:</div>
+                        <div class="text-xs font-medium text-text-muted">Computed Destination:</div>
                         <h3 id="verdict-title" class="text-base sm:text-xl font-bold text-text-primary">Curbside Blue Recycling Bin</h3>
                     </div>
                 </div>
@@ -576,8 +576,8 @@
                 </div>
                 <div>
                     <div class="flex items-center gap-2">
-                        <h2 class="text-lg sm:text-xl font-black text-text-primary">"Beat Wishcycling" Sorting Arcade</h2>
-                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-solar-light text-solar-dark border border-solar/20 uppercase tracking-wider">60-Sec Challenge</span>
+                        <h2 class="text-base sm:text-lg font-semibold text-text-primary">Sorting Practice Arcade</h2>
+                        <span class="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-solar-light text-solar-dark border border-solar/20">60-Sec Challenge</span>
                     </div>
                     <p class="text-xs sm:text-sm text-text-muted mt-0.5">Test your reflexes against real municipal contamination rules. Sort before the timer expires!</p>
                 </div>
@@ -707,22 +707,22 @@
                     <span class="material-symbols-outlined text-[36px]">military_tech</span>
                 </div>
                 <div class="space-y-1">
-                    <h3 class="text-2xl font-black text-text-primary">Round Complete!</h3>
+                    <h3 class="text-xl sm:text-2xl font-semibold text-text-primary">Round Complete</h3>
                     <p class="text-xs sm:text-sm text-text-secondary" id="arcade-summary-sub">Great job testing your municipal sorting knowledge.</p>
                 </div>
 
                 <div class="max-w-md mx-auto grid grid-cols-3 gap-3">
                     <div class="p-3 rounded-xl bg-surface border border-border-subtle">
-                        <span class="text-[10px] font-bold text-text-muted uppercase">Final Score</span>
-                        <div class="text-xl sm:text-2xl font-black text-primary font-mono" id="arcade-final-score">0</div>
+                        <span class="text-xs font-medium text-text-muted">Final Score</span>
+                        <div class="text-xl sm:text-2xl font-semibold text-primary font-mono tabular-nums" id="arcade-final-score">0</div>
                     </div>
                     <div class="p-3 rounded-xl bg-surface border border-border-subtle">
-                        <span class="text-[10px] font-bold text-text-muted uppercase">Correct Sorts</span>
-                        <div class="text-xl sm:text-2xl font-black text-teal-700 font-mono" id="arcade-correct-count">0</div>
+                        <span class="text-xs font-medium text-text-muted">Correct Sorts</span>
+                        <div class="text-xl sm:text-2xl font-semibold text-teal-700 font-mono tabular-nums" id="arcade-correct-count">0</div>
                     </div>
                     <div class="p-3 rounded-xl bg-surface border border-border-subtle">
-                        <span class="text-[10px] font-bold text-text-muted uppercase">Wishcycles</span>
-                        <div class="text-xl sm:text-2xl font-black text-rose-600 font-mono" id="arcade-error-count">0</div>
+                        <span class="text-xs font-medium text-text-muted">Wishcycles</span>
+                        <div class="text-xl sm:text-2xl font-semibold text-rose-600 font-mono tabular-nums" id="arcade-error-count">0</div>
                     </div>
                 </div>
 
@@ -1087,16 +1087,16 @@
             <!-- Brand Column -->
             <div class="md:col-span-2 space-y-4">
                 <div class="flex items-center gap-3 font-bold text-xl">
-                    <img src="/static/img/logo-icon.svg" alt="BinSync Logo" class="w-8 h-8 rounded-xl shadow-sm">
-                    <span class="tracking-tight text-xl font-black text-white">Bin<span class="text-[#38BDF8]">Sync</span></span>
+                    <img src="/static/img/logo-icon.svg" alt="BinSync Logo" class="w-8 h-8 rounded-lg shadow-sm">
+                    <span class="tracking-tight text-xl font-bold text-white">Bin<span class="text-[#38BDF8]">Sync</span></span>
                 </div>
-                <p class="text-slate-400 text-sm max-w-md leading-relaxed">
-                    Precision computer vision engineered for composite packaging decomposition. Eliminating wishcycling through automated material layer separation and verifiable municipal diversion.
+                <p class="text-slate-400 text-sm max-w-md leading-relaxed font-normal">
+                    Precision packaging decomposition and verified municipal diversion intelligence. Transforming confusing packaging into circular resources.
                 </p>
                 <div class="flex items-center gap-3 pt-2 text-xs">
-                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-950/80 border border-blue-800/60 text-[#38BDF8] font-semibold text-xs">
-                        <span class="w-2 h-2 rounded-full bg-[#38BDF8] pulse-subtle"></span>
-                        Vision Inspection System Active
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-blue-950/80 border border-blue-800/60 text-[#38BDF8] font-medium text-xs">
+                        <span class="w-2 h-2 rounded-full bg-[#38BDF8]"></span>
+                        Vision Inspection Active
                     </span>
                     <span class="text-slate-500 text-xs">Verified Circular Infrastructure</span>
                 </div>
@@ -1104,18 +1104,18 @@
 
             <!-- Core Modules -->
             <div>
-                <h3 class="font-bold text-white uppercase tracking-widest text-[11px] mb-4">Core Modules</h3>
+                <h3 class="font-semibold text-slate-300 text-xs mb-4">Core Modules</h3>
                 <ul class="space-y-2.5 text-sm text-slate-400">
-                    <li><a href="/classifier" class="hover:text-[#38BDF8] transition">Material Inspector</a></li>
-                    <li><a href="/rules" class="hover:text-[#38BDF8] transition">Drop-off Map &amp; Bylaws</a></li>
-                    <li><a href="/classifications" class="hover:text-[#38BDF8] transition">Material Taxonomy</a></li>
-                    <li><a href="/leaderboard" class="hover:text-[#38BDF8] transition">Community Leaderboard</a></li>
+                    <li><a href="/classifier" class="hover:text-[#38BDF8] transition-colors">Material Inspector</a></li>
+                    <li><a href="/rules" class="hover:text-[#38BDF8] transition-colors">Drop-off Map &amp; Bylaws</a></li>
+                    <li><a href="/classifications" class="hover:text-[#38BDF8] transition-colors">Material Taxonomy</a></li>
+                    <li><a href="/leaderboard" class="hover:text-[#38BDF8] transition-colors">Community Leaderboard</a></li>
                 </ul>
             </div>
 
             <!-- Climate & Transparency -->
             <div>
-                <h3 class="font-bold text-white uppercase tracking-widest text-[11px] mb-4">Climate &amp; Auditing</h3>
+                <h3 class="font-semibold text-slate-300 text-xs mb-4">Climate &amp; Auditing</h3>
                 <ul class="space-y-2.5 text-sm text-slate-400">
                     <li><a href="/rules#faq" class="hover:text-[#38BDF8] transition">Wishcycling Guide</a></li>
                     <li><a href="/dashboard" class="hover:text-[#38BDF8] transition">CO₂ Diversion Audit</a></li>

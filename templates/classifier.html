@@ -69,25 +69,25 @@
 
     <!-- Header & Mode Switcher -->
     <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-4 border-b border-border-subtle">
-        <div class="space-y-2">
-            <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-text-primary">
-                AI Waste Inspector
+        <div class="space-y-1.5">
+            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-text-primary">
+                Waste Inspector
             </h1>
-            <p class="text-sm sm:text-base lg:text-lg text-text-secondary max-w-3xl">
-                Decompose complex packaging into distinct physical layers, eliminate municipal contamination, and verify carbon diversion.
+            <p class="text-sm sm:text-base text-text-secondary max-w-2xl">
+                Deconstruct multi-layer packaging into physical materials, route each to local municipal criteria, and audit avoided carbon.
             </p>
         </div>
 
         <!-- Mode Tabs & Voice Toggle -->
-        <div class="flex items-center gap-2.5 flex-wrap w-full md:w-auto justify-between md:justify-end">
-            <div class="inline-flex p-1 bg-surface-container rounded-full border border-border-subtle text-xs sm:text-sm overflow-x-auto no-scrollbar max-w-full">
-                <button type="button" id="tab-visual-btn" class="px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full font-bold bg-white text-primary shadow-sm transition whitespace-nowrap">
+        <div class="flex items-center gap-2 flex-wrap w-full md:w-auto justify-between md:justify-end">
+            <div class="inline-flex p-1 bg-surface-container rounded-xl border border-border-subtle text-xs sm:text-sm overflow-x-auto no-scrollbar max-w-full">
+                <button type="button" id="tab-visual-btn" class="px-3.5 py-1.5 rounded-lg font-semibold bg-white text-primary shadow-sm transition-colors whitespace-nowrap">
                     Photo &amp; Camera
                 </button>
-                <button type="button" id="tab-text-btn" class="px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full font-semibold text-text-secondary hover:text-text-primary transition whitespace-nowrap">
+                <button type="button" id="tab-text-btn" class="px-3.5 py-1.5 rounded-lg font-medium text-text-secondary hover:text-text-primary transition-colors whitespace-nowrap">
                     Search / Barcode
                 </button>
-                <button type="button" id="tab-bin-audit-btn" class="px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full font-semibold text-text-secondary hover:text-text-primary transition flex items-center gap-1.5 whitespace-nowrap">
+                <button type="button" id="tab-bin-audit-btn" class="px-3.5 py-1.5 rounded-lg font-medium text-text-secondary hover:text-text-primary transition-colors flex items-center gap-1.5 whitespace-nowrap">
                     <span class="material-symbols-outlined text-[16px] text-teal-600">inventory_2</span>
                     <span>Cart Audit</span>
                 </button>
@@ -104,7 +104,7 @@
     <!-- 1-Click Quick Samples Selector -->
     <div class="p-3.5 sm:p-5 bg-white border border-border-subtle rounded-2xl shadow-botanical">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-3 mb-2.5 sm:mb-3.5">
-            <span class="text-xs font-bold uppercase tracking-wider text-text-muted flex items-center gap-1.5">
+            <span class="text-xs font-medium text-text-muted flex items-center gap-1.5">
                 <span class="material-symbols-outlined text-[16px] text-solar">auto_awesome</span>
                 Instant One-Click Demo Samples
             </span>
@@ -161,7 +161,7 @@
                     <div class="px-4 py-2.5 bg-surface border-b border-border-subtle flex items-center justify-between gap-2">
                         <div class="flex items-center gap-2">
                             <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                            <span class="text-xs font-bold uppercase tracking-wider text-text-primary">Optical Material Scanner</span>
+                            <span class="text-xs font-semibold text-text-primary">Optical Material Scanner</span>
                         </div>
                         <div class="flex items-center gap-1.5 text-xs">
                             <button type="button" id="scanner-mode-camera-btn" onclick="document.getElementById('mobile-native-cam').click()" class="px-3 py-1 rounded-full text-xs font-bold bg-primary text-white transition flex items-center gap-1 shadow-sm">
@@ -205,7 +205,7 @@
                                     <span class="material-symbols-outlined text-[36px]">center_focus_strong</span>
                                 </div>
                                 <div>
-                                    <h3 class="text-lg sm:text-xl font-black tracking-tight text-white">Scan Packaging Layers</h3>
+                                    <h3 class="text-lg sm:text-xl font-semibold tracking-tight text-white">Scan Packaging Layers</h3>
                                     <p class="text-xs sm:text-sm text-slate-300 mt-1 max-w-xs mx-auto">Snap any household package, cup, pouch or box to isolate components</p>
                                 </div>
                                 
@@ -341,15 +341,15 @@
 
                 <!-- Suggested Quick Search Chips -->
                 <div class="space-y-2 pt-1">
-                    <span class="text-[11px] font-bold text-text-muted uppercase tracking-wider block">Common Ambiguous Packaging:</span>
+                    <span class="text-xs font-medium text-text-muted block">Common packaging items:</span>
                     <div class="flex flex-wrap gap-2">
-                        <button type="button" onclick="quickTextLookup('Coffee cup')" class="px-3 py-1 rounded-full text-xs font-medium bg-surface border border-border-subtle hover:border-primary hover:text-primary transition">☕ Paper Coffee Cup</button>
-                        <button type="button" onclick="quickTextLookup('Pizza box')" class="px-3 py-1 rounded-full text-xs font-medium bg-surface border border-border-subtle hover:border-primary hover:text-primary transition">🍕 Pizza Box</button>
-                        <button type="button" onclick="quickTextLookup('Milk carton')" class="px-3 py-1 rounded-full text-xs font-medium bg-surface border border-border-subtle hover:border-primary hover:text-primary transition">🥛 Milk Carton</button>
-                        <button type="button" onclick="quickTextLookup('Styrofoam')" class="px-3 py-1 rounded-full text-xs font-medium bg-surface border border-border-subtle hover:border-primary hover:text-primary transition">📦 Styrofoam Clamshell</button>
-                        <button type="button" onclick="quickTextLookup('Aluminum can')" class="px-3 py-1 rounded-full text-xs font-medium bg-surface border border-border-subtle hover:border-primary hover:text-primary transition">🥤 Soda Can</button>
-                        <button type="button" onclick="quickTextLookup('Bubble wrap')" class="px-3 py-1 rounded-full text-xs font-medium bg-surface border border-border-subtle hover:border-primary hover:text-primary transition">🫧 Bubble Wrap</button>
-                        <button type="button" onclick="quickTextLookup('Battery')" class="px-3 py-1 rounded-full text-xs font-medium bg-surface border border-border-subtle hover:border-primary hover:text-primary transition">🔋 AA Battery</button>
+                        <button type="button" onclick="quickTextLookup('Coffee cup')" class="px-3 py-1 rounded-lg text-xs font-medium bg-surface border border-border-subtle hover:border-primary hover:text-primary transition-colors">Paper Coffee Cup</button>
+                        <button type="button" onclick="quickTextLookup('Pizza box')" class="px-3 py-1 rounded-lg text-xs font-medium bg-surface border border-border-subtle hover:border-primary hover:text-primary transition-colors">Pizza Box</button>
+                        <button type="button" onclick="quickTextLookup('Milk carton')" class="px-3 py-1 rounded-lg text-xs font-medium bg-surface border border-border-subtle hover:border-primary hover:text-primary transition-colors">Milk Carton</button>
+                        <button type="button" onclick="quickTextLookup('Styrofoam')" class="px-3 py-1 rounded-lg text-xs font-medium bg-surface border border-border-subtle hover:border-primary hover:text-primary transition-colors">Styrofoam Clamshell</button>
+                        <button type="button" onclick="quickTextLookup('Aluminum can')" class="px-3 py-1 rounded-lg text-xs font-medium bg-surface border border-border-subtle hover:border-primary hover:text-primary transition-colors">Soda Can</button>
+                        <button type="button" onclick="quickTextLookup('Bubble wrap')" class="px-3 py-1 rounded-lg text-xs font-medium bg-surface border border-border-subtle hover:border-primary hover:text-primary transition-colors">Bubble Wrap</button>
+                        <button type="button" onclick="quickTextLookup('Battery')" class="px-3 py-1 rounded-lg text-xs font-medium bg-surface border border-border-subtle hover:border-primary hover:text-primary transition-colors">AA Battery</button>
                     </div>
                 </div>
             </div>
@@ -408,15 +408,15 @@
                         <!-- Purity Score Header Strip -->
                         <div class="p-4 rounded-xl bg-surface border border-border-subtle flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                             <div class="flex items-center gap-3">
-                                <div id="bin-purity-ring" class="w-14 h-14 rounded-full flex items-center justify-center font-black text-base border-4 shadow-sm flex-shrink-0 bg-white">
+                                <div id="bin-purity-ring" class="w-14 h-14 rounded-xl flex items-center justify-center font-bold text-base border-4 shadow-sm flex-shrink-0 bg-white">
                                     <span id="bin-purity-score-pct">0%</span>
                                 </div>
                                 <div>
-                                    <div class="text-[11px] font-bold uppercase tracking-wider text-text-muted">Bin Purity Score</div>
-                                    <h4 id="bin-status-label" class="text-sm font-black text-text-primary">Status</h4>
+                                    <div class="text-[11px] font-medium text-text-muted">Bin Purity Score</div>
+                                    <h4 id="bin-status-label" class="text-sm font-semibold text-text-primary">Status</h4>
                                 </div>
                             </div>
-                            <div id="bin-status-badge" class="px-3 py-1 rounded-full text-xs font-bold border self-start sm:self-auto"></div>
+                            <div id="bin-status-badge" class="px-3 py-1 rounded-lg text-xs font-semibold border self-start sm:self-auto"></div>
                         </div>
 
                         <!-- Remediation Directives Banner -->
@@ -503,8 +503,8 @@
                         <!-- Result Summary Meta -->
                         <div id="result-meta" class="hidden mb-4 p-4 rounded-xl bg-surface border border-border-subtle space-y-3">
                             <div class="flex items-center justify-between">
-                                <span id="result-category" class="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full"></span>
-                                <span id="result-points" class="text-xs font-bold text-primary bg-primary-light px-3 py-1 rounded-full"></span>
+                                <span id="result-category" class="text-xs font-semibold px-3 py-1 rounded-lg"></span>
+                                <span id="result-points" class="text-xs font-semibold text-primary bg-primary-light px-3 py-1 rounded-lg font-mono tabular-nums"></span>
                             </div>
                             <div>
                                 <h3 id="result-item-name" class="text-lg font-bold text-text-primary"></h3>
@@ -553,7 +553,7 @@
 
                             <!-- Hazmat Red Safety Alert Banner -->
                             <div id="hazmat-safety-alert" class="hidden p-3.5 rounded-xl bg-rose-50 border-2 border-rose-300 text-rose-900 text-xs space-y-1.5 shadow-sm">
-                                <div class="font-black flex items-center gap-1.5 text-rose-700">
+                                <div class="font-bold flex items-center gap-1.5 text-rose-700">
                                     <span class="material-symbols-outlined text-[20px]">dangerous</span>
                                     <span>CRITICAL SAFETY: DOMESTIC HAZMAT / E-WASTE STREAM</span>
                                 </div>
@@ -619,7 +619,7 @@
                                         <span class="material-symbols-outlined text-[18px] text-primary">handyman</span>
                                         <span>Reuse Instead of Toss (+30 Bonus Pts)</span>
                                     </span>
-                                    <span class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-solar text-white font-mono">+30 PTS</span>
+                                    <span class="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-solar text-white font-mono">+30 PTS</span>
                                 </div>
                                 <ul id="upcycling-ideas-list" class="space-y-1 text-xs text-text-secondary list-disc pl-4"></ul>
                                 <div class="pt-1">
@@ -819,9 +819,9 @@
     // Tab Switching (3-Way: Visual, Text/Barcode, Multi-Item Bin Audit)
     if (tabVisualBtn) {
         tabVisualBtn.addEventListener('click', () => {
-            tabVisualBtn.className = "px-3.5 sm:px-4 py-2 rounded-full font-bold bg-white text-primary shadow-sm transition";
-            if (tabTextBtn) tabTextBtn.className = "px-3.5 sm:px-4 py-2 rounded-full font-semibold text-text-secondary hover:text-text-primary transition";
-            if (tabBinAuditBtn) tabBinAuditBtn.className = "px-3.5 sm:px-4 py-2 rounded-full font-semibold text-text-secondary hover:text-text-primary transition flex items-center gap-1.5";
+            tabVisualBtn.className = "px-3.5 py-1.5 rounded-lg font-semibold bg-white text-primary shadow-sm transition-colors whitespace-nowrap";
+            if (tabTextBtn) tabTextBtn.className = "px-3.5 py-1.5 rounded-lg font-medium text-text-secondary hover:text-text-primary transition-colors whitespace-nowrap";
+            if (tabBinAuditBtn) tabBinAuditBtn.className = "px-3.5 py-1.5 rounded-lg font-medium text-text-secondary hover:text-text-primary transition-colors flex items-center gap-1.5 whitespace-nowrap";
             if (visualInputView) visualInputView.classList.remove('hidden');
             if (textInputView) textInputView.classList.add('hidden');
             if (binAuditView) binAuditView.classList.add('hidden');
@@ -830,9 +830,9 @@
 
     if (tabTextBtn) {
         tabTextBtn.addEventListener('click', () => {
-            tabTextBtn.className = "px-3.5 sm:px-4 py-2 rounded-full font-bold bg-white text-primary shadow-sm transition";
-            if (tabVisualBtn) tabVisualBtn.className = "px-3.5 sm:px-4 py-2 rounded-full font-semibold text-text-secondary hover:text-text-primary transition";
-            if (tabBinAuditBtn) tabBinAuditBtn.className = "px-3.5 sm:px-4 py-2 rounded-full font-semibold text-text-secondary hover:text-text-primary transition flex items-center gap-1.5";
+            tabTextBtn.className = "px-3.5 py-1.5 rounded-lg font-semibold bg-white text-primary shadow-sm transition-colors whitespace-nowrap";
+            if (tabVisualBtn) tabVisualBtn.className = "px-3.5 py-1.5 rounded-lg font-medium text-text-secondary hover:text-text-primary transition-colors whitespace-nowrap";
+            if (tabBinAuditBtn) tabBinAuditBtn.className = "px-3.5 py-1.5 rounded-lg font-medium text-text-secondary hover:text-text-primary transition-colors flex items-center gap-1.5 whitespace-nowrap";
             if (textInputView) textInputView.classList.remove('hidden');
             if (visualInputView) visualInputView.classList.add('hidden');
             if (binAuditView) binAuditView.classList.add('hidden');
@@ -843,9 +843,9 @@
 
     if (tabBinAuditBtn) {
         tabBinAuditBtn.addEventListener('click', () => {
-            tabBinAuditBtn.className = "px-3.5 sm:px-4 py-2 rounded-full font-bold bg-white text-primary shadow-sm transition flex items-center gap-1.5";
-            if (tabVisualBtn) tabVisualBtn.className = "px-3.5 sm:px-4 py-2 rounded-full font-semibold text-text-secondary hover:text-text-primary transition";
-            if (tabTextBtn) tabTextBtn.className = "px-3.5 sm:px-4 py-2 rounded-full font-semibold text-text-secondary hover:text-text-primary transition";
+            tabBinAuditBtn.className = "px-3.5 py-1.5 rounded-lg font-semibold bg-white text-primary shadow-sm transition-colors flex items-center gap-1.5 whitespace-nowrap";
+            if (tabVisualBtn) tabVisualBtn.className = "px-3.5 py-1.5 rounded-lg font-medium text-text-secondary hover:text-text-primary transition-colors whitespace-nowrap";
+            if (tabTextBtn) tabTextBtn.className = "px-3.5 py-1.5 rounded-lg font-medium text-text-secondary hover:text-text-primary transition-colors whitespace-nowrap";
             if (binAuditView) binAuditView.classList.remove('hidden');
             if (visualInputView) visualInputView.classList.add('hidden');
             if (textInputView) textInputView.classList.add('hidden');
@@ -1665,7 +1665,7 @@
             <div class="flex-1 min-w-0 space-y-0.5">
                 <div class="flex items-center justify-between gap-2">
                     <span class="text-xs font-bold text-text-primary">${escapeHtml(title)}</span>
-                    <span class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full font-mono ${badgeColor}">${escapeHtml(badgeText)}</span>
+                    <span class="text-[10px] font-semibold px-2 py-0.5 rounded-md font-mono ${badgeColor}">${escapeHtml(badgeText)}</span>
                 </div>
                 <p class="text-xs text-text-secondary">${escapeHtml(message)}</p>
             </div>
@@ -1722,13 +1722,13 @@
 
         // Stream Badges
         if (category === "Hazmat") {
-            resultCategory.className = "text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-rose-100 text-rose-800 border border-rose-300";
+            resultCategory.className = "text-xs font-semibold px-3 py-1 rounded-lg bg-rose-100 text-rose-800 border border-rose-300";
         } else if (category === "Recyclable") {
-            resultCategory.className = "text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-200";
+            resultCategory.className = "text-xs font-semibold px-3 py-1 rounded-lg bg-blue-50 text-blue-700 border border-blue-200";
         } else if (category === "Compostable") {
-            resultCategory.className = "text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-teal-50 text-teal-800 border border-teal-200";
+            resultCategory.className = "text-xs font-semibold px-3 py-1 rounded-lg bg-teal-50 text-teal-800 border border-teal-200";
         } else {
-            resultCategory.className = "text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-slate-100 text-slate-800 border border-slate-200";
+            resultCategory.className = "text-xs font-semibold px-3 py-1 rounded-lg bg-slate-100 text-slate-800 border border-slate-200";
         }
 
         // Hazmat Safety Banner & E-Waste Repairability Card
@@ -1846,10 +1846,10 @@
             if (claimBtn) {
                 claimBtn.disabled = data.upcycle_claimed === true;
                 if (data.upcycle_claimed) {
-                    claimBtn.className = "w-full bg-slate-100 text-slate-500 py-2 px-3 text-xs font-bold rounded-full cursor-not-allowed border border-slate-200";
-                    if (claimBtnText) claimBtnText.textContent = "✓ Reused & Verified (+30 Pts Claimed)";
+                    claimBtn.className = "w-full bg-slate-100 text-slate-500 py-2 px-3 text-xs font-semibold rounded-xl cursor-not-allowed border border-slate-200";
+                    if (claimBtnText) claimBtnText.textContent = "Reused & Verified (+30 Pts Claimed)";
                 } else {
-                    claimBtn.className = "w-full btn-primary py-2 px-3 text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm";
+                    claimBtn.className = "w-full btn-primary py-2 px-3 text-xs font-semibold flex items-center justify-center gap-1.5 shadow-sm";
                     if (claimBtnText) claimBtnText.textContent = "I Reused This Item (+30 Eco-Pts)";
                 }
             }
@@ -2317,9 +2317,9 @@
             const claimBtnText = document.getElementById('claim-upcycle-btn-text');
             if (claimBtn) {
                 claimBtn.disabled = true;
-                claimBtn.className = "w-full bg-slate-100 text-slate-500 py-2 px-3 text-xs font-bold rounded-full cursor-not-allowed border border-slate-200";
+                claimBtn.className = "w-full bg-slate-100 text-slate-500 py-2 px-3 text-xs font-semibold rounded-xl cursor-not-allowed border border-slate-200";
             }
-            if (claimBtnText) claimBtnText.textContent = "✓ Reused & Verified (+30 Pts Claimed)";
+            if (claimBtnText) claimBtnText.textContent = "Reused & Verified (+30 Pts Claimed)";
             if (typeof confetti === 'function') confetti({ particleCount: 60, spread: 55, origin: { y: 0.7 } });
             return;
         }
@@ -2339,9 +2339,9 @@
                 if (typeof confetti === 'function') confetti({ particleCount: 75, spread: 60, origin: { y: 0.7 } });
                 showCelebratoryToast('badge', 'Upcycling Bonus Credited!', res.message || '+30 Eco-Pts added to profile!', '+30 Pts');
                 if (claimBtn) {
-                    claimBtn.className = "w-full bg-slate-100 text-slate-500 py-2 px-3 text-xs font-bold rounded-full cursor-not-allowed border border-slate-200";
+                    claimBtn.className = "w-full bg-slate-100 text-slate-500 py-2 px-3 text-xs font-semibold rounded-xl cursor-not-allowed border border-slate-200";
                 }
-                if (claimBtnText) claimBtnText.textContent = "✓ Reused & Verified (+30 Pts Claimed)";
+                if (claimBtnText) claimBtnText.textContent = "Reused & Verified (+30 Pts Claimed)";
                 currentAnalyzedData.upcycle_claimed = true;
             } else {
                 alert(res.error || "Could not claim upcycle points.");
@@ -2474,16 +2474,16 @@
 
         if (ringEl && statusBadge) {
             if (score >= 85) {
-                ringEl.className = "w-14 h-14 rounded-full flex items-center justify-center font-black text-base border-4 border-emerald-500 text-emerald-700 bg-white shadow-sm";
-                statusBadge.className = "px-3 py-1 rounded-full text-xs font-bold border bg-emerald-50 text-emerald-800 border-emerald-200";
+                ringEl.className = "w-14 h-14 rounded-xl flex items-center justify-center font-bold text-base border-4 border-emerald-500 text-emerald-700 bg-white shadow-sm";
+                statusBadge.className = "px-3 py-1 rounded-lg text-xs font-semibold border bg-emerald-50 text-emerald-800 border-emerald-200";
                 statusBadge.textContent = "Clean Stream Compliant";
             } else if (score >= 60) {
-                ringEl.className = "w-14 h-14 rounded-full flex items-center justify-center font-black text-base border-4 border-amber-500 text-amber-700 bg-white shadow-sm";
-                statusBadge.className = "px-3 py-1 rounded-full text-xs font-bold border bg-amber-50 text-amber-800 border-amber-200";
+                ringEl.className = "w-14 h-14 rounded-xl flex items-center justify-center font-bold text-base border-4 border-amber-500 text-amber-700 bg-white shadow-sm";
+                statusBadge.className = "px-3 py-1 rounded-lg text-xs font-semibold border bg-amber-50 text-amber-800 border-amber-200";
                 statusBadge.textContent = "Moderate Contamination";
             } else {
-                ringEl.className = "w-14 h-14 rounded-full flex items-center justify-center font-black text-base border-4 border-rose-500 text-rose-700 bg-white shadow-sm";
-                statusBadge.className = "px-3 py-1 rounded-full text-xs font-bold border bg-rose-50 text-rose-800 border-rose-200";
+                ringEl.className = "w-14 h-14 rounded-xl flex items-center justify-center font-bold text-base border-4 border-rose-500 text-rose-700 bg-white shadow-sm";
+                statusBadge.className = "px-3 py-1 rounded-lg text-xs font-semibold border bg-rose-50 text-rose-800 border-rose-200";
                 statusBadge.textContent = "Rejected / Contaminated";
             }
         }
@@ -2519,7 +2519,7 @@
                     <div class="space-y-0.5">
                         <div class="flex items-center gap-1.5">
                             <span class="font-bold text-text-primary">${idx + 1}. ${escapeHtml(item.name)}</span>
-                            <span class="text-[9px] font-extrabold px-1.5 py-0.5 rounded border uppercase font-mono ${tagClass}">${tagText}</span>
+                            <span class="text-[10px] font-semibold px-1.5 py-0.5 rounded-md border font-mono ${tagClass}">${tagText}</span>
                         </div>
                         <p class="text-[11px] text-text-secondary">${escapeHtml(item.action)}</p>
                     </div>
@@ -2557,8 +2557,8 @@
                 showCelebratoryToast('quest', 'Clean Stream Logged!', `Successfully credited ${res.logged_count} items and +${res.points_awarded} Eco-Points to your dashboard!`, `+${res.points_awarded} Pts`);
                 if (typeof confetti === 'function') confetti({ particleCount: 80, spread: 65, origin: { y: 0.7 } });
                 if (btn) {
-                    btn.className = "w-full bg-slate-100 text-slate-500 py-2.5 px-4 text-xs font-bold rounded-full cursor-not-allowed border border-slate-200";
-                    btn.textContent = `✓ Logged ${res.logged_count} Verified Items to Dashboard`;
+                    btn.className = "w-full bg-slate-100 text-slate-500 py-2.5 px-4 text-xs font-semibold rounded-xl cursor-not-allowed border border-slate-200";
+                    btn.textContent = `Logged ${res.logged_count} Verified Items to Dashboard`;
                 }
             } else {
                 alert(res.error || "Could not log items.");
@@ -2568,8 +2568,8 @@
             showCelebratoryToast('quest', 'Clean Stream Logged!', `Successfully credited ${cleanItems.length} items and +${cleanItems.length * 10} Eco-Points to your session!`, `+${cleanItems.length * 10} Pts`);
             if (typeof confetti === 'function') confetti({ particleCount: 80, spread: 65, origin: { y: 0.7 } });
             if (btn) {
-                btn.className = "w-full bg-slate-100 text-slate-500 py-2.5 px-4 text-xs font-bold rounded-full cursor-not-allowed border border-slate-200";
-                btn.textContent = `✓ Logged ${cleanItems.length} Verified Items to Dashboard`;
+                btn.className = "w-full bg-slate-100 text-slate-500 py-2.5 px-4 text-xs font-semibold rounded-xl cursor-not-allowed border border-slate-200";
+                btn.textContent = `Logged ${cleanItems.length} Verified Items to Dashboard`;
             }
         }
     }
