@@ -93,13 +93,23 @@ def get_or_create_current_user():
         if user:
             return user
     # Auto-provision guest so scanning is 100% friction-free without login gates
-    guest_name = f"Citizen_{uuid.uuid4().hex[:5]}"
-    guest = User(username=guest_name, points=0, badges="First Explorer")
-    db.session.add(guest)
-    db.session.commit()
-    session['user_id'] = guest.id
-    session['is_guest'] = True
-    return guest
+    for _ in range(5):
+        guest_name = f"Citizen_{uuid.uuid4().hex[:10]}"
+        try:
+            guest = User(username=guest_name, points=0, badges="First Explorer")
+            db.session.add(guest)
+            db.session.commit()
+            session['user_id'] = guest.id
+            session['is_guest'] = True
+            return guest
+        except Exception:
+            db.session.rollback()
+    existing = User.query.first()
+    if existing:
+        session['user_id'] = existing.id
+        session['is_guest'] = True
+        return existing
+    raise RuntimeError("Failed to provision unique guest session")
 
 # ==========================================
 # DATABASE MODELS & GAMIFICATION LOGIC

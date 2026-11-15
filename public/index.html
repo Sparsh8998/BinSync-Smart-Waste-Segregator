@@ -204,6 +204,28 @@
             color: #2563EB;
             transform: translateY(-1px);
         }
+
+        /* ── taste-skill Craft & Micro-Interaction Tokens ── */
+        .taste-card {
+            transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
+        }
+        .taste-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px -4px rgba(15, 23, 42, 0.08), 0 4px 8px rgba(15, 23, 42, 0.03);
+            border-color: #CBD5E1;
+        }
+        .taste-photo-frame {
+            overflow: hidden;
+        }
+        .taste-photo-frame img {
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .taste-photo-frame:hover img {
+            transform: scale(1.025);
+        }
+        button:active, .btn-primary:active, .btn-secondary:active, .btn-solar:active {
+            transform: scale(0.98) !important;
+        }
         .btn-solar {
             background-color: #F59E0B;
             color: #FFFFFF;
@@ -445,11 +467,11 @@
     
 <div class="space-y-0">
 
-    <!-- Direct Action Hero Section -->
-    <section class="relative pt-12 pb-20 md:pt-16 md:pb-24 overflow-hidden bg-surface">
+    <!-- CHAPTER 1: Direct Action Entrance Hero -->
+    <section class="relative pt-12 pb-20 md:pt-18 md:pb-28 overflow-hidden bg-surface">
         <div class="max-w-container mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 relative z-10 text-center">
             
-            <!-- Confident Headline -->
+            <!-- Confident Editorial Headline -->
             <h1 class="text-3xl sm:text-5xl md:text-6xl font-semibold tracking-tight text-text-primary leading-[1.12] max-w-4xl mx-auto">
                 Sort packaging with precision.<br class="hidden sm:inline"/>
                 <span class="text-primary">Protect the planet we share.</span>
@@ -459,9 +481,9 @@
                 Wishcycling contaminates recycling streams. BinSync isolates every packaging layer in seconds to give you exact municipal sorting directions.
             </p>
 
-            <!-- Center-Stage Scanner Box -->
+            <!-- Center-Stage Inspection Box -->
             <div class="mt-8 sm:mt-10 w-full max-w-3xl lg:max-w-4xl mx-auto">
-                <div class="eco-card p-5 sm:p-8 border border-border-subtle hover:border-border-medium transition-colors text-left">
+                <div class="taste-card p-5 sm:p-8 text-left bg-white border border-border-subtle shadow-sm">
                     
                     <!-- Search/Scan Action Bar -->
                     <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 pb-5 border-b border-border-subtle">
@@ -493,7 +515,7 @@
                         <form action="/classifier" method="GET" class="flex flex-col sm:flex-row gap-2.5">
                             <div class="relative flex-1">
                                 <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-text-muted text-[20px]">search</span>
-                                <input type="text" name="q" list="packaging-suggestions" placeholder="Or type item: coffee cup, pizza box, milk carton…" class="w-full text-sm pl-10 pr-4 py-2.5 sm:py-3 rounded-lg border border-border-medium focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary bg-surface">
+                                <input type="text" name="q" placeholder="Type packaging name: coffee cup, pizza box, snack pouch…" class="w-full text-sm pl-10 pr-4 py-2.5 sm:py-3 rounded-lg border border-border-medium focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary bg-surface transition-all">
                             </div>
                             <button type="submit" class="btn-primary py-2.5 sm:py-3 px-5 text-xs sm:text-sm font-semibold whitespace-nowrap">
                                 Decompose &rarr;
@@ -501,43 +523,51 @@
                         </form>
                     </div>
 
-                    <!-- Instant Sample Chips -->
+                    <!-- Instant Sample Test Cards -->
                     <div class="pt-4 sm:pt-5">
                         <div class="flex items-center justify-between mb-3 text-xs">
                             <span class="font-medium text-text-secondary flex items-center gap-1.5">
                                 <span class="material-symbols-outlined text-[16px] text-primary">science</span>
-                                <span>Sample packaging items:</span>
+                                <span>High-contrast sample items:</span>
                             </span>
-                            <span class="text-text-muted text-[11px]">Click to inspect</span>
+                            <span class="text-text-muted text-[11px]">Click to inspect in workstation</span>
                         </div>
 
-                        <div class="flex overflow-x-auto no-scrollbar sm:grid sm:grid-cols-4 gap-2.5 pb-1 -mx-1 px-1">
-                            <a href="/classifier?sample=chips-bag.jpg" class="flex-shrink-0 w-[155px] sm:w-auto p-2.5 rounded-lg border border-border-subtle bg-surface-container hover:bg-primary-light hover:border-primary transition flex items-center gap-2.5 group/chip">
-                                <img src="/static/samples/chips-bag.jpg" alt="Snack Pouch" class="w-10 h-10 object-cover rounded-lg border border-border-subtle flex-shrink-0">
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                            <a href="/classifier?sample=chips-bag.jpg" class="p-2.5 rounded-lg border border-border-subtle bg-surface hover:bg-primary-light hover:border-primary transition-all flex items-center gap-2.5 group/chip">
+                                <div class="taste-photo-frame w-10 h-10 rounded-lg flex-shrink-0">
+                                    <img src="/static/samples/chips-bag.jpg" alt="Snack Pouch" class="w-full h-full object-cover">
+                                </div>
                                 <div class="truncate text-left">
                                     <span class="block text-xs font-semibold text-text-primary group-hover/chip:text-primary truncate">Snack Pouch</span>
                                     <span class="block text-[11px] text-solar-dark font-medium">Composite</span>
                                 </div>
                             </a>
 
-                            <a href="/classifier?sample=sample-recyclable.jpg" class="flex-shrink-0 w-[155px] sm:w-auto p-2.5 rounded-lg border border-border-subtle bg-surface-container hover:bg-primary-light hover:border-primary transition flex items-center gap-2.5 group/chip">
-                                <img src="/static/samples/sample-recyclable.jpg" alt="Drink Pack" class="w-10 h-10 object-cover rounded-lg border border-border-subtle flex-shrink-0">
+                            <a href="/classifier?sample=sample-recyclable.jpg" class="p-2.5 rounded-lg border border-border-subtle bg-surface hover:bg-primary-light hover:border-primary transition-all flex items-center gap-2.5 group/chip">
+                                <div class="taste-photo-frame w-10 h-10 rounded-lg flex-shrink-0">
+                                    <img src="/static/samples/sample-recyclable.jpg" alt="Drink Pack" class="w-full h-full object-cover">
+                                </div>
                                 <div class="truncate text-left">
                                     <span class="block text-xs font-semibold text-text-primary group-hover/chip:text-primary truncate">Drink Pack</span>
                                     <span class="block text-[11px] text-blue-700 font-medium">Recyclable</span>
                                 </div>
                             </a>
 
-                            <a href="/classifier?sample=food-compost.jpg" class="flex-shrink-0 w-[155px] sm:w-auto p-2.5 rounded-lg border border-border-subtle bg-surface-container hover:bg-primary-light hover:border-primary transition flex items-center gap-2.5 group/chip">
-                                <img src="/static/samples/food-compost.jpg" alt="Organics" class="w-10 h-10 object-cover rounded-lg border border-border-subtle flex-shrink-0">
+                            <a href="/classifier?sample=food-compost.jpg" class="p-2.5 rounded-lg border border-border-subtle bg-surface hover:bg-primary-light hover:border-primary transition-all flex items-center gap-2.5 group/chip">
+                                <div class="taste-photo-frame w-10 h-10 rounded-lg flex-shrink-0">
+                                    <img src="/static/samples/food-compost.jpg" alt="Organics" class="w-full h-full object-cover">
+                                </div>
                                 <div class="truncate text-left">
                                     <span class="block text-xs font-semibold text-text-primary group-hover/chip:text-primary truncate">Food Scraps</span>
                                     <span class="block text-[11px] text-teal-700 font-medium">Compost</span>
                                 </div>
                             </a>
 
-                            <a href="/classifier?sample=garbage-bag.jpg" class="flex-shrink-0 w-[155px] sm:w-auto p-2.5 rounded-lg border border-border-subtle bg-surface-container hover:bg-primary-light hover:border-primary transition flex items-center gap-2.5 group/chip">
-                                <img src="/static/samples/garbage-bag.jpg" alt="Trash Bag" class="w-10 h-10 object-cover rounded-lg border border-border-subtle flex-shrink-0">
+                            <a href="/classifier?sample=garbage-bag.jpg" class="p-2.5 rounded-lg border border-border-subtle bg-surface hover:bg-primary-light hover:border-primary transition-all flex items-center gap-2.5 group/chip">
+                                <div class="taste-photo-frame w-10 h-10 rounded-lg flex-shrink-0">
+                                    <img src="/static/samples/garbage-bag.jpg" alt="Trash Bag" class="w-full h-full object-cover">
+                                </div>
                                 <div class="truncate text-left">
                                     <span class="block text-xs font-semibold text-text-primary group-hover/chip:text-primary truncate">Trash Film</span>
                                     <span class="block text-[11px] text-slate-700 font-medium">Landfill</span>
@@ -549,169 +579,131 @@
                 </div>
             </div>
 
-            <!-- Tangible Impact Live Counters Strip -->
-            <div class="mt-12 w-full max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
-                <div class="eco-card p-6 text-center border-border-subtle">
-                    <div class="counter-ticker text-3xl sm:text-4xl font-semibold text-primary tracking-tight font-mono tabular-nums" data-count-target="14,451">
-                        0
-                    </div>
-                    <div class="text-xs font-semibold text-text-secondary mt-1.5">
-                        Packages Diverted
-                    </div>
-                    <p class="text-xs text-text-muted mt-1">Logged through circular routing</p>
-                </div>
-
-                <div class="eco-card p-6 text-center border-border-subtle">
-                    <div class="counter-ticker text-3xl sm:text-4xl font-semibold text-primary tracking-tight font-mono tabular-nums" data-count-target="87.4%">
-                        0
-                    </div>
-                    <div class="text-xs font-semibold text-text-secondary mt-1.5">
-                        Contaminations Prevented
-                    </div>
-                    <p class="text-xs text-text-muted mt-1">Curbside bins protected</p>
-                </div>
-
-                <div class="eco-card p-6 text-center border-border-subtle">
-                    <div class="text-3xl sm:text-4xl font-semibold text-text-primary tracking-tight font-mono tabular-nums">
-                        <span class="counter-ticker" data-count-target="18.51">0</span> <span class="text-base font-normal text-text-muted">Tons</span>
-                    </div>
-                    <div class="text-xs font-semibold text-text-secondary mt-1.5">
-                        Landfill Avoided
-                    </div>
-                    <p class="text-xs text-text-muted mt-1">Audited carbon savings</p>
-                </div>
-            </div>
-
         </div>
     </section>
 
-    <!-- Interactive Demonstration: Exploded Packaging Decomposition -->
-    <section class="py-20 md:py-32 bg-white border-y border-border-subtle">
+    <!-- CHAPTER 2: Physical Breakdown Exhibit -->
+    <section class="py-20 md:py-28 bg-white border-y border-border-subtle">
         <div class="max-w-container mx-auto px-4 sm:px-8 lg:px-12 xl:px-16">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
                 
-                <!-- Left: Educational Breakdown -->
+                <!-- Left: Plain Narrative Guidance -->
                 <div class="lg:col-span-6 space-y-7">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-light text-primary text-xs font-semibold">
+                        <span class="material-symbols-outlined text-[16px]">layers</span>
+                        <span>Chapter 02 &bull; Physical Layer Decomposition</span>
+                    </div>
+
                     <h2 class="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-text-primary leading-tight">
                         Wishcycling ruins circular recycling.<br/>
                         <span class="text-primary">Here is what happens when you decompose.</span>
                     </h2>
                     
-                    <p class="text-base sm:text-lg lg:text-xl text-text-secondary leading-relaxed">
+                    <p class="text-base sm:text-lg text-text-secondary leading-relaxed font-normal">
                         A single greasy foil liner or unpeeled plastic film can ruin entire bales of pulped cardboard at municipal recovery facilities. BinSync's vision engine isolates every layer before it reaches the bin.
                     </p>
 
-                    <div class="space-y-5 pt-2">
-                        <div class="reveal-left flex items-start gap-4 transition-all" style="transition-delay: 0ms;">
-                            <div class="w-10 h-10 rounded-xl bg-primary-light text-primary flex items-center justify-center font-bold text-base flex-shrink-0 mt-0.5 shadow-sm">
+                    <div class="space-y-4 pt-2">
+                        <div class="flex items-start gap-3.5">
+                            <div class="w-9 h-9 rounded-xl bg-primary-light text-primary flex items-center justify-center font-bold text-sm flex-shrink-0 mt-0.5">
                                 1
                             </div>
                             <div>
-                                <h3 class="text-base sm:text-lg font-bold text-text-primary">Separate Physical Layers</h3>
-                                <p class="text-sm text-text-secondary mt-1">Detach plastic caps, foil seals, and cardboard sleeves into individual pure materials.</p>
+                                <h3 class="text-base font-semibold text-text-primary">Separate Physical Layers</h3>
+                                <p class="text-sm text-text-secondary mt-0.5">Detach plastic caps, foil seals, and cardboard sleeves into pure individual materials.</p>
                             </div>
                         </div>
 
-                        <div class="reveal-left flex items-start gap-4 transition-all" style="transition-delay: 120ms;">
-                            <div class="w-10 h-10 rounded-xl bg-primary-light text-primary flex items-center justify-center font-bold text-base flex-shrink-0 mt-0.5 shadow-sm">
+                        <div class="flex items-start gap-3.5">
+                            <div class="w-9 h-9 rounded-xl bg-primary-light text-primary flex items-center justify-center font-bold text-sm flex-shrink-0 mt-0.5">
                                 2
                             </div>
                             <div>
-                                <h3 class="text-base sm:text-lg font-bold text-text-primary">Route to Local Drop-offs</h3>
-                                <p class="text-sm text-text-secondary mt-1">Direct items like soft plastic films and e-waste away from curbside bins to certified drop depots.</p>
+                                <h3 class="text-base font-semibold text-text-primary">Route to Local Drop-offs</h3>
+                                <p class="text-sm text-text-secondary mt-0.5">Direct items like soft plastic films and e-waste away from curbside bins to certified drop depots.</p>
                             </div>
                         </div>
 
-                        <div class="reveal-left flex items-start gap-4 transition-all" style="transition-delay: 240ms;">
-                            <div class="w-10 h-10 rounded-xl bg-primary-light text-primary flex items-center justify-center font-bold text-base flex-shrink-0 mt-0.5 shadow-sm">
+                        <div class="flex items-start gap-3.5">
+                            <div class="w-9 h-9 rounded-xl bg-primary-light text-primary flex items-center justify-center font-bold text-sm flex-shrink-0 mt-0.5">
                                 3
                             </div>
                             <div>
-                                <h3 class="text-base sm:text-lg font-bold text-text-primary">Track Real Carbon Equivalents</h3>
-                                <p class="text-sm text-text-secondary mt-1">Every gram of avoided CO₂ is translated into smartphone recharges and electric vehicle miles.</p>
+                                <h3 class="text-base font-semibold text-text-primary">Track Real Carbon Equivalents</h3>
+                                <p class="text-sm text-text-secondary mt-0.5">Every gram of avoided CO₂ is translated into smartphone recharges and electric vehicle miles.</p>
                             </div>
                         </div>
                     </div>
 
                     <div class="pt-4">
-                        <a href="/classifier" class="btn-primary py-3.5 px-7 text-sm font-bold flex items-center gap-2">
+                        <a href="/classifier" class="btn-primary py-3 px-6 text-sm font-semibold inline-flex items-center gap-2">
                             <span>Try AI Decomposition Live</span>
-                            <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+                            <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
                         </a>
                     </div>
                 </div>
 
                 <!-- Right: Visual Layer Diagram -->
                 <div class="lg:col-span-6">
-                    <div id="schema-card" class="eco-card reveal-right p-6 sm:p-9 space-y-5 group/schema cursor-pointer transition-all duration-300 hover:shadow-xl hover:border-primary/40 relative">
+                    <div id="schema-card" class="taste-card p-6 sm:p-8 space-y-5 bg-surface border border-border-subtle group/schema cursor-pointer relative">
                         <div class="flex items-center justify-between pb-4 border-b border-border-subtle">
                             <div class="flex items-center gap-2.5">
-                                <span class="w-3 h-3 rounded-full bg-blue-500 animate-pulse"></span>
+                                <span class="w-2.5 h-2.5 rounded-full bg-primary animate-pulse"></span>
                                 <span class="text-xs sm:text-sm font-semibold text-text-primary">Decomposition Schema</span>
                             </div>
                             <div class="flex items-center gap-2">
-                                <span class="hidden sm:inline-flex items-center gap-1 text-[11px] font-semibold text-text-muted group-hover/schema:text-primary transition">
+                                <span class="hidden sm:inline-flex items-center gap-1 text-[11px] font-medium text-text-muted">
                                     <span class="material-symbols-outlined text-[14px]">unfold_more</span>
-                                    <span>Hover or Scroll to Separate</span>
+                                    <span>Hover to Separate</span>
                                 </span>
-                                <span class="text-xs sm:text-sm font-bold text-primary bg-primary-light px-3.5 py-1 rounded-full">
-                                    Snack Pouch Identified
+                                <span class="text-xs font-semibold text-primary bg-primary-light px-3 py-1 rounded-full">
+                                    Multi-Layer Snack Pack
                                 </span>
                             </div>
                         </div>
 
                         <!-- 3 Exploded Layer Cards with Dynamic Separation -->
-                        <div id="schema-layers-box" class="space-y-4 group-hover/schema:space-y-6 transition-all duration-500 relative">
+                        <div id="schema-layers-box" class="space-y-3.5 group-hover/schema:space-y-5 transition-all duration-300 relative">
                             <!-- Layer 1 -->
-                            <div id="schema-layer-1" class="p-5 rounded-2xl bg-[#F0F9FF] border border-[#BAE6FD] flex items-center justify-between transition-all duration-500 transform group-hover/schema:-translate-y-2 group-hover/schema:shadow-md relative z-30">
-                                <div class="flex items-center gap-3.5">
-                                    <span class="w-8 h-8 rounded-xl bg-[#0284C7] text-white flex items-center justify-center text-sm font-bold">1</span>
+                            <div id="schema-layer-1" class="p-4 sm:p-5 rounded-xl bg-blue-50/70 border border-blue-200/80 flex items-center justify-between transition-all duration-300 transform group-hover/schema:-translate-y-1 shadow-sm">
+                                <div class="flex items-center gap-3">
+                                    <span class="w-7 h-7 rounded-lg bg-blue-600 text-white flex items-center justify-center text-xs font-bold">1</span>
                                     <div>
-                                        <h4 class="text-sm sm:text-base font-bold text-slate-900">External Paper Sleeve</h4>
-                                        <p class="text-xs sm:text-sm text-slate-600">Pure Bleached Fiber</p>
+                                        <h4 class="text-sm font-semibold text-slate-900">External Paper Sleeve</h4>
+                                        <p class="text-xs text-slate-600">Pure Bleached Fiber</p>
                                     </div>
                                 </div>
-                                <span class="text-xs font-bold px-3.5 py-1 bg-[#0284C7] text-white rounded-full">Curbside Blue Bin</span>
-                            </div>
-
-                            <!-- Subtle Connector 1 -->
-                            <div id="schema-connector-1" class="h-0 group-hover/schema:h-2 opacity-0 group-hover/schema:opacity-100 transition-all duration-500 flex justify-center -my-2 pointer-events-none">
-                                <div class="w-0.5 h-full bg-blue-300"></div>
+                                <span class="text-xs font-semibold px-3 py-1 bg-blue-600 text-white rounded-full">Curbside Blue Bin</span>
                             </div>
 
                             <!-- Layer 2 -->
-                            <div id="schema-layer-2" class="p-5 rounded-2xl bg-[#FFFBEB] border border-[#FDE68A] flex items-center justify-between transition-all duration-500 transform group-hover/schema:scale-[1.02] group-hover/schema:shadow-md relative z-20">
-                                <div class="flex items-center gap-3.5">
-                                    <span class="w-8 h-8 rounded-xl bg-[#D97706] text-white flex items-center justify-center text-sm font-bold">2</span>
+                            <div id="schema-layer-2" class="p-4 sm:p-5 rounded-xl bg-amber-50/70 border border-amber-200/80 flex items-center justify-between transition-all duration-300 transform group-hover/schema:scale-[1.01] shadow-sm">
+                                <div class="flex items-center gap-3">
+                                    <span class="w-7 h-7 rounded-lg bg-amber-600 text-white flex items-center justify-center text-xs font-bold">2</span>
                                     <div>
-                                        <h4 class="text-sm sm:text-base font-bold text-slate-900">Metallized Polymer Liner</h4>
-                                        <p class="text-xs sm:text-sm text-slate-600">BOPP Film + Aluminum Vapor</p>
+                                        <h4 class="text-sm font-semibold text-slate-900">Metallized Polymer Liner</h4>
+                                        <p class="text-xs text-slate-600">BOPP Film + Aluminum Vapor</p>
                                     </div>
                                 </div>
-                                <span class="text-xs font-bold px-3.5 py-1 bg-[#D97706] text-white rounded-full">Store Soft-Plastic</span>
-                            </div>
-
-                            <!-- Subtle Connector 2 -->
-                            <div id="schema-connector-2" class="h-0 group-hover/schema:h-2 opacity-0 group-hover/schema:opacity-100 transition-all duration-500 flex justify-center -my-2 pointer-events-none">
-                                <div class="w-0.5 h-full bg-amber-300"></div>
+                                <span class="text-xs font-semibold px-3 py-1 bg-amber-600 text-white rounded-full">Store Soft-Plastic</span>
                             </div>
 
                             <!-- Layer 3 -->
-                            <div id="schema-layer-3" class="p-5 rounded-2xl bg-[#F8FAFC] border border-[#E2E8F0] flex items-center justify-between transition-all duration-500 transform group-hover/schema:translate-y-2 group-hover/schema:shadow-md relative z-10">
-                                <div class="flex items-center gap-3.5">
-                                    <span class="w-8 h-8 rounded-xl bg-[#475569] text-white flex items-center justify-center text-sm font-bold">3</span>
+                            <div id="schema-layer-3" class="p-4 sm:p-5 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between transition-all duration-300 transform group-hover/schema:translate-y-1 shadow-sm">
+                                <div class="flex items-center gap-3">
+                                    <span class="w-7 h-7 rounded-lg bg-slate-700 text-white flex items-center justify-center text-xs font-bold">3</span>
                                     <div>
-                                        <h4 class="text-sm sm:text-base font-bold text-slate-900">Organic Food Residue</h4>
-                                        <p class="text-xs sm:text-sm text-slate-600">Seasoning and oil remnants</p>
+                                        <h4 class="text-sm font-semibold text-slate-900">Organic Food Residue</h4>
+                                        <p class="text-xs text-slate-600">Seasoning and oil remnants</p>
                                     </div>
                                 </div>
-                                <span class="text-xs font-bold px-3.5 py-1 bg-[#475569] text-white rounded-full">Wipe Clean First</span>
+                                <span class="text-xs font-semibold px-3 py-1 bg-slate-700 text-white rounded-full">Wipe Clean First</span>
                             </div>
                         </div>
 
                         <div class="pt-4 border-t border-border-subtle flex justify-between items-center text-xs sm:text-sm">
                             <span class="text-text-muted">Measured Carbon Diversion:</span>
-                            <span class="font-bold text-primary font-mono text-base">+45.0g CO₂ Offset</span>
+                            <span class="font-bold text-primary font-mono text-sm">+45.0g CO₂ Offset</span>
                         </div>
                     </div>
                 </div>
@@ -720,90 +712,169 @@
         </div>
     </section>
 
-    <!-- Why Wishcycling Fails & How BinSync Solves It -->
-    <section class="py-20 md:py-28">
-        <div class="max-w-container mx-auto px-4 sm:px-6">
-            <div class="text-center max-w-2xl mx-auto mb-16 space-y-3">
+    <!-- CHAPTER 3: Community Climate Impact Ledger -->
+    <section class="py-20 md:py-28 bg-surface">
+        <div class="max-w-container mx-auto px-4 sm:px-8 lg:px-12 xl:px-16">
+            
+            <div class="text-center max-w-2xl mx-auto mb-14 space-y-3">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-light text-primary text-xs font-semibold">
+                    <span class="material-symbols-outlined text-[16px]">monitoring</span>
+                    <span>Chapter 03 &bull; Verified Impact</span>
+                </div>
                 <h2 class="text-3xl sm:text-4xl font-semibold tracking-tight text-text-primary">
-                    Engineered to <span class="text-primary">eliminate wishcycling</span> at every step
+                    Every package logged avoids <span class="text-primary">landfill methane</span>
                 </h2>
                 <p class="text-sm sm:text-base text-text-secondary leading-relaxed">
-                    Wishcycling is tossing ambiguous items into the blue bin hoping they get recycled. BinSync gives you clear, verified answers before the bin closes.
+                    Audited circular routing metrics aggregated across all active citizen households and verified MRF sorting facilities.
                 </p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Pillar 1 -->
-                <div class="eco-card reveal-on-scroll p-7 flex flex-col justify-between transition-all" style="transition-delay: 0ms;">
-                    <div>
-                        <div class="w-12 h-12 rounded-2xl bg-primary-light text-primary flex items-center justify-center mb-6 shadow-sm">
-                            <span class="material-symbols-outlined text-[26px]">document_scanner</span>
-                        </div>
-                        <h3 class="text-xl font-bold text-text-primary mb-3">Layered Optical AI</h3>
-                        <p class="text-sm text-text-secondary leading-relaxed">
-                            BinSync does not just guess the label. It separates packaging into lid, sleeve, film, and body so you know precisely what separates and where it belongs.
-                        </p>
+            <!-- Ledger Metric Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                <div class="taste-card p-6 sm:p-8 text-center bg-white border border-border-subtle shadow-sm">
+                    <div class="counter-ticker text-3xl sm:text-4xl font-semibold text-primary tracking-tight font-mono tabular-nums" data-count-target="14,515">
+                        14,515
                     </div>
-                    <div class="pt-6 mt-6 border-t border-border-subtle flex items-center text-xs font-bold text-primary">
-                        <span>Multi-layer physical breakdown</span>
-                        <span class="material-symbols-outlined text-[16px] ml-1">chevron_right</span>
+                    <div class="text-xs sm:text-sm font-semibold text-text-primary mt-2">
+                        Packages Diverted
                     </div>
+                    <p class="text-xs text-text-muted mt-1">Logged through circular routing</p>
                 </div>
 
-                <!-- Pillar 2 -->
-                <div class="eco-card reveal-on-scroll p-7 flex flex-col justify-between transition-all" style="transition-delay: 120ms;">
-                    <div>
-                        <div class="w-12 h-12 rounded-2xl bg-primary-light text-primary flex items-center justify-center mb-6 shadow-sm">
-                            <span class="material-symbols-outlined text-[26px]">map</span>
-                        </div>
-                        <h3 class="text-xl font-bold text-text-primary mb-3">Hyper-Local Bylaws</h3>
-                        <p class="text-sm text-text-secondary leading-relaxed">
-                            Recycling rules vary between cities. Find certified drop-off centers for soft plastics, batteries, electronics, and compost specific to your municipality.
-                        </p>
+                <div class="taste-card p-6 sm:p-8 text-center bg-white border border-border-subtle shadow-sm">
+                    <div class="counter-ticker text-3xl sm:text-4xl font-semibold text-primary tracking-tight font-mono tabular-nums" data-count-target="87.4%">
+                        87.4%
                     </div>
-                    <div class="pt-6 mt-6 border-t border-border-subtle flex items-center text-xs font-bold text-primary">
-                        <span>Regional municipal mapping</span>
-                        <span class="material-symbols-outlined text-[16px] ml-1">chevron_right</span>
+                    <div class="text-xs sm:text-sm font-semibold text-text-primary mt-2">
+                        Contaminations Prevented
                     </div>
+                    <p class="text-xs text-text-muted mt-1">Curbside bales preserved</p>
                 </div>
 
-                <!-- Pillar 3 -->
-                <div class="eco-card reveal-on-scroll p-7 flex flex-col justify-between transition-all" style="transition-delay: 240ms;">
-                    <div>
-                        <div class="w-12 h-12 rounded-2xl bg-primary-light text-primary flex items-center justify-center mb-6 shadow-sm">
-                            <span class="material-symbols-outlined text-[26px]">emoji_events</span>
-                        </div>
-                        <h3 class="text-xl font-bold text-text-primary mb-3">Gamified Impact Tracking</h3>
-                        <p class="text-sm text-text-secondary leading-relaxed">
-                            Earn eco-points, level up from Seedling to Eco Legend, build consecutive streaks, and translate carbon diversion into real smartphone charges and EV miles.
-                        </p>
+                <div class="taste-card p-6 sm:p-8 text-center bg-white border border-border-subtle shadow-sm">
+                    <div class="text-3xl sm:text-4xl font-semibold text-text-primary tracking-tight font-mono tabular-nums">
+                        <span class="counter-ticker" data-count-target="18.51">18.51</span> <span class="text-base font-normal text-text-muted">Tons</span>
                     </div>
-                    <div class="pt-6 mt-6 border-t border-border-subtle flex items-center text-xs font-bold text-primary">
-                        <span>Verifiable carbon metrics</span>
-                        <span class="material-symbols-outlined text-[16px] ml-1">chevron_right</span>
+                    <div class="text-xs sm:text-sm font-semibold text-text-primary mt-2">
+                        Landfill Avoided
                     </div>
+                    <p class="text-xs text-text-muted mt-1">Audited CO₂ emission reduction</p>
                 </div>
             </div>
+
         </div>
     </section>
 
-    <!-- Call to Action Section -->
-    <section class="py-16 md:py-24">
-        <div class="max-w-container mx-auto px-4 sm:px-6">
+    <!-- CHAPTER 4: 4-Stream Municipal Protocol -->
+    <section class="py-20 md:py-28 bg-white border-y border-border-subtle">
+        <div class="max-w-container mx-auto px-4 sm:px-8 lg:px-12 xl:px-16">
+            
+            <div class="text-center max-w-2xl mx-auto mb-14 space-y-3">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-light text-primary text-xs font-semibold">
+                    <span class="material-symbols-outlined text-[16px]">sync_alt</span>
+                    <span>Chapter 04 &bull; Stream Protocol</span>
+                </div>
+                <h2 class="text-3xl sm:text-4xl font-semibold tracking-tight text-text-primary">
+                    Clear destinations for <span class="text-primary">every physical layer</span>
+                </h2>
+                <p class="text-sm sm:text-base text-text-secondary leading-relaxed">
+                    BinSync matches each material component to its accredited municipal sorting stream according to EPA standards.
+                </p>
+            </div>
+
+            <!-- 4 Municipal Stream Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                
+                <!-- Blue Stream -->
+                <div class="taste-card p-6 bg-surface border border-border-subtle flex flex-col justify-between">
+                    <div>
+                        <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center mb-4">
+                            <span class="material-symbols-outlined text-[22px]">recycling</span>
+                        </div>
+                        <span class="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-blue-100 text-blue-800 mb-2">Curbside Blue</span>
+                        <h3 class="text-base font-semibold text-text-primary mb-2">Recyclable Containers</h3>
+                        <p class="text-xs text-text-secondary leading-relaxed">
+                            Clean plastic jugs (#1, #2, #5), clean beverage tins, aluminium cans, and flattened cardboard. Must be empty and rinsed.
+                        </p>
+                    </div>
+                    <div class="mt-5 pt-4 border-t border-border-subtle text-[11px] text-text-muted font-medium">
+                        Rinse before tossing
+                    </div>
+                </div>
+
+                <!-- Green Stream -->
+                <div class="taste-card p-6 bg-surface border border-border-subtle flex flex-col justify-between">
+                    <div>
+                        <div class="w-10 h-10 rounded-xl bg-teal-100 text-teal-700 flex items-center justify-center mb-4">
+                            <span class="material-symbols-outlined text-[22px]">eco</span>
+                        </div>
+                        <span class="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-teal-100 text-teal-800 mb-2">Curbside Green</span>
+                        <h3 class="text-base font-semibold text-text-primary mb-2">Organic Compost</h3>
+                        <p class="text-xs text-text-secondary leading-relaxed">
+                            Fruit peels, coffee grounds, greasy pizza box bottoms, unbleached napkins, and certified BPI compostables.
+                        </p>
+                    </div>
+                    <div class="mt-5 pt-4 border-t border-border-subtle text-[11px] text-text-muted font-medium">
+                        Zero plastic liners
+                    </div>
+                </div>
+
+                <!-- Black Stream -->
+                <div class="taste-card p-6 bg-surface border border-border-subtle flex flex-col justify-between">
+                    <div>
+                        <div class="w-10 h-10 rounded-xl bg-slate-200 text-slate-700 flex items-center justify-center mb-4">
+                            <span class="material-symbols-outlined text-[22px]">delete</span>
+                        </div>
+                        <span class="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-slate-200 text-slate-800 mb-2">Curbside Black</span>
+                        <h3 class="text-base font-semibold text-text-primary mb-2">Residual Landfill</h3>
+                        <p class="text-xs text-text-secondary leading-relaxed">
+                            Multi-laminate snack pouches, chip bags with vaporized metal, contaminated wax liners, and single-use utensils.
+                        </p>
+                    </div>
+                    <div class="mt-5 pt-4 border-t border-border-subtle text-[11px] text-text-muted font-medium">
+                        Last resort stream
+                    </div>
+                </div>
+
+                <!-- Depot Stream -->
+                <div class="taste-card p-6 bg-surface border border-border-subtle flex flex-col justify-between">
+                    <div>
+                        <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center mb-4">
+                            <span class="material-symbols-outlined text-[22px]">store</span>
+                        </div>
+                        <span class="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-amber-100 text-amber-800 mb-2">Certified Depot</span>
+                        <h3 class="text-base font-semibold text-text-primary mb-2">Special Drop-off</h3>
+                        <p class="text-xs text-text-secondary leading-relaxed">
+                            Stretchy soft plastic grocery bags, bubble wrap, household batteries, mobile e-waste, and leftover paints.
+                        </p>
+                    </div>
+                    <div class="mt-5 pt-4 border-t border-border-subtle text-[11px] text-text-muted font-medium">
+                        <a href="/rules" class="text-primary hover:underline">Find nearest depot &rarr;</a>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- CHAPTER 5: Direct Action Call to Action Banner -->
+    <section class="py-16 md:py-24 bg-surface">
+        <div class="max-w-container mx-auto px-4 sm:px-8 lg:px-12 xl:px-16">
             <div id="cta-banner" class="bg-primary text-white rounded-2xl p-8 sm:p-12 lg:p-14 relative overflow-hidden shadow-sm">
-                <div class="max-w-2xl relative z-10 space-y-5">
-                    <h2 class="text-3xl sm:text-4xl font-semibold tracking-tight text-white leading-tight">
+                <div class="max-w-2xl relative z-10 space-y-4">
+                    <h2 class="text-2xl sm:text-4xl font-semibold tracking-tight text-white leading-tight">
                         Scan your first packaging item right now.
                     </h2>
 
-                    <p class="text-blue-100 text-base leading-relaxed font-normal">
+                    <p class="text-blue-100 text-sm sm:text-base leading-relaxed font-normal">
                         No sign-up or app download required to test. Use your camera, upload a photo, or click any sample to see real-time decomposition.
                     </p>
 
-                    <div class="pt-2 flex flex-col sm:flex-row gap-3">
+                    <div class="pt-3 flex flex-col sm:flex-row gap-3">
                         <a href="/classifier" class="bg-white hover:bg-blue-50 text-primary font-semibold py-3 px-6 rounded-xl text-sm shadow-sm flex items-center justify-center gap-2 transition-colors">
                             <span class="material-symbols-outlined text-[18px]">photo_camera</span>
-                            <span>Launch Waste Inspector</span>
+                            <span>Launch Packaging Inspector</span>
                         </a>
                         <a href="/classifications" class="bg-primary-hover hover:bg-blue-800 text-white border border-white/20 py-3 px-6 rounded-xl text-sm font-semibold flex items-center justify-center gap-2 transition-colors">
                             <span>Explore Material Taxonomy</span>
@@ -1122,19 +1193,25 @@
 document.addEventListener('DOMContentLoaded', () => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // 1. Scroll-Triggered Count-Up Tickers with easeOutExpo & threshold: 0.35
+    // 1. Scroll-Triggered Count-Up Tickers with easeOutExpo
     const tickers = document.querySelectorAll('.counter-ticker');
     const easeOutExpo = (x) => x === 1 ? 1 : 1 - Math.pow(2, -10 * x);
 
     const animateTicker = (el) => {
-        const target = parseFloat(el.getAttribute('data-count-target')) || 0;
+        const rawAttr = el.getAttribute('data-count-target') || '0';
+        const cleanedStr = rawAttr.replace(/[%,]/g, '');
+        const target = parseFloat(cleanedStr) || 0;
+        const isPercent = rawAttr.includes('%');
         const isFloat = target % 1 !== 0;
+
         if (prefersReducedMotion) {
-            el.innerText = isFloat ? target.toFixed(1) : Math.round(target).toLocaleString();
+            el.innerText = isPercent 
+                ? `${target.toFixed(1)}%` 
+                : (isFloat ? target.toFixed(1) : Math.round(target).toLocaleString());
             return;
         }
 
-        const duration = 1400; // 1.4s
+        const duration = 1200; // 1.2s
         const startTime = performance.now();
 
         const step = (currentTime) => {
@@ -1143,16 +1220,24 @@ document.addEventListener('DOMContentLoaded', () => {
             const easedProgress = easeOutExpo(progress);
             const currentVal = target * easedProgress;
 
-            el.innerText = isFloat 
-                ? currentVal.toFixed(1) 
-                : Math.round(currentVal).toLocaleString();
+            if (isPercent) {
+                el.innerText = `${currentVal.toFixed(1)}%`;
+            } else if (isFloat) {
+                el.innerText = currentVal.toFixed(1);
+            } else {
+                el.innerText = Math.round(currentVal).toLocaleString();
+            }
 
             if (progress < 1) {
                 requestAnimationFrame(step);
             } else {
-                el.innerText = isFloat 
-                    ? target.toFixed(1) 
-                    : Math.round(target).toLocaleString();
+                if (isPercent) {
+                    el.innerText = `${target.toFixed(1)}%`;
+                } else if (isFloat) {
+                    el.innerText = target.toFixed(1);
+                } else {
+                    el.innerText = Math.round(target).toLocaleString();
+                }
             }
         };
 
@@ -1167,92 +1252,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     obs.unobserve(entry.target);
                 }
             });
-        }, { threshold: 0.35 });
+        }, { threshold: 0.25 });
 
         tickers.forEach(ticker => tickerObserver.observe(ticker));
     } else {
         tickers.forEach(animateTicker);
-    }
-
-    // 2. Hero & CTA Parallax + Scroll-Linked Exploding Schema
-    if (!prefersReducedMotion) {
-        const heroOrb = document.getElementById('hero-glacier-orb');
-        const schemaCard = document.getElementById('schema-card');
-        const layer1 = document.getElementById('schema-layer-1');
-        const conn1 = document.getElementById('schema-connector-1');
-        const layer2 = document.getElementById('schema-layer-2');
-        const conn2 = document.getElementById('schema-connector-2');
-        const layer3 = document.getElementById('schema-layer-3');
-        const ctaBanner = document.getElementById('cta-banner');
-        const ctaGlowRight = document.getElementById('cta-glow-right');
-        const ctaGlowLeft = document.getElementById('cta-glow-left');
-
-        let isExploded = false;
-        let parallaxTicking = false;
-
-        function updateParallaxChoreography() {
-            const scrollY = window.scrollY || window.pageYOffset;
-            const winH = window.innerHeight;
-
-            // Hero Ambient Glow Parallax Drift
-            if (heroOrb && scrollY < winH * 1.4) {
-                heroOrb.style.transform = `translate3d(-50%, calc(-50% + ${scrollY * 0.18}px), 0)`;
-            }
-
-            // Exploding Decomposition Schema Crossing Viewport Middle
-            if (schemaCard && layer1 && layer2 && layer3) {
-                const rect = schemaCard.getBoundingClientRect();
-                const cardMid = rect.top + rect.height * 0.5;
-                const inExplosionZone = cardMid <= winH * 0.72 && cardMid >= winH * 0.18;
-
-                if (inExplosionZone && !isExploded) {
-                    isExploded = true;
-                    layer1.style.transform = 'translateY(-10px)';
-                    layer1.style.boxShadow = '0 12px 28px -4px rgba(2, 132, 199, 0.2)';
-                    if (conn1) { conn1.style.height = '0.5rem'; conn1.style.opacity = '1'; }
-
-                    layer2.style.transform = 'scale(1.025)';
-                    layer2.style.boxShadow = '0 12px 28px -4px rgba(217, 119, 6, 0.2)';
-                    if (conn2) { conn2.style.height = '0.5rem'; conn2.style.opacity = '1'; }
-
-                    layer3.style.transform = 'translateY(10px)';
-                    layer3.style.boxShadow = '0 12px 28px -4px rgba(71, 85, 105, 0.2)';
-                } else if (!inExplosionZone && isExploded) {
-                    isExploded = false;
-                    layer1.style.transform = '';
-                    layer1.style.boxShadow = '';
-                    if (conn1) { conn1.style.height = ''; conn1.style.opacity = ''; }
-
-                    layer2.style.transform = '';
-                    layer2.style.boxShadow = '';
-                    if (conn2) { conn2.style.height = ''; conn2.style.opacity = ''; }
-
-                    layer3.style.transform = '';
-                    layer3.style.boxShadow = '';
-                }
-            }
-
-            // Bottom CTA Glow Parallax Movement
-            if (ctaBanner && ctaGlowRight && ctaGlowLeft) {
-                const ctaRect = ctaBanner.getBoundingClientRect();
-                if (ctaRect.top < winH && ctaRect.bottom > 0) {
-                    const relativeOffset = (ctaRect.top - winH * 0.5);
-                    ctaGlowRight.style.transform = `translate3d(0, ${relativeOffset * 0.08}px, 0)`;
-                    ctaGlowLeft.style.transform = `translate3d(0, ${-relativeOffset * 0.06}px, 0)`;
-                }
-            }
-
-            parallaxTicking = false;
-        }
-
-        window.addEventListener('scroll', () => {
-            if (!parallaxTicking) {
-                requestAnimationFrame(updateParallaxChoreography);
-                parallaxTicking = true;
-            }
-        }, { passive: true });
-
-        updateParallaxChoreography();
     }
 });
 </script>
