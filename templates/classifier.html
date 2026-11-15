@@ -102,7 +102,7 @@
     </div>
 
     <!-- 1-Click Quick Samples Selector -->
-    <div class="p-3.5 sm:p-5 bg-white border border-border-subtle rounded-2xl shadow-botanical">
+    <div class="taste-card p-3.5 sm:p-5 bg-white border border-border-subtle shadow-sm">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-3 mb-2.5 sm:mb-3.5">
             <span class="text-xs font-medium text-text-muted flex items-center gap-1.5">
                 <span class="material-symbols-outlined text-[16px] text-solar">auto_awesome</span>
@@ -112,7 +112,9 @@
         </div>
         <div class="flex overflow-x-auto no-scrollbar sm:grid sm:grid-cols-4 gap-2.5 pb-1 -mx-1 px-1">
             <button type="button" onclick="loadSampleImage('/static/samples/chips-bag.jpg', 'chips-bag.jpg')" class="sample-btn flex-shrink-0 w-[155px] sm:w-auto text-left p-2.5 sm:p-3 rounded-xl border border-border-subtle bg-surface hover:border-primary hover:bg-primary-light transition flex items-center gap-2.5 group">
-                <img src="/static/samples/chips-bag.jpg" alt="Chips Bag" class="w-10 h-10 sm:w-11 sm:h-11 object-cover rounded-lg border border-border-subtle flex-shrink-0">
+                <div class="taste-photo-frame w-10 h-10 sm:w-11 sm:h-11 rounded-lg flex-shrink-0">
+                    <img src="/static/samples/chips-bag.jpg" alt="Chips Bag" class="w-full h-full object-cover">
+                </div>
                 <div class="truncate">
                     <span class="block text-xs font-bold text-text-primary group-hover:text-primary truncate">Snack Wrapper</span>
                     <span class="block text-[10px] sm:text-[11px] text-solar-dark font-semibold">Composite Film</span>
@@ -120,7 +122,9 @@
             </button>
 
             <button type="button" onclick="loadSampleImage('/static/samples/sample-recyclable.jpg', 'sample-recyclable.jpg')" class="sample-btn flex-shrink-0 w-[155px] sm:w-auto text-left p-2.5 sm:p-3 rounded-xl border border-border-subtle bg-surface hover:border-primary hover:bg-primary-light transition flex items-center gap-2.5 group">
-                <img src="/static/samples/sample-recyclable.jpg" alt="Recyclable" class="w-10 h-10 sm:w-11 sm:h-11 object-cover rounded-lg border border-border-subtle flex-shrink-0">
+                <div class="taste-photo-frame w-10 h-10 sm:w-11 sm:h-11 rounded-lg flex-shrink-0">
+                    <img src="/static/samples/sample-recyclable.jpg" alt="Recyclable" class="w-full h-full object-cover">
+                </div>
                 <div class="truncate">
                     <span class="block text-xs font-bold text-text-primary group-hover:text-primary truncate">Beverage Bottle</span>
                     <span class="block text-[10px] sm:text-[11px] text-blue-700 font-semibold">PET #1 Pack</span>
@@ -128,7 +132,9 @@
             </button>
 
             <button type="button" onclick="loadSampleImage('/static/samples/food-compost.jpg', 'food-compost.jpg')" class="sample-btn flex-shrink-0 w-[155px] sm:w-auto text-left p-2.5 sm:p-3 rounded-xl border border-border-subtle bg-surface hover:border-primary hover:bg-primary-light transition flex items-center gap-2.5 group">
-                <img src="/static/samples/food-compost.jpg" alt="Compost" class="w-10 h-10 sm:w-11 sm:h-11 object-cover rounded-lg border border-border-subtle flex-shrink-0">
+                <div class="taste-photo-frame w-10 h-10 sm:w-11 sm:h-11 rounded-lg flex-shrink-0">
+                    <img src="/static/samples/food-compost.jpg" alt="Compost" class="w-full h-full object-cover">
+                </div>
                 <div class="truncate">
                     <span class="block text-xs font-bold text-text-primary group-hover:text-primary truncate">Food Scraps</span>
                     <span class="block text-[10px] sm:text-[11px] text-teal-700 font-semibold">Organic Waste</span>
@@ -136,7 +142,9 @@
             </button>
 
             <button type="button" onclick="loadSampleImage('/static/samples/garbage-bag.jpg', 'garbage-bag.jpg')" class="sample-btn flex-shrink-0 w-[155px] sm:w-auto text-left p-2.5 sm:p-3 rounded-xl border border-border-subtle bg-surface hover:border-primary hover:bg-primary-light transition flex items-center gap-2.5 group">
-                <img src="/static/samples/garbage-bag.jpg" alt="Trash Bag" class="w-10 h-10 sm:w-11 sm:h-11 object-cover rounded-lg border border-border-subtle flex-shrink-0">
+                <div class="taste-photo-frame w-10 h-10 sm:w-11 sm:h-11 rounded-lg flex-shrink-0">
+                    <img src="/static/samples/garbage-bag.jpg" alt="Trash Bag" class="w-full h-full object-cover">
+                </div>
                 <div class="truncate">
                     <span class="block text-xs font-bold text-text-primary group-hover:text-primary truncate">Garbage Bag</span>
                     <span class="block text-[10px] sm:text-[11px] text-slate-700 font-semibold">Landfill Film</span>
@@ -155,7 +163,7 @@
             <div id="visual-input-view" class="space-y-4">
                 
                 <!-- Unified Modern Mobile & Desktop Scanner Workstation -->
-                <div class="eco-card overflow-hidden border border-border-subtle shadow-botanical transition-all duration-300">
+                <div class="taste-card overflow-hidden border border-border-subtle shadow-sm transition-all duration-300">
                     
                     <!-- Scanner Top Control Strip -->
                     <div class="px-4 py-2.5 bg-surface border-b border-border-subtle flex items-center justify-between gap-2">
@@ -464,7 +472,7 @@
 
         <!-- Right: Decomposition Results (5 cols) -->
         <div class="lg:col-span-5 space-y-4">
-            <div class="eco-card p-6 sm:p-8 min-h-[480px] lg:min-h-[560px] xl:min-h-[620px] flex flex-col justify-between">
+            <div class="taste-card p-6 sm:p-8 min-h-[480px] lg:min-h-[560px] xl:min-h-[620px] flex flex-col justify-between bg-white border border-border-subtle shadow-sm">
                 <div>
                     <!-- Card Top Header -->
                     <div class="flex items-center justify-between pb-4 border-b border-border-subtle mb-4">
