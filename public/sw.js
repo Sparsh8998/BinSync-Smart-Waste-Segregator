@@ -1,5 +1,5 @@
 
-const CACHE_NAME = 'binsync-pwa-v3';
+const CACHE_NAME = 'binsync-pwa-v4';
 const STATIC_ASSETS = [
     '/',
     '/classifier',

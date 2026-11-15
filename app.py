@@ -2166,7 +2166,7 @@ def api_calendar_ics():
 @app.route('/sw.js')
 def service_worker():
     sw_code = """
-const CACHE_NAME = 'binsync-pwa-v3';
+const CACHE_NAME = 'binsync-pwa-v4';
 const STATIC_ASSETS = [
     '/',
     '/classifier',

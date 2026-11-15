@@ -205,14 +205,32 @@
             transform: translateY(-1px);
         }
 
-        /* ── taste-skill Craft & Micro-Interaction Tokens ── */
-        .taste-card {
+        /* ── Boreal Aurora & Glassmorphic Depth System ── */
+        .aurora-mesh-canvas {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+            background: radial-gradient(circle at 14% 16%, rgba(186, 230, 253, 0.5) 0%, transparent 45%),
+                        radial-gradient(circle at 86% 22%, rgba(204, 251, 241, 0.45) 0%, transparent 42%),
+                        radial-gradient(circle at 50% 68%, rgba(254, 243, 199, 0.38) 0%, transparent 48%),
+                        #F8FAFC;
+        }
+
+        .glass-card, .taste-card {
+            background: rgba(255, 255, 255, 0.85) !important;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.75) !important;
+            box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.95), 0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.02) !important;
+            border-radius: 1.25rem;
             transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
         }
-        .taste-card:hover {
+        .glass-card:hover, .taste-card:hover {
             transform: translateY(-2px);
-            box-shadow: 0 12px 28px -4px rgba(15, 23, 42, 0.08), 0 4px 8px rgba(15, 23, 42, 0.03);
-            border-color: #CBD5E1;
+            border-color: rgba(37, 99, 235, 0.3) !important;
+            box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 1), 0 16px 32px -6px rgba(15, 23, 42, 0.08), 0 6px 12px -2px rgba(15, 23, 42, 0.03) !important;
         }
         .taste-photo-frame {
             overflow: hidden;
@@ -399,11 +417,18 @@
 </head>
 <body class="bg-surface text-text-primary font-sans min-h-screen flex flex-col antialiased selection:bg-blue-100 selection:text-blue-950">
 
-<!-- Top Fixed Progress Bar -->
-<div id="scroll-progress-bar" class="fixed top-0 left-0 h-[2px] bg-primary z-[60] w-0 transition-[width] duration-75 ease-out pointer-events-none"></div>
+<!-- Top Fixed Glowing Progress Bar -->
+<div id="scroll-progress-bar" class="fixed top-0 left-0 h-[3px] bg-gradient-to-r from-primary via-teal-500 to-solar z-[100] w-0 transition-[width] duration-75 ease-out pointer-events-none shadow-[0_0_12px_rgba(37,99,235,0.6)]"></div>
+
+<!-- Ambient Boreal Aurora Mesh Canvas -->
+<div id="aurora-mesh-canvas" class="aurora-mesh-canvas fixed inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
+    <div id="ambient-orb-1" class="absolute -top-[10%] -left-[10%] w-[55vw] h-[55vw] max-w-[750px] max-h-[750px] rounded-full bg-gradient-to-br from-[#BAE6FD]/45 via-[#99F6E4]/30 to-transparent blur-[90px] transform-gpu will-change-transform"></div>
+    <div id="ambient-orb-2" class="absolute top-[35%] -right-[15%] w-[60vw] h-[60vw] max-w-[850px] max-h-[850px] rounded-full bg-gradient-to-bl from-[#FEF08A]/28 via-[#BAE6FD]/35 to-transparent blur-[110px] transform-gpu will-change-transform"></div>
+    <div id="ambient-orb-3" class="absolute -bottom-[15%] left-[20%] w-[50vw] h-[50vw] max-w-[700px] max-h-[700px] rounded-full bg-gradient-to-tr from-[#99F6E4]/35 via-[#BAE6FD]/25 to-transparent blur-[100px] transform-gpu will-change-transform"></div>
+</div>
 
 <!-- Nordic Arctic Glacier Frosted Header -->
-<header id="main-header" class="sticky top-0 z-50 transition-all duration-300 bg-white/95 backdrop-blur-md border-b border-border-subtle h-16 sm:h-20 flex items-center">
+<header id="main-header" class="sticky top-0 z-50 transition-all duration-300 bg-white/85 backdrop-blur-md border-b border-white/60 h-16 sm:h-20 flex items-center shadow-sm">
     <div class="max-w-container mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 w-full flex items-center justify-between">
         <!-- Brand Logo -->
         <a href="/" class="flex items-center gap-2.5 sm:gap-3 hover:opacity-90 transition-opacity flex-shrink-0">
@@ -446,13 +471,18 @@
                 <span class="w-6 h-6 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center">
                     C
                 </span>
-                <span class="hidden sm:inline text-xs font-bold text-text-primary">Citizen_1566d394f9</span>
+                <span class="hidden sm:inline text-xs font-bold text-text-primary">Citizen_6f0681cc57</span>
                 <span id="nav-points-pill" class="text-xs font-mono font-semibold text-primary bg-primary-light px-2 py-0.5 rounded-md">0 pts</span>
             </a>
             <a href="/logout" title="Log out" class="hidden sm:inline text-xs font-semibold text-text-muted hover:text-rose-600 px-2 py-1 transition">
                 Sign Out
             </a>
             
+
+            <!-- Web Audio Micro-Haptic Mute/Unmute Toggle -->
+            <button type="button" id="sound-toggle-btn" class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-surface-container border border-border-subtle hover:border-primary/40 text-text-secondary hover:text-primary transition flex items-center justify-center focus:outline-none" title="Toggle Sound Feedback">
+                <span class="material-symbols-outlined text-[18px]" id="sound-toggle-icon">volume_up</span>
+            </button>
 
             <!-- Mobile Hamburger Button -->
             <button type="button" id="mobile-menu-btn" class="md:hidden text-text-secondary hover:text-text-primary p-1.5 focus:outline-none rounded-xl hover:bg-surface-container" aria-label="Toggle Menu">
@@ -501,7 +531,7 @@
 </header>
 
 <!-- Main Body Slot -->
-<main class="flex-grow pb-24 md:pb-0">
+<main class="relative z-10 flex-grow pb-24 md:pb-0">
     
 <div class="max-w-container mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 py-10 md:py-16 space-y-10">
 
@@ -513,7 +543,7 @@
                 <span class="material-symbols-outlined text-[18px]">person</span>
             </span>
             <span>
-                <strong>Temporary Guest Session (Citizen_1566d394f9):</strong> Your scans, streaks, and eco-points are tracked in this browser.
+                <strong>Temporary Guest Session (Citizen_6f0681cc57):</strong> Your scans, streaks, and eco-points are tracked in this browser.
             </span>
         </div>
         <a href="/login" class="btn-primary py-2 px-5 text-xs sm:text-sm font-bold shadow-none whitespace-nowrap">
@@ -532,11 +562,11 @@
                 </div>
                 <div>
                     <div class="flex items-center gap-3 flex-wrap">
-                        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-text-primary">Citizen_1566d394f9</h1>
+                        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-text-primary">Citizen_6f0681cc57</h1>
                         <span class="text-xs sm:text-sm font-semibold text-primary bg-primary-light px-3 py-0.5 rounded-md border border-primary/20">Seedling</span>
                     </div>
                     <div class="flex items-center gap-2 mt-2 flex-wrap">
-                        <span class="text-xs text-text-muted font-mono">Citizen ID: SYNC-0606</span>
+                        <span class="text-xs text-text-muted font-mono">Citizen ID: SYNC-0688</span>
                         <span class="text-text-muted text-xs">·</span>
                         <div class="relative inline-flex items-center gap-1.5">
                             <span class="material-symbols-outlined text-teal-600 text-[16px]">groups</span>
@@ -1526,7 +1556,7 @@
             <div class="taste-card p-6 border-2 border-primary/20 space-y-4 bg-gradient-to-br from-white via-surface to-primary-light/20">
                 <div class="flex items-center justify-between">
                     <span class="text-xs font-semibold text-primary bg-primary-light px-2.5 py-0.5 rounded-md">Official Verification</span>
-                    <span class="text-[10px] font-mono text-text-muted">ID: SYNC-0606</span>
+                    <span class="text-[10px] font-mono text-text-muted">ID: SYNC-0688</span>
                 </div>
                 <div>
                     <h3 class="text-sm font-bold text-text-primary">Verified Citizen Climate Ledger</h3>
@@ -1719,15 +1749,96 @@
     }
 
     // ==========================================
-    // NORDIC GLACIER SCROLL ENGINE
+    // NATIVE WEB AUDIO MICRO-HAPTIC SYNTHESIZER
+    // ==========================================
+    let audioCtx = null;
+    let soundEnabled = localStorage.getItem('binsync_sound') !== 'off';
+
+    function initAudioContext() {
+        if (!audioCtx && (window.AudioContext || window.webkitAudioContext)) {
+            const AudioClass = window.AudioContext || window.webkitAudioContext;
+            audioCtx = new AudioClass();
+        }
+        if (audioCtx && audioCtx.state === 'suspended') {
+            audioCtx.resume().catch(() => {});
+        }
+    }
+
+    window.playMicroSound = function(type = 'pop') {
+        if (!soundEnabled) return;
+        try {
+            initAudioContext();
+            if (!audioCtx) return;
+
+            const now = audioCtx.currentTime;
+
+            if (type === 'pop') {
+                // Tactile wooden pop (80Hz -> 240Hz sweep, 35ms duration)
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(80, now);
+                osc.frequency.exponentialRampToValueAtTime(240, now + 0.035);
+                gain.gain.setValueAtTime(0.12, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.035);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now);
+                osc.stop(now + 0.035);
+            } else if (type === 'chime') {
+                // Harmonic dual crystal chime (523Hz -> 659Hz, 180ms duration)
+                const freqs = [523.25, 659.25];
+                freqs.forEach((freq, i) => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(freq, now + i * 0.07);
+                    gain.gain.setValueAtTime(0.1, now + i * 0.07);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(now + i * 0.07);
+                    osc.stop(now + 0.25);
+                });
+            }
+        } catch(e) {}
+    };
+
+    window.toggleSound = function() {
+        soundEnabled = !soundEnabled;
+        localStorage.setItem('binsync_sound', soundEnabled ? 'on' : 'off');
+        const icon = document.getElementById('sound-toggle-icon');
+        if (icon) {
+            icon.textContent = soundEnabled ? 'volume_up' : 'volume_off';
+        }
+        if (soundEnabled) window.playMicroSound('pop');
+    };
+
+    // ==========================================
+    // NORDIC GLACIER & AURORA SCROLL CHOREOGRAPHY
     // ==========================================
     document.addEventListener('DOMContentLoaded', () => {
         const progressBar = document.getElementById('scroll-progress-bar');
         const mainHeader = document.getElementById('main-header');
         const backToTopBtn = document.getElementById('back-to-top-btn');
+        const orb1 = document.getElementById('ambient-orb-1');
+        const orb2 = document.getElementById('ambient-orb-2');
+        const orb3 = document.getElementById('ambient-orb-3');
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-        // 1. Passive Scroll Handler (Progress Bar, Sticky Header Compact & Back-To-Top)
+        // Initialize sound toggle icon
+        const soundIcon = document.getElementById('sound-toggle-icon');
+        if (soundIcon) soundIcon.textContent = soundEnabled ? 'volume_up' : 'volume_off';
+
+        // Add subtle click sound to interactive buttons
+        document.body.addEventListener('click', (e) => {
+            const btn = e.target.closest('button, .btn-primary, .btn-secondary, .btn-solar, a[href]');
+            if (btn && soundEnabled && btn.id !== 'sound-toggle-btn') {
+                window.playMicroSound('pop');
+            }
+        });
+
+        // 1. Passive Scroll Handler (Progress Bar, Parallax Orbs, Sticky Header & Back-To-Top)
         let ticking = false;
         function onScroll() {
             if (!ticking) {
@@ -1735,20 +1846,27 @@
                     const scrollY = window.scrollY || window.pageYOffset;
                     const docHeight = document.documentElement.scrollHeight - window.innerHeight;
 
-                    // Progress bar
+                    // Luminous scroll progress bar
                     if (progressBar) {
                         const progress = docHeight > 0 ? (scrollY / docHeight) * 100 : 0;
                         progressBar.style.width = `${Math.min(100, Math.max(0, progress))}%`;
                     }
 
-                    // Sticky header compact elevation
+                    // Ambient Parallax Orbs Drift
+                    if (!prefersReducedMotion) {
+                        if (orb1) orb1.style.transform = `translate3d(0, ${scrollY * 0.14}px, 0)`;
+                        if (orb2) orb2.style.transform = `translate3d(0, ${-scrollY * 0.12}px, 0)`;
+                        if (orb3) orb3.style.transform = `translate3d(0, ${scrollY * 0.08}px, 0)`;
+                    }
+
+                    // Sticky header elevation & compacting
                     if (mainHeader) {
                         if (scrollY > 24) {
-                            mainHeader.classList.remove('h-20', 'bg-white/95');
-                            mainHeader.classList.add('h-16', 'bg-white/90', 'shadow-sm');
+                            mainHeader.classList.remove('h-20', 'bg-white/85');
+                            mainHeader.classList.add('h-16', 'bg-white/95', 'shadow-md');
                         } else {
-                            mainHeader.classList.remove('h-16', 'bg-white/90', 'shadow-sm');
-                            mainHeader.classList.add('h-20', 'bg-white/95');
+                            mainHeader.classList.remove('h-16', 'bg-white/95', 'shadow-md');
+                            mainHeader.classList.add('h-20', 'bg-white/85');
                         }
                     }
 
@@ -1771,6 +1889,28 @@
 
         window.addEventListener('scroll', onScroll, { passive: true });
         onScroll();
+
+        // 2. Cursor 3D Tilt Physics for Elements with [data-tilt="true"]
+        if (!prefersReducedMotion) {
+            document.addEventListener('mousemove', (e) => {
+                const tiltCard = e.target.closest('[data-tilt="true"]');
+                if (tiltCard) {
+                    const rect = tiltCard.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+                    const rotateX = (y / (rect.height / 2)) * -5;
+                    const rotateY = (x / (rect.width / 2)) * 5;
+                    tiltCard.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) translateY(-2px)`;
+                }
+            });
+
+            document.addEventListener('mouseout', (e) => {
+                const tiltCard = e.target.closest('[data-tilt="true"]');
+                if (tiltCard) {
+                    tiltCard.style.transform = '';
+                }
+            });
+        }
 
         if (backToTopBtn) {
             backToTopBtn.addEventListener('click', () => {
@@ -2266,11 +2406,11 @@
         // Citizen Name & Level
         ctx.fillStyle = '#FFFFFF';
         ctx.font = 'bold 28px Geist, Inter, sans-serif';
-        ctx.fillText('Citizen_1566d394f9', 40, 125);
+        ctx.fillText('Citizen_6f0681cc57', 40, 125);
 
         ctx.fillStyle = '#94A3B8';
         ctx.font = '13px Geist, Inter, sans-serif';
-        ctx.fillText('Citizen ID: SYNC-0606 · Global Network · Seedling', 40, 150);
+        ctx.fillText('Citizen ID: SYNC-0688 · Global Network · Seedling', 40, 150);
 
         // 3 Stat Boxes
         const statBoxes = [
@@ -2319,7 +2459,7 @@
         const canvas = document.getElementById('shareImpactCanvas');
         if (!canvas) return;
         const link = document.createElement('a');
-        link.download = `BinSync_Impact_Citizen_1566d394f9.png`;
+        link.download = `BinSync_Impact_Citizen_6f0681cc57.png`;
         link.href = canvas.toDataURL('image/png');
         link.click();
     }
@@ -2471,7 +2611,7 @@
                     <img src="/static/img/logo-icon.svg" alt="BinSync" class="w-10 h-10 rounded-xl shadow-sm">
                     <div>
                         <h2 class="text-xl font-bold text-slate-900 tracking-tight">BinSync Kitchen Sorting Guide</h2>
-                        <p class="text-xs text-slate-600 font-semibold">Household of Citizen_1566d394f9 · Global Network</p>
+                        <p class="text-xs text-slate-600 font-semibold">Household of Citizen_6f0681cc57 · Global Network</p>
                     </div>
                 </div>
                 <div class="text-right">
