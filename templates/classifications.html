@@ -16,7 +16,7 @@
     </div>
 
     <!-- Interactive 3-Step Decision Wizard Card -->
-    <div class="taste-card p-6 sm:p-9 space-y-6 border-primary/20 bg-gradient-to-br from-white via-surface to-primary-light/30">
+    <div class="taste-card glass-card p-6 sm:p-9 space-y-6 border-primary/20 bg-white/85">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-border-subtle">
             <div class="flex items-center gap-3">
                 <div class="w-12 h-12 rounded-xl bg-primary-light text-primary flex items-center justify-center font-bold">
@@ -112,7 +112,7 @@
     </div>
 
     <!-- 60-Second "Beat Wishcycling" Sorting Arcade Mini-Game -->
-    <div id="arcade-container" class="taste-card p-6 sm:p-9 space-y-6 border-2 border-primary/20 bg-gradient-to-br from-white via-surface to-primary-light/20 relative overflow-hidden shadow-sm">
+    <div id="arcade-container" class="taste-card glass-card p-6 sm:p-9 space-y-6 border-2 border-primary/20 bg-white/85 relative overflow-hidden shadow-sm">
         <!-- Ambient decorative background circles -->
         <div class="absolute -right-16 -top-16 w-64 h-64 rounded-full bg-primary/5 blur-2xl pointer-events-none"></div>
         <div class="absolute -left-16 -bottom-16 w-64 h-64 rounded-full bg-solar/5 blur-2xl pointer-events-none"></div>
@@ -285,7 +285,7 @@
 
         </div>
     </div>
-    <div class="taste-card p-6 space-y-4">
+    <div class="taste-card glass-card p-6 space-y-4">
         <div class="relative">
             <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-text-muted text-[22px]">search</span>
             <input type="text" id="taxonomy-search" list="packaging-suggestions" placeholder="Search by polymer name, packaging type, or resin code (#1, #2, #5, BOPP, Carton)…" class="w-full text-sm pl-12 pr-4 py-3.5 rounded-full border border-border-medium focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition bg-surface placeholder:text-text-muted">
@@ -318,7 +318,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="taxonomy-grid">
         
         <!-- 1. PET Bottles -->
-        <div class="tax-card taste-card p-5 space-y-3 transition hover:border-primary" data-cat="Recyclable" data-keywords="pet soda bottle plastic water beverage clear resin 1">
+        <div class="tax-card taste-card glass-card p-5 space-y-3 transition hover:border-primary" data-tilt="true" data-cat="Recyclable" data-keywords="pet soda bottle plastic water beverage clear resin 1">
             <div class="flex items-start justify-between">
                 <div>
                     <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">Pure Polymer</span>
@@ -342,7 +342,7 @@
         </div>
 
         <!-- 2. HDPE Milk Jugs -->
-        <div class="tax-card taste-card p-5 space-y-3 transition hover:border-primary" data-cat="Recyclable" data-keywords="hdpe milk jug detergent shampoo bottle opaque resin 2">
+        <div class="tax-card taste-card glass-card p-5 space-y-3 transition hover:border-primary" data-tilt="true" data-cat="Recyclable" data-keywords="hdpe milk jug detergent shampoo bottle opaque resin 2">
             <div class="flex items-start justify-between">
                 <div>
                     <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">Pure Polymer</span>
@@ -366,7 +366,7 @@
         </div>
 
         <!-- 3. PP Food Tubs -->
-        <div class="tax-card taste-card p-5 space-y-3 transition hover:border-primary" data-cat="Recyclable" data-keywords="polypropylene yogurt tub butter container takeout resin 5 pp">
+        <div class="tax-card taste-card glass-card p-5 space-y-3 transition hover:border-primary" data-tilt="true" data-cat="Recyclable" data-keywords="polypropylene yogurt tub butter container takeout resin 5 pp">
             <div class="flex items-start justify-between">
                 <div>
                     <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">Rigid Polymer</span>
@@ -390,7 +390,7 @@
         </div>
 
         <!-- 4. LDPE Soft Film & Bubble Wrap -->
-        <div class="tax-card taste-card p-5 space-y-3 transition hover:border-primary" data-cat="Drop-off" data-keywords="soft plastic bubble wrap grocery bag stretch film ldpe pe-ld resin 4">
+        <div class="tax-card taste-card glass-card p-5 space-y-3 transition hover:border-primary" data-tilt="true" data-cat="Drop-off" data-keywords="soft plastic bubble wrap grocery bag stretch film ldpe pe-ld resin 4">
             <div class="flex items-start justify-between">
                 <div>
                     <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-800 border border-amber-200">Flexible Film</span>
@@ -414,7 +414,7 @@
         </div>
 
         <!-- 5. Laminated Snack Pouch -->
-        <div class="tax-card taste-card p-5 space-y-3 transition hover:border-primary" data-cat="Drop-off" data-keywords="snack wrapper potato chips foil metalized polymer laminate bopp al">
+        <div class="tax-card taste-card glass-card p-5 space-y-3 transition hover:border-primary" data-tilt="true" data-cat="Drop-off" data-keywords="snack wrapper potato chips foil metalized polymer laminate bopp al">
             <div class="flex items-start justify-between">
                 <div>
                     <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-800 border border-amber-200">Composite Pouch</span>
@@ -438,7 +438,7 @@
         </div>
 
         <!-- 6. Tetra Pak / Beverage Cartons -->
-        <div class="tax-card taste-card p-5 space-y-3 transition hover:border-primary" data-cat="Recyclable" data-keywords="tetra pak aseptic milk carton juice box multi-layer paperboard">
+        <div class="tax-card taste-card glass-card p-5 space-y-3 transition hover:border-primary" data-tilt="true" data-cat="Recyclable" data-keywords="tetra pak aseptic milk carton juice box multi-layer paperboard">
             <div class="flex items-start justify-between">
                 <div>
                     <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">Aseptic Carton</span>
@@ -462,7 +462,7 @@
         </div>
 
         <!-- 7. Corrugated Shipping Box -->
-        <div class="tax-card taste-card p-5 space-y-3 transition hover:border-primary" data-cat="Recyclable" data-keywords="cardboard shipping box amazon carton brown paper corrugated">
+        <div class="tax-card taste-card glass-card p-5 space-y-3 transition hover:border-primary" data-tilt="true" data-cat="Recyclable" data-keywords="cardboard shipping box amazon carton brown paper corrugated">
             <div class="flex items-start justify-between">
                 <div>
                     <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">Pure Fiber</span>
@@ -486,7 +486,7 @@
         </div>
 
         <!-- 8. Greasy Pizza Box Base -->
-        <div class="tax-card taste-card p-5 space-y-3 transition hover:border-primary" data-cat="Landfill" data-keywords="greasy pizza box oil soaked liner cheese paper cardboard">
+        <div class="tax-card taste-card glass-card p-5 space-y-3 transition hover:border-primary" data-tilt="true" data-cat="Landfill" data-keywords="greasy pizza box oil soaked liner cheese paper cardboard">
             <div class="flex items-start justify-between">
                 <div>
                     <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-800 border border-slate-200">Contaminated Fiber</span>
@@ -510,7 +510,7 @@
         </div>
 
         <!-- 9. Disposable Hot Coffee Cup -->
-        <div class="tax-card taste-card p-5 space-y-3 transition hover:border-primary" data-cat="Landfill" data-keywords="paper coffee cup starbucks hot drink polyethylene liner">
+        <div class="tax-card taste-card glass-card p-5 space-y-3 transition hover:border-primary" data-tilt="true" data-cat="Landfill" data-keywords="paper coffee cup starbucks hot drink polyethylene liner">
             <div class="flex items-start justify-between">
                 <div>
                     <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-800 border border-amber-200">Plastic-Lined Fiber</span>
@@ -534,7 +534,7 @@
         </div>
 
         <!-- 10. Polystyrene Styrofoam (#6) -->
-        <div class="tax-card taste-card p-5 space-y-3 transition hover:border-primary" data-cat="Landfill" data-keywords="styrofoam eps expanded polystyrene takeout cup packaging peanut #6 ps">
+        <div class="tax-card taste-card glass-card p-5 space-y-3 transition hover:border-primary" data-tilt="true" data-cat="Landfill" data-keywords="styrofoam eps expanded polystyrene takeout cup packaging peanut #6 ps">
             <div class="flex items-start justify-between">
                 <div>
                     <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-rose-50 text-rose-800 border border-rose-200">Brittle Foam</span>
@@ -558,7 +558,7 @@
         </div>
 
         <!-- 11. Aluminum Cans & Trays -->
-        <div class="tax-card taste-card p-5 space-y-3 transition hover:border-primary" data-cat="Recyclable" data-keywords="aluminum can soda beverage foil tray tin metal infinitely recyclable">
+        <div class="tax-card taste-card glass-card p-5 space-y-3 transition hover:border-primary" data-tilt="true" data-cat="Recyclable" data-keywords="aluminum can soda beverage foil tray tin metal infinitely recyclable">
             <div class="flex items-start justify-between">
                 <div>
                     <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">Infinite Metal</span>
@@ -582,7 +582,7 @@
         </div>
 
         <!-- 12. Household Batteries & E-Waste -->
-        <div class="tax-card taste-card p-5 space-y-3 transition hover:border-primary" data-cat="Drop-off" data-keywords="battery lithium alkaline aa aaa ewaste fire hazard electronics">
+        <div class="tax-card taste-card glass-card p-5 space-y-3 transition hover:border-primary" data-tilt="true" data-cat="Drop-off" data-keywords="battery lithium alkaline aa aaa ewaste fire hazard electronics">
             <div class="flex items-start justify-between">
                 <div>
                     <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-rose-50 text-rose-800 border border-rose-200">Fire Hazard</span>
@@ -984,6 +984,9 @@
         if (!arcadeActive || !arcadeCurrentItem) return;
 
         const isCorrect = (selectedBin === arcadeCurrentItem.target);
+        if (window.playMicroSound) {
+            window.playMicroSound(isCorrect ? 'pop' : 'pop');
+        }
 
         if (isCorrect) {
             arcadeStreak++;
@@ -1025,6 +1028,9 @@
     function endArcadeGame() {
         arcadeActive = false;
         if (arcadeTimerId) clearInterval(arcadeTimerId);
+        if (window.playMicroSound) {
+            window.playMicroSound('chime');
+        }
 
         arcadePlayScreen.classList.add('hidden');
         arcadeOverScreen.classList.remove('hidden');

@@ -111,8 +111,8 @@
             <span class="text-[11px] sm:text-xs text-text-muted">Swipe or click any sample to test decomposition instantly</span>
         </div>
         <div class="flex overflow-x-auto no-scrollbar sm:grid sm:grid-cols-4 gap-2.5 pb-1 -mx-1 px-1">
-            <button type="button" onclick="loadSampleImage('/static/samples/chips-bag.jpg', 'chips-bag.jpg')" class="sample-btn flex-shrink-0 w-[155px] sm:w-auto text-left p-2.5 sm:p-3 rounded-xl border border-border-subtle bg-surface hover:border-primary hover:bg-primary-light transition flex items-center gap-2.5 group">
-                <div class="taste-photo-frame w-10 h-10 sm:w-11 sm:h-11 rounded-lg flex-shrink-0">
+            <button type="button" data-tilt="true" onclick="loadSampleImage('/static/samples/chips-bag.jpg', 'chips-bag.jpg')" class="sample-btn flex-shrink-0 w-[155px] sm:w-auto text-left p-2.5 sm:p-3 rounded-xl border border-white/60 bg-white/80 backdrop-blur-md hover:border-primary hover:bg-primary-light transition flex items-center gap-2.5 group shadow-sm">
+                <div class="taste-photo-frame w-10 h-10 sm:w-11 sm:h-11 rounded-lg flex-shrink-0 shadow-sm">
                     <img src="/static/samples/chips-bag.jpg" alt="Chips Bag" class="w-full h-full object-cover">
                 </div>
                 <div class="truncate">
@@ -121,8 +121,8 @@
                 </div>
             </button>
 
-            <button type="button" onclick="loadSampleImage('/static/samples/sample-recyclable.jpg', 'sample-recyclable.jpg')" class="sample-btn flex-shrink-0 w-[155px] sm:w-auto text-left p-2.5 sm:p-3 rounded-xl border border-border-subtle bg-surface hover:border-primary hover:bg-primary-light transition flex items-center gap-2.5 group">
-                <div class="taste-photo-frame w-10 h-10 sm:w-11 sm:h-11 rounded-lg flex-shrink-0">
+            <button type="button" data-tilt="true" onclick="loadSampleImage('/static/samples/sample-recyclable.jpg', 'sample-recyclable.jpg')" class="sample-btn flex-shrink-0 w-[155px] sm:w-auto text-left p-2.5 sm:p-3 rounded-xl border border-white/60 bg-white/80 backdrop-blur-md hover:border-primary hover:bg-primary-light transition flex items-center gap-2.5 group shadow-sm">
+                <div class="taste-photo-frame w-10 h-10 sm:w-11 sm:h-11 rounded-lg flex-shrink-0 shadow-sm">
                     <img src="/static/samples/sample-recyclable.jpg" alt="Recyclable" class="w-full h-full object-cover">
                 </div>
                 <div class="truncate">
@@ -131,8 +131,8 @@
                 </div>
             </button>
 
-            <button type="button" onclick="loadSampleImage('/static/samples/food-compost.jpg', 'food-compost.jpg')" class="sample-btn flex-shrink-0 w-[155px] sm:w-auto text-left p-2.5 sm:p-3 rounded-xl border border-border-subtle bg-surface hover:border-primary hover:bg-primary-light transition flex items-center gap-2.5 group">
-                <div class="taste-photo-frame w-10 h-10 sm:w-11 sm:h-11 rounded-lg flex-shrink-0">
+            <button type="button" data-tilt="true" onclick="loadSampleImage('/static/samples/food-compost.jpg', 'food-compost.jpg')" class="sample-btn flex-shrink-0 w-[155px] sm:w-auto text-left p-2.5 sm:p-3 rounded-xl border border-white/60 bg-white/80 backdrop-blur-md hover:border-primary hover:bg-primary-light transition flex items-center gap-2.5 group shadow-sm">
+                <div class="taste-photo-frame w-10 h-10 sm:w-11 sm:h-11 rounded-lg flex-shrink-0 shadow-sm">
                     <img src="/static/samples/food-compost.jpg" alt="Compost" class="w-full h-full object-cover">
                 </div>
                 <div class="truncate">
@@ -141,8 +141,8 @@
                 </div>
             </button>
 
-            <button type="button" onclick="loadSampleImage('/static/samples/garbage-bag.jpg', 'garbage-bag.jpg')" class="sample-btn flex-shrink-0 w-[155px] sm:w-auto text-left p-2.5 sm:p-3 rounded-xl border border-border-subtle bg-surface hover:border-primary hover:bg-primary-light transition flex items-center gap-2.5 group">
-                <div class="taste-photo-frame w-10 h-10 sm:w-11 sm:h-11 rounded-lg flex-shrink-0">
+            <button type="button" data-tilt="true" onclick="loadSampleImage('/static/samples/garbage-bag.jpg', 'garbage-bag.jpg')" class="sample-btn flex-shrink-0 w-[155px] sm:w-auto text-left p-2.5 sm:p-3 rounded-xl border border-white/60 bg-white/80 backdrop-blur-md hover:border-primary hover:bg-primary-light transition flex items-center gap-2.5 group shadow-sm">
+                <div class="taste-photo-frame w-10 h-10 sm:w-11 sm:h-11 rounded-lg flex-shrink-0 shadow-sm">
                     <img src="/static/samples/garbage-bag.jpg" alt="Trash Bag" class="w-full h-full object-cover">
                 </div>
                 <div class="truncate">
@@ -1707,6 +1707,7 @@
     function renderAnalysis(data) {
         if (!data) return;
         currentAnalyzedData = data;
+        if (window.playMicroSound) window.playMicroSound('chime');
         if (resultMeta) resultMeta.classList.remove('hidden');
         if (resultItemName) resultItemName.textContent = data.item_name || "Packaging Item";
         if (resultMaterial) resultMaterial.textContent = data.material || "Multi-Layer Composite";
@@ -1970,7 +1971,8 @@
         components.forEach((comp, idx) => {
             const card = document.createElement('div');
             card.id = `layer-card-${idx}`;
-            card.className = "layer-card animate-fade-up p-4 rounded-xl border border-border-subtle bg-white shadow-sm space-y-2.5 transition duration-200 hover:border-primary";
+            card.className = "layer-card animate-fade-up glass-card p-4 rounded-xl border border-white/70 shadow-sm space-y-2.5 transition duration-200 hover:border-primary/50";
+            card.setAttribute('data-tilt', 'true');
             card.style.animationDelay = `${idx * 110}ms`;
             card.style.animationFillMode = 'both';
             

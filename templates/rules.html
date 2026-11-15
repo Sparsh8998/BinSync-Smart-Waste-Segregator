@@ -806,7 +806,8 @@
                 if (!nearestVisible) nearestVisible = fac;
 
                 const card = document.createElement('div');
-                card.className = "facility-card taste-card p-5 space-y-3 transition hover:border-primary cursor-pointer group shadow-sm";
+                card.className = "facility-card glass-card p-5 space-y-3 transition hover:border-primary/50 cursor-pointer group shadow-sm";
+                card.setAttribute('data-tilt', 'true');
                 card.style.transitionDelay = `${(visibleCount % 4) * 80}ms`;
                 card.dataset.id = fac.id;
                 card.dataset.lat = fac.lat;
