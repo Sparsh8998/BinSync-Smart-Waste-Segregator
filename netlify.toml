@@ -7,12 +7,116 @@
 
 [functions]
   directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+# API routes to Netlify Serverless Functions
+[[redirects]]
+  from = "/api/classify"
+  to = "/.netlify/functions/classify"
+  status = 200
+
+[[redirects]]
+  from = "/api/lookup"
+  to = "/.netlify/functions/lookup"
+  status = 200
+
+[[redirects]]
+  from = "/api/depots"
+  to = "/.netlify/functions/depots"
+  status = 200
+
+[[redirects]]
+  from = "/api/depots/*"
+  to = "/.netlify/functions/depots"
+  status = 200
+
+[[redirects]]
+  from = "/api/bylaws"
+  to = "/.netlify/functions/bylaws"
+  status = 200
+
+[[redirects]]
+  from = "/api/ask_followup"
+  to = "/.netlify/functions/ask_followup"
+  status = 200
+
+[[redirects]]
+  from = "/api/audit_bin"
+  to = "/.netlify/functions/audit_bin"
+  status = 200
+
+[[redirects]]
+  from = "/api/verify_correction"
+  to = "/.netlify/functions/verify_correction"
+  status = 200
+
+[[redirects]]
+  from = "/api/claim_upcycle"
+  to = "/.netlify/functions/claim_upcycle"
+  status = 200
+
+[[redirects]]
+  from = "/api/log_audit_items"
+  to = "/.netlify/functions/log_audit_items"
+  status = 200
+
+[[redirects]]
+  from = "/api/scan/*"
+  to = "/.netlify/functions/scan"
+  status = 200
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+# Route Clean URLs
+[[redirects]]
+  from = "/classifier"
+  to = "/classifier/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/dashboard"
+  to = "/dashboard/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/leaderboard"
+  to = "/leaderboard/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/classifications"
+  to = "/classifications/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/rules"
+  to = "/rules/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/login"
+  to = "/login/index.html"
+  status = 200
+
+# Single Page App fallback
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
 
 # Netlify Edge CDN caching headers for static assets
 [[headers]]
   for = "/static/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
 
 [[headers]]
   for = "/*"

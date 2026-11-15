@@ -1,0 +1,12 @@
+{
+  "name": "binsync-waste-segregator",
+  "version": "1.0.0",
+  "description": "BinSync Smart Waste & Packaging Segregator",
+  "type": "module",
+  "scripts": {
+    "build": "python freeze_site.py"
+  },
+  "dependencies": {
+    "@netlify/functions": "^2.8.2"
+  }
+}

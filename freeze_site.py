@@ -58,6 +58,10 @@ def freeze():
 /api/bylaws        /.netlify/functions/bylaws   200
 /api/ask_followup  /.netlify/functions/ask_followup 200
 /api/audit_bin     /.netlify/functions/audit_bin 200
+/api/verify_correction /.netlify/functions/verify_correction 200
+/api/claim_upcycle /.netlify/functions/claim_upcycle 200
+/api/log_audit_items /.netlify/functions/log_audit_items 200
+/api/scan/*        /.netlify/functions/scan     200
 /api/*             /.netlify/functions/:splat   200
 
 # Route Clean URLs
