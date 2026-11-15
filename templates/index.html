@@ -5,47 +5,44 @@
 {% block content %}
 <div class="space-y-0">
 
-    <!-- Direct Action Hero Section (Nordic Glacier Search Style) -->
-    <section class="relative pt-12 pb-20 md:pt-20 md:pb-28 overflow-hidden bg-gradient-to-b from-[#EFF6FF]/70 via-[#F8FAFC] to-[#F8FAFC]">
-        <!-- Soft glacier ambient glow with scroll parallax -->
-        <div id="hero-glacier-orb" class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-[#93C5FD]/20 rounded-full blur-3xl pointer-events-none glacier-float transition-transform duration-100 ease-out"></div>
-
+    <!-- Direct Action Hero Section -->
+    <section class="relative pt-12 pb-20 md:pt-16 md:pb-24 overflow-hidden bg-surface">
         <div class="max-w-container mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 relative z-10 text-center">
             
-            <!-- Confident Headline (No Kicker/Eyebrow per craft floor) -->
-            <h1 class="text-3xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-8xl 2xl:text-[5.5rem] font-black tracking-tight text-text-primary leading-[1.08] max-w-5xl xl:max-w-6xl 2xl:max-w-7xl mx-auto">
+            <!-- Confident Headline -->
+            <h1 class="text-3xl sm:text-5xl md:text-6xl font-semibold tracking-tight text-text-primary leading-[1.12] max-w-4xl mx-auto">
                 Sort packaging with precision.<br class="hidden sm:inline"/>
-                <span class="text-[#2563EB]" style="color: #2563EB !important;">Protect the planet we love.</span>
+                <span class="text-primary">Protect the planet we share.</span>
             </h1>
 
-            <p class="text-sm sm:text-lg lg:text-2xl 2xl:text-3xl text-text-secondary max-w-3xl lg:max-w-4xl 2xl:max-w-5xl mx-auto mt-4 sm:mt-6 leading-relaxed font-normal px-2">
-                Wishcycling contaminates circular recycling streams. <span class="text-[#2563EB] font-semibold">BinSync isolates every composite packaging layer in seconds</span> to give you exact municipal sorting directions.
+            <p class="text-base sm:text-lg text-text-secondary max-w-2xl mx-auto mt-4 sm:mt-5 leading-relaxed font-normal">
+                Wishcycling contaminates recycling streams. BinSync isolates every packaging layer in seconds to give you exact municipal sorting directions.
             </p>
 
             <!-- Center-Stage Scanner Box -->
-            <div class="mt-8 sm:mt-12 w-full max-w-3xl lg:max-w-4xl xl:max-w-5xl 2xl:max-w-6xl mx-auto">
-                <div class="eco-card p-4 sm:p-8 lg:p-10 border-2 border-dashed border-[#CBD5E1] hover:border-primary transition-all duration-300 relative group text-left">
+            <div class="mt-8 sm:mt-10 w-full max-w-3xl lg:max-w-4xl mx-auto">
+                <div class="eco-card p-5 sm:p-8 border border-border-subtle hover:border-border-medium transition-colors text-left">
                     
                     <!-- Search/Scan Action Bar -->
-                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 sm:gap-5 pb-5 border-b border-border-subtle">
-                        <div class="flex items-center gap-3 sm:gap-4">
-                            <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-primary-light text-primary flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
-                                <span class="material-symbols-outlined text-[28px] sm:text-[32px] text-[#2563EB]">document_scanner</span>
+                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 pb-5 border-b border-border-subtle">
+                        <div class="flex items-center gap-3">
+                            <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-primary-light text-primary flex items-center justify-center flex-shrink-0">
+                                <span class="material-symbols-outlined text-[24px] sm:text-[28px] text-primary">document_scanner</span>
                             </div>
                             <div>
-                                <h2 class="text-base sm:text-xl font-bold text-text-primary">Inspect packaging to <span class="text-[#2563EB]">sort</span></h2>
-                                <p class="text-xs sm:text-sm text-text-muted">Instant multi-layer decomposition</p>
+                                <h2 class="text-base sm:text-lg font-semibold text-text-primary">Inspect packaging to sort</h2>
+                                <p class="text-xs sm:text-sm text-text-muted">Multi-layer physical decomposition</p>
                             </div>
                         </div>
 
                         <!-- Direct Launch Buttons -->
                         <div class="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
-                            <a href="{{ url_for('classifier') }}" class="btn-primary flex-1 sm:flex-none py-2.5 sm:py-3 px-4 sm:px-6 text-xs sm:text-sm font-bold flex items-center justify-center gap-2 shadow-sm">
-                                <span class="material-symbols-outlined text-[18px] sm:text-[20px]">photo_camera</span>
+                            <a href="{{ url_for('classifier') }}" class="btn-primary flex-1 sm:flex-none py-2.5 px-4 text-xs sm:text-sm font-semibold flex items-center justify-center gap-2">
+                                <span class="material-symbols-outlined text-[18px]">photo_camera</span>
                                 <span>Camera Scan</span>
                             </a>
-                            <a href="{{ url_for('classifier') }}" class="btn-secondary flex-1 sm:flex-none py-2.5 sm:py-3 px-4 sm:px-5 text-xs sm:text-sm font-bold flex items-center justify-center gap-2">
-                                <span class="material-symbols-outlined text-[18px] sm:text-[20px]">upload_file</span>
+                            <a href="{{ url_for('classifier') }}" class="btn-secondary flex-1 sm:flex-none py-2.5 px-4 text-xs sm:text-sm font-semibold flex items-center justify-center gap-2">
+                                <span class="material-symbols-outlined text-[18px]">upload_file</span>
                                 <span>Browse</span>
                             </a>
                         </div>
@@ -53,57 +50,57 @@
 
                     <!-- Instant Text & Barcode Query Bar -->
                     <div class="py-4 border-b border-border-subtle">
-                        <form action="{{ url_for('classifier') }}" method="GET" class="flex flex-col sm:flex-row gap-2.5 sm:gap-3">
+                        <form action="{{ url_for('classifier') }}" method="GET" class="flex flex-col sm:flex-row gap-2.5">
                             <div class="relative flex-1">
-                                <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-text-muted text-[22px]">search</span>
-                                <input type="text" name="q" list="packaging-suggestions" placeholder="Or type item name: coffee cup, pizza box, milk carton…" class="w-full text-xs sm:text-base pl-11 pr-4 py-3 sm:py-3.5 rounded-full border border-border-medium focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 bg-surface">
+                                <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-text-muted text-[20px]">search</span>
+                                <input type="text" name="q" list="packaging-suggestions" placeholder="Or type item: coffee cup, pizza box, milk carton…" class="w-full text-sm pl-10 pr-4 py-2.5 sm:py-3 rounded-lg border border-border-medium focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary bg-surface">
                             </div>
-                            <button type="submit" class="btn-primary py-3 sm:py-3.5 px-6 text-xs sm:text-sm font-bold whitespace-nowrap">
+                            <button type="submit" class="btn-primary py-2.5 sm:py-3 px-5 text-xs sm:text-sm font-semibold whitespace-nowrap">
                                 Decompose &rarr;
                             </button>
                         </form>
                     </div>
 
-                    <!-- 1-Click Instant Demo Sample Chips -->
-                    <div class="pt-5 sm:pt-6">
-                        <div class="flex items-center justify-between mb-3 text-xs sm:text-sm">
-                            <span class="font-semibold text-text-secondary flex items-center gap-1.5 sm:gap-2">
-                                <span class="material-symbols-outlined text-[16px] sm:text-[18px] text-[#2563EB]">bolt</span>
-                                <span>Test with <span class="text-[#2563EB] font-bold">one-click demo</span> items:</span>
+                    <!-- Instant Sample Chips -->
+                    <div class="pt-4 sm:pt-5">
+                        <div class="flex items-center justify-between mb-3 text-xs">
+                            <span class="font-medium text-text-secondary flex items-center gap-1.5">
+                                <span class="material-symbols-outlined text-[16px] text-primary">science</span>
+                                <span>Sample packaging items:</span>
                             </span>
-                            <span class="text-text-muted text-[11px] sm:text-xs">Instant AI classification</span>
+                            <span class="text-text-muted text-[11px]">Click to inspect</span>
                         </div>
 
                         <div class="flex overflow-x-auto no-scrollbar sm:grid sm:grid-cols-4 gap-2.5 pb-1 -mx-1 px-1">
-                            <a href="{{ url_for('classifier') }}?sample=chips-bag.jpg" class="flex-shrink-0 w-[155px] sm:w-auto p-2.5 sm:p-3 rounded-xl border border-border-subtle bg-surface-container hover:bg-primary-light hover:border-primary transition flex items-center gap-2.5 sm:gap-3 group/chip">
-                                <img src="/static/samples/chips-bag.jpg" alt="Snack Pouch" class="w-10 h-10 sm:w-11 sm:h-11 object-cover rounded-xl border border-border-subtle flex-shrink-0">
+                            <a href="{{ url_for('classifier') }}?sample=chips-bag.jpg" class="flex-shrink-0 w-[155px] sm:w-auto p-2.5 rounded-lg border border-border-subtle bg-surface-container hover:bg-primary-light hover:border-primary transition flex items-center gap-2.5 group/chip">
+                                <img src="/static/samples/chips-bag.jpg" alt="Snack Pouch" class="w-10 h-10 object-cover rounded-lg border border-border-subtle flex-shrink-0">
                                 <div class="truncate text-left">
-                                    <span class="block text-xs sm:text-sm font-bold text-text-primary group-hover/chip:text-primary truncate">Snack Pouch</span>
-                                    <span class="block text-[10px] sm:text-[11px] text-solar-dark font-semibold">Composite</span>
+                                    <span class="block text-xs font-semibold text-text-primary group-hover/chip:text-primary truncate">Snack Pouch</span>
+                                    <span class="block text-[11px] text-solar-dark font-medium">Composite</span>
                                 </div>
                             </a>
 
-                            <a href="{{ url_for('classifier') }}?sample=sample-recyclable.jpg" class="flex-shrink-0 w-[155px] sm:w-auto p-2.5 sm:p-3 rounded-xl border border-border-subtle bg-surface-container hover:bg-primary-light hover:border-primary transition flex items-center gap-2.5 sm:gap-3 group/chip">
-                                <img src="/static/samples/sample-recyclable.jpg" alt="Drink Pack" class="w-10 h-10 sm:w-11 sm:h-11 object-cover rounded-xl border border-border-subtle flex-shrink-0">
+                            <a href="{{ url_for('classifier') }}?sample=sample-recyclable.jpg" class="flex-shrink-0 w-[155px] sm:w-auto p-2.5 rounded-lg border border-border-subtle bg-surface-container hover:bg-primary-light hover:border-primary transition flex items-center gap-2.5 group/chip">
+                                <img src="/static/samples/sample-recyclable.jpg" alt="Drink Pack" class="w-10 h-10 object-cover rounded-lg border border-border-subtle flex-shrink-0">
                                 <div class="truncate text-left">
-                                    <span class="block text-xs sm:text-sm font-bold text-text-primary group-hover/chip:text-primary truncate">Drink Pack</span>
-                                    <span class="block text-[10px] sm:text-[11px] text-blue-700 font-semibold">Recyclable</span>
+                                    <span class="block text-xs font-semibold text-text-primary group-hover/chip:text-primary truncate">Drink Pack</span>
+                                    <span class="block text-[11px] text-blue-700 font-medium">Recyclable</span>
                                 </div>
                             </a>
 
-                            <a href="{{ url_for('classifier') }}?sample=food-compost.jpg" class="flex-shrink-0 w-[155px] sm:w-auto p-2.5 sm:p-3 rounded-xl border border-border-subtle bg-surface-container hover:bg-primary-light hover:border-primary transition flex items-center gap-2.5 sm:gap-3 group/chip">
-                                <img src="/static/samples/food-compost.jpg" alt="Organics" class="w-10 h-10 sm:w-11 sm:h-11 object-cover rounded-xl border border-border-subtle flex-shrink-0">
+                            <a href="{{ url_for('classifier') }}?sample=food-compost.jpg" class="flex-shrink-0 w-[155px] sm:w-auto p-2.5 rounded-lg border border-border-subtle bg-surface-container hover:bg-primary-light hover:border-primary transition flex items-center gap-2.5 group/chip">
+                                <img src="/static/samples/food-compost.jpg" alt="Organics" class="w-10 h-10 object-cover rounded-lg border border-border-subtle flex-shrink-0">
                                 <div class="truncate text-left">
-                                    <span class="block text-xs sm:text-sm font-bold text-text-primary group-hover/chip:text-primary truncate">Food Scraps</span>
-                                    <span class="block text-[10px] sm:text-[11px] text-teal-700 font-semibold">Compost</span>
+                                    <span class="block text-xs font-semibold text-text-primary group-hover/chip:text-primary truncate">Food Scraps</span>
+                                    <span class="block text-[11px] text-teal-700 font-medium">Compost</span>
                                 </div>
                             </a>
 
-                            <a href="{{ url_for('classifier') }}?sample=garbage-bag.jpg" class="flex-shrink-0 w-[155px] sm:w-auto p-2.5 sm:p-3 rounded-xl border border-border-subtle bg-surface-container hover:bg-primary-light hover:border-primary transition flex items-center gap-2.5 sm:gap-3 group/chip">
-                                <img src="/static/samples/garbage-bag.jpg" alt="Trash Bag" class="w-10 h-10 sm:w-11 sm:h-11 object-cover rounded-xl border border-border-subtle flex-shrink-0">
+                            <a href="{{ url_for('classifier') }}?sample=garbage-bag.jpg" class="flex-shrink-0 w-[155px] sm:w-auto p-2.5 rounded-lg border border-border-subtle bg-surface-container hover:bg-primary-light hover:border-primary transition flex items-center gap-2.5 group/chip">
+                                <img src="/static/samples/garbage-bag.jpg" alt="Trash Bag" class="w-10 h-10 object-cover rounded-lg border border-border-subtle flex-shrink-0">
                                 <div class="truncate text-left">
-                                    <span class="block text-xs sm:text-sm font-bold text-text-primary group-hover/chip:text-primary truncate">Trash Film</span>
-                                    <span class="block text-[10px] sm:text-[11px] text-slate-700 font-semibold">Landfill</span>
+                                    <span class="block text-xs font-semibold text-text-primary group-hover/chip:text-primary truncate">Trash Film</span>
+                                    <span class="block text-[11px] text-slate-700 font-medium">Landfill</span>
                                 </div>
                             </a>
                         </div>
@@ -113,35 +110,35 @@
             </div>
 
             <!-- Tangible Impact Live Counters Strip -->
-            <div class="mt-16 w-full max-w-5xl lg:max-w-6xl xl:max-w-7xl 2xl:max-w-[1500px] mx-auto grid grid-cols-1 sm:grid-cols-3 gap-6">
-                <div class="eco-card p-8 sm:p-10 text-center border-primary/20 hover:border-primary transition">
-                    <div class="counter-ticker text-4xl sm:text-5xl lg:text-6xl font-black text-[#2563EB] tracking-tight font-mono" data-count-target="{{ stats.wrappers_diverted }}">
+            <div class="mt-12 w-full max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
+                <div class="eco-card p-6 text-center border-border-subtle">
+                    <div class="counter-ticker text-3xl sm:text-4xl font-semibold text-primary tracking-tight font-mono tabular-nums" data-count-target="{{ stats.wrappers_diverted }}">
                         0
                     </div>
-                    <div class="text-xs sm:text-sm font-bold text-text-secondary uppercase tracking-wider mt-2">
+                    <div class="text-xs font-semibold text-text-secondary mt-1.5">
                         Packages Diverted
                     </div>
-                    <p class="text-xs sm:text-sm text-text-muted mt-2">Logged and verified through circular routing</p>
+                    <p class="text-xs text-text-muted mt-1">Logged through circular routing</p>
                 </div>
 
-                <div class="eco-card p-8 sm:p-10 text-center border-primary/30">
-                    <div class="counter-ticker text-4xl sm:text-5xl lg:text-6xl font-black text-[#2563EB] tracking-tight font-mono" data-count-target="{{ stats.contamination_prevented }}">
+                <div class="eco-card p-6 text-center border-border-subtle">
+                    <div class="counter-ticker text-3xl sm:text-4xl font-semibold text-primary tracking-tight font-mono tabular-nums" data-count-target="{{ stats.contamination_prevented }}">
                         0
                     </div>
-                    <div class="text-xs sm:text-sm font-bold text-[#2563EB] uppercase tracking-wider mt-2">
+                    <div class="text-xs font-semibold text-text-secondary mt-1.5">
                         Contaminations Prevented
                     </div>
-                    <p class="text-xs sm:text-sm text-text-muted mt-2">Municipal blue bins protected from spoilage</p>
+                    <p class="text-xs text-text-muted mt-1">Curbside bins protected</p>
                 </div>
 
-                <div class="eco-card p-8 sm:p-10 text-center">
-                    <div class="text-4xl sm:text-5xl lg:text-6xl font-black text-text-primary tracking-tight font-mono">
-                        <span class="counter-ticker" data-count-target="{{ stats.landfill_avoided_tons }}">0</span> <span class="text-xl sm:text-2xl font-normal text-text-muted">Tons</span>
+                <div class="eco-card p-6 text-center border-border-subtle">
+                    <div class="text-3xl sm:text-4xl font-semibold text-text-primary tracking-tight font-mono tabular-nums">
+                        <span class="counter-ticker" data-count-target="{{ stats.landfill_avoided_tons }}">0</span> <span class="text-base font-normal text-text-muted">Tons</span>
                     </div>
-                    <div class="text-xs sm:text-sm font-bold text-text-secondary uppercase tracking-wider mt-2">
+                    <div class="text-xs font-semibold text-text-secondary mt-1.5">
                         Landfill Avoided
                     </div>
-                    <p class="text-xs sm:text-sm text-text-muted mt-2">Audited carbon savings diverted into clean streams</p>
+                    <p class="text-xs text-text-muted mt-1">Audited carbon savings</p>
                 </div>
             </div>
 

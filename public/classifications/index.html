@@ -168,33 +168,33 @@
         .btn-primary {
             background-color: #2563EB;
             color: #FFFFFF !important;
-            padding: 0.75rem 1.6rem;
-            border-radius: 9999px;
-            font-weight: 700;
+            padding: 0.65rem 1.4rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: background-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
             cursor: pointer;
             min-height: 44px;
             border: 1px solid transparent;
         }
         .btn-primary:hover {
             background-color: #1D4ED8;
-            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
             transform: translateY(-1px);
         }
         .btn-secondary {
             background-color: #FFFFFF;
             color: #0F172A;
-            border: 1.5px solid #CBD5E1;
-            padding: 0.75rem 1.6rem;
-            border-radius: 9999px;
+            border: 1px solid #CBD5E1;
+            padding: 0.65rem 1.4rem;
+            border-radius: 0.75rem;
             font-weight: 600;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
             cursor: pointer;
             min-height: 44px;
         }
@@ -207,19 +207,19 @@
         .btn-solar {
             background-color: #F59E0B;
             color: #FFFFFF;
-            padding: 0.75rem 1.6rem;
-            border-radius: 9999px;
-            font-weight: 700;
+            padding: 0.65rem 1.4rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: background-color 0.15s ease, transform 0.15s ease;
             cursor: pointer;
             min-height: 44px;
         }
         .btn-solar:hover {
             background-color: #D97706;
-            box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35);
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.25);
             transform: translateY(-1px);
         }
 
@@ -259,52 +259,12 @@
             pointer-events-none;
         }
 
-        @keyframes flame-pulse {
-            0%, 100% { transform: scale(1) rotate(0deg); filter: drop-shadow(0 0 2px rgba(245, 158, 11, 0.4)); }
-            50% { transform: scale(1.14) rotate(-3deg); filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.8)); }
-        }
-        .flame-flicker {
-            display: inline-block;
-            animation: flame-pulse 1.8s infinite ease-in-out;
-            transform-origin: bottom center;
-        }
-
-        @keyframes glacier-drift {
-            0%, 100% { transform: translate(-50%, -50%) scale(1); }
-            50% { transform: translate(-48%, -52%) scale(1.08); }
-        }
-        .glacier-float {
-            animation: glacier-drift 16s infinite ease-in-out;
-        }
-
         @keyframes subtle-pulse {
             0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.65; transform: scale(0.97); }
+            50% { opacity: 0.75; transform: scale(0.98); }
         }
         .pulse-subtle {
             animation: subtle-pulse 2.4s infinite ease-in-out;
-        }
-
-        @keyframes spring-pop {
-            0% { transform: scale(0.8); opacity: 0; }
-            40% { transform: scale(1.22); }
-            70% { transform: scale(0.95); }
-            100% { transform: scale(1); opacity: 1; }
-        }
-        .animate-pop {
-            animation: spring-pop 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        @keyframes golden-glow-pulse {
-            0%, 100% {
-                box-shadow: 0 0 15px rgba(245, 158, 11, 0.2), 0 4px 16px rgba(0, 0, 0, 0.05);
-            }
-            50% {
-                box-shadow: 0 0 30px rgba(245, 158, 11, 0.45), 0 8px 24px rgba(245, 158, 11, 0.15);
-            }
-        }
-        .golden-glow-pulse {
-            animation: golden-glow-pulse 3s infinite ease-in-out;
         }
 
         /* ── Universal Scroll-Reveal Directions ── */
@@ -390,41 +350,41 @@
 </head>
 <body class="bg-surface text-text-primary font-sans min-h-screen flex flex-col antialiased selection:bg-blue-100 selection:text-blue-950">
 
-<!-- Top Fixed Glacier Scroll Progress Bar -->
-<div id="scroll-progress-bar" class="fixed top-0 left-0 h-[3px] bg-gradient-to-r from-primary via-[#38BDF8] to-solar z-[60] w-0 transition-[width] duration-75 ease-out pointer-events-none"></div>
+<!-- Top Fixed Progress Bar -->
+<div id="scroll-progress-bar" class="fixed top-0 left-0 h-[2px] bg-primary z-[60] w-0 transition-[width] duration-75 ease-out pointer-events-none"></div>
 
 <!-- Nordic Arctic Glacier Frosted Header -->
 <header id="main-header" class="sticky top-0 z-50 transition-all duration-300 bg-white/95 backdrop-blur-md border-b border-border-subtle h-16 sm:h-20 flex items-center">
     <div class="max-w-container mx-auto px-4 sm:px-8 lg:px-12 xl:px-16 w-full flex items-center justify-between">
-        <!-- Brand Logo with Climate Intelligence Identity -->
+        <!-- Brand Logo -->
         <a href="/" class="flex items-center gap-2.5 sm:gap-3 hover:opacity-90 transition-opacity flex-shrink-0">
-            <img src="/static/img/logo-icon.svg" alt="BinSync Logo" class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl shadow-sm">
+            <img src="/static/img/logo-icon.svg" alt="BinSync Logo" class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg shadow-sm">
             <div class="flex flex-col">
-                <span class="text-lg sm:text-xl font-black tracking-tight text-text-primary leading-none">Bin<span class="text-primary">Sync</span></span>
-                <span class="text-[8px] sm:text-[9px] font-bold text-primary tracking-widest uppercase mt-0.5">CLIMATE INTELLIGENCE</span>
+                <span class="text-lg sm:text-xl font-bold tracking-tight text-text-primary leading-none">Bin<span class="text-primary">Sync</span></span>
+                <span class="text-[9px] font-medium text-text-muted tracking-wider mt-0.5">Packaging Intelligence</span>
             </div>
         </a>
 
-        <!-- Desktop Navigation Tabs (Nordic Glacier Capsule Tabs) -->
-        <nav class="hidden md:flex items-center gap-1.5 text-sm font-semibold">
-            <a href="/" class="px-4 py-2 rounded-full transition-all text-text-secondary hover:text-text-primary hover:bg-surface-container">
+        <!-- Desktop Navigation Tabs -->
+        <nav class="hidden md:flex items-center gap-1 text-sm font-medium">
+            <a href="/" class="px-3.5 py-2 rounded-lg transition-colors text-text-secondary hover:text-text-primary hover:bg-surface-container">
                 Home
             </a>
-            <a href="/classifier" class="px-4 py-2 rounded-full transition-all text-text-secondary hover:text-text-primary hover:bg-surface-container flex items-center gap-1.5">
+            <a href="/classifier" class="px-3.5 py-2 rounded-lg transition-colors text-text-secondary hover:text-text-primary hover:bg-surface-container flex items-center gap-1.5">
                 <span class="material-symbols-outlined text-[18px]">photo_camera</span>
                 <span>Waste Sorter</span>
             </a>
-            <a href="/rules" class="px-4 py-2 rounded-full transition-all text-text-secondary hover:text-text-primary hover:bg-surface-container">
+            <a href="/rules" class="px-3.5 py-2 rounded-lg transition-colors text-text-secondary hover:text-text-primary hover:bg-surface-container">
                 Rules &amp; Map
             </a>
-            <a href="/classifications" class="px-4 py-2 rounded-full transition-all text-primary bg-primary-light font-bold">
+            <a href="/classifications" class="px-3.5 py-2 rounded-lg transition-colors text-primary bg-primary-light font-semibold">
                 Taxonomy
             </a>
-            <a href="/leaderboard" class="px-4 py-2 rounded-full transition-all text-text-secondary hover:text-text-primary hover:bg-surface-container">
+            <a href="/leaderboard" class="px-3.5 py-2 rounded-lg transition-colors text-text-secondary hover:text-text-primary hover:bg-surface-container">
                 Leaderboard
             </a>
             
-            <a href="/dashboard" class="px-4 py-2 rounded-full transition-all text-text-secondary hover:text-text-primary hover:bg-surface-container">
+            <a href="/dashboard" class="px-3.5 py-2 rounded-lg transition-colors text-text-secondary hover:text-text-primary hover:bg-surface-container">
                 Dashboard
             </a>
             
@@ -433,12 +393,12 @@
         <!-- Right Side: User Profile / Action -->
         <div class="flex items-center gap-2 sm:gap-3">
             
-            <a href="/dashboard" class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container border border-border-subtle hover:border-primary/40 transition">
+            <a href="/dashboard" class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container border border-border-subtle hover:border-primary/40 transition">
                 <span class="w-6 h-6 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center">
                     C
                 </span>
-                <span class="hidden sm:inline text-xs font-bold text-text-primary">Citizen_57734</span>
-                <span id="nav-points-pill" class="text-xs font-mono font-bold text-primary bg-primary-light px-2 py-0.5 rounded-full">0 pts</span>
+                <span class="hidden sm:inline text-xs font-bold text-text-primary">Citizen_2fffd</span>
+                <span id="nav-points-pill" class="text-xs font-mono font-semibold text-primary bg-primary-light px-2 py-0.5 rounded-md">0 pts</span>
             </a>
             <a href="/logout" title="Log out" class="hidden sm:inline text-xs font-semibold text-text-muted hover:text-rose-600 px-2 py-1 transition">
                 Sign Out
@@ -670,11 +630,13 @@
             <!-- ACTIVE GAMEPLAY SCREEN (Hidden until started) -->
             <div id="arcade-play-screen" class="hidden space-y-6">
                 <!-- Current Item Prompt -->
-                <div id="arcade-item-card" class="p-6 sm:p-8 rounded-2xl bg-surface border-2 border-border-medium flex flex-col sm:flex-row items-center gap-6 shadow-sm transition-all duration-200">
-                    <div id="arcade-item-icon" class="text-5xl sm:text-6xl flex-shrink-0 select-none">🍕</div>
+                <div id="arcade-item-card" class="p-6 sm:p-8 rounded-2xl bg-surface border border-border-subtle flex flex-col sm:flex-row items-center gap-6 shadow-sm transition-all duration-200">
+                    <div class="w-16 h-16 rounded-xl bg-primary-light text-primary flex items-center justify-center flex-shrink-0 select-none border border-primary/20">
+                        <span id="arcade-item-icon" class="material-symbols-outlined text-4xl text-primary">local_pizza</span>
+                    </div>
                     <div class="text-center sm:text-left space-y-1 flex-1">
-                        <span id="arcade-item-tag" class="text-[10px] uppercase font-bold text-text-muted tracking-wider">Household Waste Item</span>
-                        <h3 id="arcade-item-name" class="text-xl sm:text-2xl font-black text-text-primary">Greasy Pizza Box Base</h3>
+                        <span id="arcade-item-tag" class="text-[11px] font-medium text-text-muted">Household Packaging Item</span>
+                        <h3 id="arcade-item-name" class="text-xl sm:text-2xl font-bold text-text-primary">Greasy Pizza Box Base</h3>
                         <p id="arcade-item-desc" class="text-xs sm:text-sm text-text-secondary">Corrugated cardboard saturated with heavy cheese and pizza oil residue.</p>
                     </div>
                 </div>
@@ -1605,84 +1567,84 @@
     const ARCADE_ITEMS = [
         {
             name: "Greasy Pizza Box Base",
-            icon: "🍕",
+            icon: "local_pizza",
             desc: "Cardboard base soaked with melted cheese and food oils.",
             target: "compost",
             reason: "Food oils saturate paper fibers and prevent them from bonding in water hydropulpers. Compost it instead!"
         },
         {
             name: "Single-Use Hot Coffee Cup",
-            icon: "☕",
+            icon: "local_cafe",
             desc: "Paperboard hot cup with bonded inner polyethylene lining.",
             target: "landfill",
             reason: "Hot coffee cups have an invisible plastic coating that standard paper mills cannot separate—it clogs pulpers!"
         },
         {
             name: "Crinkly Potato Chip Bag",
-            icon: "🥔",
+            icon: "inventory_2",
             desc: "Multi-layer metallized polypropylene film (BOPP & aluminum).",
             target: "landfill",
             reason: "Composite plastic-metal foils cannot be melted or mechanically sorted at curbside MRFs."
         },
         {
             name: "Rinsed Clear PET Water Bottle",
-            icon: "🧴",
+            icon: "water_bottle",
             desc: "Rigid plastic bottle stamped with resin code #1.",
             target: "blue",
             reason: "PET #1 is 100% circular and one of the highest value recyclable commodities. Keep loose!"
         },
         {
             name: "Loose Plastic Grocery Bag",
-            icon: "🛍️",
+            icon: "shopping_bag",
             desc: "Stretchy low-density polyethylene (#4 LDPE) grocery film.",
             target: "depot",
             reason: "Plastic bags wrap around spinning optical sorters at 1,000 RPM, forcing MRF emergency shutdowns. Return to grocery stores!"
         },
         {
             name: "AA / AAA Lithium Battery",
-            icon: "🔋",
+            icon: "battery_charging_full",
             desc: "Reactive chemical battery cell with metal terminals.",
             target: "depot",
             reason: "CRITICAL FIRE HAZARD: Compactor trucks crush lithium cells, igniting massive municipal garbage fires. Must use a depot!"
         },
         {
             name: "Clean Aluminum Foil Ball",
-            icon: "🌯",
+            icon: "album",
             desc: "Foil scrunch larger than a golf ball, free of food chunks.",
             target: "blue",
             reason: "Aluminum is infinitely circular with 95% energy savings. Scrunch into a fist-sized ball so sorters detect it."
         },
         {
             name: "Expanded Polystyrene Foam Clamshell",
-            icon: "🥡",
+            icon: "takeout_dining",
             desc: "Styrofoam food takeout clamshell (#6 PS).",
             target: "landfill",
             reason: "Styrofoam crumbles into billions of static micro-beads that blow everywhere and contaminate clean paper bales."
         },
         {
             name: "Broken Wine Glass / Tumbler",
-            icon: "🍷",
+            icon: "wine_bar",
             desc: "Broken drinkware crystal with high lead / borosilicate content.",
             target: "landfill",
             reason: "Drinkware glass melts at a higher temperature than bottle glass, creating un-melted stones in new glass bottles."
         },
         {
             name: "Banana Peel & Apple Cores",
-            icon: "🍌",
+            icon: "eco",
             desc: "Raw kitchen produce leftovers and organic biomass.",
             target: "compost",
             reason: "Composting diverts organic material from anaerobic landfill decay, slashing potent methane emissions."
         },
         {
             name: "Shredded Paper inside Paper Bag",
-            icon: "📄",
+            icon: "description",
             desc: "Cut paper strip confetti from confidential documents.",
             target: "compost",
             reason: "Shredded paper fibers are too short to recycle and act like dust in MRF screens—feed it to compost worms!"
         },
         {
             name: "Gable-Top Liquid Milk Carton",
-            icon: "🥛",
+            icon: "breakfast_dining",
             desc: "Poly-coated liquid food paperboard with plastic spout.",
             target: "blue",
             reason: "Modern carton hydropulpers separate the high-grade bleached paper fibers from the outer poly-coating."
