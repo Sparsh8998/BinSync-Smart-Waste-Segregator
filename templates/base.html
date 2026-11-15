@@ -204,6 +204,28 @@
             color: #2563EB;
             transform: translateY(-1px);
         }
+
+        /* ── taste-skill Craft & Micro-Interaction Tokens ── */
+        .taste-card {
+            transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
+        }
+        .taste-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px -4px rgba(15, 23, 42, 0.08), 0 4px 8px rgba(15, 23, 42, 0.03);
+            border-color: #CBD5E1;
+        }
+        .taste-photo-frame {
+            overflow: hidden;
+        }
+        .taste-photo-frame img {
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .taste-photo-frame:hover img {
+            transform: scale(1.025);
+        }
+        button:active, .btn-primary:active, .btn-secondary:active, .btn-solar:active {
+            transform: scale(0.98) !important;
+        }
         .btn-solar {
             background-color: #F59E0B;
             color: #FFFFFF;
