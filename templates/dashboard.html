@@ -56,16 +56,16 @@
         <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
             <!-- Identity -->
             <div class="flex items-center gap-6">
-                <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-primary text-white flex items-center justify-center font-bold text-3xl sm:text-4xl shadow-md flex-shrink-0">
+                <div id="user-profile-avatar" class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-primary text-white flex items-center justify-center font-bold text-3xl sm:text-4xl shadow-md flex-shrink-0">
                     {{ user.username[0]|upper }}
                 </div>
                 <div>
                     <div class="flex items-center gap-3 flex-wrap">
-                        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-text-primary">{{ user.username }}</h1>
-                        <span class="text-xs sm:text-sm font-semibold text-primary bg-primary-light px-3 py-0.5 rounded-md border border-primary/20">{{ user.level_info.title }}</span>
+                        <h1 id="user-profile-username" class="text-3xl sm:text-4xl lg:text-5xl font-bold text-text-primary">{{ user.username }}</h1>
+                        <span id="user-level-title" class="text-xs sm:text-sm font-semibold text-primary bg-primary-light px-3 py-0.5 rounded-md border border-primary/20">{{ user.level_info.title }}</span>
                     </div>
                     <div class="flex items-center gap-2 mt-2 flex-wrap">
-                        <span class="text-xs text-text-muted font-mono">Citizen ID: SYNC-{{ "%04d"|format(user.id) }}</span>
+                        <span id="user-citizen-id" class="text-xs text-text-muted font-mono">Citizen ID: SYNC-{{ "%04d"|format(user.id) }}</span>
                         <span class="text-text-muted text-xs">·</span>
                         <div class="relative inline-flex items-center gap-1.5">
                             <span class="material-symbols-outlined text-teal-600 text-[16px]">groups</span>
@@ -84,18 +84,18 @@
             <div class="flex flex-wrap items-center gap-3.5">
                 <div class="px-5 py-3 rounded-xl bg-surface border border-border-subtle text-center min-w-[90px]">
                     <span class="block text-xs font-medium text-text-muted mb-0.5">Scans</span>
-                    <span class="text-2xl font-semibold text-text-primary font-mono tabular-nums">{{ user.total_recycled }}</span>
+                    <span id="user-total-scans" class="text-2xl font-semibold text-text-primary font-mono tabular-nums">{{ user.total_recycled }}</span>
                 </div>
                 <div class="px-5 py-3 rounded-xl bg-surface border border-border-subtle text-center min-w-[90px]">
                     <span class="block text-xs font-medium text-text-muted mb-0.5">Streak</span>
-                    <span class="text-2xl font-semibold text-solar-dark font-mono tabular-nums flex items-center justify-center gap-1">
+                    <span id="user-current-streak" class="text-2xl font-semibold text-solar-dark font-mono tabular-nums flex items-center justify-center gap-1">
                         <span class="material-symbols-outlined text-[18px] text-solar">local_fire_department</span>
-                        {{ user.current_streak }}d
+                        <span id="user-streak-val">{{ user.current_streak }}d</span>
                     </span>
                 </div>
                 <div class="px-5 py-3 rounded-xl bg-primary text-white text-center shadow-sm min-w-[90px]">
                     <span class="block text-xs font-medium text-blue-100 mb-0.5">Points</span>
-                    <span class="text-2xl font-semibold font-mono tabular-nums">{{ user.points }}</span>
+                    <span id="user-points-val" class="text-2xl font-semibold font-mono tabular-nums">{{ user.points }}</span>
                 </div>
                 <a href="{{ url_for('export_scans') }}" title="Download verified CSV audit" class="p-3.5 rounded-2xl bg-surface border border-border-medium hover:border-primary text-text-secondary hover:text-primary transition flex items-center justify-center">
                     <span class="material-symbols-outlined text-[22px]">download</span>
@@ -106,8 +106,8 @@
         <!-- Level Progress Bar -->
         <div class="mt-7 pt-6 border-t border-border-subtle space-y-2">
             <div class="flex justify-between items-center text-xs">
-                <span class="font-semibold text-text-secondary">Progress to next tier: <strong class="text-text-primary">{{ user.level_info.title }}</strong></span>
-                <span class="text-text-muted font-mono font-medium">{{ user.points }} / {{ user.level_info.next_tier }} pts</span>
+                <span class="font-semibold text-text-secondary">Progress to next tier: <strong id="user-level-tier-target" class="text-text-primary">{{ user.level_info.title }}</strong></span>
+                <span id="user-level-progress-text" class="text-text-muted font-mono font-medium">{{ user.points }} / {{ user.level_info.next_tier }} pts</span>
             </div>
             <div class="w-full h-2.5 rounded-full bg-surface border border-border-subtle overflow-hidden relative">
                 <div id="user-level-bar" class="h-full bg-primary rounded-full progress-shimmer transition-all duration-1000 ease-out" style="width: 0%;" data-target-width="{{ user.level_info.progress_pct }}%;"></div>
@@ -127,21 +127,21 @@
                     <div class="w-9 h-9 rounded-xl bg-primary-light text-primary flex items-center justify-center mb-3">
                         <span class="material-symbols-outlined text-[20px]">co2</span>
                     </div>
-                    <div class="text-2xl font-semibold text-text-primary font-mono tabular-nums">{{ "%.1f"|format(user.total_co2_saved) }}g</div>
+                    <div id="user-co2-val" class="text-2xl font-semibold text-text-primary font-mono tabular-nums">{{ "%.1f"|format(user.total_co2_saved) }}g</div>
                     <p class="text-xs text-text-secondary mt-0.5">Total CO₂ Diverted</p>
                 </div>
                 <div class="taste-card p-5">
                     <div class="w-9 h-9 rounded-xl bg-solar-light text-solar-dark flex items-center justify-center mb-3">
                         <span class="material-symbols-outlined text-[20px]">battery_charging_full</span>
                     </div>
-                    <div class="text-2xl font-semibold text-text-primary font-mono tabular-nums">{{ smartphone_charges }}</div>
+                    <div id="user-phone-charges" class="text-2xl font-semibold text-text-primary font-mono tabular-nums">{{ smartphone_charges }}</div>
                     <p class="text-xs text-text-secondary mt-0.5">Smartphone Recharges</p>
                 </div>
                 <div class="taste-card p-5">
                     <div class="w-9 h-9 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center mb-3">
                         <span class="material-symbols-outlined text-[20px]">electric_car</span>
                     </div>
-                    <div class="text-2xl font-semibold text-text-primary font-mono tabular-nums">{{ ev_miles }}<span class="text-sm font-normal text-text-muted ml-1">mi</span></div>
+                    <div id="user-ev-miles" class="text-2xl font-semibold text-text-primary font-mono tabular-nums">{{ ev_miles }}<span class="text-sm font-normal text-text-muted ml-1">mi</span></div>
                     <p class="text-xs text-text-secondary mt-0.5">EV Miles Offset</p>
                 </div>
             </div>
@@ -155,7 +155,7 @@
                     </h2>
                     <span class="text-[11px] font-semibold text-primary bg-primary-light px-2.5 py-0.5 rounded-full">Resets Midnight</span>
                 </div>
-                <div class="space-y-3">
+                <div class="space-y-3" id="daily-quests-container">
                     {% for quest in daily_quests %}
                     <div class="p-3.5 rounded-xl border {% if quest.completed %}bg-primary-light/40 border-primary/30{% else %}bg-surface border-border-subtle{% endif %} flex items-center justify-between gap-3 transition">
                         <div class="flex items-center gap-3">
@@ -171,9 +171,18 @@
                                 <p class="text-[11px] text-text-secondary">{{ quest.desc }}</p>
                             </div>
                         </div>
-                        <span class="text-[11px] font-bold font-mono px-2 py-0.5 rounded-md {% if quest.completed %}bg-primary text-white{% else %}bg-solar-light text-solar-dark{% endif %}">
-                            {{ quest.reward }}
-                        </span>
+                        <div class="flex items-center gap-2">
+                            {% if quest.completed and not quest.claimed %}
+                            <button type="button" onclick="claimQuest('{{ quest.key }}', this)" class="btn-primary py-1 px-3 text-xs font-bold shadow-sm flex items-center gap-1 whitespace-nowrap cursor-pointer">
+                                <span>Claim</span>
+                                <span class="font-mono text-[10px]">({{ quest.reward }})</span>
+                            </button>
+                            {% else %}
+                            <span class="text-[11px] font-bold font-mono px-2 py-0.5 rounded-md {% if quest.completed %}bg-primary text-white{% else %}bg-solar-light text-solar-dark{% endif %}">
+                                {% if quest.claimed %}Claimed ✓{% else %}{{ quest.reward }}{% endif %}
+                            </span>
+                            {% endif %}
+                        </div>
                     </div>
                     {% endfor %}
                 </div>
@@ -482,20 +491,20 @@
                 </div>
 
                 <!-- Scan Items Accordion List -->
-                {% if recent_scans %}
                 <div class="space-y-2.5 max-h-[500px] overflow-y-auto pr-1" id="scans-list-container">
+                    {% if recent_scans %}
                     {% for scan in recent_scans %}
                     <details class="scan-item-card reveal-on-scroll group bg-surface border border-border-subtle rounded-xl p-3.5 transition hover:border-primary/40 cursor-pointer" style="transition-delay: {{ (loop.index0 % 6) * 60 }}ms;" data-category="{{ scan.category }}" data-name="{{ scan.item_name.lower() }}">
                         <summary class="flex items-center justify-between list-none gap-3">
                             <div class="min-w-0 flex-1 space-y-0.5">
                                 <h4 class="text-xs font-bold text-text-primary truncate">{{ scan.item_name }}</h4>
-                                <p class="text-[10px] text-text-muted font-mono">{{ scan.timestamp.strftime('%b %d, %Y · %H:%M') }}</p>
+                                <p class="text-[10px] text-text-muted font-mono">{{ scan.timestamp.strftime('%b %d, %Y · %H:%M') if scan.timestamp.strftime is defined else scan.timestamp }}</p>
                             </div>
                             <div class="flex items-center gap-2 flex-shrink-0">
                                 <span class="text-[10px] font-bold px-2 py-0.5 rounded-full {% if scan.category == 'Recyclable' %}bg-blue-50 text-blue-700 border border-blue-200{% elif scan.category == 'Compostable' %}bg-teal-50 text-teal-800 border border-teal-200{% elif scan.category == 'Hazmat' %}bg-rose-50 text-rose-700 border border-rose-200{% else %}bg-slate-100 text-slate-700 border border-slate-200{% endif %}">
                                     {{ scan.category }}
                                 </span>
-                                <button type="button" onclick="event.preventDefault(); event.stopPropagation(); deleteScan({{ scan.id }}, this)" class="p-1 text-slate-400 hover:text-rose-600 transition" title="Delete scan record">
+                                <button type="button" onclick="event.preventDefault(); event.stopPropagation(); deleteScan('{{ scan.id }}', this)" class="p-1 text-slate-400 hover:text-rose-600 transition cursor-pointer" title="Delete scan record">
                                     <span class="material-symbols-outlined text-[16px]">delete</span>
                                 </button>
                                 <span class="material-symbols-outlined text-text-muted text-[16px] transition-transform group-open:rotate-180">expand_more</span>
@@ -525,21 +534,21 @@
                         </div>
                     </details>
                     {% endfor %}
-                </div>
-                {% else %}
-                <div class="py-16 text-center space-y-4">
-                    <div class="w-14 h-14 rounded-2xl bg-surface flex items-center justify-center mx-auto border border-border-subtle text-text-muted">
-                        <span class="material-symbols-outlined text-[28px]">qr_code_scanner</span>
+                    {% else %}
+                    <div class="py-16 text-center space-y-4">
+                        <div class="w-14 h-14 rounded-2xl bg-surface flex items-center justify-center mx-auto border border-border-subtle text-text-muted">
+                            <span class="material-symbols-outlined text-[28px]">qr_code_scanner</span>
+                        </div>
+                        <div class="space-y-1">
+                            <p class="text-sm font-bold text-text-secondary">No scans yet</p>
+                            <p class="text-xs text-text-muted max-w-[220px] mx-auto">Inspect your first packaging item to begin tracking your carbon diversion.</p>
+                        </div>
+                        <a href="{{ url_for('classifier') }}" class="btn-primary py-2.5 px-5 text-xs">
+                            Scan First Item
+                        </a>
                     </div>
-                    <div class="space-y-1">
-                        <p class="text-sm font-bold text-text-secondary">No scans yet</p>
-                        <p class="text-xs text-text-muted max-w-[220px] mx-auto">Inspect your first packaging item to begin tracking your carbon diversion.</p>
-                    </div>
-                    <a href="{{ url_for('classifier') }}" class="btn-primary py-2.5 px-5 text-xs">
-                        Scan First Item
-                    </a>
+                    {% endif %}
                 </div>
-                {% endif %}
 
                 <!-- Export & Print Actions -->
                 <div class="pt-4 border-t border-border-subtle flex flex-wrap items-center justify-between gap-2 text-xs">
@@ -884,15 +893,26 @@
     async function updateCitizenHub(newHub) {
         const badge = document.getElementById('hub-saved-badge');
         try {
+            const token = localStorage.getItem('binsync_token') || '';
+            const headers = { 'Content-Type': 'application/json' };
+            if (token) headers['Authorization'] = 'Bearer ' + token;
+
             const res = await fetch('/api/update_hub', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers,
                 body: JSON.stringify({ community_hub: newHub })
             });
             const data = await res.json();
-            if (data.success && badge) {
+            if ((data.success || data.ok) && badge) {
                 badge.classList.remove('hidden');
                 setTimeout(() => badge.classList.add('hidden'), 2500);
+                try {
+                    const localUser = JSON.parse(localStorage.getItem('binsync_user') || 'null');
+                    if (localUser) {
+                        localUser.community_hub = newHub;
+                        localStorage.setItem('binsync_user', JSON.stringify(localUser));
+                    }
+                } catch(e) {}
             }
         } catch (e) {
             console.warn("Failed to update hub:", e);
@@ -1088,13 +1108,21 @@
         if (!confirm("Delete this scan? Earned points and carbon offset will be reversed.")) return;
         
         try {
-            const resp = await fetch(`/api/scan/${scanId}`, { method: 'DELETE' });
+            const token = localStorage.getItem('binsync_token') || '';
+            const headers = { 'Content-Type': 'application/json' };
+            if (token) headers['Authorization'] = 'Bearer ' + token;
+
+            const resp = await fetch(`/api/scan/${scanId}`, { method: 'DELETE', headers });
             const res = await resp.json();
-            if (res.status === 'success') {
+            if (res.status === 'success' || res.ok) {
                 const card = btn.closest('.scan-item-card');
                 if (card) card.remove();
                 if (window.triggerFeedback) window.triggerFeedback('error');
-                window.location.reload();
+                if (typeof hydrateDashboard === 'function') {
+                    await hydrateDashboard();
+                } else {
+                    window.location.reload();
+                }
             } else {
                 alert(res.error || "Could not delete scan record.");
             }
@@ -1102,6 +1130,320 @@
             alert("Delete failed: " + e.message);
         }
     }
+
+    // Quest Claiming Handler
+    async function claimQuest(questKey, btn) {
+        if (!questKey) return;
+        if (btn) btn.disabled = true;
+
+        try {
+            const token = localStorage.getItem('binsync_token') || '';
+            const headers = { 'Content-Type': 'application/json' };
+            if (token) headers['Authorization'] = 'Bearer ' + token;
+
+            const res = await fetch('/api/claim_quest', {
+                method: 'POST',
+                headers,
+                body: JSON.stringify({ quest_key: questKey })
+            });
+            const data = await res.json();
+            if (data.ok) {
+                if (typeof confetti === 'function') {
+                    confetti({ particleCount: 70, spread: 60, origin: { y: 0.7 } });
+                }
+                if (window.triggerFeedback) window.triggerFeedback('success');
+                await hydrateDashboard();
+            } else {
+                alert(data.error || 'Failed to claim quest');
+                if (btn) btn.disabled = false;
+            }
+        } catch (err) {
+            console.error('Claim quest error:', err);
+            alert('Error claiming quest: ' + err.message);
+            if (btn) btn.disabled = false;
+        }
+    }
+
+    function escapeHtml(str) {
+        if (typeof str !== 'string') return String(str || '');
+        return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+    }
+
+    function renderDailyQuests(quests) {
+        const container = document.getElementById('daily-quests-container');
+        if (!container || !Array.isArray(quests)) return;
+
+        container.innerHTML = quests.map((quest, idx) => {
+            const isCompleted = Boolean(quest.completed);
+            const isClaimed = Boolean(quest.claimed);
+            const bgClass = isCompleted ? 'bg-primary-light/40 border-primary/30' : 'bg-surface border-border-subtle';
+            const iconBg = isCompleted ? 'bg-primary text-white' : 'bg-white text-text-muted border border-border-medium';
+            const iconContent = isCompleted ? '<span class="material-symbols-outlined text-[16px]">check</span>' : (idx + 1);
+            const titleClass = isCompleted ? 'line-through text-text-muted' : '';
+
+            let actionHtml = '';
+            if (isCompleted && !isClaimed) {
+                actionHtml = `
+                    <button type="button" onclick="claimQuest('${quest.key}', this)" class="btn-primary py-1 px-3 text-xs font-bold shadow-sm flex items-center gap-1 whitespace-nowrap cursor-pointer">
+                        <span>Claim</span>
+                        <span class="font-mono text-[10px]">(${quest.reward || '+' + (quest.reward_points || 20) + ' pts'})</span>
+                    </button>
+                `;
+            } else if (isClaimed) {
+                actionHtml = `
+                    <span class="text-[11px] font-bold font-mono px-2 py-0.5 rounded-md bg-primary text-white">
+                        Claimed ✓
+                    </span>
+                `;
+            } else {
+                actionHtml = `
+                    <span class="text-[11px] font-bold font-mono px-2 py-0.5 rounded-md bg-solar-light text-solar-dark">
+                        ${quest.reward || '+' + (quest.reward_points || 20) + ' pts'}
+                    </span>
+                `;
+            }
+
+            return `
+                <div class="p-3.5 rounded-xl border ${bgClass} flex items-center justify-between gap-3 transition">
+                    <div class="flex items-center gap-3">
+                        <span class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold ${iconBg}">
+                            ${iconContent}
+                        </span>
+                        <div>
+                            <h4 class="text-xs font-bold text-text-primary ${titleClass}">${escapeHtml(quest.title)}</h4>
+                            <p class="text-[11px] text-text-secondary">${escapeHtml(quest.desc)}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        ${actionHtml}
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    function renderRecentScans(scans) {
+        const container = document.getElementById('scans-list-container');
+        if (!container) return;
+
+        if (!scans || scans.length === 0) {
+            container.innerHTML = `
+                <div class="py-16 text-center space-y-4">
+                    <div class="w-14 h-14 rounded-2xl bg-surface flex items-center justify-center mx-auto border border-border-subtle text-text-muted">
+                        <span class="material-symbols-outlined text-[28px]">qr_code_scanner</span>
+                    </div>
+                    <div class="space-y-1">
+                        <p class="text-sm font-bold text-text-secondary">No scans yet</p>
+                        <p class="text-xs text-text-muted max-w-[220px] mx-auto">Inspect your first packaging item to begin tracking your carbon diversion.</p>
+                    </div>
+                    <a href="/classifier" class="btn-primary py-2.5 px-5 text-xs">
+                        Scan First Item
+                    </a>
+                </div>
+            `;
+            return;
+        }
+
+        container.innerHTML = scans.map((scan, idx) => {
+            const category = scan.category || 'Landfill';
+            let catBadge = 'bg-slate-100 text-slate-700 border border-slate-200';
+            if (category === 'Recyclable') catBadge = 'bg-blue-50 text-blue-700 border border-blue-200';
+            else if (category === 'Compostable') catBadge = 'bg-teal-50 text-teal-800 border border-teal-200';
+            else if (category === 'Hazmat') catBadge = 'bg-rose-50 text-rose-700 border border-rose-200';
+
+            let dateStr = scan.timestamp || '';
+            try {
+                if (dateStr) {
+                    const d = new Date(dateStr);
+                    if (!isNaN(d.getTime())) {
+                        dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) + ' · ' + d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
+                    }
+                }
+            } catch (e) {}
+
+            let compsHtml = '';
+            const comps = scan.parsed_components || [];
+            if (Array.isArray(comps) && comps.length > 0) {
+                compsHtml = `
+                    <div class="space-y-1">
+                        <span class="text-xs font-medium text-text-muted block">Directives</span>
+                        ${comps.map(comp => `
+                            <div class="text-[11px] bg-white p-2 rounded-lg border border-border-subtle flex justify-between items-center gap-2">
+                                <div class="min-w-0">
+                                    <strong class="text-text-primary text-xs">${escapeHtml(comp.part || '')}</strong>
+                                    <span class="text-text-muted text-[10px]"> · ${escapeHtml(comp.material || '')}</span>
+                                </div>
+                                <span class="text-[10px] font-bold text-primary px-2 py-0.5 bg-primary-light rounded-full whitespace-nowrap">${escapeHtml(comp.destination || '')}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+
+            return `
+                <details class="scan-item-card reveal-on-scroll group bg-surface border border-border-subtle rounded-xl p-3.5 transition hover:border-primary/40 cursor-pointer" style="transition-delay: ${(idx % 6) * 60}ms;" data-category="${escapeHtml(category)}" data-name="${escapeHtml((scan.item_name || '').toLowerCase())}">
+                    <summary class="flex items-center justify-between list-none gap-3">
+                        <div class="min-w-0 flex-1 space-y-0.5">
+                            <h4 class="text-xs font-bold text-text-primary truncate">${escapeHtml(scan.item_name || 'Packaging Item')}</h4>
+                            <p class="text-[10px] text-text-muted font-mono">${escapeHtml(dateStr)}</p>
+                        </div>
+                        <div class="flex items-center gap-2 flex-shrink-0">
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${catBadge}">
+                                ${escapeHtml(category)}
+                            </span>
+                            <button type="button" onclick="event.preventDefault(); event.stopPropagation(); deleteScan('${scan.id}', this)" class="p-1 text-slate-400 hover:text-rose-600 transition cursor-pointer" title="Delete scan record">
+                                <span class="material-symbols-outlined text-[16px]">delete</span>
+                            </button>
+                            <span class="material-symbols-outlined text-text-muted text-[16px] transition-transform group-open:rotate-180">expand_more</span>
+                        </div>
+                    </summary>
+
+                    <div class="mt-3 pt-3 border-t border-border-subtle space-y-2">
+                        <p class="text-[11px] text-text-secondary"><span class="font-semibold text-text-primary">Material:</span> ${escapeHtml(scan.material || 'Mixed Material')}</p>
+                        ${compsHtml}
+                        <div class="flex justify-between items-center text-[11px] text-text-muted pt-1">
+                            <span>CO₂ diverted:</span>
+                            <span class="font-bold text-primary font-mono">+${scan.co2_saved || 0}g</span>
+                        </div>
+                    </div>
+                </details>
+            `;
+        }).join('');
+
+        if (typeof filterScans === 'function') {
+            filterScans();
+        }
+    }
+
+    async function hydrateDashboard() {
+        const token = localStorage.getItem('binsync_token') || '';
+        const localUserStr = localStorage.getItem('binsync_user');
+        const localUser = localUserStr ? JSON.parse(localUserStr) : null;
+
+        try {
+            const headers = {};
+            if (token) headers['Authorization'] = 'Bearer ' + token;
+
+            const res = await fetch('/api/dashboard/stats', { headers });
+
+            if (res.status === 401 && !localUser) {
+                window.location.href = '/login';
+                return;
+            }
+
+            if (res.ok) {
+                const data = await res.json();
+                if (data.ok && data.user) {
+                    try {
+                        localStorage.setItem('binsync_user', JSON.stringify(data.user));
+                    } catch (e) {}
+
+                    if (window.renderGlobalAuthUI) {
+                        window.renderGlobalAuthUI(data.user);
+                    }
+
+                    // Update Profile Identity
+                    const usernameEl = document.getElementById('user-profile-username');
+                    if (usernameEl) usernameEl.textContent = data.user.username;
+
+                    const avatarEl = document.getElementById('user-profile-avatar');
+                    if (avatarEl) avatarEl.textContent = (data.user.username[0] || 'C').toUpperCase();
+
+                    const idEl = document.getElementById('user-citizen-id');
+                    if (idEl) {
+                        const idVal = typeof data.user.id === 'number' ? String(data.user.id).padStart(4, '0') : data.user.id;
+                        idEl.textContent = `Citizen ID: SYNC-${idVal}`;
+                    }
+
+                    const levelTitleEl = document.getElementById('user-level-title');
+                    if (levelTitleEl && data.level_info) {
+                        levelTitleEl.textContent = data.level_info.title;
+                    }
+
+                    const tierTargetEl = document.getElementById('user-level-tier-target');
+                    if (tierTargetEl && data.level_info) {
+                        tierTargetEl.textContent = data.level_info.title;
+                    }
+
+                    const progressTextEl = document.getElementById('user-level-progress-text');
+                    if (progressTextEl && data.level_info) {
+                        progressTextEl.textContent = `${data.user.points} / ${data.level_info.next_tier} pts`;
+                    }
+
+                    const levelBar = document.getElementById('user-level-bar');
+                    if (levelBar && data.level_info) {
+                        levelBar.style.width = `${data.level_info.progress_pct}%`;
+                        levelBar.setAttribute('data-target-width', `${data.level_info.progress_pct}%`);
+                    }
+
+                    const hubSelect = document.getElementById('user-hub-selector');
+                    if (hubSelect && data.user.community_hub) {
+                        hubSelect.value = data.user.community_hub;
+                    }
+
+                    // Update Top Stats
+                    const scansEl = document.getElementById('user-total-scans');
+                    if (scansEl) scansEl.textContent = data.user.total_recycled ?? 0;
+
+                    const streakValEl = document.getElementById('user-streak-val');
+                    if (streakValEl) streakValEl.textContent = `${data.user.current_streak ?? 0}d`;
+
+                    const pointsEl = document.getElementById('user-points-val');
+                    if (pointsEl) pointsEl.textContent = data.user.points ?? 0;
+
+                    const navPointsPill = document.getElementById('nav-points-pill');
+                    if (navPointsPill) navPointsPill.textContent = `${data.user.points ?? 0} pts`;
+
+                    // Update Tangible Impact Stats
+                    const co2El = document.getElementById('user-co2-val');
+                    if (co2El) co2El.textContent = `${Number(data.user.total_co2_saved || 0).toFixed(1)}g`;
+
+                    const phonesEl = document.getElementById('user-phone-charges');
+                    if (phonesEl) {
+                        const charges = data.stats?.smartphone_charges ?? Math.floor((data.user.total_co2_saved || 0) / 8.22);
+                        phonesEl.textContent = charges.toLocaleString();
+                    }
+
+                    const evEl = document.getElementById('user-ev-miles');
+                    if (evEl) {
+                        const miles = data.stats?.ev_miles ?? (Number(data.user.total_co2_saved || 0) / 150).toFixed(1);
+                        evEl.innerHTML = `${miles}<span class="text-sm font-normal text-text-muted ml-1">mi</span>`;
+                    }
+
+                    // Render Daily Quests
+                    if (data.daily_quests) {
+                        renderDailyQuests(data.daily_quests);
+                    }
+
+                    // Render Recent Scans
+                    if (data.recent_scans) {
+                        renderRecentScans(data.recent_scans);
+                    }
+
+                    // Update Stream Breakdown
+                    if (data.category_counts) {
+                        const recyclableCount = data.category_counts.Recyclable || 0;
+                        const compostCount = data.category_counts.Compostable || 0;
+                        const landfillCount = data.category_counts.Landfill || 0;
+                        const counters = document.querySelectorAll('.stream-counter');
+                        if (counters.length >= 3) {
+                            counters[0].textContent = recyclableCount.toLocaleString();
+                            counters[1].textContent = compostCount.toLocaleString();
+                            counters[2].textContent = landfillCount.toLocaleString();
+                        }
+                    }
+                }
+            }
+        } catch (err) {
+            console.warn('Dashboard hydration note:', err);
+        }
+    }
+
+    window.hydrateDashboard = hydrateDashboard;
+
+    document.addEventListener('DOMContentLoaded', () => {
+        hydrateDashboard();
+    });
 </script>
 
 <!-- Doorstep Pickup Scheduling Modal -->

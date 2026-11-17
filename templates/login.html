@@ -22,7 +22,12 @@
 
         <!-- Auth Card -->
         <div class="eco-card p-6 sm:p-8 space-y-6">
-            <form method="POST" action="{{ url_for('login') }}" class="space-y-5">
+            <div id="login-error-msg" class="hidden text-xs text-rose-600 bg-rose-50 border border-rose-200 p-3 rounded-xl font-medium flex items-center gap-2">
+                <span class="material-symbols-outlined text-[18px]">error</span>
+                <span id="login-error-text"></span>
+            </div>
+
+            <form id="citizen-login-form" method="POST" action="{{ url_for('login') }}" class="space-y-5">
                 <div class="space-y-2">
                     <label class="block text-xs font-semibold text-text-secondary"
                         for="username-input">
@@ -73,7 +78,7 @@
                     </div>
                 </div>
 
-                <button type="submit"
+                <button type="submit" id="login-submit-btn"
                     class="btn-primary w-full py-3.5 rounded-full text-sm font-bold shadow-md flex items-center justify-center gap-2">
                     <span>Continue to Impact Dashboard</span>
                     <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
@@ -108,5 +113,81 @@
             input.focus();
         }
     }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const form = document.getElementById('citizen-login-form');
+        const errorContainer = document.getElementById('login-error-msg');
+        const errorText = document.getElementById('login-error-text');
+        const submitBtn = document.getElementById('login-submit-btn');
+
+        if (form) {
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const usernameInput = document.getElementById('username-input');
+                const hubSelect = document.getElementById('hub-select');
+                const username = usernameInput ? usernameInput.value.trim() : '';
+                const community_hub = hubSelect ? hubSelect.value : 'Downtown Metro';
+
+                if (!username) {
+                    if (errorContainer && errorText) {
+                        errorText.textContent = 'Please enter a valid citizen handle.';
+                        errorContainer.classList.remove('hidden');
+                    }
+                    return;
+                }
+
+                if (errorContainer) {
+                    errorContainer.classList.add('hidden');
+                }
+
+                const originalBtnContent = submitBtn ? submitBtn.innerHTML : '';
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[18px]">progress_activity</span><span>Signing In...</span>';
+                }
+
+                try {
+                    const res = await fetch('/api/auth/login', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ username, community_hub })
+                    });
+
+                    // If local Flask returns 404 (because route only exists on Netlify functions), fallback to traditional form submit
+                    if (res.status === 404) {
+                        form.submit();
+                        return;
+                    }
+
+                    const data = await res.json();
+                    if (res.ok && data.ok && data.user) {
+                        try {
+                            localStorage.setItem('binsync_user', JSON.stringify(data.user));
+                            if (data.token) {
+                                localStorage.setItem('binsync_token', data.token);
+                            }
+                        } catch (storageErr) {
+                            console.warn('localStorage save warning:', storageErr);
+                        }
+                        window.location.href = '/dashboard';
+                    } else {
+                        throw new Error(data.error || 'Authentication failed. Please verify handle.');
+                    }
+                } catch (err) {
+                    console.error('Login submit error:', err);
+                    if (errorContainer && errorText) {
+                        errorText.textContent = err.message || 'Unable to connect to login service. Please try again.';
+                        errorContainer.classList.remove('hidden');
+                    }
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = originalBtnContent;
+                    }
+                }
+            });
+        }
+    });
 </script>
 {% endblock %}

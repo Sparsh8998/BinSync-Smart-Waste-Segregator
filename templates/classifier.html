@@ -1603,11 +1603,19 @@
         const formData = new FormData();
         formData.append('file', fileToUpload);
 
+        const citizenToken = localStorage.getItem('binsync_token');
+        const classifyHeaders = {};
+        if (citizenToken) {
+            classifyHeaders['Authorization'] = 'Bearer ' + citizenToken;
+            formData.append('citizen_token', citizenToken);
+        }
+
         try {
             let data = null;
             try {
                 const response = await fetch('/api/classify', {
                     method: 'POST',
+                    headers: classifyHeaders,
                     body: formData
                 });
 
@@ -1620,6 +1628,20 @@
                 }
             } catch (netErr) {
                 console.warn("Remote classify API call bypassed, switching to intelligent edge engine:", netErr);
+            }
+
+            // Sync updated citizen stats if returned from persistent backend
+            if (data && data.citizen_stats) {
+                try {
+                    const currentUser = JSON.parse(localStorage.getItem('binsync_user') || '{}');
+                    const updatedUser = { ...currentUser, ...data.citizen_stats };
+                    localStorage.setItem('binsync_user', JSON.stringify(updatedUser));
+                    if (window.renderGlobalAuthUI) {
+                        window.renderGlobalAuthUI(updatedUser);
+                    }
+                } catch(e) {
+                    console.warn("Could not sync citizen stats:", e);
+                }
             }
 
             clearInterval(stageInterval);
@@ -1721,6 +1743,9 @@
         }
         const navPointsPill = document.getElementById('nav-points-pill');
         if (navPointsPill) {
+            if (data.citizen_stats && data.citizen_stats.points !== undefined) {
+                navPointsPill.textContent = `${data.citizen_stats.points} pts`;
+            }
             navPointsPill.classList.remove('animate-pop');
             void navPointsPill.offsetWidth;
             navPointsPill.classList.add('animate-pop');
@@ -2560,14 +2585,33 @@
         const btn = document.getElementById('bin-log-clean-btn');
         if (btn) btn.disabled = true;
 
+        const citizenToken = localStorage.getItem('binsync_token');
+        const auditHeaders = { 'Content-Type': 'application/json' };
+        if (citizenToken) {
+            auditHeaders['Authorization'] = 'Bearer ' + citizenToken;
+        }
+
         try {
             const resp = await fetch('/api/log_audit_items', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ items: cleanItems })
+                headers: auditHeaders,
+                body: JSON.stringify({ items: cleanItems, citizen_token: citizenToken })
             });
             const res = await resp.json();
             if (res.success) {
+                // Update citizen stats in local storage and header
+                try {
+                    const currentUser = JSON.parse(localStorage.getItem('binsync_user') || '{}');
+                    if (currentUser && currentUser.username) {
+                        const newPts = res.new_points ?? ((currentUser.points || 0) + (res.points_awarded || 0));
+                        currentUser.points = newPts;
+                        localStorage.setItem('binsync_user', JSON.stringify(currentUser));
+                        if (window.renderGlobalAuthUI) {
+                            window.renderGlobalAuthUI(currentUser);
+                        }
+                    }
+                } catch(e) {}
+
                 showCelebratoryToast('quest', 'Clean Stream Logged!', `Successfully credited ${res.logged_count} items and +${res.points_awarded} Eco-Points to your dashboard!`, `+${res.points_awarded} Pts`);
                 if (typeof confetti === 'function') confetti({ particleCount: 80, spread: 65, origin: { y: 0.7 } });
                 if (btn) {
