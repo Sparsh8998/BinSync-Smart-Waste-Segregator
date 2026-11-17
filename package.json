@@ -7,6 +7,8 @@
     "build": "python freeze_site.py"
   },
   "dependencies": {
-    "@netlify/functions": "^2.8.2"
+    "@netlify/blobs": "^8.1.0",
+    "@netlify/functions": "^2.8.2",
+    "pg": "^8.13.1"
   }
 }
