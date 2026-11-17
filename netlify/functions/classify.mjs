@@ -1,5 +1,8 @@
 // Netlify Serverless Function for BinSync AI Packaging Classification
-// Supports Google Gemini 1.5/2.5 Vision API & built-in packaging decomposition engine
+// Supports Google Gemini 1.5/2.5 Vision API, built-in packaging decomposition engine,
+// and persistent citizen profile and scan logging.
+
+import db from './lib/db.mjs';
 
 const SAMPLE_MOCKS = {
   "chips-bag": {
@@ -132,55 +135,290 @@ const SAMPLE_MOCKS = {
   }
 };
 
-const CORS_HEADERS = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type, Authorization",
-  "Content-Type": "application/json"
-};
+function getCorsHeaders(req) {
+  let origin = null;
+  try {
+    if (req?.headers?.get) {
+      origin = req.headers.get('origin');
+    } else if (req?.headers?.origin) {
+      origin = req.headers.origin;
+    }
+  } catch {
+    origin = null;
+  }
+
+  const headers = {
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization, x-citizen-token',
+    'Content-Type': 'application/json'
+  };
+  if (origin) {
+    headers['Access-Control-Allow-Origin'] = origin;
+    headers['Access-Control-Allow-Credentials'] = 'true';
+  } else {
+    headers['Access-Control-Allow-Origin'] = '*';
+  }
+  return headers;
+}
+
+function parseCookies(cookieHeader) {
+  const cookies = {};
+  if (!cookieHeader || typeof cookieHeader !== 'string') return cookies;
+  const pairs = cookieHeader.split(';');
+  for (const pair of pairs) {
+    const idx = pair.indexOf('=');
+    if (idx !== -1) {
+      const key = pair.slice(0, idx).trim();
+      const val = pair.slice(idx + 1).trim();
+      cookies[key] = decodeURIComponent(val);
+    }
+  }
+  return cookies;
+}
+
+function decodeSessionToken(token) {
+  if (!token) return null;
+  try {
+    const json = Buffer.from(token, 'base64url').toString('utf-8');
+    return JSON.parse(json);
+  } catch {
+    try {
+      const json = Buffer.from(token, 'base64').toString('utf-8');
+      return JSON.parse(json);
+    } catch {
+      return null;
+    }
+  }
+}
+
+async function getAuthenticatedUser(req, body = {}) {
+  let token = '';
+
+  // 1. Authorization: Bearer <token>
+  try {
+    const authHeader = req?.headers?.get ? (req.headers.get('authorization') || '') : (req?.headers?.authorization || '');
+    if (authHeader && authHeader.toLowerCase().startsWith('bearer ')) {
+      token = authHeader.slice(7).trim();
+    }
+  } catch {}
+
+  // 2. x-citizen-token header
+  if (!token) {
+    try {
+      token = req?.headers?.get ? (req.headers.get('x-citizen-token') || '') : (req?.headers?.['x-citizen-token'] || '');
+    } catch {}
+  }
+
+  // 3. Cookie binsync_session=...
+  if (!token) {
+    try {
+      const cookieHeader = req?.headers?.get ? (req.headers.get('cookie') || '') : (req?.headers?.cookie || '');
+      const cookies = parseCookies(cookieHeader);
+      token = cookies['binsync_session'] || '';
+    } catch {}
+  }
+
+  // 4. Body token or citizen_token or user_id or citizen_id
+  if (!token && body) {
+    token = body.token || body.citizen_token || body.user_id || body.citizen_id || '';
+  }
+
+  // 5. Query param ?token= or ?user_id=
+  if (!token && req?.url) {
+    try {
+      const url = new URL(req.url, 'http://localhost');
+      token = url.searchParams.get('token') || url.searchParams.get('user_id') || '';
+    } catch {}
+  }
+
+  if (!token) {
+    if (body?.user_id) {
+      const user = await db.findUserById(body.user_id);
+      if (user) return user;
+    }
+    if (body?.username) {
+      const user = await db.findUserByUsername(body.username);
+      if (user) return user;
+    }
+    return null;
+  }
+
+  const decoded = decodeSessionToken(token);
+  let user = null;
+  if (decoded && decoded.id) {
+    user = await db.findUserById(decoded.id);
+  }
+  if (!user && decoded && decoded.username) {
+    user = await db.findUserByUsername(decoded.username);
+  }
+  if (!user && typeof token === 'string' && (token.startsWith('user_') || /^\d+$/.test(token))) {
+    user = await db.findUserById(token);
+  }
+  if (!user && typeof token === 'string' && !token.includes('{') && token.length < 50) {
+    user = await db.findUserByUsername(token);
+  }
+  if (!user && body?.user_id) {
+    user = await db.findUserById(body.user_id);
+  }
+  if (!user && body?.username) {
+    user = await db.findUserByUsername(body.username);
+  }
+
+  return user;
+}
+
+async function persistScanForCitizen(user, result) {
+  if (!user) return result;
+
+  try {
+    const today = new Date().toISOString().slice(0, 10);
+    const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+
+    let new_streak = 1;
+    if (user.last_scan_date === today) {
+      new_streak = user.current_streak || 1;
+    } else if (user.last_scan_date === yesterday) {
+      new_streak = (user.current_streak || 0) + 1;
+    } else {
+      new_streak = 1;
+    }
+
+    const pointsEarned = Number(result.points_earned) || 20;
+    const co2Grams = Number(result.co2_saved_grams) || 40;
+
+    const new_points = (Number(user.points) || 0) + pointsEarned;
+    const new_recycled = (Number(user.total_recycled) || 0) + 1;
+    const new_co2 = Number(((Number(user.total_co2_saved) || 0) + (co2Grams / 1000.0)).toFixed(3));
+
+    const scan = await db.createScanLog({
+      user_id: user.id,
+      item_name: result.item_name || 'Packaging Item',
+      material: result.material || 'Mixed Material',
+      category: result.category || 'Recyclable',
+      co2_saved: co2Grams,
+      points_earned: pointsEarned,
+      disposal_steps: JSON.stringify(result.components || []),
+      brand_name: result.brand_name || 'Generic / Unbranded',
+      recyclability_grade: result.recyclability_grade || 'B',
+      estimated_weight_g: Number(result.estimated_weight_g) || 20.0,
+      scrap_value_usd: Number(result.scrap_value_usd) || 0.02
+    });
+
+    await db.updateUser(user.id, {
+      points: new_points,
+      total_recycled: new_recycled,
+      total_co2_saved: new_co2,
+      current_streak: new_streak,
+      last_scan_date: today
+    });
+
+    user.points = new_points;
+    user.total_recycled = new_recycled;
+    user.total_co2_saved = new_co2;
+    user.current_streak = new_streak;
+    user.last_scan_date = today;
+
+    if (scan?.id) {
+      result.scan_id = scan.id;
+    }
+
+    result.citizen_stats = {
+      user_id: user.id,
+      username: user.username,
+      points: new_points,
+      total_recycled: new_recycled,
+      total_co2_saved: new_co2,
+      current_streak: new_streak,
+      last_scan_date: today
+    };
+  } catch (persistErr) {
+    console.error("Failed to persist scan for citizen:", persistErr);
+  }
+
+  return result;
+}
 
 export default async (req, context) => {
+  const corsHeaders = getCorsHeaders(req);
+
   if (req.method === "OPTIONS") {
-    return new Response(null, { status: 204, headers: CORS_HEADERS });
+    return new Response(null, { status: 204, headers: corsHeaders });
   }
 
   if (req.method === "GET") {
     return new Response(JSON.stringify({ status: "ok", service: "BinSync AI Classifier" }), {
       status: 200,
-      headers: CORS_HEADERS
+      headers: corsHeaders
     });
   }
+
+  let user = null;
 
   try {
     let filename = "";
     let base64Data = "";
     let mimeType = "image/jpeg";
+    let body = {};
 
-    const contentType = req.headers.get("content-type") || "";
+    const contentType = req?.headers?.get ? (req.headers.get("content-type") || "") : (req?.headers?.["content-type"] || "");
 
-    if (contentType.includes("multipart/form-data")) {
+    if (req.body && typeof req.body === "object" && !(req.body instanceof ReadableStream)) {
+      body = req.body;
+      filename = body.filename || "";
+      base64Data = body.image || "";
+      mimeType = body.mimeType || "image/jpeg";
+    } else if (contentType.includes("multipart/form-data")) {
       const formData = await req.formData();
+      body = Object.fromEntries(formData.entries());
       const file = formData.get("file");
       if (file && typeof file === "object") {
         filename = file.name || "";
         mimeType = file.type || "image/jpeg";
         const arrayBuf = await file.arrayBuffer();
         base64Data = Buffer.from(arrayBuf).toString("base64");
+      } else if (typeof file === "string") {
+        filename = file;
       }
     } else if (contentType.includes("application/json")) {
-      const body = await req.json();
+      try {
+        body = await req.json();
+      } catch {
+        body = {};
+      }
       filename = body.filename || "";
       base64Data = body.image || "";
       mimeType = body.mimeType || "image/jpeg";
+    } else if (req.method === "POST" && typeof req.text === "function") {
+      try {
+        const text = await req.text();
+        if (text) {
+          try {
+            body = JSON.parse(text);
+            filename = body.filename || "";
+            base64Data = body.image || "";
+            mimeType = body.mimeType || "image/jpeg";
+          } catch {
+            const params = new URLSearchParams(text);
+            body = Object.fromEntries(params.entries());
+            filename = body.filename || "";
+          }
+        }
+      } catch {
+        body = {};
+      }
     }
+
+    user = await getAuthenticatedUser(req, body);
 
     // Check if filename matches preset demo samples
     const lowerName = filename.toLowerCase();
     for (const key of Object.keys(SAMPLE_MOCKS)) {
       if (lowerName.includes(key)) {
-        return new Response(JSON.stringify({ ...SAMPLE_MOCKS[key], scan_id: "scan-" + Date.now() }), {
+        const payload = { ...SAMPLE_MOCKS[key], scan_id: "scan-" + Date.now() };
+        await persistScanForCitizen(user, payload);
+        return new Response(JSON.stringify(payload), {
           status: 200,
-          headers: CORS_HEADERS
+          headers: corsHeaders
         });
       }
     }
@@ -239,7 +477,8 @@ Category must be ONLY one of: "Recyclable", "Landfill", "Compostable", "Hazmat".
           const parsed = JSON.parse(cleanedText);
           parsed.scan_id = "scan-" + Date.now();
           parsed.points_earned = parsed.category === "Recyclable" ? 25 : (parsed.category === "Compostable" ? 20 : 15);
-          return new Response(JSON.stringify(parsed), { status: 200, headers: CORS_HEADERS });
+          await persistScanForCitizen(user, parsed);
+          return new Response(JSON.stringify(parsed), { status: 200, headers: corsHeaders });
         }
       } catch (geminiErr) {
         console.warn("Gemini vision call fallback:", geminiErr.message);
@@ -276,11 +515,12 @@ Category must be ONLY one of: "Recyclable", "Landfill", "Compostable", "Hazmat".
       ]
     };
 
-    return new Response(JSON.stringify(fallbackData), { status: 200, headers: CORS_HEADERS });
+    await persistScanForCitizen(user, fallbackData);
+    return new Response(JSON.stringify(fallbackData), { status: 200, headers: corsHeaders });
 
   } catch (err) {
     console.error("Classification handler error:", err);
-    return new Response(JSON.stringify({
+    const errorFallbackData = {
       scan_id: "scan-" + Date.now(),
       item_name: "Multi-Material Consumer Packaging",
       brand_name: "Consumer Goods Packaging",
@@ -307,9 +547,12 @@ Category must be ONLY one of: "Recyclable", "Landfill", "Compostable", "Hazmat".
         "Clean thoroughly and use as waterproof seed germination tray for herbs",
         "Keep in garage or craft drawer for organizing small fasteners and hardware"
       ]
-    }), {
+    };
+
+    await persistScanForCitizen(user, errorFallbackData);
+    return new Response(JSON.stringify(errorFallbackData), {
       status: 200,
-      headers: CORS_HEADERS
+      headers: corsHeaders
     });
   }
 };
@@ -317,4 +560,3 @@ Category must be ONLY one of: "Recyclable", "Landfill", "Compostable", "Hazmat".
 export const config = {
   path: ["/api/classify", "/.netlify/functions/classify"]
 };
-
