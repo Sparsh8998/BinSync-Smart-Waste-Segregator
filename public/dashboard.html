@@ -457,27 +457,34 @@
             <a href="/leaderboard" class="px-3.5 py-2 rounded-lg transition-colors text-text-secondary hover:text-text-primary hover:bg-surface-container">
                 Leaderboard
             </a>
-            
-            <a href="/dashboard" class="px-3.5 py-2 rounded-lg transition-colors text-primary bg-primary-light font-semibold">
+            <a href="/dashboard" id="desktop-nav-dashboard" class="px-3.5 py-2 rounded-lg transition-colors  text-primary bg-primary-light font-semibold">
                 Dashboard
             </a>
-            
         </nav>
 
         <!-- Right Side: User Profile / Action -->
-        <div class="flex items-center gap-2 sm:gap-3">
-            
-            <a href="/dashboard" class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container border border-border-subtle hover:border-primary/40 transition">
-                <span class="w-6 h-6 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center">
-                    C
-                </span>
-                <span class="hidden sm:inline text-xs font-bold text-text-primary">Citizen_6f0681cc57</span>
-                <span id="nav-points-pill" class="text-xs font-mono font-semibold text-primary bg-primary-light px-2 py-0.5 rounded-md">0 pts</span>
-            </a>
-            <a href="/logout" title="Log out" class="hidden sm:inline text-xs font-semibold text-text-muted hover:text-rose-600 px-2 py-1 transition">
-                Sign Out
-            </a>
-            
+        <div class="flex items-center gap-2 sm:gap-3" id="header-user-slot">
+            <div id="nav-auth-user" class="flex items-center gap-2 sm:gap-3">
+                <a href="/dashboard" class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-container border border-border-subtle hover:border-primary/40 transition" id="nav-user-badge">
+                    <span id="nav-avatar-letter" class="w-6 h-6 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center">
+                        C
+                    </span>
+                    <span id="nav-username" class="hidden sm:inline text-xs font-bold text-text-primary">Citizen_4186ead84d</span>
+                    <span id="nav-points-pill" class="text-xs font-mono font-semibold text-primary bg-primary-light px-2 py-0.5 rounded-md">0 pts</span>
+                </a>
+                <button type="button" onclick="signOutCitizen(event)" title="Log out" class="hidden sm:inline text-xs font-semibold text-text-muted hover:text-rose-600 px-2 py-1 transition cursor-pointer" id="nav-signout-btn">
+                    Sign Out
+                </button>
+            </div>
+            <div id="nav-auth-guest" class="hidden items-center gap-2 sm:gap-3">
+                <a href="/login" class="text-xs sm:text-sm font-semibold text-text-secondary hover:text-primary px-2.5 sm:px-3 py-1.5 sm:py-2 transition" id="nav-signin-link">
+                    Sign In
+                </a>
+                <a href="/classifier" class="hidden sm:inline-flex btn-primary py-2 px-4 sm:px-5 text-xs sm:text-sm font-bold items-center gap-1.5 shadow-sm" id="nav-scan-cta">
+                    <span class="material-symbols-outlined text-[18px]">photo_camera</span>
+                    <span>Scan Waste</span>
+                </a>
+            </div>
 
             <!-- Web Audio Micro-Haptic Mute/Unmute Toggle -->
             <button type="button" id="sound-toggle-btn" class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-surface-container border border-border-subtle hover:border-primary/40 text-text-secondary hover:text-primary transition flex items-center justify-center focus:outline-none" title="Toggle Sound Feedback">
@@ -517,16 +524,22 @@
             <span class="material-symbols-outlined text-[20px]">leaderboard</span>
             <span>Community Leaderboard</span>
         </a>
-        
-        <a href="/dashboard" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium bg-primary-light text-primary font-bold">
-            <span class="material-symbols-outlined text-[20px]">dashboard</span>
-            <span>My Dashboard (0 pts)</span>
-        </a>
-        <a href="/logout" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-rose-600 hover:bg-rose-50">
-            <span class="material-symbols-outlined text-[20px]">logout</span>
-            <span>Sign Out</span>
-        </a>
-        
+        <div id="mobile-nav-auth-user" class=" space-y-2">
+            <a href="/dashboard" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium bg-primary-light text-primary font-bold">
+                <span class="material-symbols-outlined text-[20px]">dashboard</span>
+                <span id="mobile-nav-points-text">My Dashboard (0 pts)</span>
+            </a>
+            <button type="button" onclick="signOutCitizen(event)" class="w-full text-left flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-rose-600 hover:bg-rose-50 cursor-pointer">
+                <span class="material-symbols-outlined text-[20px]">logout</span>
+                <span>Sign Out</span>
+            </button>
+        </div>
+        <div id="mobile-nav-auth-guest" class="hidden">
+            <a href="/login" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-semibold text-primary hover:bg-primary-light">
+                <span class="material-symbols-outlined text-[20px]">login</span>
+                <span>Sign In / Profile</span>
+            </a>
+        </div>
     </div>
 </header>
 
@@ -543,7 +556,7 @@
                 <span class="material-symbols-outlined text-[18px]">person</span>
             </span>
             <span>
-                <strong>Temporary Guest Session (Citizen_6f0681cc57):</strong> Your scans, streaks, and eco-points are tracked in this browser.
+                <strong>Temporary Guest Session (Citizen_4186ead84d):</strong> Your scans, streaks, and eco-points are tracked in this browser.
             </span>
         </div>
         <a href="/login" class="btn-primary py-2 px-5 text-xs sm:text-sm font-bold shadow-none whitespace-nowrap">
@@ -557,16 +570,16 @@
         <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
             <!-- Identity -->
             <div class="flex items-center gap-6">
-                <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-primary text-white flex items-center justify-center font-bold text-3xl sm:text-4xl shadow-md flex-shrink-0">
+                <div id="user-profile-avatar" class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-primary text-white flex items-center justify-center font-bold text-3xl sm:text-4xl shadow-md flex-shrink-0">
                     C
                 </div>
                 <div>
                     <div class="flex items-center gap-3 flex-wrap">
-                        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-text-primary">Citizen_6f0681cc57</h1>
-                        <span class="text-xs sm:text-sm font-semibold text-primary bg-primary-light px-3 py-0.5 rounded-md border border-primary/20">Seedling</span>
+                        <h1 id="user-profile-username" class="text-3xl sm:text-4xl lg:text-5xl font-bold text-text-primary">Citizen_4186ead84d</h1>
+                        <span id="user-level-title" class="text-xs sm:text-sm font-semibold text-primary bg-primary-light px-3 py-0.5 rounded-md border border-primary/20">Seedling</span>
                     </div>
                     <div class="flex items-center gap-2 mt-2 flex-wrap">
-                        <span class="text-xs text-text-muted font-mono">Citizen ID: SYNC-0688</span>
+                        <span id="user-citizen-id" class="text-xs text-text-muted font-mono">Citizen ID: SYNC-1027</span>
                         <span class="text-text-muted text-xs">·</span>
                         <div class="relative inline-flex items-center gap-1.5">
                             <span class="material-symbols-outlined text-teal-600 text-[16px]">groups</span>
@@ -593,18 +606,18 @@
             <div class="flex flex-wrap items-center gap-3.5">
                 <div class="px-5 py-3 rounded-xl bg-surface border border-border-subtle text-center min-w-[90px]">
                     <span class="block text-xs font-medium text-text-muted mb-0.5">Scans</span>
-                    <span class="text-2xl font-semibold text-text-primary font-mono tabular-nums">0</span>
+                    <span id="user-total-scans" class="text-2xl font-semibold text-text-primary font-mono tabular-nums">0</span>
                 </div>
                 <div class="px-5 py-3 rounded-xl bg-surface border border-border-subtle text-center min-w-[90px]">
                     <span class="block text-xs font-medium text-text-muted mb-0.5">Streak</span>
-                    <span class="text-2xl font-semibold text-solar-dark font-mono tabular-nums flex items-center justify-center gap-1">
+                    <span id="user-current-streak" class="text-2xl font-semibold text-solar-dark font-mono tabular-nums flex items-center justify-center gap-1">
                         <span class="material-symbols-outlined text-[18px] text-solar">local_fire_department</span>
-                        0d
+                        <span id="user-streak-val">0d</span>
                     </span>
                 </div>
                 <div class="px-5 py-3 rounded-xl bg-primary text-white text-center shadow-sm min-w-[90px]">
                     <span class="block text-xs font-medium text-blue-100 mb-0.5">Points</span>
-                    <span class="text-2xl font-semibold font-mono tabular-nums">0</span>
+                    <span id="user-points-val" class="text-2xl font-semibold font-mono tabular-nums">0</span>
                 </div>
                 <a href="/api/export_scans" title="Download verified CSV audit" class="p-3.5 rounded-2xl bg-surface border border-border-medium hover:border-primary text-text-secondary hover:text-primary transition flex items-center justify-center">
                     <span class="material-symbols-outlined text-[22px]">download</span>
@@ -615,8 +628,8 @@
         <!-- Level Progress Bar -->
         <div class="mt-7 pt-6 border-t border-border-subtle space-y-2">
             <div class="flex justify-between items-center text-xs">
-                <span class="font-semibold text-text-secondary">Progress to next tier: <strong class="text-text-primary">Seedling</strong></span>
-                <span class="text-text-muted font-mono font-medium">0 / 100 pts</span>
+                <span class="font-semibold text-text-secondary">Progress to next tier: <strong id="user-level-tier-target" class="text-text-primary">Seedling</strong></span>
+                <span id="user-level-progress-text" class="text-text-muted font-mono font-medium">0 / 100 pts</span>
             </div>
             <div class="w-full h-2.5 rounded-full bg-surface border border-border-subtle overflow-hidden relative">
                 <div id="user-level-bar" class="h-full bg-primary rounded-full progress-shimmer transition-all duration-1000 ease-out" style="width: 0%;" data-target-width="0.0%;"></div>
@@ -636,21 +649,21 @@
                     <div class="w-9 h-9 rounded-xl bg-primary-light text-primary flex items-center justify-center mb-3">
                         <span class="material-symbols-outlined text-[20px]">co2</span>
                     </div>
-                    <div class="text-2xl font-semibold text-text-primary font-mono tabular-nums">0.0g</div>
+                    <div id="user-co2-val" class="text-2xl font-semibold text-text-primary font-mono tabular-nums">0.0g</div>
                     <p class="text-xs text-text-secondary mt-0.5">Total CO₂ Diverted</p>
                 </div>
                 <div class="taste-card p-5">
                     <div class="w-9 h-9 rounded-xl bg-solar-light text-solar-dark flex items-center justify-center mb-3">
                         <span class="material-symbols-outlined text-[20px]">battery_charging_full</span>
                     </div>
-                    <div class="text-2xl font-semibold text-text-primary font-mono tabular-nums">0</div>
+                    <div id="user-phone-charges" class="text-2xl font-semibold text-text-primary font-mono tabular-nums">0</div>
                     <p class="text-xs text-text-secondary mt-0.5">Smartphone Recharges</p>
                 </div>
                 <div class="taste-card p-5">
                     <div class="w-9 h-9 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center mb-3">
                         <span class="material-symbols-outlined text-[20px]">electric_car</span>
                     </div>
-                    <div class="text-2xl font-semibold text-text-primary font-mono tabular-nums">0.0<span class="text-sm font-normal text-text-muted ml-1">mi</span></div>
+                    <div id="user-ev-miles" class="text-2xl font-semibold text-text-primary font-mono tabular-nums">0.0<span class="text-sm font-normal text-text-muted ml-1">mi</span></div>
                     <p class="text-xs text-text-secondary mt-0.5">EV Miles Offset</p>
                 </div>
             </div>
@@ -664,7 +677,7 @@
                     </h2>
                     <span class="text-[11px] font-semibold text-primary bg-primary-light px-2.5 py-0.5 rounded-full">Resets Midnight</span>
                 </div>
-                <div class="space-y-3">
+                <div class="space-y-3" id="daily-quests-container">
                     
                     <div class="p-3.5 rounded-xl border bg-surface border-border-subtle flex items-center justify-between gap-3 transition">
                         <div class="flex items-center gap-3">
@@ -678,9 +691,13 @@
                                 <p class="text-[11px] text-text-secondary">Inspect at least 1 packaging item today</p>
                             </div>
                         </div>
-                        <span class="text-[11px] font-bold font-mono px-2 py-0.5 rounded-md bg-solar-light text-solar-dark">
-                            +10 Eco-Pts
-                        </span>
+                        <div class="flex items-center gap-2">
+                            
+                            <span class="text-[11px] font-bold font-mono px-2 py-0.5 rounded-md bg-solar-light text-solar-dark">
+                                +10 Eco-Pts
+                            </span>
+                            
+                        </div>
                     </div>
                     
                     <div class="p-3.5 rounded-xl border bg-surface border-border-subtle flex items-center justify-between gap-3 transition">
@@ -695,9 +712,13 @@
                                 <p class="text-[11px] text-text-secondary">Divert an item into recycling or compost</p>
                             </div>
                         </div>
-                        <span class="text-[11px] font-bold font-mono px-2 py-0.5 rounded-md bg-solar-light text-solar-dark">
-                            +15 Eco-Pts
-                        </span>
+                        <div class="flex items-center gap-2">
+                            
+                            <span class="text-[11px] font-bold font-mono px-2 py-0.5 rounded-md bg-solar-light text-solar-dark">
+                                +15 Eco-Pts
+                            </span>
+                            
+                        </div>
                     </div>
                     
                     <div class="p-3.5 rounded-xl border bg-surface border-border-subtle flex items-center justify-between gap-3 transition">
@@ -712,9 +733,13 @@
                                 <p class="text-[11px] text-text-secondary">Maintain an active sorting streak of 2+ days</p>
                             </div>
                         </div>
-                        <span class="text-[11px] font-bold font-mono px-2 py-0.5 rounded-md bg-solar-light text-solar-dark">
-                            +25 Eco-Pts
-                        </span>
+                        <div class="flex items-center gap-2">
+                            
+                            <span class="text-[11px] font-bold font-mono px-2 py-0.5 rounded-md bg-solar-light text-solar-dark">
+                                +25 Eco-Pts
+                            </span>
+                            
+                        </div>
                     </div>
                     
                 </div>
@@ -828,16 +853,6 @@
 
                 <!-- Heatmap Grid -->
                 <div class="grid grid-cols-6 sm:grid-cols-10 gap-2" id="heatmap-grid">
-                    
-                    <div class="group relative flex flex-col items-center justify-center p-2 rounded-xl text-center transition-transform hover:scale-110 cursor-pointer border border-border-subtle/50 bg-surface-container text-text-muted/60">
-                        <span class="text-[10px] font-mono leading-none">18</span>
-                        <span class="text-[9px] opacity-75 font-mono leading-none mt-0.5">0</span>
-                        
-                        <!-- Tooltip -->
-                        <div class="absolute bottom-full mb-1.5 left-1/2 -translate-x-1/2 hidden group-hover:block z-30 whitespace-nowrap bg-[#0F172A] text-white text-[10px] font-semibold px-2.5 py-1 rounded-lg shadow-lg pointer-events-none">
-                            Oct 18: 0 items sorted
-                        </div>
-                    </div>
                     
                     <div class="group relative flex flex-col items-center justify-center p-2 rounded-xl text-center transition-transform hover:scale-110 cursor-pointer border border-border-subtle/50 bg-surface-container text-text-muted/60">
                         <span class="text-[10px] font-mono leading-none">19</span>
@@ -1126,6 +1141,16 @@
                         <!-- Tooltip -->
                         <div class="absolute bottom-full mb-1.5 left-1/2 -translate-x-1/2 hidden group-hover:block z-30 whitespace-nowrap bg-[#0F172A] text-white text-[10px] font-semibold px-2.5 py-1 rounded-lg shadow-lg pointer-events-none">
                             Nov 16: 0 items sorted
+                        </div>
+                    </div>
+                    
+                    <div class="group relative flex flex-col items-center justify-center p-2 rounded-xl text-center transition-transform hover:scale-110 cursor-pointer border border-border-subtle/50 bg-surface-container text-text-muted/60">
+                        <span class="text-[10px] font-mono leading-none">17</span>
+                        <span class="text-[9px] opacity-75 font-mono leading-none mt-0.5">0</span>
+                        
+                        <!-- Tooltip -->
+                        <div class="absolute bottom-full mb-1.5 left-1/2 -translate-x-1/2 hidden group-hover:block z-30 whitespace-nowrap bg-[#0F172A] text-white text-[10px] font-semibold px-2.5 py-1 rounded-lg shadow-lg pointer-events-none">
+                            Nov 17: 0 items sorted
                         </div>
                     </div>
                     
@@ -1514,20 +1539,22 @@
                 </div>
 
                 <!-- Scan Items Accordion List -->
-                
-                <div class="py-16 text-center space-y-4">
-                    <div class="w-14 h-14 rounded-2xl bg-surface flex items-center justify-center mx-auto border border-border-subtle text-text-muted">
-                        <span class="material-symbols-outlined text-[28px]">qr_code_scanner</span>
+                <div class="space-y-2.5 max-h-[500px] overflow-y-auto pr-1" id="scans-list-container">
+                    
+                    <div class="py-16 text-center space-y-4">
+                        <div class="w-14 h-14 rounded-2xl bg-surface flex items-center justify-center mx-auto border border-border-subtle text-text-muted">
+                            <span class="material-symbols-outlined text-[28px]">qr_code_scanner</span>
+                        </div>
+                        <div class="space-y-1">
+                            <p class="text-sm font-bold text-text-secondary">No scans yet</p>
+                            <p class="text-xs text-text-muted max-w-[220px] mx-auto">Inspect your first packaging item to begin tracking your carbon diversion.</p>
+                        </div>
+                        <a href="/classifier" class="btn-primary py-2.5 px-5 text-xs">
+                            Scan First Item
+                        </a>
                     </div>
-                    <div class="space-y-1">
-                        <p class="text-sm font-bold text-text-secondary">No scans yet</p>
-                        <p class="text-xs text-text-muted max-w-[220px] mx-auto">Inspect your first packaging item to begin tracking your carbon diversion.</p>
-                    </div>
-                    <a href="/classifier" class="btn-primary py-2.5 px-5 text-xs">
-                        Scan First Item
-                    </a>
+                    
                 </div>
-                
 
                 <!-- Export & Print Actions -->
                 <div class="pt-4 border-t border-border-subtle flex flex-wrap items-center justify-between gap-2 text-xs">
@@ -1556,7 +1583,7 @@
             <div class="taste-card p-6 border-2 border-primary/20 space-y-4 bg-gradient-to-br from-white via-surface to-primary-light/20">
                 <div class="flex items-center justify-between">
                     <span class="text-xs font-semibold text-primary bg-primary-light px-2.5 py-0.5 rounded-md">Official Verification</span>
-                    <span class="text-[10px] font-mono text-text-muted">ID: SYNC-0688</span>
+                    <span class="text-[10px] font-mono text-text-muted">ID: SYNC-1027</span>
                 </div>
                 <div>
                     <h3 class="text-sm font-bold text-text-primary">Verified Citizen Climate Ledger</h3>
@@ -1977,6 +2004,107 @@
             });
             window.observeScrollReveals = function() {};
         }
+
+        // Global Citizen Auth Synchronization
+        window.renderGlobalAuthUI = function(user) {
+            const desktopDashboard = document.getElementById('desktop-nav-dashboard');
+            const navAuthUser = document.getElementById('nav-auth-user');
+            const navAuthGuest = document.getElementById('nav-auth-guest');
+            const mobileNavUser = document.getElementById('mobile-nav-auth-user');
+            const mobileNavGuest = document.getElementById('mobile-nav-auth-guest');
+            const avatarLetter = document.getElementById('nav-avatar-letter');
+            const usernameEl = document.getElementById('nav-username');
+            const pointsPill = document.getElementById('nav-points-pill');
+            const mobilePointsText = document.getElementById('mobile-nav-points-text');
+
+            if (user && user.username) {
+                if (desktopDashboard) desktopDashboard.classList.remove('hidden');
+                if (navAuthUser) {
+                    navAuthUser.classList.remove('hidden');
+                    navAuthUser.classList.add('flex');
+                }
+                if (navAuthGuest) {
+                    navAuthGuest.classList.add('hidden');
+                    navAuthGuest.classList.remove('flex');
+                }
+                if (mobileNavUser) mobileNavUser.classList.remove('hidden');
+                if (mobileNavGuest) mobileNavGuest.classList.add('hidden');
+
+                const letter = (user.username[0] || 'C').toUpperCase();
+                if (avatarLetter) avatarLetter.textContent = letter;
+                if (usernameEl) usernameEl.textContent = user.username;
+                const pts = user.points !== undefined ? user.points : 0;
+                if (pointsPill) pointsPill.textContent = `${pts} pts`;
+                if (mobilePointsText) mobilePointsText.textContent = `My Dashboard (${pts} pts)`;
+            } else {
+                if (desktopDashboard) desktopDashboard.classList.add('hidden');
+                if (navAuthUser) {
+                    navAuthUser.classList.add('hidden');
+                    navAuthUser.classList.remove('flex');
+                }
+                if (navAuthGuest) {
+                    navAuthGuest.classList.remove('hidden');
+                    navAuthGuest.classList.add('flex');
+                }
+                if (mobileNavUser) mobileNavUser.classList.add('hidden');
+                if (mobileNavGuest) mobileNavGuest.classList.remove('hidden');
+            }
+        };
+
+        window.signOutCitizen = async function(event) {
+            if (event) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            try {
+                localStorage.removeItem('binsync_user');
+                localStorage.removeItem('binsync_token');
+            } catch(e) {}
+            try {
+                await fetch('/api/auth/logout', { method: 'POST' });
+            } catch(e) {}
+            window.location.href = '/login';
+        };
+
+        window.syncGlobalAuth = async function() {
+            let user = null;
+            try {
+                const stored = localStorage.getItem('binsync_user');
+                if (stored) {
+                    user = JSON.parse(stored);
+                }
+            } catch(e) {}
+
+            const token = localStorage.getItem('binsync_token');
+            if (token) {
+                try {
+                    const res = await fetch('/api/auth/me', {
+                        headers: { 'Authorization': 'Bearer ' + token }
+                    });
+                    if (res.ok) {
+                        const data = await res.json();
+                        if (data.authenticated && data.user) {
+                            user = data.user;
+                            try {
+                                localStorage.setItem('binsync_user', JSON.stringify(user));
+                            } catch(e) {}
+                        } else if (data.authenticated === false) {
+                            try {
+                                localStorage.removeItem('binsync_user');
+                                localStorage.removeItem('binsync_token');
+                            } catch(e) {}
+                            user = null;
+                        }
+                    }
+                } catch(e) {
+                    // Offline or local fallback
+                }
+            }
+
+            window.renderGlobalAuthUI(user);
+        };
+
+        window.syncGlobalAuth();
     });
 </script>
 
@@ -2227,7 +2355,7 @@
     // Chart.js: 7-Day Carbon Diversion Trend Bar/Line Chart
     const co2Canvas = document.getElementById('co2TrendChart');
     if (co2Canvas && typeof Chart !== 'undefined') {
-        const seriesData = [{"co2_grams": 0, "count": 0, "date_label": "Tue", "full_date": "Nov 10"}, {"co2_grams": 0, "count": 0, "date_label": "Wed", "full_date": "Nov 11"}, {"co2_grams": 0, "count": 0, "date_label": "Thu", "full_date": "Nov 12"}, {"co2_grams": 0, "count": 0, "date_label": "Fri", "full_date": "Nov 13"}, {"co2_grams": 0, "count": 0, "date_label": "Sat", "full_date": "Nov 14"}, {"co2_grams": 0, "count": 0, "date_label": "Sun", "full_date": "Nov 15"}, {"co2_grams": 0, "count": 0, "date_label": "Mon", "full_date": "Nov 16"}];
+        const seriesData = [{"co2_grams": 0, "count": 0, "date_label": "Wed", "full_date": "Nov 11"}, {"co2_grams": 0, "count": 0, "date_label": "Thu", "full_date": "Nov 12"}, {"co2_grams": 0, "count": 0, "date_label": "Fri", "full_date": "Nov 13"}, {"co2_grams": 0, "count": 0, "date_label": "Sat", "full_date": "Nov 14"}, {"co2_grams": 0, "count": 0, "date_label": "Sun", "full_date": "Nov 15"}, {"co2_grams": 0, "count": 0, "date_label": "Mon", "full_date": "Nov 16"}, {"co2_grams": 0, "count": 0, "date_label": "Tue", "full_date": "Nov 17"}];
         const labels = seriesData.map(d => d.date_label);
         const co2Values = seriesData.map(d => d.co2_grams);
 
@@ -2281,15 +2409,26 @@
     async function updateCitizenHub(newHub) {
         const badge = document.getElementById('hub-saved-badge');
         try {
+            const token = localStorage.getItem('binsync_token') || '';
+            const headers = { 'Content-Type': 'application/json' };
+            if (token) headers['Authorization'] = 'Bearer ' + token;
+
             const res = await fetch('/api/update_hub', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers,
                 body: JSON.stringify({ community_hub: newHub })
             });
             const data = await res.json();
-            if (data.success && badge) {
+            if ((data.success || data.ok) && badge) {
                 badge.classList.remove('hidden');
                 setTimeout(() => badge.classList.add('hidden'), 2500);
+                try {
+                    const localUser = JSON.parse(localStorage.getItem('binsync_user') || 'null');
+                    if (localUser) {
+                        localUser.community_hub = newHub;
+                        localStorage.setItem('binsync_user', JSON.stringify(localUser));
+                    }
+                } catch(e) {}
             }
         } catch (e) {
             console.warn("Failed to update hub:", e);
@@ -2406,11 +2545,11 @@
         // Citizen Name & Level
         ctx.fillStyle = '#FFFFFF';
         ctx.font = 'bold 28px Geist, Inter, sans-serif';
-        ctx.fillText('Citizen_6f0681cc57', 40, 125);
+        ctx.fillText('Citizen_4186ead84d', 40, 125);
 
         ctx.fillStyle = '#94A3B8';
         ctx.font = '13px Geist, Inter, sans-serif';
-        ctx.fillText('Citizen ID: SYNC-0688 · Global Network · Seedling', 40, 150);
+        ctx.fillText('Citizen ID: SYNC-1027 · Global Network · Seedling', 40, 150);
 
         // 3 Stat Boxes
         const statBoxes = [
@@ -2459,7 +2598,7 @@
         const canvas = document.getElementById('shareImpactCanvas');
         if (!canvas) return;
         const link = document.createElement('a');
-        link.download = `BinSync_Impact_Citizen_6f0681cc57.png`;
+        link.download = `BinSync_Impact_Citizen_4186ead84d.png`;
         link.href = canvas.toDataURL('image/png');
         link.click();
     }
@@ -2485,13 +2624,21 @@
         if (!confirm("Delete this scan? Earned points and carbon offset will be reversed.")) return;
         
         try {
-            const resp = await fetch(`/api/scan/${scanId}`, { method: 'DELETE' });
+            const token = localStorage.getItem('binsync_token') || '';
+            const headers = { 'Content-Type': 'application/json' };
+            if (token) headers['Authorization'] = 'Bearer ' + token;
+
+            const resp = await fetch(`/api/scan/${scanId}`, { method: 'DELETE', headers });
             const res = await resp.json();
-            if (res.status === 'success') {
+            if (res.status === 'success' || res.ok) {
                 const card = btn.closest('.scan-item-card');
                 if (card) card.remove();
                 if (window.triggerFeedback) window.triggerFeedback('error');
-                window.location.reload();
+                if (typeof hydrateDashboard === 'function') {
+                    await hydrateDashboard();
+                } else {
+                    window.location.reload();
+                }
             } else {
                 alert(res.error || "Could not delete scan record.");
             }
@@ -2499,6 +2646,320 @@
             alert("Delete failed: " + e.message);
         }
     }
+
+    // Quest Claiming Handler
+    async function claimQuest(questKey, btn) {
+        if (!questKey) return;
+        if (btn) btn.disabled = true;
+
+        try {
+            const token = localStorage.getItem('binsync_token') || '';
+            const headers = { 'Content-Type': 'application/json' };
+            if (token) headers['Authorization'] = 'Bearer ' + token;
+
+            const res = await fetch('/api/claim_quest', {
+                method: 'POST',
+                headers,
+                body: JSON.stringify({ quest_key: questKey })
+            });
+            const data = await res.json();
+            if (data.ok) {
+                if (typeof confetti === 'function') {
+                    confetti({ particleCount: 70, spread: 60, origin: { y: 0.7 } });
+                }
+                if (window.triggerFeedback) window.triggerFeedback('success');
+                await hydrateDashboard();
+            } else {
+                alert(data.error || 'Failed to claim quest');
+                if (btn) btn.disabled = false;
+            }
+        } catch (err) {
+            console.error('Claim quest error:', err);
+            alert('Error claiming quest: ' + err.message);
+            if (btn) btn.disabled = false;
+        }
+    }
+
+    function escapeHtml(str) {
+        if (typeof str !== 'string') return String(str || '');
+        return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+    }
+
+    function renderDailyQuests(quests) {
+        const container = document.getElementById('daily-quests-container');
+        if (!container || !Array.isArray(quests)) return;
+
+        container.innerHTML = quests.map((quest, idx) => {
+            const isCompleted = Boolean(quest.completed);
+            const isClaimed = Boolean(quest.claimed);
+            const bgClass = isCompleted ? 'bg-primary-light/40 border-primary/30' : 'bg-surface border-border-subtle';
+            const iconBg = isCompleted ? 'bg-primary text-white' : 'bg-white text-text-muted border border-border-medium';
+            const iconContent = isCompleted ? '<span class="material-symbols-outlined text-[16px]">check</span>' : (idx + 1);
+            const titleClass = isCompleted ? 'line-through text-text-muted' : '';
+
+            let actionHtml = '';
+            if (isCompleted && !isClaimed) {
+                actionHtml = `
+                    <button type="button" onclick="claimQuest('${quest.key}', this)" class="btn-primary py-1 px-3 text-xs font-bold shadow-sm flex items-center gap-1 whitespace-nowrap cursor-pointer">
+                        <span>Claim</span>
+                        <span class="font-mono text-[10px]">(${quest.reward || '+' + (quest.reward_points || 20) + ' pts'})</span>
+                    </button>
+                `;
+            } else if (isClaimed) {
+                actionHtml = `
+                    <span class="text-[11px] font-bold font-mono px-2 py-0.5 rounded-md bg-primary text-white">
+                        Claimed ✓
+                    </span>
+                `;
+            } else {
+                actionHtml = `
+                    <span class="text-[11px] font-bold font-mono px-2 py-0.5 rounded-md bg-solar-light text-solar-dark">
+                        ${quest.reward || '+' + (quest.reward_points || 20) + ' pts'}
+                    </span>
+                `;
+            }
+
+            return `
+                <div class="p-3.5 rounded-xl border ${bgClass} flex items-center justify-between gap-3 transition">
+                    <div class="flex items-center gap-3">
+                        <span class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold ${iconBg}">
+                            ${iconContent}
+                        </span>
+                        <div>
+                            <h4 class="text-xs font-bold text-text-primary ${titleClass}">${escapeHtml(quest.title)}</h4>
+                            <p class="text-[11px] text-text-secondary">${escapeHtml(quest.desc)}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        ${actionHtml}
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    function renderRecentScans(scans) {
+        const container = document.getElementById('scans-list-container');
+        if (!container) return;
+
+        if (!scans || scans.length === 0) {
+            container.innerHTML = `
+                <div class="py-16 text-center space-y-4">
+                    <div class="w-14 h-14 rounded-2xl bg-surface flex items-center justify-center mx-auto border border-border-subtle text-text-muted">
+                        <span class="material-symbols-outlined text-[28px]">qr_code_scanner</span>
+                    </div>
+                    <div class="space-y-1">
+                        <p class="text-sm font-bold text-text-secondary">No scans yet</p>
+                        <p class="text-xs text-text-muted max-w-[220px] mx-auto">Inspect your first packaging item to begin tracking your carbon diversion.</p>
+                    </div>
+                    <a href="/classifier" class="btn-primary py-2.5 px-5 text-xs">
+                        Scan First Item
+                    </a>
+                </div>
+            `;
+            return;
+        }
+
+        container.innerHTML = scans.map((scan, idx) => {
+            const category = scan.category || 'Landfill';
+            let catBadge = 'bg-slate-100 text-slate-700 border border-slate-200';
+            if (category === 'Recyclable') catBadge = 'bg-blue-50 text-blue-700 border border-blue-200';
+            else if (category === 'Compostable') catBadge = 'bg-teal-50 text-teal-800 border border-teal-200';
+            else if (category === 'Hazmat') catBadge = 'bg-rose-50 text-rose-700 border border-rose-200';
+
+            let dateStr = scan.timestamp || '';
+            try {
+                if (dateStr) {
+                    const d = new Date(dateStr);
+                    if (!isNaN(d.getTime())) {
+                        dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) + ' · ' + d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
+                    }
+                }
+            } catch (e) {}
+
+            let compsHtml = '';
+            const comps = scan.parsed_components || [];
+            if (Array.isArray(comps) && comps.length > 0) {
+                compsHtml = `
+                    <div class="space-y-1">
+                        <span class="text-xs font-medium text-text-muted block">Directives</span>
+                        ${comps.map(comp => `
+                            <div class="text-[11px] bg-white p-2 rounded-lg border border-border-subtle flex justify-between items-center gap-2">
+                                <div class="min-w-0">
+                                    <strong class="text-text-primary text-xs">${escapeHtml(comp.part || '')}</strong>
+                                    <span class="text-text-muted text-[10px]"> · ${escapeHtml(comp.material || '')}</span>
+                                </div>
+                                <span class="text-[10px] font-bold text-primary px-2 py-0.5 bg-primary-light rounded-full whitespace-nowrap">${escapeHtml(comp.destination || '')}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+
+            return `
+                <details class="scan-item-card reveal-on-scroll group bg-surface border border-border-subtle rounded-xl p-3.5 transition hover:border-primary/40 cursor-pointer" style="transition-delay: ${(idx % 6) * 60}ms;" data-category="${escapeHtml(category)}" data-name="${escapeHtml((scan.item_name || '').toLowerCase())}">
+                    <summary class="flex items-center justify-between list-none gap-3">
+                        <div class="min-w-0 flex-1 space-y-0.5">
+                            <h4 class="text-xs font-bold text-text-primary truncate">${escapeHtml(scan.item_name || 'Packaging Item')}</h4>
+                            <p class="text-[10px] text-text-muted font-mono">${escapeHtml(dateStr)}</p>
+                        </div>
+                        <div class="flex items-center gap-2 flex-shrink-0">
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${catBadge}">
+                                ${escapeHtml(category)}
+                            </span>
+                            <button type="button" onclick="event.preventDefault(); event.stopPropagation(); deleteScan('${scan.id}', this)" class="p-1 text-slate-400 hover:text-rose-600 transition cursor-pointer" title="Delete scan record">
+                                <span class="material-symbols-outlined text-[16px]">delete</span>
+                            </button>
+                            <span class="material-symbols-outlined text-text-muted text-[16px] transition-transform group-open:rotate-180">expand_more</span>
+                        </div>
+                    </summary>
+
+                    <div class="mt-3 pt-3 border-t border-border-subtle space-y-2">
+                        <p class="text-[11px] text-text-secondary"><span class="font-semibold text-text-primary">Material:</span> ${escapeHtml(scan.material || 'Mixed Material')}</p>
+                        ${compsHtml}
+                        <div class="flex justify-between items-center text-[11px] text-text-muted pt-1">
+                            <span>CO₂ diverted:</span>
+                            <span class="font-bold text-primary font-mono">+${scan.co2_saved || 0}g</span>
+                        </div>
+                    </div>
+                </details>
+            `;
+        }).join('');
+
+        if (typeof filterScans === 'function') {
+            filterScans();
+        }
+    }
+
+    async function hydrateDashboard() {
+        const token = localStorage.getItem('binsync_token') || '';
+        const localUserStr = localStorage.getItem('binsync_user');
+        const localUser = localUserStr ? JSON.parse(localUserStr) : null;
+
+        try {
+            const headers = {};
+            if (token) headers['Authorization'] = 'Bearer ' + token;
+
+            const res = await fetch('/api/dashboard/stats', { headers });
+
+            if (res.status === 401 && !localUser) {
+                window.location.href = '/login';
+                return;
+            }
+
+            if (res.ok) {
+                const data = await res.json();
+                if (data.ok && data.user) {
+                    try {
+                        localStorage.setItem('binsync_user', JSON.stringify(data.user));
+                    } catch (e) {}
+
+                    if (window.renderGlobalAuthUI) {
+                        window.renderGlobalAuthUI(data.user);
+                    }
+
+                    // Update Profile Identity
+                    const usernameEl = document.getElementById('user-profile-username');
+                    if (usernameEl) usernameEl.textContent = data.user.username;
+
+                    const avatarEl = document.getElementById('user-profile-avatar');
+                    if (avatarEl) avatarEl.textContent = (data.user.username[0] || 'C').toUpperCase();
+
+                    const idEl = document.getElementById('user-citizen-id');
+                    if (idEl) {
+                        const idVal = typeof data.user.id === 'number' ? String(data.user.id).padStart(4, '0') : data.user.id;
+                        idEl.textContent = `Citizen ID: SYNC-${idVal}`;
+                    }
+
+                    const levelTitleEl = document.getElementById('user-level-title');
+                    if (levelTitleEl && data.level_info) {
+                        levelTitleEl.textContent = data.level_info.title;
+                    }
+
+                    const tierTargetEl = document.getElementById('user-level-tier-target');
+                    if (tierTargetEl && data.level_info) {
+                        tierTargetEl.textContent = data.level_info.title;
+                    }
+
+                    const progressTextEl = document.getElementById('user-level-progress-text');
+                    if (progressTextEl && data.level_info) {
+                        progressTextEl.textContent = `${data.user.points} / ${data.level_info.next_tier} pts`;
+                    }
+
+                    const levelBar = document.getElementById('user-level-bar');
+                    if (levelBar && data.level_info) {
+                        levelBar.style.width = `${data.level_info.progress_pct}%`;
+                        levelBar.setAttribute('data-target-width', `${data.level_info.progress_pct}%`);
+                    }
+
+                    const hubSelect = document.getElementById('user-hub-selector');
+                    if (hubSelect && data.user.community_hub) {
+                        hubSelect.value = data.user.community_hub;
+                    }
+
+                    // Update Top Stats
+                    const scansEl = document.getElementById('user-total-scans');
+                    if (scansEl) scansEl.textContent = data.user.total_recycled ?? 0;
+
+                    const streakValEl = document.getElementById('user-streak-val');
+                    if (streakValEl) streakValEl.textContent = `${data.user.current_streak ?? 0}d`;
+
+                    const pointsEl = document.getElementById('user-points-val');
+                    if (pointsEl) pointsEl.textContent = data.user.points ?? 0;
+
+                    const navPointsPill = document.getElementById('nav-points-pill');
+                    if (navPointsPill) navPointsPill.textContent = `${data.user.points ?? 0} pts`;
+
+                    // Update Tangible Impact Stats
+                    const co2El = document.getElementById('user-co2-val');
+                    if (co2El) co2El.textContent = `${Number(data.user.total_co2_saved || 0).toFixed(1)}g`;
+
+                    const phonesEl = document.getElementById('user-phone-charges');
+                    if (phonesEl) {
+                        const charges = data.stats?.smartphone_charges ?? Math.floor((data.user.total_co2_saved || 0) / 8.22);
+                        phonesEl.textContent = charges.toLocaleString();
+                    }
+
+                    const evEl = document.getElementById('user-ev-miles');
+                    if (evEl) {
+                        const miles = data.stats?.ev_miles ?? (Number(data.user.total_co2_saved || 0) / 150).toFixed(1);
+                        evEl.innerHTML = `${miles}<span class="text-sm font-normal text-text-muted ml-1">mi</span>`;
+                    }
+
+                    // Render Daily Quests
+                    if (data.daily_quests) {
+                        renderDailyQuests(data.daily_quests);
+                    }
+
+                    // Render Recent Scans
+                    if (data.recent_scans) {
+                        renderRecentScans(data.recent_scans);
+                    }
+
+                    // Update Stream Breakdown
+                    if (data.category_counts) {
+                        const recyclableCount = data.category_counts.Recyclable || 0;
+                        const compostCount = data.category_counts.Compostable || 0;
+                        const landfillCount = data.category_counts.Landfill || 0;
+                        const counters = document.querySelectorAll('.stream-counter');
+                        if (counters.length >= 3) {
+                            counters[0].textContent = recyclableCount.toLocaleString();
+                            counters[1].textContent = compostCount.toLocaleString();
+                            counters[2].textContent = landfillCount.toLocaleString();
+                        }
+                    }
+                }
+            }
+        } catch (err) {
+            console.warn('Dashboard hydration note:', err);
+        }
+    }
+
+    window.hydrateDashboard = hydrateDashboard;
+
+    document.addEventListener('DOMContentLoaded', () => {
+        hydrateDashboard();
+    });
 </script>
 
 <!-- Doorstep Pickup Scheduling Modal -->
@@ -2611,7 +3072,7 @@
                     <img src="/static/img/logo-icon.svg" alt="BinSync" class="w-10 h-10 rounded-xl shadow-sm">
                     <div>
                         <h2 class="text-xl font-bold text-slate-900 tracking-tight">BinSync Kitchen Sorting Guide</h2>
-                        <p class="text-xs text-slate-600 font-semibold">Household of Citizen_6f0681cc57 · Global Network</p>
+                        <p class="text-xs text-slate-600 font-semibold">Household of Citizen_4186ead84d · Global Network</p>
                     </div>
                 </div>
                 <div class="text-right">
