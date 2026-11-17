@@ -21,6 +21,26 @@
   status = 200
 
 [[redirects]]
+  from = "/api/dashboard"
+  to = "/.netlify/functions/dashboard"
+  status = 200
+
+[[redirects]]
+  from = "/api/dashboard/*"
+  to = "/.netlify/functions/dashboard"
+  status = 200
+
+[[redirects]]
+  from = "/api/claim_quest"
+  to = "/.netlify/functions/dashboard"
+  status = 200
+
+[[redirects]]
+  from = "/api/update_hub"
+  to = "/.netlify/functions/dashboard"
+  status = 200
+
+[[redirects]]
   from = "/api/classify"
   to = "/.netlify/functions/classify"
   status = 200
