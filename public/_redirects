@@ -2,6 +2,8 @@
 /static/*          /static/:splat               200
 
 # API routes to Netlify Serverless Functions
+/api/auth          /.netlify/functions/auth     200
+/api/auth/*        /.netlify/functions/auth     200
 /api/classify      /.netlify/functions/classify 200
 /api/lookup        /.netlify/functions/lookup   200
 /api/depots        /.netlify/functions/depots   200

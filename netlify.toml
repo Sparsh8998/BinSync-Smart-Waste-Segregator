@@ -11,6 +11,16 @@
 
 # API routes to Netlify Serverless Functions
 [[redirects]]
+  from = "/api/auth"
+  to = "/.netlify/functions/auth"
+  status = 200
+
+[[redirects]]
+  from = "/api/auth/*"
+  to = "/.netlify/functions/auth"
+  status = 200
+
+[[redirects]]
   from = "/api/classify"
   to = "/.netlify/functions/classify"
   status = 200
